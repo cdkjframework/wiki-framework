@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这里的namespace必须和是对应的mapper.java的地址-->
+<mapper namespace="com.cdkj.framework.core.business.mapper.OrderNumberMapper">
+
+    <select id="getOrderNumberByPrefix" parameterType="java.lang.String" resultType="com.cdkj.framework.entity.OrderNumberEntity">
+        SELECT
+           a.length AS length,
+           a.prefix AS prefix,
+           a.serial_no AS serialno,
+           a.rule_no AS ruleno,
+           a.no_name AS noname
+        FROM
+        bms_number a
+        WHERE a.prefix = #{prefix}  FOR UPDATE
+    </select>
+
+    <insert id="addOrderNumber" parameterType="com.cdkj.framework.entity.OrderNumberEntity">
+        INSERT INTO bms_number(
+        length,
+        prefix,
+        serial_no,
+        rule_no,
+        no_name)
+        VALUES
+        (
+        #{length,jdbcType=VARCHAR},
+        #{prefix,jdbcType=VARCHAR},
+        #{serialNo,jdbcType=VARCHAR},
+        #{ruleNo,jdbcType=VARCHAR},
+        #{noName,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="updateNextOrderNumber" parameterType="com.cdkj.framework.entity.OrderNumberEntity">
+        UPDATE  bms_number
+        SET serial_no = serial_no + 1
+        WHERE prefix = #{prefix} AND serial_no = #{serialNo}
+    </update>
+</mapper>

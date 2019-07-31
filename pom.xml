@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.cdkj.framework</groupId>
+    <artifactId>cdkj-framework</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0</version>
+    <modules>
+        <module>cdkj-framework-cloud</module>
+        <module>cdkj-framework-util</module>
+        <module>cdkj-framework-core</module>
+        <module>cdkj-framework-datasource</module>
+        <module>cdkj-framework-message</module>
+        <module>cdkj-framework-pay</module>
+        <module>cdkj-framework-pom</module>
+    </modules>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.1.5.RELEASE</version>
+    </parent>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.cdkj.framework</groupId>
+                <artifactId>cdkj-framework-pom</artifactId>
+                <version>1.0</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <repositories>
+        <repository>
+            <id>shanWeiYun Maven Repository</id>
+            <name>shanWeiYun Maven Repository</name>
+            <url>http://nexus.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+        </repository>
+
+        <repository>
+            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
+            就会覆盖中央仓库的配置 -->
+            <id>mvnRepository</id>
+            <name>mvnRepository</name>
+            <url>http://nexus.shanweiyun.cn/nexus/content/repositories/central/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+</project>
