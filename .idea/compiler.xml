@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cdkj-cloud" />
+        <module name="cdkj-constant" />
+        <module name="cdkj-core" />
+        <module name="cdkj-datasource" />
+        <module name="cdkj-entity" />
+        <module name="cdkj-message" />
+        <module name="cdkj-pay" />
+        <module name="cdkj-util" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="cdkj-cloud" target="8" />
+      <module name="cdkj-constant" target="1.8" />
+      <module name="cdkj-core" target="8" />
+      <module name="cdkj-datasource" target="8" />
+      <module name="cdkj-entity" target="1.8" />
+      <module name="cdkj-framework" target="1.8" />
+      <module name="cdkj-message" target="8" />
+      <module name="cdkj-pay" target="8" />
+      <module name="cdkj-pom" target="8" />
+      <module name="cdkj-util" target="8" />
+      <module name="cdkj.framework" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

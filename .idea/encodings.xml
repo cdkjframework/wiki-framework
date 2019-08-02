@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-constant" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-datasource" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-framework-core" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-framework-datasource" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-framework-entity" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-framework-pom" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-framework-util" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-pom" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/cdkj-util" charset="UTF-8" />
+  </component>
+</project>
