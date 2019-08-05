@@ -33,6 +33,16 @@ public class ResponseBuilder implements Serializable {
     private int code;
 
     /**
+     * 请求时间
+     */
+    private long requestTime;
+
+    /**
+     * 返回时间
+     */
+    private long responseTime = System.currentTimeMillis();
+
+    /**
      * 消息
      */
     private String message = "操作失败，请稍后重试！";
