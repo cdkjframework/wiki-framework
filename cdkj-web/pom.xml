@@ -11,5 +11,17 @@
 
     <artifactId>cdkj-web</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-core</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-datasource</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
 
 </project>

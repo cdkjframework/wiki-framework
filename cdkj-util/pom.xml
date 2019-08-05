@@ -12,7 +12,6 @@
     <artifactId>cdkj-util</artifactId>
 
     <dependencies>
-
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-constant</artifactId>
@@ -22,6 +21,12 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-entity</artifactId>
             <version>${project.parent.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.cdkjframework</groupId>
+                    <artifactId>cdkj-constant</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
