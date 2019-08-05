@@ -18,6 +18,7 @@
         <module>cdkj-pom</module>
         <module>cdkj-entity</module>
         <module>cdkj-constant</module>
+        <module>cdkj-web</module>
     </modules>
 
     <parent>

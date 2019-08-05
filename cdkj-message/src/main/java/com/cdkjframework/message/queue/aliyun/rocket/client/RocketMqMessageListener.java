@@ -4,13 +4,17 @@ import com.aliyun.openservices.ons.api.Action;
 import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
+import com.cdkjframework.config.AliCloudRocketMqClientConfig;
 import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.message.aliyun.RocketMqCallbackEntity;
 import com.cdkjframework.util.log.LogUtil;
 import com.cdkjframework.util.tool.JsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.ApplicationContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.InvocationTargetException;
@@ -18,7 +22,7 @@ import java.lang.reflect.Method;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
- * @Package: com.cdkjframework.core.message.queue.aliyun.rocket.client
+ * @Package: com.cdkj.framework.core.message.queue.aliyun.rocket.client
  * @ClassName: AliCloudRocketMqClientBean
  * @Description: java类作用描述
  * @Author: xiaLin
@@ -26,7 +30,8 @@ import java.lang.reflect.Method;
  */
 
 @Component
-public class RocketMqMessageListener implements MessageListener {
+@Order(2)
+public class RocketMqMessageListener implements MessageListener, ApplicationRunner {
 
     /**
      * 日志
@@ -37,7 +42,7 @@ public class RocketMqMessageListener implements MessageListener {
      * 消息配置
      */
     @Autowired
-    private AliCloudRocketMqConfig aliCloudRocketMqConfig;
+    private AliCloudRocketMqClientConfig aliCloudRocketMqConfig;
 
     /**
      * 方法
@@ -48,6 +53,18 @@ public class RocketMqMessageListener implements MessageListener {
      * bean
      */
     private Object bean;
+
+    /**
+     * 定义顺序加载
+     *
+     * @param args 参数
+     * @throws Exception 异常
+     */
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        getBean();
+    }
+
     /**
      * 获取 bean
      */
@@ -85,16 +102,20 @@ public class RocketMqMessageListener implements MessageListener {
      */
     @Override
     public Action consume(Message message, ConsumeContext consumeContext) {
+        if (Application.applicationContext == null) {
+            // 返回重发
+            return Action.ReconsumeLater;
+        }
+
         if (method == null) {
             getBean();
+            // 此处为了不影响使用
+            consume(message, consumeContext);
             logUtil.error("未设置回调方法，消息内容为：" + JsonUtil.objectToJsonString(message));
-            //返回空
-            return Action.ReconsumeLater;
         }
 
         //调用参数
         try {
-
             RocketMqCallbackEntity callbackEntity = new RocketMqCallbackEntity();
             callbackEntity.setBornTimestamp(message.getBornTimestamp());
             callbackEntity.setMessage(new String(message.getBody()));
@@ -113,7 +134,7 @@ public class RocketMqMessageListener implements MessageListener {
             logUtil.error(e.getMessage());
         }
 
-        //返回空
+        //返确认收到
         return Action.ReconsumeLater;
     }
 }

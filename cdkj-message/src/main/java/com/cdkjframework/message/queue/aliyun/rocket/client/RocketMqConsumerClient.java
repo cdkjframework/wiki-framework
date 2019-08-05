@@ -3,7 +3,7 @@ package com.cdkjframework.message.queue.aliyun.rocket.client;
 import com.aliyun.openservices.ons.api.Consumer;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
-import com.cdkjframework.config.AliCloudRocketMqConfig;
+import com.cdkjframework.config.AliCloudRocketMqClientConfig;
 import com.cdkjframework.util.log.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -16,7 +16,7 @@ import java.util.Properties;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
- * @Package: com.cdkjframework.core.message.queue.aliyun.rocket.server
+ * @Package: com.cdkj.framework.core.message.queue.aliyun.rocket.server
  * @ClassName: AliCloudRocketMqClientListener
  * @Description: 注册 server 服务
  * @Author: xiaLin
@@ -41,7 +41,7 @@ public class RocketMqConsumerClient implements ApplicationRunner {
      * 读取配置信息
      */
     @Autowired
-    private AliCloudRocketMqConfig aliCloudRocketMqConfig;
+    private AliCloudRocketMqClientConfig aliCloudRocketMqConfig;
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -77,8 +77,6 @@ public class RocketMqConsumerClient implements ApplicationRunner {
         properties.put(PropertyKeyConst.AccessKey, aliCloudRocketMqConfig.getAccessKey());
         // 鉴权用 SecretKey
         properties.put(PropertyKeyConst.SecretKey, aliCloudRocketMqConfig.getSecretKey());
-//        // 设置 TCP 接入域名
-//        properties.put(PropertyKeyConst.NAMESRV_ADDR, aliCloudRocketMqConfig.getOnsAddress());
 
         //返回集合
         return properties;
@@ -91,7 +89,8 @@ public class RocketMqConsumerClient implements ApplicationRunner {
         String[] topicList = aliCloudRocketMqConfig.getTopicNames().split(",");
         for (int i = 0; i < topicList.length; i++) {
             //设置监听信息
-            consumer.subscribe(topicList[i], "*", rocketMqMessageListener);
+            final String subExpression = "*";
+            consumer.subscribe(topicList[i], subExpression, rocketMqMessageListener);
 
             //启动监听
             consumer.start();

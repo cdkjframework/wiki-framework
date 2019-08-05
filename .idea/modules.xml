@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/cdkj-pay/cdkj-pay.iml" filepath="$PROJECT_DIR$/cdkj-pay/cdkj-pay.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-pom/cdkj-pom.iml" filepath="$PROJECT_DIR$/cdkj-pom/cdkj-pom.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-util/cdkj-util.iml" filepath="$PROJECT_DIR$/cdkj-util/cdkj-util.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cdkj-web/cdkj-web.iml" filepath="$PROJECT_DIR$/cdkj-web/cdkj-web.iml" />
     </modules>
   </component>
 </project>

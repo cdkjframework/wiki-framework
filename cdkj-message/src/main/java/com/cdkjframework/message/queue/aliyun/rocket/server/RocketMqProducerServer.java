@@ -7,14 +7,16 @@ import com.cdkjframework.entity.message.aliyun.RocketMqEntity;
 import com.cdkjframework.util.log.LogUtil;
 import com.cdkjframework.util.tool.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Properties;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
- * @Package: com.cdkjframework.core.message.queue.aliyun.rocket.server
+ * @Package: com.cdkj.framework.core.message.queue.aliyun.rocket.server
  * @ClassName: AliCloudRocketMqServerSend
  * @Description: java类作用描述
  * @Author: xiaLin
@@ -22,7 +24,8 @@ import java.util.Properties;
  */
 
 @Component
-public class RocketMqProducerServer {
+@Order(3)
+public class RocketMqProducerServer implements ApplicationRunner {
 
     /**
      * 日志
@@ -46,11 +49,13 @@ public class RocketMqProducerServer {
     private static OrderProducer orderProducer;
 
     /**
-     * 构造函数
+     * 定义顺序加载
+     *
+     * @param args 参数
+     * @throws Exception 异常
      */
-    @PostConstruct
-    public void init() {
-
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         //集合属性
         Properties properties = setProperties();
         //创建服务 producer
@@ -63,8 +68,7 @@ public class RocketMqProducerServer {
      * @param rocketMqEntity 信息内容
      * @return 返回结果（布尔值）
      */
-    public static boolean send(RocketMqEntity rocketMqEntity) {
-
+    public static boolean push(RocketMqEntity rocketMqEntity) {
         //将数据转换为 byte
         byte[] body = rocketMqEntity.getMessage().getBytes();
 
@@ -75,28 +79,26 @@ public class RocketMqProducerServer {
         if (StringUtil.isNotNullAndEmpty(rocketMqEntity.getKey())) {
             message.setKey(rocketMqEntity.getKey());
         }
-
-        boolean isSend = true;
-
+        boolean successful = true;
         //发送消息
         try {
-            SendResult sendResult = null;
+            SendResult sendResult;
             if (StringUtil.isNotNullAndEmpty(rocketMqEntity.getShardingKey())) {
                 sendResult = orderProducer.send(message, rocketMqEntity.getShardingKey());
             } else {
                 sendResult = producer.send(message);
             }
             if (sendResult == null || StringUtil.isNullAndSpaceOrEmpty(sendResult.getMessageId())) {
-                isSend = false;
+                successful = false;
             }
         } catch (Exception ex) {
             //出现异常则说明消息发送失败
             logUtil.error(ex.getMessage());
-            isSend = false;
+            successful = false;
+        } finally {
+            //返回结果
+            return successful;
         }
-
-        //返回结果
-        return isSend;
     }
 
     /**
@@ -112,8 +114,6 @@ public class RocketMqProducerServer {
         properties.put(PropertyKeyConst.AccessKey, aliCloudRocketMqConfig.getAccessKey());
         // 鉴权用 SecretKey
         properties.put(PropertyKeyConst.SecretKey, aliCloudRocketMqConfig.getSecretKey());
-//        // 设置 TCP 接入域名
-//        properties.put(PropertyKeyConst.NAMESRV_ADDR, aliCloudRocketMqConfig.getOnsAddress());
 
         //返回结果
         return properties;
@@ -123,7 +123,6 @@ public class RocketMqProducerServer {
      * 配置服务端消息
      */
     private void configureMessageQueueServer(Properties properties) {
-
         //创建 Producer
         producer = ONSFactory.createProducer(properties);
         // 启动 Producer

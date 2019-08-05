@@ -32,7 +32,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
     public boolean supports(MethodParameter methodParameter, Class aClass) {
         final String returnTypeName = methodParameter.getParameterType().getName();
 
-        return returnTypeName.startsWith("java.lang") || returnTypeName.contains( "ResponseBuilder");
+        return returnTypeName.startsWith("java.lang") || returnTypeName.contains("ResponseBuilder");
     }
 
     /**
