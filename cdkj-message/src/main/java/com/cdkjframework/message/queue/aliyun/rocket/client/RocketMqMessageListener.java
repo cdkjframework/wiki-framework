@@ -66,34 +66,6 @@ public class RocketMqMessageListener implements MessageListener, ApplicationRunn
     }
 
     /**
-     * 获取 bean
-     */
-    public void getBean() {
-        try {
-            // 使用spring content 获取类的实例 必须在 application 注册 applicationContext 变量
-            ApplicationContext context = Application.applicationContext;
-            if (context == null) {
-                return;
-            }
-            Class targetClass = Class.forName(aliCloudRocketMqConfig.getClassName());
-            this.bean = context.getBean(targetClass);
-            /*
-             给实例化的类注入需要的bean (@Autowired)
-             如果不注入，被@Autowired注解的变量会报空指针
-              */
-            context.getAutowireCapableBeanFactory().autowireBean(bean);
-
-            this.method = targetClass.getDeclaredMethod(aliCloudRocketMqConfig.getMethodName(), RocketMqCallbackEntity.class);
-            // 设置访问权限
-            this.method.setAccessible(true);
-        } catch (ClassNotFoundException e) {
-            logUtil.error(e.getMessage());
-        } catch (NoSuchMethodException e) {
-            logUtil.error(e.getMessage());
-        }
-    }
-
-    /**
      * 订阅消息回传
      *
      * @param message        消息内容
@@ -136,5 +108,33 @@ public class RocketMqMessageListener implements MessageListener, ApplicationRunn
 
         //返确认收到
         return Action.ReconsumeLater;
+    }
+
+    /**
+     * 获取 bean
+     */
+    public void getBean() {
+        try {
+            // 使用spring content 获取类的实例 必须在 application 注册 applicationContext 变量
+            ApplicationContext context = Application.applicationContext;
+            if (context == null) {
+                return;
+            }
+            Class targetClass = Class.forName(aliCloudRocketMqConfig.getClassName());
+            this.bean = context.getBean(targetClass);
+            /*
+             给实例化的类注入需要的bean (@Autowired)
+             如果不注入，被@Autowired注解的变量会报空指针
+              */
+            context.getAutowireCapableBeanFactory().autowireBean(bean);
+
+            this.method = targetClass.getDeclaredMethod(aliCloudRocketMqConfig.getMethodName(), RocketMqCallbackEntity.class);
+            // 设置访问权限
+            this.method.setAccessible(true);
+        } catch (ClassNotFoundException e) {
+            logUtil.error(e.getMessage());
+        } catch (NoSuchMethodException e) {
+            logUtil.error(e.getMessage());
+        }
     }
 }
