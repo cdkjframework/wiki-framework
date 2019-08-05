@@ -1,6 +1,7 @@
 package com.cdkjframework.exceptions;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.util.log.LogUtil;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +34,7 @@ public class OverallSituationExceptionHandler {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getlogUtil(OverallSituationExceptionHandler.class);
+    private static LogUtil logUtil = LogUtil.getLogger(OverallSituationExceptionHandler.class);
 
     /**
      * 声明要捕获的异常
@@ -44,14 +46,11 @@ public class OverallSituationExceptionHandler {
     @ResponseBody
     public ResponseBuilder defultExcepitonHandler(Exception e) {
         ResponseBuilder ResponseBuilder = new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseCode.INTERNAL_ERROR.getCode());
-        ResponseBuilder.setMessage(ResponseCode.INTERNAL_ERROR.getDesc());
+        ResponseBuilder.setCode(ResponseBuilderEnum.Error.getValue());
+        ResponseBuilder.setMessage(ResponseBuilderEnum.Error.getName());
         Map<String, Object> params = new HashMap<>(10);
         params.put("error", e.getMessage());
-        ResponseBuilder.setParams(params);
-        logUtil.error("the service has error!!", e);
-        LogSendUtil.sendLog(new LogMessageBuilder(LahuobaoLogLevel.ERROR,"the service has error!!")
-                .setException(e).builder());
+        ResponseBuilder.setData(params);
         return ResponseBuilder;
     }
 
@@ -59,22 +58,19 @@ public class OverallSituationExceptionHandler {
     @ResponseBody
     public ResponseBuilder GlobalException(GlobalException e) {
         ResponseBuilder ResponseBuilder = new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseCode.VALIDATE_FAIL.getCode());
-        ResponseBuilder.setRemark(e.getMessage());
+        ResponseBuilder.setCode(ResponseBuilderEnum.Error.getValue());
+        ResponseBuilder.setMessage(e.getMessage());
         Map<String, Object> params = new HashMap<>(10);
         params.put("error", e.getMessage());
-        ResponseBuilder.setParams(params);
-        logUtil.error("the service has error!!", e);
-        LogSendUtil.sendLog(new LogMessageBuilder(LahuobaoLogLevel.ERROR,"业务异常")
-                .setException(e).builder());
+        ResponseBuilder.setData(params);
         return ResponseBuilder;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ResponseBuilder MethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        ResponseBuilder ResponseBuilder = new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseCode.VALIDATE_FAIL.getCode());
+        ResponseBuilder builder = new ResponseBuilder();
+        builder.setCode(ResponseBuilderEnum.Error.getValue());
 
         BindingResult bindingResult = e.getBindingResult();
         List<String> errorList = new ArrayList<>();
@@ -82,56 +78,56 @@ public class OverallSituationExceptionHandler {
             List<FieldError> errors = bindingResult.getFieldErrors();
             if (!CollectionUtils.isEmpty(errors)) {
                 // 只获取第一个异常信息
-                ResponseBuilder.setRemark(errors.get(0).getDefaultMessage());
+                builder.setMessage(errors.get(0).getDefaultMessage());
                 for (FieldError error : errors) {
                     errorList.add(error.getDefaultMessage());
                 }
             }
         }
-        LogSendUtil.sendLog(new LogMessageBuilder(LahuobaoLogLevel.ERROR,"参数校验异常")
-                .setException(e).setProjectName("拉货宝后台管理系统").builder());
-        ResponseBuilder.setResult(errorList);
-        return ResponseBuilder;
+        builder.setData(errorList);
+        return builder;
     }
+
     /**
      * hibernate 验证异常处理
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public ResponseBuilder constraintViolationExceptionHandler(ConstraintViolationException e) {
-        ResponseBuilder ResponseBuilder=new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseCode.VALIDATE_FAIL.getCode());
+        ResponseBuilder builder = new ResponseBuilder();
+        builder.setCode(ResponseBuilderEnum.Error.getValue());
         String message = e.getMessage();
-        Integer begin = message.indexOf(":")+1;
+        Integer begin = message.indexOf(":") + 1;
         Integer end = message.indexOf(",");
-        if(end>begin){
-            message= message.substring(begin,end);
-        }else{
-            message= message.substring(begin);
+        if (end > begin) {
+            message = message.substring(begin, end);
+        } else {
+            message = message.substring(begin);
         }
-        ResponseBuilder.setRemark(message);
-        logUtil.info("the business has verify info!!!!",e);
-        return ResponseBuilder;
+        builder.setMessage(message);
+        logUtil.info(e, "the business has verify info!!!!");
+        return builder;
     }
+
     /**
      * 文件大小超过最大限制
+     *
      * @param e
      * @return
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseBody
-    public ResponseBuilder sizeLimitExceededExceptionExceptionHandler(MaxUploadSizeExceededException e){
-        ResponseBuilder ResponseBuilder=new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseCode.VALIDATE_FAIL.getCode());
-        Long size = Long.valueOf(maxFileSize);
-        Long fileSizeM = size/(1024*1024L);
-        String info = String.format("文件请勿超过%sM",fileSizeM);
-        ResponseBuilder.setRemark(info);
+    public ResponseBuilder sizeLimitExceededExceptionExceptionHandler(MaxUploadSizeExceededException e) {
+        ResponseBuilder builder = new ResponseBuilder();
+        builder.setCode(ResponseBuilderEnum.Error.getValue());
+        Long size = Long.valueOf(1024);
+        Long fileSizeM = size / (1024 * 1024L);
+        String info = String.format("文件请勿超过%sM", fileSizeM);
+        builder.setMessage(info);
         logUtil.info(info);
-        LogSendUtil.sendLog(new LogMessageBuilder(LahuobaoLogLevel.INFO,info)
-                .setException(e).setProjectName("拉货宝后台管理系统").builder());
-        return ResponseBuilder;
+        return builder;
     }
 }
