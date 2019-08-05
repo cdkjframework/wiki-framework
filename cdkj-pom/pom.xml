@@ -22,13 +22,13 @@
         <spring.boot.version>2.1.5.RELEASE</spring.boot.version>
         <spring.cloud.version>2.1.5.RELEASE</spring.cloud.version>
         <spring.version>5.1.8.RELEASE</spring.version>
-        <swagger.verstion>2.9.2</swagger.verstion>
+        <swagger.version>2.9.2</swagger.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.8.47</mockito.version>
-        <easypoi.verstion>4.1.0</easypoi.verstion>
+        <easypoi.version>4.1.0</easypoi.version>
         <alibaba.fastjson.version>1.2.58</alibaba.fastjson.version>
         <oss.version>3.4.2</oss.version>
-        <junit.jupiter.api.verstion>5.5.1</junit.jupiter.api.verstion>
+        <junit.jupiter.api.version>5.5.1</junit.jupiter.api.version>
         <cxf.version>3.3.2</cxf.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
         <google.guava.version>28.0-jre</google.guava.version>
@@ -53,6 +53,9 @@
         <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
         <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
         <lombok.version>1.18.8</lombok.version>
+        <commons.io.version>2.6</commons.io.version>
+        <java.jwt.version>3.8.1</java.jwt.version>
+        <jjwt.version>0.9.1</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -129,12 +132,12 @@
             <dependency>
                 <groupId>com.auth0</groupId>
                 <artifactId>java-jwt</artifactId>
-                <version>3.6.0</version>
+                <version>${java.jwt.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
                 <artifactId>jjwt</artifactId>
-                <version>0.9.1</version>
+                <version>${jjwt.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.ctrip.framework.apollo</groupId>
@@ -195,12 +198,12 @@
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger.verstion}</version>
+                <version>${swagger.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger.verstion}</version>
+                <version>${swagger.version}</version>
             </dependency>
             <!-- end swagger2 -->
             <!-- Redis begin -->
@@ -219,13 +222,12 @@
             <dependency>
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
-                <version>2.6</version>
+                <version>${commons.io.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.annotations.version}</version>
-                <scope>compile</scope>
             </dependency>
             <!--google-->
             <dependency>
@@ -290,7 +292,7 @@
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
-                <version>${junit.jupiter.api.verstion}</version>
+                <version>${junit.jupiter.api.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mockito</groupId>
