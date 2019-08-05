@@ -1,4 +1,4 @@
-package com.cdkjframework.consts.datasource;
+package com.cdkjframework.constant.datasource;
 
 /**
  * @ProjectName: cdkj.framework.core
