@@ -1,0 +1,14 @@
+<xls>
+    <area ref="Sheet1!A1:A2">
+        <each items="headers" var="header" ref="Sheet1!A1:A1" dir="RIGHT">
+            <area ref="Sheet1!A1:A1"/>
+        </each>
+        <each items="rows" var="row" ref="Sheet1!A2:A2">
+            <area ref="Sheet1!A2:A2">
+                <each items="row" var="cell" ref="Sheet1!A2:A2" dir="RIGHT">
+                    <area ref="Sheet1!A2:A2"/>
+                </each>
+            </area>
+        </each>
+    </area>
+</xls>

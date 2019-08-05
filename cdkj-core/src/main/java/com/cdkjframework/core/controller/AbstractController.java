@@ -1,0 +1,356 @@
+package com.cdkjframework.core.controller;
+
+import cn.afterturn.easypoi.excel.ExcelImportUtil;
+import cn.afterturn.easypoi.excel.entity.ImportParams;
+import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.config.VersionConfig;
+import com.cdkjframework.core.business.service.MongoService;
+import com.cdkjframework.entity.PageEntity;
+import com.cdkjframework.entity.file.FileEntity;
+import com.cdkjframework.entity.log.LogRecordEntity;
+import com.cdkjframework.entity.user.UserEntity;
+import com.cdkjframework.enums.basics.BasicsEnum;
+import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.util.files.FileUtil;
+import com.cdkjframework.util.files.ZipUtil;
+import com.cdkjframework.util.http.HttpServletUtil;
+import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.make.GeneratedValueUtil;
+import com.cdkjframework.util.tool.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * @ProjectName: com.cdkjframework.QRcode
+ * @Package: com.cdkjframework.core.entity
+ * @ClassName: AbstractController
+ * @Description: 抽象控制器
+ * @Author: xiaLin
+ * @Version: 1.0
+ */
+
+public abstract class AbstractController implements IController {
+
+    /**
+     * 日志
+     */
+    private LogUtil logUtil = LogUtil.getLogger(AbstractController.class);
+
+    /**
+     * 读取基础数据
+     */
+    @Autowired
+    private VersionConfig versionConfig;
+
+    /**
+     * mongo 数据库服务
+     */
+    @Autowired
+    private MongoService mongoServiceImpl;
+
+    /**
+     * 登出登录
+     *
+     * @param id 主键
+     * @return 返回结果
+     */
+    @Override
+    public abstract ResponseBuilder quit(String id);
+
+    /**
+     * 获取抽象信息
+     *
+     * @return 返回用户抽象实体
+     */
+    @Override
+    public abstract UserEntity getCurrentUser();
+
+    /**
+     * 获取抽象信息
+     *
+     * @param clasz 实体
+     * @return 返回用户抽象实体
+     */
+    @Override
+    public abstract <T> T getCurrentUser(Class<T> clasz);
+
+    /**
+     * 获取抽象信息
+     *
+     * @param id    主键
+     * @param clasz 实体
+     * @return 返回用户抽象实体
+     */
+    @Override
+    public abstract <T> T getCurrentUser(String id, Class<T> clasz);
+
+    /**
+     * 定入日志
+     *
+     * @param builder      结果
+     * @param logId        日志ID
+     * @param businessType 业务类型
+     * @param modular      模块
+     */
+    @Override
+    public abstract void writeLog(ResponseBuilder builder, String logId, BasicsEnum businessType, BasicsEnum modular);
+
+    /**
+     * 定入日志
+     *
+     * @param pageEntity   结果
+     * @param logId        日志ID
+     * @param businessType 业务类型
+     * @param modular      模块
+     */
+    @Override
+    public abstract void writeLog(PageEntity pageEntity, String logId, BasicsEnum businessType, BasicsEnum modular);
+
+    /**
+     * 写入日志
+     *
+     * @param logRecordEntity 日志记录
+     */
+    @Override
+    public void writeLog(LogRecordEntity logRecordEntity) {
+        try {
+            mongoServiceImpl.updateLog(logRecordEntity);
+        } catch (Exception ex) {
+            logUtil.error(ex);
+        }
+    }
+
+    /**
+     * 获取程序版本信息
+     *
+     * @param request HttpServletRequest
+     */
+    @Override
+    public void version(HttpServletRequest request) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(versionConfig.getSpringApplicationName());
+        builder.append(":");
+        builder.append(versionConfig.getServerPort());
+
+        //输出信息
+        write(builder.toString());
+    }
+
+    /**
+     * 获取参数
+     *
+     * @param keys 主键值
+     * @return 返回结果
+     */
+    @Override
+    public Map<String, Object> getRequestParameter(String... keys) {
+        Map<String, Object> mapList = new HashMap<String, Object>(keys.length);
+        for (String key :
+                keys) {
+            String value = HttpServletUtil.getRequest().getParameter(key);
+            mapList.put(key, value);
+        }
+
+        //返回结果
+        return mapList;
+    }
+
+    /**
+     * 获取参数
+     *
+     * @param key 主键值
+     * @return 返回结果
+     */
+    @Override
+    public String getRequestParameter(String key) {
+        return HttpServletUtil.getRequest().getParameter(key);
+    }
+
+    /**
+     * 获取请求头参数
+     *
+     * @param key 主键值
+     * @return 返回结果
+     */
+    @Override
+    public String getRequestHeader(String key) {
+        return HttpServletUtil.getRequest().getHeader(key);
+    }
+
+    /**
+     * 获取请求头参数
+     *
+     * @param keys 主键值
+     * @return 返回结果
+     */
+    @Override
+    public Map<String, Object> getRequestHeader(String... keys) {
+        Map<String, Object> mapList = new HashMap<String, Object>(keys.length);
+        for (String key :
+                keys) {
+            String value = HttpServletUtil.getRequest().getHeader(key);
+            mapList.put(key, value);
+        }
+
+        //返回结果
+        return mapList;
+    }
+
+    /**
+     * 获取文件流
+     *
+     * @param file 上传文件
+     * @return 返回结果
+     */
+    @Override
+    public String saveFile(MultipartFile file) throws IOException, GlobalException {
+        if (file == null && file.isEmpty()) {
+            throw new GlobalException("没有上传的文件");
+        }
+
+        //定义目录
+        final String directoryPath = "";
+
+        //返回结果
+        return saveFile(file, directoryPath);
+    }
+
+    /**
+     * 压缩文件
+     *
+     * @param response   输入文件流
+     * @param fileEntity 文件实体
+     */
+    @Override
+    public void zipFile(HttpServletResponse response, FileEntity fileEntity) throws IOException {
+        // 清空response
+        response.reset();
+        response.setContentType("application/octet-stream");
+        response.setContentType("application/octet-stream;charset=UTF-8");
+
+        //生成文件
+        String fileName = zipFile(fileEntity);
+        response.setHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+        File file = new File(fileEntity.getFilePath() + fileName);
+        try {
+            // 以流的形式下载文件。
+            InputStream inputStream = new BufferedInputStream(new FileInputStream(file.getPath()));
+            response.setHeader("Content-Length", String.valueOf(inputStream.available()));
+            byte[] buffer = new byte[inputStream.available()];
+            inputStream.read(buffer);
+            inputStream.close();
+
+            OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+
+            toClient.write(buffer);
+            toClient.flush();
+            toClient.close();
+        } catch (IOException ex) {
+            logUtil.error(ex.getMessage());
+        } finally {
+//            file.delete();
+        }
+    }
+
+    /**
+     * 压缩文件
+     *
+     * @param fileEntity 文件实体
+     */
+    @Override
+    public String zipFile(FileEntity fileEntity) throws IOException {
+        //生成文件 并返回文件路径
+        return ZipUtil.doZip(fileEntity);
+    }
+
+    /**
+     * 获取文件流并保存为文件
+     *
+     * @param file          文件流
+     * @param directoryPath 指定目录
+     * @return 返回结果
+     * @throws IOException     IO异常
+     * @throws GlobalException 公众异常
+     */
+    @Override
+    public String saveFile(MultipartFile file, String directoryPath) throws IOException, GlobalException {
+        if (file == null && file.isEmpty()) {
+            throw new GlobalException("没有上传的文件");
+        }
+
+        //文件流
+        InputStream inputStream = file.getInputStream();
+
+        //文件名称
+        String fileName = file.getOriginalFilename();
+        //获取后缀
+        String suffix = fileName.substring(fileName.lastIndexOf('.') - 1);
+        //重新定义文件名称
+        fileName = GeneratedValueUtil.getUuidNotTransverseLine() + suffix;
+
+        //自定义路径
+        final String catalog = "/uploadFiles/";
+
+        //保存文件
+        if (StringUtil.isNotNullAndEmpty(directoryPath)) {
+            FileUtil.saveFile(inputStream, directoryPath, catalog, fileName);
+        } else {
+            FileUtil.saveFile(inputStream, catalog, fileName);
+        }
+
+        //返回文件浏览路径
+        return catalog + fileName;
+    }
+
+    /**
+     * 导入 excel 数据
+     *
+     * @param inputStream 数据流
+     * @param clazz       要转换的类
+     * @return 返回结果
+     */
+    @Override
+    public List importExcelToList(InputStream inputStream, Class clazz) {
+        List list = new ArrayList();
+        //设置导入参数
+        ImportParams params = new ImportParams();
+
+        try {
+            list = ExcelImportUtil.importExcel(inputStream, clazz, params);
+        } catch (Exception e) {
+            logUtil.error(e.getMessage());
+        }
+
+        //返回结果
+        return list;
+    }
+
+    /**
+     * response 输出内容
+     *
+     * @param content 内容
+     */
+    @Override
+    public void write(String content) {
+        try {
+            HttpServletResponse response = HttpServletUtil.getResponse();
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("text/html;charset=utf-8");
+            PrintWriter writer = response.getWriter();
+            writer.write(content);
+            writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}

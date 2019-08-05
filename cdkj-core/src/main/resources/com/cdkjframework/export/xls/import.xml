@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<workbook>
+    <worksheet name="Sheet1">
+        <section startRow="0" endRow="0">
+        </section>
+        <loop startRow="1" endRow="1" items="list" var="importDto" varType="java.util.HashMap">
+            <section startRow="1" endRow="1">
+                <mapping row="1" col="0">importDto.extno</mapping>
+                <mapping row="1" col="1">importDto.whcode</mapping>
+                <mapping row="1" col="2">importDto.type</mapping>
+                <mapping row="1" col="3">importDto.soLineNo</mapping>
+                <mapping row="1" col="4">importDto.sku</mapping>
+                <mapping row="1" col="5">importDto.qty</mapping>
+                <mapping row="1" col="6">importDto.supplierCode</mapping>
+                <mapping row="1" col="7">importDto.supplierName</mapping>
+                <mapping row="1" col="8">importDto.carrierCode</mapping>
+                <mapping row="1" col="9">importDto.carrierName</mapping>
+                <mapping row="1" col="10">importDto.shipDate</mapping>
+                <mapping row="1" col="11">importDto.carNo</mapping>
+                <mapping row="1" col="12">importDto.shipFromContact</mapping>
+                <mapping row="1" col="13">importDto.shipFromPhone</mapping>
+                <mapping row="1" col="14">importDto.remark</mapping>
+            </section>
+            <loopbreakcondition>
+                <rowcheck offset="0">
+                    <cellcheck offset="0"></cellcheck>
+                </rowcheck>
+            </loopbreakcondition>
+        </loop>
+    </worksheet>
+</workbook>

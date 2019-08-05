@@ -1,0 +1,536 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for com.cdkjframework:cdkj.framework.util:jar:1.0
+[WARNING] 'dependencies.dependency.version' for org.junit.jupiter:junit-jupiter-api:jar is either LATEST or RELEASE (both of them are being deprecated) @ line 210, column 22
+[WARNING] 'dependencies.dependency.version' for org.apache.cxf:cxf-rt-frontend-jaxws:jar is either LATEST or RELEASE (both of them are being deprecated) @ line 251, column 22
+[WARNING] 'build.plugins.plugin.version' for org.apache.maven.plugins:maven-compiler-plugin is missing. @ line 314, column 21
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] Building cdkj.framework.util 1.0
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ cdkj.framework.util ---
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-invoker/2.0.11/maven-invoker-2.0.11.pom
+Progress (1): 2.2/5.1 kB
+Progress (1): 5.0/5.1 kB
+Progress (1): 5.1 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-invoker/2.0.11/maven-invoker-2.0.11.pom (5.1 kB at 3.5 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/reporting/maven-reporting-impl/2.0.5/maven-reporting-impl-2.0.5.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-doxia-tools/1.0.2/maven-doxia-tools-1.0.2.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.3/plexus-archiver-2.3.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.6/plexus-io-2.0.6.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.9/plexus-utils-3.0.9.jar
+Progress (1): 2.2/21 kB
+Progress (1): 5.0/21 kB
+Progress (1): 7.7/21 kB
+Progress (1): 10/21 kB 
+Progress (1): 13/21 kB
+Progress (1): 16/21 kB
+Progress (1): 19/21 kB
+Progress (1): 21 kB   
+                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/reporting/maven-reporting-impl/2.0.5/maven-reporting-impl-2.0.5.jar (21 kB at 35 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-dependency-analyzer/1.4/maven-dependency-analyzer-1.4.jar
+Progress (1): 2.2/58 kB
+Progress (1): 5.0/58 kB
+Progress (1): 7.7/58 kB
+Progress (1): 10/58 kB 
+Progress (1): 13/58 kB
+Progress (2): 13/58 kB | 2.2/41 kB
+Progress (2): 13/58 kB | 5.0/41 kB
+Progress (2): 13/58 kB | 7.7/41 kB
+Progress (2): 13/58 kB | 10/41 kB 
+Progress (2): 13/58 kB | 13/41 kB
+Progress (3): 13/58 kB | 13/41 kB | 2.2/27 kB
+Progress (3): 13/58 kB | 13/41 kB | 5.0/27 kB
+Progress (3): 13/58 kB | 13/41 kB | 7.7/27 kB
+Progress (3): 13/58 kB | 13/41 kB | 10/27 kB 
+Progress (4): 13/58 kB | 13/41 kB | 10/27 kB | 2.2/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 10/27 kB | 5.0/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 13/27 kB | 5.0/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 13/27 kB | 7.7/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 13/27 kB | 10/186 kB 
+Progress (4): 13/58 kB | 13/41 kB | 13/27 kB | 13/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 16/27 kB | 13/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 19/27 kB | 13/186 kB
+Progress (4): 13/58 kB | 13/41 kB | 21/27 kB | 13/186 kB
+Progress (4): 16/58 kB | 13/41 kB | 21/27 kB | 13/186 kB
+Progress (4): 16/58 kB | 13/41 kB | 24/27 kB | 13/186 kB
+Progress (4): 16/58 kB | 13/41 kB | 27/27 kB | 13/186 kB
+Progress (4): 16/58 kB | 13/41 kB | 27 kB | 13/186 kB   
+Progress (4): 19/58 kB | 13/41 kB | 27 kB | 13/186 kB
+Progress (4): 21/58 kB | 13/41 kB | 27 kB | 13/186 kB
+Progress (4): 24/58 kB | 13/41 kB | 27 kB | 13/186 kB
+Progress (4): 27/58 kB | 13/41 kB | 27 kB | 13/186 kB
+Progress (4): 30/58 kB | 13/41 kB | 27 kB | 13/186 kB
+Progress (4): 32/58 kB | 13/41 kB | 27 kB | 13/186 kB
+Progress (4): 32/58 kB | 16/41 kB | 27 kB | 13/186 kB
+Progress (4): 32/58 kB | 19/41 kB | 27 kB | 13/186 kB
+Progress (4): 32/58 kB | 21/41 kB | 27 kB | 13/186 kB
+Progress (4): 32/58 kB | 24/41 kB | 27 kB | 13/186 kB
+Progress (4): 32/58 kB | 27/41 kB | 27 kB | 13/186 kB
+                                                     
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-dependency-analyzer/1.4/maven-dependency-analyzer-1.4.jar (27 kB at 26 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-invoker/2.0.11/maven-invoker-2.0.11.jar
+Progress (3): 32/58 kB | 27/41 kB | 16/186 kB
+Progress (3): 32/58 kB | 30/41 kB | 16/186 kB
+Progress (3): 32/58 kB | 32/41 kB | 16/186 kB
+Progress (3): 32/58 kB | 32/41 kB | 19/186 kB
+Progress (3): 32/58 kB | 32/41 kB | 21/186 kB
+Progress (3): 32/58 kB | 36/41 kB | 21/186 kB
+Progress (3): 32/58 kB | 40/41 kB | 21/186 kB
+Progress (3): 32/58 kB | 41 kB | 21/186 kB   
+Progress (3): 32/58 kB | 41 kB | 24/186 kB
+Progress (3): 32/58 kB | 41 kB | 27/186 kB
+Progress (3): 32/58 kB | 41 kB | 30/186 kB
+Progress (3): 32/58 kB | 41 kB | 32/186 kB
+Progress (4): 32/58 kB | 41 kB | 32/186 kB | 2.2/232 kB
+Progress (4): 32/58 kB | 41 kB | 32/186 kB | 5.0/232 kB
+Progress (5): 32/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 2.2/29 kB
+Progress (5): 32/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 5.0/29 kB
+Progress (5): 32/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 36/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 40/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 45/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 49/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 53/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 57/58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 58 kB | 41 kB | 32/186 kB | 5.0/232 kB | 7.7/29 kB   
+Progress (5): 58 kB | 41 kB | 36/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 58 kB | 41 kB | 40/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 58 kB | 41 kB | 45/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (5): 58 kB | 41 kB | 49/186 kB | 5.0/232 kB | 7.7/29 kB
+                                                                
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-doxia-tools/1.0.2/maven-doxia-tools-1.0.2.jar (41 kB at 30 kB/s)
+Progress (4): 58 kB | 53/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (4): 58 kB | 57/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (4): 58 kB | 61/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (4): 58 kB | 65/186 kB | 5.0/232 kB | 7.7/29 kB
+Progress (4): 58 kB | 65/186 kB | 7.7/232 kB | 7.7/29 kB
+Progress (4): 58 kB | 65/186 kB | 10/232 kB | 7.7/29 kB 
+Progress (4): 58 kB | 65/186 kB | 13/232 kB | 7.7/29 kB
+Progress (4): 58 kB | 65/186 kB | 13/232 kB | 10/29 kB 
+Progress (4): 58 kB | 69/186 kB | 13/232 kB | 10/29 kB
+Progress (4): 58 kB | 73/186 kB | 13/232 kB | 10/29 kB
+Progress (4): 58 kB | 73/186 kB | 13/232 kB | 13/29 kB
+Progress (4): 58 kB | 77/186 kB | 13/232 kB | 13/29 kB
+Progress (4): 58 kB | 77/186 kB | 13/232 kB | 16/29 kB
+Progress (4): 58 kB | 81/186 kB | 13/232 kB | 16/29 kB
+Progress (4): 58 kB | 81/186 kB | 13/232 kB | 19/29 kB
+Progress (4): 58 kB | 81/186 kB | 13/232 kB | 21/29 kB
+Progress (4): 58 kB | 81/186 kB | 13/232 kB | 24/29 kB
+Progress (4): 58 kB | 81/186 kB | 13/232 kB | 27/29 kB
+Progress (4): 58 kB | 81/186 kB | 13/232 kB | 29 kB   
+                                                   
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-io/2.0.6/plexus-io-2.0.6.jar (58 kB at 39 kB/s)
+Progress (3): 81/186 kB | 16/232 kB | 29 kB
+                                           
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/shared/maven-invoker/2.0.11/maven-invoker-2.0.11.jar (29 kB at 18 kB/s)
+Progress (2): 81/186 kB | 19/232 kB
+Progress (2): 81/186 kB | 21/232 kB
+Progress (2): 85/186 kB | 21/232 kB
+Progress (2): 90/186 kB | 21/232 kB
+Progress (2): 94/186 kB | 21/232 kB
+Progress (2): 98/186 kB | 21/232 kB
+Progress (2): 102/186 kB | 21/232 kB
+Progress (2): 106/186 kB | 21/232 kB
+Progress (2): 110/186 kB | 21/232 kB
+Progress (2): 114/186 kB | 21/232 kB
+Progress (2): 118/186 kB | 21/232 kB
+Progress (2): 122/186 kB | 21/232 kB
+Progress (2): 126/186 kB | 21/232 kB
+Progress (2): 131/186 kB | 21/232 kB
+Progress (2): 135/186 kB | 21/232 kB
+Progress (2): 139/186 kB | 21/232 kB
+Progress (2): 143/186 kB | 21/232 kB
+Progress (2): 147/186 kB | 21/232 kB
+Progress (2): 151/186 kB | 21/232 kB
+Progress (2): 155/186 kB | 21/232 kB
+Progress (2): 159/186 kB | 21/232 kB
+Progress (2): 163/186 kB | 21/232 kB
+Progress (2): 167/186 kB | 21/232 kB
+Progress (2): 171/186 kB | 21/232 kB
+Progress (2): 176/186 kB | 21/232 kB
+Progress (2): 180/186 kB | 21/232 kB
+Progress (2): 180/186 kB | 24/232 kB
+Progress (2): 180/186 kB | 27/232 kB
+Progress (2): 180/186 kB | 30/232 kB
+Progress (2): 184/186 kB | 30/232 kB
+Progress (2): 186 kB | 30/232 kB    
+Progress (2): 186 kB | 32/232 kB
+                                
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-archiver/2.3/plexus-archiver-2.3.jar (186 kB at 78 kB/s)
+Progress (1): 36/232 kB
+Progress (1): 40/232 kB
+Progress (1): 45/232 kB
+Progress (1): 49/232 kB
+Progress (1): 53/232 kB
+Progress (1): 57/232 kB
+Progress (1): 61/232 kB
+Progress (1): 65/232 kB
+Progress (1): 69/232 kB
+Progress (1): 73/232 kB
+Progress (1): 77/232 kB
+Progress (1): 81/232 kB
+Progress (1): 84/232 kB
+Progress (1): 87/232 kB
+Progress (1): 90/232 kB
+Progress (1): 92/232 kB
+Progress (1): 95/232 kB
+Progress (1): 98/232 kB
+Progress (1): 101/232 kB
+Progress (1): 103/232 kB
+Progress (1): 106/232 kB
+Progress (1): 109/232 kB
+Progress (1): 112/232 kB
+Progress (1): 114/232 kB
+Progress (1): 118/232 kB
+Progress (1): 122/232 kB
+Progress (1): 126/232 kB
+Progress (1): 131/232 kB
+Progress (1): 133/232 kB
+Progress (1): 136/232 kB
+Progress (1): 139/232 kB
+Progress (1): 142/232 kB
+Progress (1): 144/232 kB
+Progress (1): 147/232 kB
+Progress (1): 150/232 kB
+Progress (1): 152/232 kB
+Progress (1): 155/232 kB
+Progress (1): 158/232 kB
+Progress (1): 161/232 kB
+Progress (1): 163/232 kB
+Progress (1): 167/232 kB
+Progress (1): 171/232 kB
+Progress (1): 176/232 kB
+Progress (1): 180/232 kB
+Progress (1): 184/232 kB
+Progress (1): 188/232 kB
+Progress (1): 192/232 kB
+Progress (1): 196/232 kB
+Progress (1): 200/232 kB
+Progress (1): 204/232 kB
+Progress (1): 208/232 kB
+Progress (1): 212/232 kB
+Progress (1): 217/232 kB
+Progress (1): 221/232 kB
+Progress (1): 225/232 kB
+Progress (1): 229/232 kB
+Progress (1): 232 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/plexus/plexus-utils/3.0.9/plexus-utils-3.0.9.jar (232 kB at 26 kB/s)
+[INFO] artifact org.jxls:jxls: checking for updates from central
+[INFO] com.cdkjframework:cdkj.framework.util:jar:1.0
+[INFO] +- org.springframework:spring-core:jar:5.1.8.RELEASE:compile
+[INFO] |  \- org.springframework:spring-jcl:jar:5.1.8.RELEASE:compile
+[INFO] +- org.springframework:spring-test:jar:5.1.8.RELEASE:compile
+[INFO] |  \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] +- org.springframework:spring-web:jar:5.1.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:5.1.8.RELEASE:compile
+[INFO] |  |  \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] +- org.springframework:spring-context:jar:5.1.8.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.1.8.RELEASE:compile
+[INFO] |  |  +- (org.springframework:spring-beans:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  |  \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- (org.springframework:spring-beans:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  \- org.springframework:spring-expression:jar:5.1.8.RELEASE:compile
+[INFO] |     \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] +- org.springframework:spring-webmvc:jar:5.1.8.RELEASE:compile
+[INFO] |  +- (org.springframework:spring-aop:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- (org.springframework:spring-beans:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- (org.springframework:spring-context:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- (org.springframework:spring-expression:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |  \- (org.springframework:spring-web:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] +- com.alibaba:fastjson:jar:1.2.58:compile
+[INFO] +- com.auth0:java-jwt:jar:3.6.0:compile
+[INFO] |  +- (com.fasterxml.jackson.core:jackson-databind:jar:2.9.8:compile - scope updated from runtime; omitted for duplicate)
+[INFO] |  \- (commons-codec:commons-codec:jar:1.11:compile - scope updated from runtime; omitted for duplicate)
+[INFO] +- io.jsonwebtoken:jjwt:jar:0.9.1:compile
+[INFO] |  \- com.fasterxml.jackson.core:jackson-databind:jar:2.9.8:compile
+[INFO] |     +- (com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile - omitted for conflict with 2.9.5)
+[INFO] |     \- com.fasterxml.jackson.core:jackson-core:jar:2.9.6:compile
+[INFO] +- com.google.code.gson:gson:jar:2.8.5:compile
+[INFO] +- com.ctrip.framework.apollo:apollo-client:jar:1.3.0:compile
+[INFO] |  +- com.ctrip.framework.apollo:apollo-core:jar:1.3.0:compile
+[INFO] |  |  +- (com.google.code.gson:gson:jar:2.8.0:compile - omitted for conflict with 2.8.5)
+[INFO] |  |  +- (com.google.guava:guava:jar:19.0:compile - omitted for conflict with 16.0.1)
+[INFO] |  |  \- (org.slf4j:slf4j-api:jar:1.7.21:compile - omitted for duplicate)
+[INFO] |  +- com.google.inject:guice:jar:4.1.0:compile
+[INFO] |  |  +- javax.inject:javax.inject:jar:1:compile
+[INFO] |  |  +- aopalliance:aopalliance:jar:1.0:compile
+[INFO] |  |  \- (com.google.guava:guava:jar:19.0:compile - omitted for duplicate)
+[INFO] |  +- org.slf4j:slf4j-api:jar:1.7.21:compile
+[INFO] |  \- org.yaml:snakeyaml:jar:1.17:compile
+[INFO] +- cn.afterturn:easypoi-base:jar:4.0.0:compile
+[INFO] |  +- (org.apache.poi:poi:jar:4.0.0:compile - omitted for conflict with 4.0.1)
+[INFO] |  +- org.apache.poi:poi-ooxml:jar:4.0.0:compile
+[INFO] |  |  +- (org.apache.poi:poi:jar:4.0.0:compile - omitted for duplicate)
+[INFO] |  |  +- (org.apache.poi:poi-ooxml-schemas:jar:4.0.0:compile - omitted for duplicate)
+[INFO] |  |  +- org.apache.commons:commons-compress:jar:1.18:compile
+[INFO] |  |  \- com.github.virtuald:curvesapi:jar:1.04:compile
+[INFO] |  +- org.apache.poi:poi-ooxml-schemas:jar:4.0.0:compile
+[INFO] |  |  \- org.apache.xmlbeans:xmlbeans:jar:3.0.1:compile
+[INFO] |  +- (com.google.guava:guava:jar:16.0.1:compile - omitted for conflict with 18.0)
+[INFO] |  +- org.apache.commons:commons-lang3:jar:3.2.1:compile
+[INFO] |  +- ognl:ognl:jar:3.2.6:compile
+[INFO] |  |  \- org.javassist:javassist:jar:3.20.0-GA:compile
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.6.1:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- (cn.afterturn:easypoi-annotation:jar:4.0.0:compile - omitted for duplicate)
+[INFO] +- cn.afterturn:easypoi-web:jar:4.0.0:compile
+[INFO] |  +- (org.springframework:spring-web:jar:3.1.1.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  +- (org.springframework:spring-webmvc:jar:3.1.1.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  +- (org.springframework:spring-core:jar:3.1.1.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  \- (cn.afterturn:easypoi-base:jar:4.0.0:compile - omitted for duplicate)
+[INFO] +- cn.afterturn:easypoi-annotation:jar:4.0.0:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-freemarker:jar:2.1.5.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.1.5.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot:jar:2.1.5.RELEASE:compile
+[INFO] |  |  |  +- (org.springframework:spring-core:jar:5.1.7.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  |  |  \- (org.springframework:spring-context:jar:5.1.7.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.1.5.RELEASE:compile
+[INFO] |  |  |  \- (org.springframework.boot:spring-boot:jar:2.1.5.RELEASE:compile - omitted for duplicate)
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.1.5.RELEASE:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  |  |  |  +- (ch.qos.logback:logback-core:jar:1.2.3:compile - omitted for conflict with 1.1.3)
+[INFO] |  |  |  |  \- (org.slf4j:slf4j-api:jar:1.7.25:compile - omitted for conflict with 1.7.21)
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.11.2:compile
+[INFO] |  |  |  |  +- (org.slf4j:slf4j-api:jar:1.7.25:compile - omitted for conflict with 1.7.21)
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.11.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.26:compile
+[INFO] |  |  |     \- (org.slf4j:slf4j-api:jar:1.7.26:compile - omitted for conflict with 1.7.21)
+[INFO] |  |  +- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  |  +- (org.springframework:spring-core:jar:5.1.7.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  |  \- (org.yaml:snakeyaml:jar:1.23:runtime - omitted for conflict with 1.17)
+[INFO] |  +- org.freemarker:freemarker:jar:2.3.28:compile
+[INFO] |  \- org.springframework:spring-context-support:jar:5.1.7.RELEASE:compile
+[INFO] |     +- (org.springframework:spring-beans:jar:5.1.7.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |     +- (org.springframework:spring-context:jar:5.1.7.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |     \- (org.springframework:spring-core:jar:5.1.7.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] +- org.jxls:jxls:jar:2.4.7:compile
+[INFO] |  +- org.apache.commons:commons-jexl:jar:2.1.1:compile
+[INFO] |  |  \- commons-logging:commons-logging:jar:1.1.1:compile
+[INFO] |  +- commons-beanutils:commons-beanutils:jar:1.9.2:compile
+[INFO] |  |  +- (commons-logging:commons-logging:jar:1.1.1:compile - omitted for duplicate)
+[INFO] |  |  \- commons-collections:commons-collections:jar:3.2.1:compile
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.7.12:compile - omitted for conflict with 1.7.21)
+[INFO] |  +- org.slf4j:jcl-over-slf4j:jar:1.7.12:compile
+[INFO] |  |  \- (org.slf4j:slf4j-api:jar:1.7.12:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- (ch.qos.logback:logback-core:jar:1.1.3:compile - omitted for conflict with 1.2.3)
+[INFO] +- org.jxls:jxls-reader:jar:2.0.5:compile
+[INFO] |  +- org.apache.commons:commons-digester3:jar:with-deps:3.2:compile
+[INFO] |  |  +- cglib:cglib:jar:2.2.2:compile
+[INFO] |  |  |  \- asm:asm:jar:3.3.1:compile
+[INFO] |  |  +- (commons-beanutils:commons-beanutils:jar:1.8.3:compile - omitted for conflict with 1.9.2)
+[INFO] |  |  \- (commons-logging:commons-logging:jar:1.1.1:compile - omitted for duplicate)
+[INFO] |  +- (org.apache.commons:commons-jexl:jar:2.1.1:compile - omitted for duplicate)
+[INFO] |  +- (org.apache.poi:poi:jar:4.0.0:compile - omitted for duplicate)
+[INFO] |  +- (org.apache.poi:poi-ooxml:jar:4.0.0:compile - omitted for duplicate)
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.7.12:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- (org.slf4j:jcl-over-slf4j:jar:1.7.12:compile - omitted for duplicate)
+[INFO] +- org.jxls:jxls-jexcel:jar:1.0.7:compile
+[INFO] |  +- (org.jxls:jxls:jar:2.4.7:compile - omitted for duplicate)
+[INFO] |  +- net.sourceforge.jexcelapi:jxl:jar:2.6.10:compile
+[INFO] |  |  \- log4j:log4j:jar:1.2.14:compile
+[INFO] |  +- (org.apache.commons:commons-jexl:jar:2.1.1:compile - omitted for duplicate)
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.7.12:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- (org.slf4j:jcl-over-slf4j:jar:1.7.12:compile - omitted for duplicate)
+[INFO] +- org.jxls:jxls-poi:jar:1.0.16:compile
+[INFO] |  +- (org.jxls:jxls:jar:2.4.7:compile - omitted for duplicate)
+[INFO] |  +- (org.apache.poi:poi:jar:4.0.0:compile - omitted for duplicate)
+[INFO] |  +- (org.apache.poi:poi-ooxml:jar:4.0.0:compile - omitted for duplicate)
+[INFO] |  +- (org.apache.commons:commons-jexl:jar:2.1.1:compile - omitted for duplicate)
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.7.12:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- (org.slf4j:jcl-over-slf4j:jar:1.7.12:compile - omitted for duplicate)
+[INFO] +- org.apache.poi:poi:jar:4.0.1:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.11:compile
+[INFO] |  +- org.apache.commons:commons-collections4:jar:4.2:compile
+[INFO] |  \- org.apache.commons:commons-math3:jar:3.6.1:compile
+[INFO] +- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] +- io.springfox:springfox-swagger2:jar:2.7.0:compile
+[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.13:compile
+[INFO] |  +- io.swagger:swagger-models:jar:1.5.13:compile
+[INFO] |  |  +- (com.fasterxml.jackson.core:jackson-annotations:jar:2.8.5:compile - omitted for conflict with 2.9.0)
+[INFO] |  |  +- (org.slf4j:slf4j-api:jar:1.7.22:compile - omitted for conflict with 1.7.21)
+[INFO] |  |  \- (io.swagger:swagger-annotations:jar:1.5.13:compile - omitted for duplicate)
+[INFO] |  +- io.springfox:springfox-spi:jar:2.7.0:compile
+[INFO] |  |  \- io.springfox:springfox-core:jar:2.7.0:compile
+[INFO] |  |     +- net.bytebuddy:byte-buddy:jar:1.6.14:compile
+[INFO] |  |     +- (com.google.guava:guava:jar:18.0:compile - omitted for conflict with 16.0.1)
+[INFO] |  |     +- (com.fasterxml:classmate:jar:1.3.3:compile - omitted for duplicate)
+[INFO] |  |     +- (org.slf4j:slf4j-api:jar:1.7.24:compile - omitted for conflict with 1.7.21)
+[INFO] |  |     +- (org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  |     \- (org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- io.springfox:springfox-schema:jar:2.7.0:compile
+[INFO] |  |  +- (io.springfox:springfox-core:jar:2.7.0:compile - omitted for duplicate)
+[INFO] |  |  \- (io.springfox:springfox-spi:jar:2.7.0:compile - omitted for duplicate)
+[INFO] |  +- io.springfox:springfox-swagger-common:jar:2.7.0:compile
+[INFO] |  |  +- (io.swagger:swagger-annotations:jar:1.5.13:compile - omitted for duplicate)
+[INFO] |  |  +- (io.swagger:swagger-models:jar:1.5.13:compile - omitted for duplicate)
+[INFO] |  |  +- (io.springfox:springfox-spi:jar:2.7.0:compile - omitted for duplicate)
+[INFO] |  |  +- (io.springfox:springfox-schema:jar:2.7.0:compile - omitted for duplicate)
+[INFO] |  |  +- (io.springfox:springfox-spring-web:jar:2.7.0:compile - omitted for duplicate)
+[INFO] |  |  +- (com.google.guava:guava:jar:18.0:compile - omitted for conflict with 16.0.1)
+[INFO] |  |  +- (com.fasterxml:classmate:jar:1.3.3:compile - omitted for duplicate)
+[INFO] |  |  +- (org.slf4j:slf4j-api:jar:1.7.24:compile - omitted for conflict with 1.7.21)
+[INFO] |  |  +- (org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  |  \- (org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  +- io.springfox:springfox-spring-web:jar:2.7.0:compile
+[INFO] |  |  +- org.reflections:reflections:jar:0.9.11:compile
+[INFO] |  |  |  +- (com.google.guava:guava:jar:20.0:compile - omitted for conflict with 16.0.1)
+[INFO] |  |  |  \- (org.javassist:javassist:jar:3.21.0-GA:compile - omitted for conflict with 3.20.0-GA)
+[INFO] |  |  +- (com.google.guava:guava:jar:18.0:compile - omitted for conflict with 16.0.1)
+[INFO] |  |  +- (com.fasterxml:classmate:jar:1.3.3:compile - omitted for duplicate)
+[INFO] |  |  +- (org.slf4j:slf4j-api:jar:1.7.24:compile - omitted for conflict with 1.7.21)
+[INFO] |  |  +- (org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  |  +- (org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  |  \- (io.springfox:springfox-spi:jar:2.7.0:compile - omitted for duplicate)
+[INFO] |  +- (com.google.guava:guava:jar:18.0:compile - omitted for conflict with 16.0.1)
+[INFO] |  +- com.fasterxml:classmate:jar:1.3.3:compile
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.7.24:compile - omitted for conflict with 1.7.21)
+[INFO] |  +- org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile
+[INFO] |  |  +- (org.springframework:spring-beans:jar:4.0.9.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  |  +- (org.springframework:spring-context:jar:4.0.9.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  |  +- (org.springframework:spring-aop:jar:4.0.9.RELEASE:compile - omitted for conflict with 5.1.8.RELEASE)
+[INFO] |  |  \- (org.slf4j:slf4j-api:jar:1.7.10:compile - omitted for conflict with 1.7.21)
+[INFO] |  +- org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile
+[INFO] |  |  +- (org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile - omitted for duplicate)
+[INFO] |  |  \- (org.slf4j:slf4j-api:jar:1.7.10:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- org.mapstruct:mapstruct:jar:1.1.0.Final:compile
+[INFO] +- io.springfox:springfox-swagger-ui:jar:2.7.0:compile
+[INFO] |  \- (io.springfox:springfox-spring-web:jar:2.7.0:compile - omitted for duplicate)
+[INFO] +- com.aliyun.oss:aliyun-sdk-oss:jar:3.4.2:compile
+[INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.4.1:compile
+[INFO] |  |  +- org.apache.httpcomponents:httpcore:jar:4.4.1:compile
+[INFO] |  |  +- (commons-logging:commons-logging:jar:1.2:compile - omitted for conflict with 1.1.1)
+[INFO] |  |  \- (commons-codec:commons-codec:jar:1.9:compile - omitted for conflict with 1.11)
+[INFO] |  +- org.jdom:jdom:jar:1.1:compile
+[INFO] |  +- org.codehaus.jettison:jettison:jar:1.1:compile
+[INFO] |  |  \- stax:stax-api:jar:1.0.1:compile
+[INFO] |  +- com.aliyun:aliyun-java-sdk-core:jar:3.4.0:compile
+[INFO] |  +- com.aliyun:aliyun-java-sdk-ram:jar:3.0.0:compile
+[INFO] |  +- com.aliyun:aliyun-java-sdk-sts:jar:3.0.0:compile
+[INFO] |  \- com.aliyun:aliyun-java-sdk-ecs:jar:4.2.0:compile
+[INFO] +- redis.clients:jedis:jar:3.0.1:compile
+[INFO] |  +- (org.slf4j:slf4j-api:jar:1.7.22:compile - omitted for conflict with 1.7.21)
+[INFO] |  \- org.apache.commons:commons-pool2:jar:2.4.3:compile
+[INFO] +- commons-fileupload:commons-fileupload:jar:1.3.3:compile
+[INFO] |  \- (commons-io:commons-io:jar:2.2:compile - omitted for conflict with 2.6)
+[INFO] +- commons-io:commons-io:jar:2.6:compile
+[INFO] +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.5:compile
+[INFO] +- com.google.zxing:core:jar:3.3.3:compile
+[INFO] +- org.springframework.integration:spring-integration-stream:jar:5.1.6.RELEASE:compile
+[INFO] |  \- org.springframework.integration:spring-integration-core:jar:5.1.6.RELEASE:compile
+[INFO] |     +- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     +- (org.springframework:spring-aop:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     +- (org.springframework:spring-context:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     +- org.springframework:spring-messaging:jar:5.1.8.RELEASE:compile
+[INFO] |     |  +- (org.springframework:spring-beans:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     |  \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     +- org.springframework:spring-tx:jar:5.1.8.RELEASE:compile
+[INFO] |     |  +- (org.springframework:spring-beans:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     |  \- (org.springframework:spring-core:jar:5.1.8.RELEASE:compile - omitted for duplicate)
+[INFO] |     +- org.springframework.retry:spring-retry:jar:1.2.4.RELEASE:compile
+[INFO] |     \- io.projectreactor:reactor-core:jar:3.2.10.RELEASE:compile
+[INFO] |        \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] +- org.springframework.integration:spring-integration-mqtt:jar:5.1.6.RELEASE:compile
+[INFO] |  +- (org.springframework.integration:spring-integration-core:jar:5.1.6.RELEASE:compile - omitted for duplicate)
+[INFO] |  \- org.eclipse.paho:org.eclipse.paho.client.mqttv3:jar:1.2.0:compile
+[INFO] +- org.junit.jupiter:junit-jupiter-api:jar:RELEASE:test
+[INFO] |  +- org.apiguardian:apiguardian-api:jar:1.1.0:test
+[INFO] |  +- org.opentest4j:opentest4j:jar:1.2.0:test
+[INFO] |  \- org.junit.platform:junit-platform-commons:jar:1.5.0-RC2:test
+[INFO] |     \- (org.apiguardian:apiguardian-api:jar:1.1.0:test - omitted for duplicate)
+[INFO] +- com.esotericsoftware:kryo:jar:3.0.3:compile
+[INFO] |  +- com.esotericsoftware:reflectasm:jar:1.10.1:compile
+[INFO] |  |  \- (org.ow2.asm:asm:jar:5.0.3:compile - omitted for conflict with 7.0)
+[INFO] |  +- com.esotericsoftware:minlog:jar:1.3.0:compile
+[INFO] |  \- org.objenesis:objenesis:jar:2.1:compile
+[INFO] +- com.esotericsoftware:kryo-shaded:jar:3.0.3:compile
+[INFO] |  +- (com.esotericsoftware:minlog:jar:1.3.0:compile - omitted for duplicate)
+[INFO] |  \- (org.objenesis:objenesis:jar:2.1:compile - omitted for duplicate)
+[INFO] +- de.javakaffee:kryo-serializers:jar:0.42:compile
+[INFO] |  \- (com.esotericsoftware:kryo:jar:4.0.0:compile - omitted for conflict with 3.0.3)
+[INFO] +- com.thoughtworks.xstream:xstream:jar:1.4.10:compile
+[INFO] |  +- xmlpull:xmlpull:jar:1.1.3.1:compile
+[INFO] |  \- xpp3:xpp3_min:jar:1.1.4c:compile
+[INFO] +- com.belerweb:pinyin4j:jar:2.5.1:compile
+[INFO] +- javax.servlet:javax.servlet-api:jar:4.0.1:compile
+[INFO] +- org.apache.cxf:cxf-rt-frontend-jaxws:jar:RELEASE:compile
+[INFO] |  +- xml-resolver:xml-resolver:jar:1.2:compile
+[INFO] |  +- org.ow2.asm:asm:jar:7.0:compile
+[INFO] |  +- org.apache.cxf:cxf-core:jar:3.3.2:compile
+[INFO] |  |  +- org.glassfish.jaxb:jaxb-runtime:jar:2.3.2:compile
+[INFO] |  |  |  +- (jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- org.glassfish.jaxb:txw2:jar:2.3.2:compile
+[INFO] |  |  |  +- com.sun.istack:istack-commons-runtime:jar:3.0.8:compile
+[INFO] |  |  |  |  \- (jakarta.activation:jakarta.activation-api:jar:1.2.1:compile - omitted for duplicate)
+[INFO] |  |  |  +- org.jvnet.staxex:stax-ex:jar:1.8.1:compile
+[INFO] |  |  |  |  +- (jakarta.activation:jakarta.activation-api:jar:1.2.1:compile - omitted for duplicate)
+[INFO] |  |  |  |  \- (jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- com.sun.xml.fastinfoset:FastInfoset:jar:1.2.16:compile
+[INFO] |  |  |  \- jakarta.activation:jakarta.activation-api:jar:1.2.1:compile
+[INFO] |  |  +- com.fasterxml.woodstox:woodstox-core:jar:5.0.3:compile
+[INFO] |  |  |  \- org.codehaus.woodstox:stax2-api:jar:3.1.4:compile
+[INFO] |  |  +- org.apache.ws.xmlschema:xmlschema-core:jar:2.2.4:compile
+[INFO] |  |  +- org.glassfish.jaxb:jaxb-xjc:jar:2.3.2:compile
+[INFO] |  |  |  +- (org.glassfish.jaxb:jaxb-runtime:jar:2.3.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- org.glassfish.jaxb:xsom:jar:2.3.2:compile
+[INFO] |  |  |  |  \- (com.sun.xml.bind.external:relaxng-datatype:jar:2.3.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- org.glassfish.jaxb:codemodel:jar:2.3.2:compile
+[INFO] |  |  |  +- com.sun.xml.bind.external:rngom:jar:2.3.2:compile
+[INFO] |  |  |  |  \- (com.sun.xml.bind.external:relaxng-datatype:jar:2.3.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- com.sun.xml.dtd-parser:dtd-parser:jar:1.4.1:compile
+[INFO] |  |  |  +- com.sun.istack:istack-commons-tools:jar:3.0.8:compile
+[INFO] |  |  |  |  \- org.apache.ant:ant:jar:1.10.5:compile
+[INFO] |  |  |  |     \- org.apache.ant:ant-launcher:jar:1.10.5:compile
+[INFO] |  |  |  +- (com.sun.istack:istack-commons-runtime:jar:3.0.8:compile - omitted for duplicate)
+[INFO] |  |  |  \- com.sun.xml.bind.external:relaxng-datatype:jar:2.3.2:compile
+[INFO] |  |  \- jakarta.xml.bind:jakarta.xml.bind-api:jar:2.3.2:compile
+[INFO] |  |     \- (jakarta.activation:jakarta.activation-api:jar:1.2.1:compile - omitted for duplicate)
+[INFO] |  +- org.apache.cxf:cxf-rt-bindings-soap:jar:3.3.2:compile
+[INFO] |  |  +- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  |  +- org.apache.cxf:cxf-rt-wsdl:jar:3.3.2:compile
+[INFO] |  |  |  +- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  |  |  +- wsdl4j:wsdl4j:jar:1.6.3:compile
+[INFO] |  |  |  \- (org.ow2.asm:asm:jar:7.0:compile - omitted for duplicate)
+[INFO] |  |  \- org.apache.cxf:cxf-rt-databinding-jaxb:jar:3.3.2:compile
+[INFO] |  |     +- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  |     \- (org.apache.cxf:cxf-rt-wsdl:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  +- org.apache.cxf:cxf-rt-bindings-xml:jar:3.3.2:compile
+[INFO] |  |  \- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  +- org.apache.cxf:cxf-rt-frontend-simple:jar:3.3.2:compile
+[INFO] |  |  +- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  |  +- (org.apache.cxf:cxf-rt-bindings-soap:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  |  \- (org.apache.cxf:cxf-rt-wsdl:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |  \- org.apache.cxf:cxf-rt-ws-addr:jar:3.3.2:compile
+[INFO] |     +- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |     +- (org.apache.cxf:cxf-rt-bindings-soap:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |     \- org.apache.cxf:cxf-rt-ws-policy:jar:3.3.2:compile
+[INFO] |        +- (wsdl4j:wsdl4j:jar:1.6.3:compile - omitted for duplicate)
+[INFO] |        +- (org.apache.cxf:cxf-core:jar:3.3.2:compile - omitted for duplicate)
+[INFO] |        \- org.apache.neethi:neethi:jar:3.1.1:compile
+[INFO] +- junit:junit:jar:4.12:compile
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:compile
+[INFO] +- org.mockito:mockito-core:jar:2.8.47:compile
+[INFO] |  +- (net.bytebuddy:byte-buddy:jar:1.6.14:compile - scope updated from runtime; omitted for duplicate)
+[INFO] |  +- net.bytebuddy:byte-buddy-agent:jar:1.6.14:runtime
+[INFO] |  \- (org.objenesis:objenesis:jar:2.5:runtime - omitted for conflict with 2.1)
+[INFO] +- com.google.guava:guava:jar:18.0:compile
+[INFO] \- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.12:compile
+[INFO]    \- org.apache.tomcat:tomcat-annotations-api:jar:9.0.12:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 21.076 s
+[INFO] Finished at: 2019-06-21T16:25:00+08:00
+[INFO] Final Memory: 30M/393M
+[INFO] ------------------------------------------------------------------------
