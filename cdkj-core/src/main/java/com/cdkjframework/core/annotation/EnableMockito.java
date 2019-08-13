@@ -7,7 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.util.mockito
  * @ClassName: EnableMockito
  * @Description: java类作用描述

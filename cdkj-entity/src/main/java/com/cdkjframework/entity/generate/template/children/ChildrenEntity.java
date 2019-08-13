@@ -5,7 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.entity.generate
  * @ClassName: ChildrenEntity
  * @Description: java类作用描述

@@ -1,8 +1,8 @@
 package com.cdkjframework.constant;
 
 /**
- * @ProjectName: cdkj.framework
- * @Package: com.cdkj.framework.core.consts
+ * @ProjectName: cdkjframework
+ * @Package: com.cdkjframework.core.consts
  * @ClassName: RegexConstant
  * @Description: java类作用描述
  * @Author: xiaLin

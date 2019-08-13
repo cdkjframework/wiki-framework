@@ -1,6 +1,6 @@
 package ${packageName}.dto;
 
-import com.cdkj.framework.entity.RequestEntity;
+import com.cdkjframework.entity.RequestEntity;
 <#list leading as item>
 import ${item};
 </#list>

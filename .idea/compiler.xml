@@ -6,20 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="cdkj-message" />
         <module name="cdkj-cloud" />
-        <module name="cdkj-constant" />
+        <module name="cdkj-util" />
         <module name="cdkj-core" />
         <module name="cdkj-datasource" />
-        <module name="cdkj-entity" />
-        <module name="cdkj-message" />
+        <module name="cdkj-constant" />
         <module name="cdkj-pay" />
-        <module name="cdkj-util" />
         <module name="cdkj-web" />
+        <module name="cdkj-entity" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="cdkj-cloud" target="8" />
-      <module name="cdkj-constant" target="1.8" />
+      <module name="cdkj-constant" target="8" />
       <module name="cdkj-core" target="8" />
       <module name="cdkj-datasource" target="8" />
       <module name="cdkj-entity" target="1.8" />
@@ -31,5 +31,19 @@
       <module name="cdkj-web" target="1.8" />
       <module name="cdkj.framework" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="cdkj-cloud" options="-parameters" />
+      <module name="cdkj-constant" options="-parameters" />
+      <module name="cdkj-core" options="-parameters" />
+      <module name="cdkj-datasource" options="-parameters" />
+      <module name="cdkj-entity" options="-parameters" />
+      <module name="cdkj-message" options="-parameters" />
+      <module name="cdkj-pay" options="-parameters" />
+      <module name="cdkj-pom" options="" />
+      <module name="cdkj-util" options="-parameters" />
+      <module name="cdkj-web" options="-parameters" />
+    </option>
   </component>
 </project>

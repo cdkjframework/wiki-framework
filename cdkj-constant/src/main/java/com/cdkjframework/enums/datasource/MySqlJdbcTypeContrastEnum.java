@@ -3,7 +3,7 @@ package com.cdkjframework.enums.datasource;
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.datasource
  * @ClassName: MySQLMyBatisContrastEnum
  * @Description: java类作用描述
@@ -262,6 +262,27 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
         @Override
         public String getCode() {
             return "TIME";
+        }
+    },
+
+    DATETIME {
+        /**f
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "Timestamp";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "TIMESTAMP";
         }
     },
     TIMESTAMP {

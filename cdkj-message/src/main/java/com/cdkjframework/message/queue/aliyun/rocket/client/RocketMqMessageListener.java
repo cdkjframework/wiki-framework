@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
- * @Package: com.cdkj.framework.core.message.queue.aliyun.rocket.client
+ * @Package: com.cdkjframework.core.message.queue.aliyun.rocket.client
  * @ClassName: AliCloudRocketMqClientBean
  * @Description: java类作用描述
  * @Author: xiaLin

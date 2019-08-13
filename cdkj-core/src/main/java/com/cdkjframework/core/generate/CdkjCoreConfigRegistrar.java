@@ -11,7 +11,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import java.util.Map;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.autogenerate
  * @ClassName: GenerateConfigRegistrar
  * @Description: 自动代码启用注入

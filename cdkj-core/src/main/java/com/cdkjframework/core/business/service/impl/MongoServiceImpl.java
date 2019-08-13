@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.business.service.impl
  * @ClassName: MongoServiceImpl
  * @Description: java类作用描述

@@ -16,7 +16,7 @@ import java.util.Properties;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
- * @Package: com.cdkj.framework.core.message.queue.aliyun.rocket.server
+ * @Package: com.cdkjframework.core.message.queue.aliyun.rocket.server
  * @ClassName: AliCloudRocketMqClientListener
  * @Description: 注册 server 服务
  * @Author: xiaLin

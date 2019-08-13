@@ -2,6 +2,7 @@ package com.cdkjframework.util.files;
 
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.tool.HostUtil;
 import com.cdkjframework.util.tool.StringUtil;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
@@ -266,16 +267,21 @@ public class FileUtil {
      * @return 返回结果
      */
     public static String getPath(String path) {
+        final String os = HostUtil.getOs();
+        String division = "/";
+        if (os.startsWith("win")) {
+            division = "\\";
+        }
         String classPath;
         try {
             classPath = ResourceUtils
                     .getFile("classpath:")
                     .getPath()
-                    .replace("target\\classes", "src\\main\\java\\");
+                    .replace("target" + division + "classes", "src" + division + "main" + division + "java" + division);
             path = path
                     .replace("[", "")
                     .replace("]", "")
-                    .replace(".", "\\");
+                    .replace(".", division);
             classPath += path;
         } catch (FileNotFoundException e) {
             e.printStackTrace();

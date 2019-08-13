@@ -4,7 +4,7 @@ package com.cdkjframework.enums.datasource;
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.datasource
  * @ClassName: ApolloRedisEnum
  * @Description: redis

@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.tool.deserializer
  * @ClassName: DateJsonDeserializerUtil
  * @Description: java类作用描述

@@ -8,7 +8,7 @@ import com.cdkjframework.entity.generate.template.TreeEntity;
 import java.util.List;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.business.service
  * @ClassName: GenerateService
  * @Description: java类作用描述

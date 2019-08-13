@@ -1,6 +1,6 @@
 package com.cdkjframework.util.files.excel.jxls.service;
 
-import com.cdkjframework.annotation.FieldMeta;
+import com.cdkjframework.core.annotation.FieldMeta;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.excel.jxls.IExcel;
 import com.cdkjframework.util.tool.StringUtil;
@@ -28,16 +28,16 @@ public abstract class AbstractExcelService<T> implements IExcel<T> {
     /**
      * 导入 XML 模板路径
      */
-    protected final String TEMPLATE_XML_CONFIG = "/com/cdkj.framework/core/export/xls/template.xml";
+    protected final String TEMPLATE_XML_CONFIG = "/com/cdkjframework/core/export/xls/template.xml";
 
     /**
      * 导出 XML 模板路径
      */
-    protected final String IMPORT_TEMPLATE_XML_CONFIG = "/com/cdkj.framework/core/export/xls/import.xml";
+    protected final String IMPORT_TEMPLATE_XML_CONFIG = "/com/cdkjframework/core/export/xls/import.xml";
     /**
      * XLS 模板路径
      */
-    protected final String TEMPLATE = "/com/cdkj.framework/core/export/xls/template.xls";
+    protected final String TEMPLATE = "/com/cdkjframework/core/export/xls/template.xls";
 
 
     /**

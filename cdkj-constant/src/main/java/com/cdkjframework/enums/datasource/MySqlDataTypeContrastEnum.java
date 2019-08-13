@@ -3,7 +3,7 @@ package com.cdkjframework.enums.datasource;
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.datasource
  * @ClassName: MySqlDataTypeContrastEnum
  * @Description: mysql 数据类型对照
@@ -391,8 +391,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
         }
     },
     DATETIME {
-        /**
-         * 获取枚举值
+        /**f
          *
          * @return 返回结果
          */

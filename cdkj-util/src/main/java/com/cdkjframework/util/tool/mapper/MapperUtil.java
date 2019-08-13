@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.tool
  * @ClassName: MapperUtil
  * @Description: java类作用描述

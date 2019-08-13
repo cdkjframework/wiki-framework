@@ -1,11 +1,12 @@
 package com.cdkjframework.core.annotation;
 
+import com.cdkjframework.core.generate.CdkjCoreConfigRegistrar;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.annotation
  * @ClassName: AutoGenerate
  * @Description: 自动生成工具
@@ -16,7 +17,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-//@Import({CdkjCoreConfigRegistrar.class})
+@Import({CdkjCoreConfigRegistrar.class})
 public @interface EnableAutoGenerate {
 
     /**

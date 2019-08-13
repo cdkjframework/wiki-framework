@@ -51,6 +51,13 @@ public interface ${className}Mapper {
      * @return 返回数据实体
      */
     ${className}Entity find${className}(${className}Entity ${classLowName}Entity);
+
+    /**
+    * 查询单个数据
+    *
+    * @param id 主键ID
+    * @return 返回数据实体
+    */
     ${className}Entity find${className}ById(String id);
 
 }

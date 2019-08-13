@@ -1,7 +1,7 @@
 package ${packageName}.service;
 
-import com.cdkj.framework.core.base.service.BasicService;
-import com.cdkj.framework.entity.PageEntity;
+import com.cdkjframework.core.base.service.BasicService;
+import com.cdkjframework.entity.PageEntity;
 
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;

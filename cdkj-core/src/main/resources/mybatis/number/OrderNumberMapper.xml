@@ -3,7 +3,7 @@
 <!--这里的namespace必须和是对应的mapper.java的地址-->
 <mapper namespace="com.cdkjframework.core.business.mapper.OrderNumberMapper">
 
-    <select id="getOrderNumberByPrefix" parameterType="java.lang.String" resultType="com.cdkjframework.entity.OrderNumberEntity">
+    <select id="getOrderNumberByPrefix" parameterType="java.lang.String" resultType="com.cdkjframework.entity.generate.OrderNumberEntity">
         SELECT
            a.length AS length,
            a.prefix AS prefix,
@@ -15,7 +15,7 @@
         WHERE a.prefix = #{prefix}  FOR UPDATE
     </select>
 
-    <insert id="addOrderNumber" parameterType="com.cdkjframework.entity.OrderNumberEntity">
+    <insert id="addOrderNumber" parameterType="com.cdkjframework.entity.generate.OrderNumberEntity">
         INSERT INTO bms_number(
         length,
         prefix,
@@ -31,7 +31,7 @@
         #{noName,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateNextOrderNumber" parameterType="com.cdkjframework.entity.OrderNumberEntity">
+    <update id="updateNextOrderNumber" parameterType="com.cdkjframework.entity.generate.OrderNumberEntity">
         UPDATE  bms_number
         SET serial_no = serial_no + 1
         WHERE prefix = #{prefix} AND serial_no = #{serialNo}

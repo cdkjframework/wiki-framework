@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.tool
  * @ClassName: ReflectionUtil
  * @Description: java类作用描述

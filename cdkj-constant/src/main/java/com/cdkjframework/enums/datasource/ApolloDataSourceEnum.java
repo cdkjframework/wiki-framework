@@ -3,7 +3,7 @@ package com.cdkjframework.enums.datasource;
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkj.framework.core
+ * @ProjectName: cdkjframework.core
  * @Package: com.cdkjframework.core.enums.datasource
  * @ClassName: ApolloDataSourceEnum
  * @Description: java类作用描述

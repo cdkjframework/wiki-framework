@@ -1,7 +1,7 @@
 package com.cdkjframework.constant;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.consts
  * @ClassName: DataTypeConst
  * @Description: java类作用描述

@@ -1,7 +1,7 @@
 package com.cdkjframework.enums.basics;
 
 /**
- * @ProjectName: cdkj.framework.core
+ * @ProjectName: cdkjframework.core
  * @Package: com.cdkjframework.core.enums
  * @ClassName: BasiceEnum
  * @Description: java类作用描述

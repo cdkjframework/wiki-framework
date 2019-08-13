@@ -17,6 +17,7 @@ import com.cdkjframework.util.tool.StringUtil;
 import com.cdkjframework.util.tool.meta.ClassMetadataUtil;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -28,7 +29,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.business.service.impl
  * @ClassName: GenerateServiceImpl
  * @Description: 生成服务
@@ -184,25 +185,31 @@ public class GenerateServiceImpl implements GenerateService {
         loadData(entity, treeEntity, dataBase, fields);
         try {
 
+            final String os = HostUtil.getOs();
+            String division = "/";
+            if (os.startsWith("win")) {
+                division = "\\";
+            }
             //生成 entity
-            template(entity, "entity", "\\entity\\", "Entity.java");
+            template(entity, "entity", division + "entity" + division, "Entity.java");
+            template(entity, "extend", division + "entity" + division + "extends" + division, "ExtendsEntity.java");
 
             //生成 dto
-            template(entity, "dto", "\\dto\\", "Dto.java");
+            template(entity, "dto", division + "dto" + division, "Dto.java");
             //生成 vo
-            template(entity, "vo", "\\vo\\", "Vo.java");
+            template(entity, "vo", division + "vo" + division, "Vo.java");
 
             //生成 service
-            template(entity, "service", "\\service\\impl\\", "ServiceImpl.java");
+            template(entity, "service", division + "service" + division + "impl" + division, "ServiceImpl.java");
 
             //生成 service Interface
-            template(entity, "interface", "\\service\\", "Service.java");
+            template(entity, "interface", division + "service" + division, "Service.java");
 
             //生成 mapper java
-            template(entity, "mapper", "\\mapper\\", "Mapper.java");
+            template(entity, "mapper", division + "mapper" + division, "Mapper.java");
 
             //生成 mapper xml
-            template(entity, "mapperXml", "\\mapper\\xml\\", "Mapper.xml");
+            template(entity, "mapperXml", division + "mapper" + division + "xml" + division, "Mapper.xml");
         } catch (IOException e) {
             logUtil.error(e);
         } catch (TemplateException e) {
@@ -226,6 +233,7 @@ public class GenerateServiceImpl implements GenerateService {
     private void template(GenerateEntity entity, String templateName, String cateLog, String suffix) throws IOException, TemplateException, GlobalException {
         String path = FileUtil.getPath(entity.getPackageName());
         //生成 解析模板
+        //读取模板
         String html = FreemarkerUtil.analyticalTemplate(templateName, entity);
         html = html.replace("[begin]", "#{")
                 .replace("[end]", "}")

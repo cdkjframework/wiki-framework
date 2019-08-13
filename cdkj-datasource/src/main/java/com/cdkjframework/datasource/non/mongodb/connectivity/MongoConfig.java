@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.database.non.mongodb.connectivity
  * @ClassName: MongoConfig
  * @Description: java类作用描述

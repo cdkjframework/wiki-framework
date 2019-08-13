@@ -7,7 +7,7 @@ import com.cdkjframework.exceptions.GlobalException;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.spring.interceptor
  * @ClassName: Interceptor
  * @Description: java类作用描述

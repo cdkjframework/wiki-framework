@@ -8,7 +8,7 @@ import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
 import org.springframework.messaging.Message;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.message.queue.eclipse.server
  * @ClassName: MqttCdkjMessageHandler
  * @Description: java类作用描述

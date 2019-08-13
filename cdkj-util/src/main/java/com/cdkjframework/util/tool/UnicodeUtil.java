@@ -3,7 +3,7 @@ package com.cdkjframework.util.tool;
 import org.springframework.stereotype.Component;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.util.tool
  * @ClassName: UnicodeUtil
  * @Description: java类作用描述
