@@ -1,5 +1,8 @@
 package com.cdkjframework.datasource.non.mongodb.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Getter
+@Setter
+@ToString
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.mongodb")
 public class MongoReadConfig {
@@ -63,76 +69,4 @@ public class MongoReadConfig {
      * @return
      */
     private int maxConnectionsPerHost = 6000;
-
-    public String getUri() {
-        return uri;
-    }
-
-    public void setUri(String uri) {
-        this.uri = uri;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getDataSource() {
-        return dataSource;
-    }
-
-    public void setDataSource(String dataSource) {
-        this.dataSource = dataSource;
-    }
-
-    public int getMaxWaitTime() {
-        return maxWaitTime;
-    }
-
-    public void setMaxWaitTime(int maxWaitTime) {
-        this.maxWaitTime = maxWaitTime;
-    }
-
-    public int getConnectTimeout() {
-        return connectTimeout;
-    }
-
-    public void setConnectTimeout(int connectTimeout) {
-        this.connectTimeout = connectTimeout;
-    }
-
-    public int getMinConnectionsPerHost() {
-        return minConnectionsPerHost;
-    }
-
-    public void setMinConnectionsPerHost(int minConnectionsPerHost) {
-        this.minConnectionsPerHost = minConnectionsPerHost;
-    }
-
-    public int getMaxConnectionsPerHost() {
-        return maxConnectionsPerHost;
-    }
-
-    public void setMaxConnectionsPerHost(int maxConnectionsPerHost) {
-        this.maxConnectionsPerHost = maxConnectionsPerHost;
-    }
 }

@@ -1,5 +1,8 @@
 package com.cdkjframework.datasource.relational.mybatis.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +15,9 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
+@Getter
+@Setter
+@ToString
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.mybatis")
 public class MybatisReadConfig {
@@ -45,52 +51,4 @@ public class MybatisReadConfig {
      * Mapper Xml 路径
      */
     private String mybatisMapperXml;
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getDriverClassName() {
-        return driverClassName;
-    }
-
-    public void setDriverClassName(String driverClassName) {
-        this.driverClassName = driverClassName;
-    }
-
-    public String getMybatisMapper() {
-        return mybatisMapper;
-    }
-
-    public void setMybatisMapper(String mybatisMapper) {
-        this.mybatisMapper = mybatisMapper;
-    }
-
-    public String getMybatisMapperXml() {
-        return mybatisMapperXml;
-    }
-
-    public void setMybatisMapperXml(String mybatisMapperXml) {
-        this.mybatisMapperXml = mybatisMapperXml;
-    }
 }
