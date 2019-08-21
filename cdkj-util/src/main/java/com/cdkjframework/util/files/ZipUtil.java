@@ -1,10 +1,10 @@
 package com.cdkjframework.util.files;
 
 import com.cdkjframework.entity.file.FileEntity;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.JsonUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
@@ -25,7 +25,7 @@ public class ZipUtil {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(ZipUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(ZipUtil.class);
 
     /**
      * 做压缩
@@ -34,12 +34,12 @@ public class ZipUtil {
      * @throws IOException IO异常信息
      */
     public static String doZip(FileEntity zipFile) throws IOException {
-        logUtil.info(JsonUtil.objectToJsonString(zipFile));
+        logUtil.info(JsonUtils.objectToJsonString(zipFile));
         final String suffix = ".zip";
         //文件名
         String fileName = zipFile.getFileName();
-        if (StringUtil.isNullAndSpaceOrEmpty(fileName)) {
-            fileName = GeneratedValueUtil.getUuidNotTransverseLine() + suffix;
+        if (StringUtils.isNullAndSpaceOrEmpty(fileName)) {
+            fileName = GeneratedValueUtils.getUuidNotTransverseLine() + suffix;
         } else if (!fileName.contains(suffix)) {
             fileName += suffix;
         }

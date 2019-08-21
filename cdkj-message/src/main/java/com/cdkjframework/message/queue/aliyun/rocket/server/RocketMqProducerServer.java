@@ -4,8 +4,8 @@ import com.aliyun.openservices.ons.api.*;
 import com.aliyun.openservices.ons.api.order.OrderProducer;
 import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.entity.message.aliyun.RocketMqEntity;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -30,7 +30,7 @@ public class RocketMqProducerServer implements ApplicationRunner {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(RocketMqProducerServer.class);
+    private static LogUtils logUtil = LogUtils.getLogger(RocketMqProducerServer.class);
 
     /**
      * 读取配置信息
@@ -76,19 +76,19 @@ public class RocketMqProducerServer implements ApplicationRunner {
         Message message = new Message(rocketMqEntity.getTopic(), rocketMqEntity.getTag(), body);
 
         //设置信息唯一标识
-        if (StringUtil.isNotNullAndEmpty(rocketMqEntity.getKey())) {
+        if (StringUtils.isNotNullAndEmpty(rocketMqEntity.getKey())) {
             message.setKey(rocketMqEntity.getKey());
         }
         boolean successful = true;
         //发送消息
         try {
             SendResult sendResult;
-            if (StringUtil.isNotNullAndEmpty(rocketMqEntity.getShardingKey())) {
+            if (StringUtils.isNotNullAndEmpty(rocketMqEntity.getShardingKey())) {
                 sendResult = orderProducer.send(message, rocketMqEntity.getShardingKey());
             } else {
                 sendResult = producer.send(message);
             }
-            if (sendResult == null || StringUtil.isNullAndSpaceOrEmpty(sendResult.getMessageId())) {
+            if (sendResult == null || StringUtils.isNullAndSpaceOrEmpty(sendResult.getMessageId())) {
                 successful = false;
             }
         } catch (Exception ex) {

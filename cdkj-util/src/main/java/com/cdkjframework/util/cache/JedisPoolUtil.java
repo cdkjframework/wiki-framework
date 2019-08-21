@@ -1,12 +1,13 @@
 package com.cdkjframework.util.cache;
 
 import com.alibaba.fastjson.JSONArray;
+import com.cdkjframework.config.RedisConfig;
 import com.cdkjframework.enums.datasource.ApolloRedisEnum;
 import com.cdkjframework.util.kryo.KryoUtil;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.JsonUtil;
-import com.cdkjframework.util.tool.StringUtil;
-import com.cdkjframework.util.tool.mapper.MapperUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.mapper.MapperUtils;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,7 @@ public class JedisPoolUtil implements ApplicationRunner {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(JedisPoolUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(JedisPoolUtil.class);
 
     /**
      * 缓存读取类
@@ -63,25 +64,26 @@ public class JedisPoolUtil implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        if (apolloConfig == null && StringUtil.isNullAndSpaceOrEmpty(redisConfig.getHost())) {
+        if (apolloConfig == null && StringUtils.isNullAndSpaceOrEmpty(redisConfig.getHost())) {
             return;
         }
         if (apolloConfig != null && apolloConfig.getPropertyNames().size() > 0) {
             setConfiguration();
         }
         logUtil.info("进入 Redis 配置：" + new Date());
-        logUtil.info(JsonUtil.objectToJsonString(redisConfig));
+        logUtil.info(JsonUtils.objectToJsonString(redisConfig));
         //配置信息
         JedisPoolConfig jedisPoolConfig = new JedisPoolConfig();
-        jedisPoolConfig.setMaxTotal(redisConfig.getMaxActive());
-        jedisPoolConfig.setMaxIdle(redisConfig.getMaxIdle());
-        jedisPoolConfig.setMaxWaitMillis(redisConfig.getTimeOut());
+        jedisPoolConfig.setMaxTotal(redisConfig.getPoolMaxActive());
+        jedisPoolConfig.setMaxIdle(redisConfig.getPooMaxIdle());
+        jedisPoolConfig.setMaxWaitMillis(redisConfig.getPoolMinIdle());
         try {
             //设置信息
-            if (StringUtil.isNullAndSpaceOrEmpty(redisConfig.getPassword())) {
+            if (StringUtils.isNullAndSpaceOrEmpty(redisConfig.getPassword())) {
                 jedisPool = new JedisPool(jedisPoolConfig, redisConfig.getHost(), redisConfig.getPort());
             } else {
-                jedisPool = new JedisPool(jedisPoolConfig, redisConfig.getHost(), redisConfig.getPort(), redisConfig.getTimeOut(), redisConfig.getPassword());
+                jedisPool = new JedisPool(jedisPoolConfig, redisConfig.getHost(),
+                        redisConfig.getPort(), redisConfig.getTimeout(), redisConfig.getPassword());
             }
         } catch (Exception ex) {
             logUtil.info(ex.getMessage());
@@ -164,7 +166,7 @@ public class JedisPoolUtil implements ApplicationRunner {
 //        JSONObject jsonObject = null;
         Jedis jedis = null;
         try {
-            String json = JsonUtil.objectToJsonString(t);
+            String json = JsonUtils.objectToJsonString(t);
             //读取资源
             jedis = jedisPool.getResource();
             if (expire > 0) {
@@ -265,9 +267,9 @@ public class JedisPoolUtil implements ApplicationRunner {
             //读取资源
             String data = getString(key);
             //验证是否有数据
-            if (!StringUtil.isNullAndSpaceOrEmpty(data)) {
+            if (!StringUtils.isNullAndSpaceOrEmpty(data)) {
                 //创建实例
-                t = JsonUtil.jsonStringToBean(data, clazz);
+                t = JsonUtils.jsonStringToBean(data, clazz);
             }
         } catch (Exception ex) {
             t = null;
@@ -373,7 +375,7 @@ public class JedisPoolUtil implements ApplicationRunner {
      * @return
      */
     public Set<String> getKeys(String pattern) {
-        if (StringUtil.isNullAndSpaceOrEmpty(pattern)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(pattern)) {
             logUtil.info("Key can not be empty!");
             return null;
         } else {
@@ -411,7 +413,7 @@ public class JedisPoolUtil implements ApplicationRunner {
      * @return
      */
     public Long del(String key) {
-        if (StringUtil.isNullAndSpaceOrEmpty(key)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(key)) {
             logUtil.error("Key can not be empty!");
             return 0L;
         } else {
@@ -445,7 +447,7 @@ public class JedisPoolUtil implements ApplicationRunner {
      * @return
      */
     public Long expire(String key, int seconds) {
-        if (StringUtil.isNullAndSpaceOrEmpty(key)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(key)) {
             logUtil.error("Key can not be empty!");
             return 0L;
         } else {
@@ -476,7 +478,7 @@ public class JedisPoolUtil implements ApplicationRunner {
      */
     private void setConfiguration() {
         try {
-            redisConfig = MapperUtil.apolloToEntity(apolloConfig, ApolloRedisEnum.values(), RedisConfig.class);
+            redisConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloRedisEnum.values(), RedisConfig.class);
         } catch (IllegalAccessException e) {
             logUtil.error(e.getMessage());
             logUtil.error(e.getStackTrace());

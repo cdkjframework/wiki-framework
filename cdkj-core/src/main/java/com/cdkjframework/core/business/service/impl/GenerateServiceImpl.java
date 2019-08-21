@@ -11,9 +11,9 @@ import com.cdkjframework.enums.datasource.MySqlJdbcTypeContrastEnum;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtil;
 import com.cdkjframework.util.files.freemarker.FreemarkerUtil;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.HostUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.HostUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.meta.ClassMetadataUtil;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class GenerateServiceImpl implements GenerateService {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(GenerateServiceImpl.class);
+    private LogUtils logUtil = LogUtils.getLogger(GenerateServiceImpl.class);
 
     /**
      * 生成 mapper
@@ -246,11 +246,11 @@ public class GenerateServiceImpl implements GenerateService {
      */
     private void loadData(GenerateEntity entity, TreeEntity treeEntity, String dataBase, Field[] fields) {
         entity.setTable(treeEntity.getLabel());
-        entity.setAuthor(HostUtil.getHostName());
+        entity.setAuthor(HostUtils.getHostName());
         entity.setDataBase(dataBase);
 
-        entity.setClassName(StringUtil.classFormat(treeEntity.getLabel()));
-        entity.setClassLowName(StringUtil.attributeNameFormat(treeEntity.getLabel()));
+        entity.setClassName(StringUtils.classFormat(treeEntity.getLabel()));
+        entity.setClassLowName(StringUtils.attributeNameFormat(treeEntity.getLabel()));
 
         //读取配置信息
         entity.setProjectName(ClassMetadataUtil.getAttributeString(EnableAutoGenerate.class, "projectName")
@@ -260,7 +260,7 @@ public class GenerateServiceImpl implements GenerateService {
                 .replace("[", "")
                 .replace("]", ""));
         entity.setDescription(treeEntity.getExplain());
-        entity.setAuthor(HostUtil.getHostName());
+        entity.setAuthor(HostUtils.getHostName());
 
         //查询字段
         List<ChildrenEntity> childrenEntityList = new ArrayList<>();
@@ -275,7 +275,7 @@ public class GenerateServiceImpl implements GenerateService {
         for (TableColumnEntity column :
                 columnEntityList) {
             //验证基类是否有相同属性
-            String columnName = StringUtil.attributeNameFormat(column.getColumnName());
+            String columnName = StringUtils.attributeNameFormat(column.getColumnName());
             List list = Arrays.stream(fields)
                     .filter(f -> columnName.equals(f.getName()))
                     .collect(Collectors.toList());
@@ -288,13 +288,13 @@ public class GenerateServiceImpl implements GenerateService {
 
             childrenEntity.setColumnName(columnName);
             childrenEntity.setColumnDescription(column.getColumnComment());
-            childrenEntity.setColumnKey(StringUtil.isNotNullAndEmpty(column.getColumnKey()));
+            childrenEntity.setColumnKey(StringUtils.isNotNullAndEmpty(column.getColumnKey()));
 
             //数据类型
             String dataType = column.getDataType();
 
             //验证是否为空
-            if (!StringUtil.isNullAndSpaceOrEmpty(dataType)) {
+            if (!StringUtils.isNullAndSpaceOrEmpty(dataType)) {
                 //MyBatis类型
                 MySqlJdbcTypeContrastEnum jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnum.valueOf(dataType.toUpperCase());
                 childrenEntity.setColumnType(jdbcTypeContrastEnum.getCode());
@@ -303,13 +303,13 @@ public class GenerateServiceImpl implements GenerateService {
                 MySqlDataTypeContrastEnum contrastEnum = MySqlDataTypeContrastEnum.valueOf(dataType.toUpperCase());
                 childrenEntity.setDataType(contrastEnum.getValue());
                 String code = contrastEnum.getCode();
-                if (!entity.getLeading().contains(code) && StringUtil.isNotNullAndEmpty(code)) {
+                if (!entity.getLeading().contains(code) && StringUtils.isNotNullAndEmpty(code)) {
                     entity.getLeading().add(code);
                 }
             }
-            childrenEntity.setColumnName(StringUtil.attributeNameFormat(column.getColumnName()));
-            childrenEntity.setFunColumnName(StringUtil.classFormat(column.getColumnName()));
-            childrenEntity.setLength(StringUtil.isNullAndSpaceOrEmpty(column.getCharacterMaximumLength()) ? "-1" : column.getCharacterMaximumLength());
+            childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()));
+            childrenEntity.setFunColumnName(StringUtils.classFormat(column.getColumnName()));
+            childrenEntity.setLength(StringUtils.isNullAndSpaceOrEmpty(column.getCharacterMaximumLength()) ? "-1" : column.getCharacterMaximumLength());
             childrenEntity.setNullable("YES".equals(column.getIsNullable()) ? "true" : "false");
             childrenEntity.setTableColumnName(column.getColumnName());
             //添加子节点

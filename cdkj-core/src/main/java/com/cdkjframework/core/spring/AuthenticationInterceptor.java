@@ -8,10 +8,10 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.cache.JedisPoolUtil;
-import com.cdkjframework.util.jwt.JwtUtil;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.JsonUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(AuthenticationInterceptor.class);
+    private LogUtils logUtil = LogUtils.getLogger(AuthenticationInterceptor.class);
 
     /**
      * 自定义配置信息
@@ -68,7 +68,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
         ResponseBuilder builder = null;
         if (validation) {
             try {
-                if (StringUtil.isNullAndSpaceOrEmpty(token)) {
+                if (StringUtils.isNullAndSpaceOrEmpty(token)) {
                     throw new GlobalException("无效 token");
                 }
 
@@ -81,7 +81,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
             }
         } else {
             try {
-                if (!StringUtil.isNullAndSpaceOrEmpty(token)) {
+                if (!StringUtils.isNullAndSpaceOrEmpty(token)) {
                     authenticateUserLogin(token, false, httpServletRequest);
                 }
             } catch (GlobalException ex) {
@@ -93,7 +93,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
             httpServletResponse.setCharacterEncoding("utf-8");
             httpServletResponse.setContentType("text/html;charset=utf-8");
             PrintWriter writer = httpServletResponse.getWriter();
-            writer.write(JsonUtil.beanToJsonObject(builder).toString());
+            writer.write(JsonUtils.beanToJsonObject(builder).toString());
             writer.close();
         }
 
@@ -139,7 +139,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
     @Override
     public void authenticateUserLogin(String token, boolean verified, HttpServletRequest httpServletRequest) throws GlobalException {
         // jwt 解密
-        Claims claims = JwtUtil.parseJWT(token, customConfig.getJwtKey());
+        Claims claims = JwtUtils.parseJWT(token, customConfig.getJwtKey());
         String key = CacheConstant.userLogin + claims.get("token").toString();
 
         //获取用户信息

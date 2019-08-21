@@ -1,6 +1,6 @@
 package com.cdkjframework.cloud.ribbon.self;
 
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import com.netflix.loadbalancer.IPing;
 import com.netflix.loadbalancer.Server;
 
@@ -14,7 +14,7 @@ public class RibbonPingUrl implements IPing {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(RibbonPingUrl.class);
+    private LogUtils logUtil = LogUtils.getLogger(RibbonPingUrl.class);
 
     public RibbonPingUrl(IPing ping) {
         this.pingUrl = ping;

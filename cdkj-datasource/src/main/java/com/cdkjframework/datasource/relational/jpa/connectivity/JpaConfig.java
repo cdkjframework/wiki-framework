@@ -1,7 +1,7 @@
 package com.cdkjframework.datasource.relational.jpa.connectivity;
 
 import com.cdkjframework.datasource.relational.jpa.config.JpaReadConfig;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.tool.StringUtils;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -65,7 +65,7 @@ public class JpaConfig {
         jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
         jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
         //设置自动更新表结构
-        if (StringUtil.isNotNullAndEmpty(jpaReadConfig.getHbm2ddlAuto())) {
+        if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getHbm2ddlAuto())) {
             jpaProperties.put("hibernate.hbm2ddl.auto", jpaReadConfig.getHbm2ddlAuto());
         }
 

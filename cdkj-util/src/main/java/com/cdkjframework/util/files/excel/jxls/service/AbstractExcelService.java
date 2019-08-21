@@ -3,7 +3,7 @@ package com.cdkjframework.util.files.excel.jxls.service;
 import com.cdkjframework.annotation.FieldMeta;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.excel.jxls.IExcel;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.tool.StringUtils;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
@@ -112,7 +112,7 @@ public abstract class AbstractExcelService<T> implements IExcel<T> {
             }
             FieldMeta meta = field.getAnnotation(FieldMeta.class);
             String des = meta.description();
-            if (StringUtil.isNullAndSpaceOrEmpty(des)) {
+            if (StringUtils.isNullAndSpaceOrEmpty(des)) {
                 continue;
             }
             header.add(des);

@@ -1,7 +1,7 @@
 package com.cdkjframework.util.files.freemarker;
 
 import com.cdkjframework.entity.generate.template.GenerateEntity;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -29,7 +29,7 @@ public class FreemarkerUtil {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(FreemarkerUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(FreemarkerUtil.class);
 
     /**
      * 解析模板

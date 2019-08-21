@@ -5,3 +5,4 @@
 /cdkj-datasource/target
 /cdkj-util/target
 /cdkj-entity/target
+/.idea/libraries/*.xml

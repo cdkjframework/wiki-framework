@@ -1,11 +1,9 @@
 package com.cdkjframework.util.files;
 
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
-import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.Date;
@@ -26,7 +24,7 @@ public class FileUtil {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(FileUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(FileUtil.class);
 
     /**
      * 保存文件
@@ -208,7 +206,7 @@ public class FileUtil {
      */
     public static String getFileSuffix(String fileName) {
         String suffix = "";
-        if (StringUtil.isNullAndSpaceOrEmpty(fileName)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(fileName)) {
             return suffix;
         }
         //获取后缀
@@ -225,7 +223,7 @@ public class FileUtil {
      */
     public static String getFileName(String filePath) {
         String fileName = "";
-        if (StringUtil.isNullAndSpaceOrEmpty(filePath)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(filePath)) {
             return fileName;
         }
         //网络地址
@@ -249,11 +247,11 @@ public class FileUtil {
      */
     private static String splicingPath(String directoryPath, String catalog) throws FileNotFoundException {
         //验证路径是否存在
-        if (StringUtil.isNullAndSpaceOrEmpty(directoryPath)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(directoryPath)) {
             directoryPath = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX).getPath();
         }
         //验证自定义路径是否有
-        if (!StringUtil.isNullAndSpaceOrEmpty(catalog)) {
+        if (!StringUtils.isNullAndSpaceOrEmpty(catalog)) {
             directoryPath += catalog;
         }
         //返回结果

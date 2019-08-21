@@ -2,7 +2,7 @@ package com.cdkjframework.exceptions;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.enums.ResponseBuilderEnum;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -34,7 +34,7 @@ public class OverallSituationExceptionHandler {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(OverallSituationExceptionHandler.class);
+    private static LogUtils logUtil = LogUtils.getLogger(OverallSituationExceptionHandler.class);
 
     /**
      * 声明要捕获的异常

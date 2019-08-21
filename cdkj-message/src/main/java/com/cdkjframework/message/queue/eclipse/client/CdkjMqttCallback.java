@@ -4,7 +4,7 @@ import com.cdkjframework.config.MqttConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.message.baidu.MqttCallbackEntity;
 import com.cdkjframework.enums.QueueMessageTypeEnum;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -32,7 +32,7 @@ public class CdkjMqttCallback implements MqttCallback {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(CdkjMqttCallback.class);
+    private LogUtils logUtil = LogUtils.getLogger(CdkjMqttCallback.class);
 
     /**
      * 配置

@@ -10,10 +10,10 @@ import com.cdkjframework.core.spring.filter.HttpServletContentRequestWrapper;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.JsonUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +36,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(AbstractInterceptor.class);
+    private LogUtils logUtil = LogUtils.getLogger(AbstractInterceptor.class);
 
     /**
      * 不过虑类型
@@ -107,7 +107,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
 
         try {
             String contentType = httpServletRequest.getHeader("Content-Type");
-            if (StringUtil.isNullAndSpaceOrEmpty(contentType)) {
+            if (StringUtils.isNullAndSpaceOrEmpty(contentType)) {
                 contentType = "";
             }
             //如果是错误地址则不进行修改
@@ -153,7 +153,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
                 }
                 JSONArray array = new JSONArray();
                 //转换为 JSON 对象
-                JSONArray jsonArray = JsonUtil.parseArray(body);
+                JSONArray jsonArray = JsonUtils.parseArray(body);
                 for (int i = 0; i < jsonArray.size(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     addJsonObject(jsonObject, userEntity);
@@ -165,7 +165,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
                     builder.append(array.toJSONString());
                 }
             } else {
-                JSONObject jsonObject = JsonUtil.parseObject(body);
+                JSONObject jsonObject = JsonUtils.parseObject(body);
                 if (jsonObject.size() > 0) {
                     addJsonObject(jsonObject, userEntity);
                     builder.append(jsonObject.toString());
@@ -190,7 +190,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
      */
     @Override
     public void logRecord(HttpServletRequest httpServletRequest, UserEntity userEntity, String inString) {
-        String id = GeneratedValueUtil.getUuidString();
+        String id = GeneratedValueUtils.getUuidString();
         String serialNumber = "";
         try {
             serialNumber = orderNumberServiceImpl.generateNoDateNumber("R", 12).replace("R", "");
@@ -265,7 +265,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
     public boolean requestNeedsValidation(String servletPath) {
         String path = "/";
         //验证请求路径是否为或登录页面
-        if (StringUtil.isNullAndSpaceOrEmpty(servletPath) || path.equals(servletPath)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(servletPath) || path.equals(servletPath)) {
             return false;
         }
         boolean validation = false;
@@ -284,7 +284,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
             //将字符转换为小写
             String servletPathLowerCase = servletPath.toLowerCase();
             List<String> list = filterList.stream()
-                    .filter(f -> StringUtil.isNotNullAndEmpty(f) && servletPathLowerCase.contains(f.toLowerCase()))
+                    .filter(f -> StringUtils.isNotNullAndEmpty(f) && servletPathLowerCase.contains(f.toLowerCase()))
                     .collect(Collectors.toList());
             if (list.size() == 0) {
                 validation = true;

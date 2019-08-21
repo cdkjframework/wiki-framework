@@ -7,7 +7,7 @@ import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.message.aliyun.RocketMqCallbackEntity;
 import com.cdkjframework.message.queue.aliyun.rocket.client.RocketMqMessageListener;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.context.ApplicationContext;
 
 import java.lang.reflect.InvocationTargetException;
@@ -27,7 +27,7 @@ public class LocalTransactionCheckerListener implements LocalTransactionChecker 
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(RocketMqMessageListener.class);
+    private static LogUtils logUtil = LogUtils.getLogger(RocketMqMessageListener.class);
 
     /**
      * 消息配置

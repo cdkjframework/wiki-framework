@@ -1,6 +1,6 @@
 package com.cdkjframework.util.files;
 
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class XmlUtil {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(XmlUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(XmlUtil.class);
 
     /**
      * 将 xml 转换为实体

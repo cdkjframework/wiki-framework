@@ -13,10 +13,10 @@ import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtil;
 import com.cdkjframework.util.files.ZipUtil;
-import com.cdkjframework.util.http.HttpServletUtil;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,7 +43,7 @@ public abstract class AbstractController implements IController {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(AbstractController.class);
+    private LogUtils logUtil = LogUtils.getLogger(AbstractController.class);
 
     /**
      * 读取基础数据
@@ -156,7 +156,7 @@ public abstract class AbstractController implements IController {
         Map<String, Object> mapList = new HashMap<String, Object>(keys.length);
         for (String key :
                 keys) {
-            String value = HttpServletUtil.getRequest().getParameter(key);
+            String value = HttpServletUtils.getRequest().getParameter(key);
             mapList.put(key, value);
         }
 
@@ -172,7 +172,7 @@ public abstract class AbstractController implements IController {
      */
     @Override
     public String getRequestParameter(String key) {
-        return HttpServletUtil.getRequest().getParameter(key);
+        return HttpServletUtils.getRequest().getParameter(key);
     }
 
     /**
@@ -183,7 +183,7 @@ public abstract class AbstractController implements IController {
      */
     @Override
     public String getRequestHeader(String key) {
-        return HttpServletUtil.getRequest().getHeader(key);
+        return HttpServletUtils.getRequest().getHeader(key);
     }
 
     /**
@@ -197,7 +197,7 @@ public abstract class AbstractController implements IController {
         Map<String, Object> mapList = new HashMap<String, Object>(keys.length);
         for (String key :
                 keys) {
-            String value = HttpServletUtil.getRequest().getHeader(key);
+            String value = HttpServletUtils.getRequest().getHeader(key);
             mapList.put(key, value);
         }
 
@@ -296,13 +296,13 @@ public abstract class AbstractController implements IController {
         //获取后缀
         String suffix = fileName.substring(fileName.lastIndexOf('.') - 1);
         //重新定义文件名称
-        fileName = GeneratedValueUtil.getUuidNotTransverseLine() + suffix;
+        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + suffix;
 
         //自定义路径
         final String catalog = "/uploadFiles/";
 
         //保存文件
-        if (StringUtil.isNotNullAndEmpty(directoryPath)) {
+        if (StringUtils.isNotNullAndEmpty(directoryPath)) {
             FileUtil.saveFile(inputStream, directoryPath, catalog, fileName);
         } else {
             FileUtil.saveFile(inputStream, catalog, fileName);
@@ -343,7 +343,7 @@ public abstract class AbstractController implements IController {
     @Override
     public void write(String content) {
         try {
-            HttpServletResponse response = HttpServletUtil.getResponse();
+            HttpServletResponse response = HttpServletUtils.getResponse();
             response.setCharacterEncoding("utf-8");
             response.setContentType("text/html;charset=utf-8");
             PrintWriter writer = response.getWriter();

@@ -1,6 +1,6 @@
 package com.cdkjframework.config;
 
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -120,7 +120,7 @@ public class AliCloudRocketMqConfig {
     }
 
     public String getTopicNames() {
-        if (StringUtil.isNullAndSpaceOrEmpty(topicNames)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(topicNames)) {
             this.topicNames = "";
         }
         return topicNames;

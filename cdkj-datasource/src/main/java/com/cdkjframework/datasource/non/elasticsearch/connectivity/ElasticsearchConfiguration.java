@@ -1,7 +1,7 @@
 package com.cdkjframework.datasource.non.elasticsearch.connectivity;
 
 import com.cdkjframework.datasource.non.elasticsearch.config.ElasticSearchConfig;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
@@ -28,7 +28,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger("ElasticsearchConfiguration");
+    private LogUtils logUtil = LogUtils.getLogger("ElasticsearchConfiguration");
 
     /**
      * ES 配置

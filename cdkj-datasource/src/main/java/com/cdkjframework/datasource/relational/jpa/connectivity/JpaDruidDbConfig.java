@@ -4,9 +4,9 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.relational.jpa.config.JpaReadConfig;
 import com.cdkjframework.enums.datasource.ApolloDataSourceEnum;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.StringUtil;
-import com.cdkjframework.util.tool.mapper.MapperUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.mapper.MapperUtils;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class JpaDruidDbConfig {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(JpaDruidDbConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(JpaDruidDbConfig.class);
 
     /**
      * 读取配置
@@ -63,7 +63,7 @@ public class JpaDruidDbConfig {
     @Primary
     public DataSource jpaDataSource() {
         Boolean isConfig = apolloConfig == null || apolloConfig.getPropertyNames().size() == 0;
-        if (!isConfig && StringUtil.isNullAndSpaceOrEmpty(jpaReadConfig.getUrl())) {
+        if (!isConfig && StringUtils.isNullAndSpaceOrEmpty(jpaReadConfig.getUrl())) {
             setConfiguration();
         }
         DruidDataSource datasource = new DruidDataSource();
@@ -107,8 +107,8 @@ public class JpaDruidDbConfig {
      */
     private void setConfiguration() {
         try {
-            jpaReadConfig = MapperUtil.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), JpaReadConfig.class);
-            dataSourceConfig = MapperUtil.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), DataSourceConfig.class);
+            jpaReadConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), JpaReadConfig.class);
+            dataSourceConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), DataSourceConfig.class);
         } catch (IllegalAccessException e) {
             logUtil.error(e.getMessage());
             logUtil.error(e.getStackTrace());

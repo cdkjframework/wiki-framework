@@ -1,7 +1,7 @@
 package com.cdkjframework.datasource.relational.mybatis.connectivity;
 
 import com.cdkjframework.datasource.relational.mybatis.config.MybatisReadConfig;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import com.github.pagehelper.PageHelper;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -37,7 +37,7 @@ public class MybatisConfig {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(MybatisConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(MybatisConfig.class);
 
     /**
      * 读取配置

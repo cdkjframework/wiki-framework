@@ -9,8 +9,8 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.util.cache.JedisPoolUtil;
-import com.cdkjframework.util.jwt.JwtUtil;
-import com.cdkjframework.util.tool.JsonUtil;
+import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -81,7 +81,7 @@ public class WebUiController extends AbstractController {
         T userEntity = null;
         try {
             String key = getRequestHeader("token");
-            Claims claims = JwtUtil.parseJWT(key, customConfig.getJwtKey());
+            Claims claims = JwtUtils.parseJWT(key, customConfig.getJwtKey());
             String token = claims.get("token").toString();
             return getCurrentUser(token, clazz);
         } catch (Exception ex) {
@@ -151,7 +151,7 @@ public class WebUiController extends AbstractController {
         try {
             LogRecordEntity logRecordEntity = new LogRecordEntity();
             logRecordEntity.setId(logId);
-            logRecordEntity.setResult(JsonUtil.objectToJsonString(result));
+            logRecordEntity.setResult(JsonUtils.objectToJsonString(result));
             logRecordEntity.setBusinessType(businessType.getValue());
             logRecordEntity.setModular(modular.getValue());
             logRecordEntity.setExecutionState(code == 0 ? 1 : 0);

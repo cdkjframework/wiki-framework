@@ -2,9 +2,9 @@ package com.cdkjframework.message.queue.eclipse.server;
 
 import com.cdkjframework.config.MqttConfig;
 import com.cdkjframework.message.queue.eclipse.MqttCdkjMessageHandler;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -37,7 +37,7 @@ public class MqttServer {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(MqttServer.class);
+    private LogUtils logUtil = LogUtils.getLogger(MqttServer.class);
 
     /**
      * 配置信息
@@ -58,11 +58,11 @@ public class MqttServer {
     public MqttConnectOptions getOptions() {
         MqttConnectOptions options = new MqttConnectOptions();
         //账户
-        if (!StringUtil.isNullAndSpaceOrEmpty(mqttConfig.getUserName())) {
+        if (!StringUtils.isNullAndSpaceOrEmpty(mqttConfig.getUserName())) {
             options.setUserName(mqttConfig.getUserName());
         }
         //密码
-        if (!StringUtil.isNullAndSpaceOrEmpty(mqttConfig.getPassword())) {
+        if (!StringUtils.isNullAndSpaceOrEmpty(mqttConfig.getPassword())) {
             options.setPassword(mqttConfig.getPassword().toCharArray());
         }
         options.setServerURIs(new String[]{mqttConfig.getHost()});
@@ -105,7 +105,7 @@ public class MqttServer {
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
-        String clientId = mqttConfig.getClientId() + GeneratedValueUtil.getRandom(5);
+        String clientId = mqttConfig.getClientId() + GeneratedValueUtils.getRandom(5);
         MqttCdkjMessageHandler messageHandler = new MqttCdkjMessageHandler(clientId, mqttClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic(mqttConfig.getToPic());

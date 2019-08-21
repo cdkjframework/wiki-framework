@@ -1,7 +1,7 @@
 package com.cdkjframework.util.files;
 
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -26,7 +26,7 @@ public class NotepadUtil {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger("NotepadUtil");
+    private static LogUtils logUtil = LogUtils.getLogger("NotepadUtil");
 
     /**
      * 日期格式
@@ -122,11 +122,11 @@ public class NotepadUtil {
     public static boolean saveFile(String directoryPath, String catalog, String fileName, StringBuilder builder, boolean append, boolean newline) {
         try {
             //验证路径是否存在
-            if (StringUtil.isNullAndSpaceOrEmpty(directoryPath)) {
+            if (StringUtils.isNullAndSpaceOrEmpty(directoryPath)) {
                 directoryPath = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX).getPath();
             }
             //验证自定义路径是否有
-            if (!StringUtil.isNullAndSpaceOrEmpty(catalog)) {
+            if (!StringUtils.isNullAndSpaceOrEmpty(catalog)) {
                 directoryPath += catalog;
             }
             //读取目录
@@ -135,7 +135,7 @@ public class NotepadUtil {
                 file.mkdirs();
             }
             //文件名
-            if (StringUtil.isNullAndSpaceOrEmpty(fileName)) {
+            if (StringUtils.isNullAndSpaceOrEmpty(fileName)) {
                 fileName = "Notepad-" + dateFormat.format(new Date());
             }
             if (builder == null) {

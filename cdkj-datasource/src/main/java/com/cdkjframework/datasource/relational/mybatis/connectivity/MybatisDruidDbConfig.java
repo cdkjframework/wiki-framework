@@ -4,9 +4,9 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.relational.mybatis.config.MybatisReadConfig;
 import com.cdkjframework.enums.datasource.ApolloDataSourceEnum;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.StringUtil;
-import com.cdkjframework.util.tool.mapper.MapperUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.mapper.MapperUtils;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class MybatisDruidDbConfig {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(MybatisDruidDbConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(MybatisDruidDbConfig.class);
 
     /**
      * 读取配置
@@ -61,7 +61,7 @@ public class MybatisDruidDbConfig {
     public DataSource mybatisDataSource() {
         //验证是否通过 apollo 读取
         Boolean isConfig = apolloConfig == null || apolloConfig.getPropertyNames().size() == 0;
-        if (!isConfig && StringUtil.isNullAndSpaceOrEmpty(mybatisSqlConfig.getUrl())) {
+        if (!isConfig && StringUtils.isNullAndSpaceOrEmpty(mybatisSqlConfig.getUrl())) {
             setConfiguration();
         }
 
@@ -71,48 +71,48 @@ public class MybatisDruidDbConfig {
         datasource.setUrl(mybatisSqlConfig.getUrl());
         datasource.setUsername(mybatisSqlConfig.getUsername());
         datasource.setPassword(mybatisSqlConfig.getPassword());
-        if (StringUtil.isNotNullAndEmpty(mybatisSqlConfig.getDriverClassName())) {
+        if (StringUtils.isNotNullAndEmpty(mybatisSqlConfig.getDriverClassName())) {
             datasource.setDriverClassName(mybatisSqlConfig.getDriverClassName());
         }
 
         //configuration
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getInitialSize())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getInitialSize())) {
             datasource.setInitialSize(dataSourceConfig.getInitialSize());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getMinIdle())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getMinIdle())) {
             datasource.setMinIdle(dataSourceConfig.getMinIdle());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getMaxActive())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getMaxActive())) {
             datasource.setMaxActive(dataSourceConfig.getMaxActive());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getMaxWait())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getMaxWait())) {
             datasource.setMaxWait(dataSourceConfig.getMaxWait());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getTimeBetweenEvictionRunsMillis())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getTimeBetweenEvictionRunsMillis())) {
             datasource.setTimeBetweenEvictionRunsMillis(dataSourceConfig.getTimeBetweenEvictionRunsMillis());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getMinEvictableIdleTimeMillis())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getMinEvictableIdleTimeMillis())) {
             datasource.setMinEvictableIdleTimeMillis(dataSourceConfig.getMinEvictableIdleTimeMillis());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getValidationQuery())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getValidationQuery())) {
             datasource.setValidationQuery(dataSourceConfig.getValidationQuery());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.isTestWhileIdle())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.isTestWhileIdle())) {
             datasource.setTestWhileIdle(dataSourceConfig.isTestWhileIdle());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.isTestOnBorrow())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.isTestOnBorrow())) {
             datasource.setTestOnBorrow(dataSourceConfig.isTestOnBorrow());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.isTestOnReturn())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.isTestOnReturn())) {
             datasource.setTestOnReturn(dataSourceConfig.isTestOnReturn());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.isPoolPreparedStatements())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.isPoolPreparedStatements())) {
             datasource.setPoolPreparedStatements(dataSourceConfig.isPoolPreparedStatements());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getMaxPoolPreparedStatementPerConnectionSize())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getMaxPoolPreparedStatementPerConnectionSize())) {
             datasource.setMaxPoolPreparedStatementPerConnectionSize(dataSourceConfig.getMaxPoolPreparedStatementPerConnectionSize());
         }
-        if (StringUtil.isNotNullAndEmpty(dataSourceConfig.getValidationQueryTimeout())) {
+        if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getValidationQueryTimeout())) {
             datasource.setValidationQueryTimeout(dataSourceConfig.getValidationQueryTimeout());
         }
         try {
@@ -132,8 +132,8 @@ public class MybatisDruidDbConfig {
      */
     private void setConfiguration() {
         try {
-            mybatisSqlConfig = MapperUtil.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), MybatisReadConfig.class);
-            dataSourceConfig = MapperUtil.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), DataSourceConfig.class);
+            mybatisSqlConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), MybatisReadConfig.class);
+            dataSourceConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), DataSourceConfig.class);
         } catch (IllegalAccessException e) {
             logUtil.error(e.getMessage());
             logUtil.error(e.getStackTrace());

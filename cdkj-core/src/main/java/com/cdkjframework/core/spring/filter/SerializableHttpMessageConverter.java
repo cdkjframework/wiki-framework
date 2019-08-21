@@ -1,6 +1,6 @@
 package com.cdkjframework.core.spring.filter;
 
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.HttpOutputMessage;
@@ -28,7 +28,7 @@ public class SerializableHttpMessageConverter extends AbstractHttpMessageConvert
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(SerializableHttpMessageConverter.class);
+    private LogUtils logUtil = LogUtils.getLogger(SerializableHttpMessageConverter.class);
 
     /**
      * 构造函数

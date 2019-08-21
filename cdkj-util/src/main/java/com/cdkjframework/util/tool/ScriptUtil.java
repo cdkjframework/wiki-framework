@@ -1,6 +1,6 @@
 package com.cdkjframework.util.tool;
 
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class ScriptUtil {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(ScriptUtil.class);
+    private LogUtils logUtil = LogUtils.getLogger(ScriptUtil.class);
 
     /**
      * 地址
@@ -52,7 +52,7 @@ public class ScriptUtil {
      */
     public String ScriptParsing(String jsonString, String findLocation) throws IOException {
         //验证是否为空
-        if (StringUtil.isNullAndSpaceOrEmpty(jsonString)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(jsonString)) {
             return "";
         }
 

@@ -4,7 +4,7 @@ import com.aliyun.openservices.ons.api.Consumer;
 import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
 import com.cdkjframework.config.AliCloudRocketMqClientConfig;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -29,7 +29,7 @@ public class RocketMqConsumerClient implements ApplicationRunner {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(RocketMqConsumerClient.class);
+    private LogUtils logUtil = LogUtils.getLogger(RocketMqConsumerClient.class);
 
     /**
      * 回调

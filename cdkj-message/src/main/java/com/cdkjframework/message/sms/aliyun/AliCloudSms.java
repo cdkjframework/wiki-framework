@@ -11,14 +11,13 @@ import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.cdkjframework.config.SmsConfig;
 import com.cdkjframework.enums.AliCloudSmsEnum;
-import com.cdkjframework.util.tool.JsonUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Date;
 import java.util.Map;
 
@@ -73,7 +72,7 @@ public class AliCloudSms {
         //必填:短信模板-可在短信控制台中找到
         request.setTemplateCode(messageTemplate);
         //可选:模板中的变量替换JSON串,如模板内容为"亲爱的${name},您的验证码为${code}"时,此处的值为
-        String json = JsonUtil.objectToJsonString(content);
+        String json = JsonUtils.objectToJsonString(content);
         request.setTemplateParam(json);
 
         // 可选:outId为提供给业务方扩展字段,最终在短信回执消息中将此值带回给调用者
@@ -158,9 +157,9 @@ public class AliCloudSms {
      */
     private static IAcsClient setSmsConfig() throws ClientException {
         //可自助调整超时时间
-        String defaultConnectTimeout = StringUtil.isNotNullAndEmpty(smsConfig.getDefaultConnectTimeout()) ? "10000" : smsConfig.getDefaultConnectTimeout();
+        String defaultConnectTimeout = StringUtils.isNotNullAndEmpty(smsConfig.getDefaultConnectTimeout()) ? "10000" : smsConfig.getDefaultConnectTimeout();
         System.setProperty("sun.net.client.defaultConnectTimeout", defaultConnectTimeout);
-        String defaultReadTimeout = StringUtil.isNotNullAndEmpty(smsConfig.getDefaultReadTimeout()) ? "10000" : smsConfig.getDefaultReadTimeout();
+        String defaultReadTimeout = StringUtils.isNotNullAndEmpty(smsConfig.getDefaultReadTimeout()) ? "10000" : smsConfig.getDefaultReadTimeout();
         System.setProperty("sun.net.client.defaultReadTimeout", defaultReadTimeout);
 
         //初始化acsClient,暂不支持region化

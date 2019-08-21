@@ -3,8 +3,8 @@ package com.cdkjframework.cloud.ribbon;
 import com.cdkjframework.cloud.common.RibbonConfigurationBasedServerList;
 import com.cdkjframework.cloud.ribbon.self.RibbonPingUrl;
 import com.cdkjframework.cloud.ribbon.self.RibbonRule;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.JsonUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import com.netflix.client.config.IClientConfig;
 import com.netflix.loadbalancer.*;
 import com.netflix.niws.loadbalancer.NIWSDiscoveryPing;
@@ -25,7 +25,7 @@ public class CommonRibbonConfig {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(CommonRibbonConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(CommonRibbonConfig.class);
 
     /**
      * PING
@@ -56,7 +56,7 @@ public class CommonRibbonConfig {
     @Bean
     public ServerList<Server> ribbonServerList(IClientConfig config) {
         RibbonConfigurationBasedServerList.BazServiceList bazServiceList = new RibbonConfigurationBasedServerList.BazServiceList(config);
-        logUtil.info(JsonUtil.objectToJsonString(bazServiceList));
+        logUtil.info(JsonUtils.objectToJsonString(bazServiceList));
 
         return bazServiceList;
     }
@@ -69,7 +69,7 @@ public class CommonRibbonConfig {
     @Bean
     public ServerListSubsetFilter serverListFilter() {
         ServerListSubsetFilter filter = new ServerListSubsetFilter();
-        logUtil.info(JsonUtil.objectToJsonString(filter));
+        logUtil.info(JsonUtils.objectToJsonString(filter));
         return filter;
     }
 }

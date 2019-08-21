@@ -1,6 +1,6 @@
 package com.cdkjframework.cloud.ribbon.self;
 
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import com.netflix.loadbalancer.ILoadBalancer;
 import com.netflix.loadbalancer.Server;
 import com.netflix.loadbalancer.ZoneAvoidanceRule;
@@ -30,7 +30,7 @@ public class RibbonRule extends ZoneAvoidanceRule {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(RibbonRule.class);
+    private LogUtils logUtil = LogUtils.getLogger(RibbonRule.class);
 
     /**
      * 选择服务

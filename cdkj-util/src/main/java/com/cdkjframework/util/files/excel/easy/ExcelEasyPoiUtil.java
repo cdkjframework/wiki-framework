@@ -2,9 +2,9 @@ package com.cdkjframework.util.files.excel.easy;
 
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtil;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
@@ -31,7 +31,7 @@ public class ExcelEasyPoiUtil<T> {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(ExcelEasyPoiUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(ExcelEasyPoiUtil.class);
 
     /**
      * 工作薄大小
@@ -70,10 +70,10 @@ public class ExcelEasyPoiUtil<T> {
             ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
             //转换为 inputStream
             //生成文件名称
-            String fileName = GeneratedValueUtil.getUuidNotTransverseLine() + ".xls";
+            String fileName = GeneratedValueUtils.getUuidNotTransverseLine() + ".xls";
             ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
             //保存文件
-            if (StringUtil.isNotNullAndEmpty(directoryPath)) {
+            if (StringUtils.isNotNullAndEmpty(directoryPath)) {
                 FileUtil.saveFile(inputStream, directoryPath, filePath, fileName);
             } else {
                 FileUtil.saveFile(inputStream, filePath, fileName);

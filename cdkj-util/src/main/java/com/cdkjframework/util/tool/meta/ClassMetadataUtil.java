@@ -1,7 +1,7 @@
 package com.cdkjframework.util.tool.meta;
 
 import com.cdkjframework.constant.Application;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
@@ -46,7 +46,7 @@ public class ClassMetadataUtil {
      */
     public static String getAttributeString(Class beanClass, String name) {
         Map<String, Object> map = getAttribute(beanClass);
-        if (StringUtil.isNullAndSpaceOrEmpty(map.get(name))) {
+        if (StringUtils.isNullAndSpaceOrEmpty(map.get(name))) {
             return "";
         } else {
             return map.get(name).toString();
@@ -62,7 +62,7 @@ public class ClassMetadataUtil {
      */
     public static Boolean getAttributeBoolean(Class beanClass, String name) {
         Map<String, Object> map = getAttribute(beanClass);
-        return StringUtil.convertBoolean(map.get(name));
+        return StringUtils.convertBoolean(map.get(name));
     }
 
     /**
@@ -74,6 +74,6 @@ public class ClassMetadataUtil {
      */
     public static int getAttributeInt(Class beanClass, String name) {
         Map<String, Object> map = getAttribute(beanClass);
-        return StringUtil.convertInt(map.get(name));
+        return StringUtils.convertInt(map.get(name));
     }
 }

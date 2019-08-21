@@ -7,7 +7,7 @@ import com.cdkjframework.entity.generate.template.DatabaseEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
 import com.cdkjframework.entity.generate.template.TreeEntity;
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class GenerateController extends WebUiController {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(GenerateController.class);
+    private LogUtils logUtil = LogUtils.getLogger(GenerateController.class);
 
     /**
      * 生成服务

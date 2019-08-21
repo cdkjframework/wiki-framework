@@ -2,7 +2,7 @@ package com.cdkjframework.util.files;
 
 import com.aliyun.oss.OSSClient;
 import com.cdkjframework.config.AliCloudOssConfig;
-import com.cdkjframework.util.make.GeneratedValueUtil;
+import com.cdkjframework.util.make.GeneratedValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,7 +66,7 @@ public class AliCloudOssUtil {
         OSSClient ossClient = new OSSClient(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
         //获取文件名
-        fileName = GeneratedValueUtil.getUuidNotTransverseLine() + FileUtil.getFileSuffix(fileName);
+        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtil.getFileSuffix(fileName);
 
         // 上传文件流。
         ossClient.putObject(config.getBucketName(), fileName, inputStream);
@@ -89,7 +89,7 @@ public class AliCloudOssUtil {
 
         //获取文件名
         String fileName = file.getName();
-        fileName = GeneratedValueUtil.getUuidNotTransverseLine() + FileUtil.getFileSuffix(fileName);
+        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtil.getFileSuffix(fileName);
 
         // 上传文件流。
         ossClient.putObject(config.getBucketName(), fileName, file);

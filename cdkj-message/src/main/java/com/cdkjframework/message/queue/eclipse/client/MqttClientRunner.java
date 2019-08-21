@@ -1,9 +1,9 @@
 package com.cdkjframework.message.queue.eclipse.client;
 
 import com.cdkjframework.config.MqttConfig;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -32,7 +32,7 @@ public class MqttClientRunner implements ApplicationRunner {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(MqttClientRunner.class);
+    private LogUtils logUtil = LogUtils.getLogger(MqttClientRunner.class);
 
     /**
      * 配置信息
@@ -94,11 +94,11 @@ public class MqttClientRunner implements ApplicationRunner {
         // 设置是否清空 session,这里如果设置为false表示服务器会保留客户端的连接记录，设置为true表示每次连接到服务器都以新的身份连接
         connectOptions.setCleanSession(false);
         // 设置连接的用户名
-        if (!StringUtil.isNullAndSpaceOrEmpty(mqttConfig.getUserName())) {
+        if (!StringUtils.isNullAndSpaceOrEmpty(mqttConfig.getUserName())) {
             connectOptions.setUserName(mqttConfig.getUserName());
         }
         // 设置连接的密码
-        if (!StringUtil.isNullAndSpaceOrEmpty(mqttConfig.getPassword())) {
+        if (!StringUtils.isNullAndSpaceOrEmpty(mqttConfig.getPassword())) {
             connectOptions.setPassword(mqttConfig.getPassword().toCharArray());
         }
         // 设置超时时间 单位为秒
@@ -117,7 +117,7 @@ public class MqttClientRunner implements ApplicationRunner {
     private void start() {
         try {
             // host为主机名，clientId 即连接MQTT的客户端ID，一般以唯一标识符表示，MemoryPersistence 设置 clientId 的保存形式，默认为以内存保存
-            String clientId = mqttConfig.getClientId() + GeneratedValueUtil.getRandom(5);
+            String clientId = mqttConfig.getClientId() + GeneratedValueUtils.getRandom(5);
             client = new MqttClient(mqttConfig.getHost(), clientId, new MemoryPersistence());
 
             //连接类型

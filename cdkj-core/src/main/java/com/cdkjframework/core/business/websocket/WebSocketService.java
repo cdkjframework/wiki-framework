@@ -1,6 +1,6 @@
 package com.cdkjframework.core.business.websocket;
 
-import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -23,7 +23,7 @@ public class WebSocketService {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(WebSocketService.class);
+    private LogUtils logUtil = LogUtils.getLogger(WebSocketService.class);
 
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。

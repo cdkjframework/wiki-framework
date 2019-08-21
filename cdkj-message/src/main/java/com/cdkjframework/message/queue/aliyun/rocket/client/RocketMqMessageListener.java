@@ -5,11 +5,10 @@ import com.aliyun.openservices.ons.api.ConsumeContext;
 import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.MessageListener;
 import com.cdkjframework.config.AliCloudRocketMqClientConfig;
-import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.message.aliyun.RocketMqCallbackEntity;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.JsonUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -36,7 +35,7 @@ public class RocketMqMessageListener implements MessageListener, ApplicationRunn
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(RocketMqMessageListener.class);
+    private static LogUtils logUtil = LogUtils.getLogger(RocketMqMessageListener.class);
 
     /**
      * 消息配置
@@ -83,7 +82,7 @@ public class RocketMqMessageListener implements MessageListener, ApplicationRunn
             getBean();
             // 此处为了不影响使用
             consume(message, consumeContext);
-            logUtil.error("未设置回调方法，消息内容为：" + JsonUtil.objectToJsonString(message));
+            logUtil.error("未设置回调方法，消息内容为：" + JsonUtils.objectToJsonString(message));
         }
 
         //调用参数

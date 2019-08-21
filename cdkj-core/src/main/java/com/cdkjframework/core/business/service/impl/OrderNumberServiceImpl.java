@@ -4,8 +4,8 @@ import com.cdkjframework.core.business.mapper.OrderNumberMapper;
 import com.cdkjframework.core.business.service.OrderNumberService;
 import com.cdkjframework.entity.generate.OrderNumberEntity;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.StringUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +28,7 @@ public class OrderNumberServiceImpl implements OrderNumberService {
     /**
      * 日志
      */
-    private LogUtil logUtil = LogUtil.getLogger(OrderNumberServiceImpl.class);
+    private LogUtils logUtil = LogUtils.getLogger(OrderNumberServiceImpl.class);
 
     /**
      * 前缀常量
@@ -124,7 +124,7 @@ public class OrderNumberServiceImpl implements OrderNumberService {
         String number = autoRetryGenerate(prefix, length, init, error, isDate);
 
         //验证单号
-        if (StringUtil.isNullAndSpaceOrEmpty(number)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(number)) {
             throw new GlobalException(String.format("获取单号失败[%s]", prefix));
         }
 

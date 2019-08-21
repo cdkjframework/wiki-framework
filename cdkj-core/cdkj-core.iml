@@ -36,6 +36,17 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-aop:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-expression:5.1.8.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: org.springframework:spring-webmvc:5.1.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-data-redis:2.1.5.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-redis:2.1.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.data:spring-data-keyvalue:2.1.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework:spring-oxm:5.1.8.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: io.lettuce:lettuce-core:5.1.6.RELEASE" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.36.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.36.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.36.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.36.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.36.Final" level="project" />
+    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.36.Final" level="project" />
     <orderEntry type="library" name="Maven: com.alibaba:fastjson:1.2.58" level="project" />
     <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.8.1" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.9.8" level="project" />
@@ -219,13 +230,7 @@
     <orderEntry type="library" name="Maven: org.elasticsearch.plugin:parent-join-client:6.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch.plugin:rank-eval-client:6.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch.plugin:transport-netty4-client:6.4.3" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-buffer:4.1.36.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-codec:4.1.36.Final" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-codec-http:4.1.36.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-common:4.1.36.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-handler:4.1.36.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-resolver:4.1.36.Final" level="project" />
-    <orderEntry type="library" name="Maven: io.netty:netty-transport:4.1.36.Final" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch:6.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch-core:6.4.3" level="project" />
     <orderEntry type="library" name="Maven: org.elasticsearch:elasticsearch-secure-sm:6.4.3" level="project" />
