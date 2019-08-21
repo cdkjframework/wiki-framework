@@ -86,6 +86,29 @@ public class MybatisConfig {
     }
 
     /**
+     * 平台事务管理器
+     *
+     * @return 返回结果
+     * @throws SQLException 异常信息
+     */
+    @Bean
+    public PlatformTransactionManager transactionManager() throws SQLException {
+        return new DataSourceTransactionManager(mybatisDataSource);
+    }
+
+    /**
+     * sql会话模板
+     *
+     * @param sqlSessionFactory SQL 会话工厂
+     * @return 返回结果
+     * @throws Exception 异常信息
+     */
+    @Bean
+    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
+
+    /**
      * 配置信息
      *
      * @return 返回配置结果
@@ -142,28 +165,5 @@ public class MybatisConfig {
         prop.setProperty("returnPageInfo", "none");
         //添加插件
         pageHelper.setProperties(prop);
-    }
-
-    /**
-     * 平台事务管理器
-     *
-     * @return 返回结果
-     * @throws SQLException 异常信息
-     */
-    @Bean
-    public PlatformTransactionManager transactionManager() throws SQLException {
-        return new DataSourceTransactionManager(mybatisDataSource);
-    }
-
-    /**
-     * sql会话模板
-     *
-     * @param sqlSessionFactory SQL 会话工厂
-     * @return 返回结果
-     * @throws Exception 异常信息
-     */
-    @Bean
-    public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
-        return new SqlSessionTemplate(sqlSessionFactory);
     }
 }
