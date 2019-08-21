@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.files
  * @ClassName: AliCloudOssUtil
  * @Description: java类作用描述

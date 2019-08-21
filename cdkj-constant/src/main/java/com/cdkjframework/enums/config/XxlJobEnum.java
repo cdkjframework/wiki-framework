@@ -3,7 +3,7 @@ package com.cdkjframework.enums.config;
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.config
  * @ClassName: XxlJobEnum
  * @Description: XxlJob

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import javax.xml.namespace.QName;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.http
  * @ClassName: WebServiceUtil
  * @Description: web service 请求工具

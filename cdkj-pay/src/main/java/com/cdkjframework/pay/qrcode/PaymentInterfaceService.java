@@ -5,7 +5,7 @@ import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 
 /**
- * @ProjectName: cdkj.framework.pay
+ * @ProjectName: cdkjframework.pay
  * @Package: com.cdkjframework.pay.qrcode
  * @ClassName: PaymentInterfaceService
  * @Description: 支付接口

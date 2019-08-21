@@ -3,7 +3,7 @@ package com.cdkjframework.core.business.service;
 import com.cdkjframework.entity.log.LogRecordEntity;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.business.service
  * @ClassName: MongoService
  * @Description: Mongo 数据库服务

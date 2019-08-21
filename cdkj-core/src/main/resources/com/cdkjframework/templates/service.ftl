@@ -1,10 +1,10 @@
 package ${packageName}.service.impl;
 
-import com.cdkj.framework.entity.BaseEntity;
-import com.cdkj.framework.entity.PageEntity;
-import com.cdkj.framework.util.log.LogUtil;
-import com.cdkj.framework.util.make.GeneratedValueUtil;
-import com.cdkj.framework.util.tool.CopyUtil;
+import com.cdkjframework.entity.BaseEntity;
+import com.cdkjframework.entity.PageEntity;
+import com.cdkjframework.util.log.LogUtil;
+import com.cdkjframework.util.make.GeneratedValueUtil;
+import com.cdkjframework.util.tool.CopyUtil;
 
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;

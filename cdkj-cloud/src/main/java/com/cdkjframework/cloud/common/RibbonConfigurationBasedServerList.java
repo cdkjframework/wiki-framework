@@ -6,7 +6,7 @@ import com.netflix.loadbalancer.ConfigurationBasedServerList;
 import org.springframework.cloud.netflix.ribbon.RibbonClients;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.cloud.ribbon.self
  * @ClassName: RibbonZonePreferenceServerListFilter
  * @Description: java类作用描述

@@ -6,7 +6,7 @@ import com.thoughtworks.xstream.io.xml.DomDriver;
 import org.springframework.stereotype.Component;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.tool
  * @ClassName: XmlUtil
  * @Description: XML 操作工具

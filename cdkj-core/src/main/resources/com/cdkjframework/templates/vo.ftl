@@ -1,10 +1,12 @@
 package ${packageName}.vo;
 
-import com.cdkj.framework.entity.RequestEntity;
+import com.cdkjframework.entity.RequestEntity;
 <#list leading as item>
 import ${item};
 </#list>
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -23,6 +25,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
+@ApiModel(" ${description}")
 public class ${className}Vo extends RequestEntity {
 
     private static final long serialVersionUID = ${serialVersionUID};
@@ -32,20 +35,8 @@ public class ${className}Vo extends RequestEntity {
     /**
      * ${item.columnDescription}
      */
+    @ApiModelProperty("${item.columnDescription}")
     private ${item.dataType} ${item.columnName};
-    </#if>
-</#list>
-
-<#list children as item>
-    <#if item.columnShow>
-    public ${item.dataType} get${item.funColumnName}() {
-        return [this]${item.columnName};
-    }
-
-    public void set${item.funColumnName}(${item.dataType} ${item.columnName}) {
-        [this]${item.columnName} = ${item.columnName};
-    }
-
     </#if>
 </#list>
 }

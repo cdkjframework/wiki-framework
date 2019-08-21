@@ -16,7 +16,7 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.util.files.freemarker
  * @ClassName: FreemarkerUtil
  * @Description: java类作用描述
@@ -41,12 +41,26 @@ public class FreemarkerUtil {
      * @throws TemplateException
      */
     public static String analyticalTemplate(String template, GenerateEntity entity) throws IOException, TemplateException {
+
+        //读取模板
+        ClassPathResource classPathResource = new ClassPathResource("/com/cdkjframework/templates/" + template + ".ftl");
+        return analyticalTemplate(template, entity, classPathResource);
+    }
+
+    /**
+     * 解析模板
+     *
+     * @param template          模板名称
+     * @param entity            数据
+     * @param classPathResource 路径
+     * @return
+     * @throws IOException
+     * @throws TemplateException
+     */
+    public static String analyticalTemplate(String template, GenerateEntity entity, ClassPathResource classPathResource) throws IOException, TemplateException {
         //设置配置信息
         Configuration cfg = new Configuration(Configuration.VERSION_2_3_28);
         cfg.setDefaultEncoding("UTF-8");
-        //读取模板
-        ClassPathResource classPathResource = new ClassPathResource("/com/cdkj/framework/templates/" + template + ".ftl");
-
         InputStreamReader reader = null;
         BufferedReader bufferedReader = null;
 

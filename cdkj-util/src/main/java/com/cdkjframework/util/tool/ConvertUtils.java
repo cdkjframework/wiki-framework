@@ -8,8 +8,8 @@ import java.math.BigDecimal;
 import static com.cdkjframework.util.tool.StringUtils.isNullAndSpaceOrEmpty;
 
 /**
- * @ProjectName: cdkj.framework
- * @Package: com.cdkj.framework.util.tool
+ * @ProjectName: cdkjframework
+ * @Package: com.cdkjframework.util.tool
  * @ClassName: ConvertUtil
  * @Description: java类作用描述
  * @Author: xiaLin

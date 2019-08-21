@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 
 /**
- * @ProjectName: cdkj.framework.core
+ * @ProjectName: cdkjframework.core
  * @Package: com.cdkjframework.core.util.tool
  * @ClassName: DigitalCompareUtil
  * @Description: 数字比较

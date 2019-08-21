@@ -1,6 +1,6 @@
 package ${packageName}.entity;
 
-import com.cdkj.framework.entity.BaseEntity;
+import com.cdkjframework.entity.BaseEntity;
 <#list leading as item>
 import ${item};
 </#list>
@@ -25,7 +25,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "${table}", catalog = "${dataBase}")
-public class ${className}Entity extends BaseEntity {
+public class ${className}Entity extends ${className}ExtendsEntity {
 
     private static final long serialVersionUID = ${serialVersionUID};
 

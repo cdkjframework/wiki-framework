@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.logging.FileHandler;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.util.log
  * @ClassName: CdkjFileHandler
  * @Description: java类作用描述

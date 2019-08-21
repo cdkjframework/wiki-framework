@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.business.websocket
  * @ClassName: WebSocketService
  * @Description: WebSocket 服务

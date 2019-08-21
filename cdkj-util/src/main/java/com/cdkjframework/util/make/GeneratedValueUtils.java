@@ -1,5 +1,7 @@
 package com.cdkjframework.util.make;
 
+import com.cdkjframework.util.tool.StringUtil;
+
 import java.util.Random;
 import java.util.UUID;
 
@@ -68,7 +70,7 @@ public class GeneratedValueUtils {
      * @return 返回结果
      */
     public static String getRandomCharacter(int verifySize, String sources) {
-        if (sources == null || sources.length() == 0) {
+        if (StringUtil.isNullAndSpaceOrEmpty(sources)) {
             sources = VERIFY_CODES;
         }
         int codesLen = sources.length();

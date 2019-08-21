@@ -8,8 +8,8 @@ import java.util.regex.Pattern;
 import static java.util.regex.Pattern.compile;
 
 /**
- * @ProjectName: cdkj.framework
- * @Package: com.cdkj.framework.util.tool
+ * @ProjectName: cdkjframework
+ * @Package: com.cdkjframework.util.tool
  * @ClassName: RegexUtil
  * @Description: java类作用描述
  * @Author: xiaLin

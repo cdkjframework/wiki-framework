@@ -18,7 +18,7 @@ public class JwtSecretConfig {
     /**
      * 签名秘钥 自定义
      */
-    public String secret = "www.cdkj.framework.com";
+    public String secret = "www.cdkjframework.com";
 
     /**
      * 超时毫秒数（默认30分钟）
@@ -28,7 +28,7 @@ public class JwtSecretConfig {
     /**
      * 用于JWT 加密的密匙 自定义
      */
-    public String dataKey = "jwt.cdkj.framework.com";
+    public String dataKey = "jwt.cdkjframework.com";
 
     public String getSecret() {
         return secret;

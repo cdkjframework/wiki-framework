@@ -1,7 +1,7 @@
 package com.cdkjframework.constant.datasource;
 
 /**
- * @ProjectName: cdkj.framework.core
+ * @ProjectName: cdkjframework.core
  * @Package: com.cdkjframework.core.consts.datasource
  * @ClassName: ApolloBasicsConstant
  * @Description: java类作用描述

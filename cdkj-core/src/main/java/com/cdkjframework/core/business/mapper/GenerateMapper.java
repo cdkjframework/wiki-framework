@@ -7,7 +7,7 @@ import com.cdkjframework.entity.generate.template.TableEntity;
 import java.util.List;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.business.mapper
  * @ClassName: GenerateMapper
  * @Description: java类作用描述

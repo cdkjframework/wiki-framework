@@ -5,7 +5,7 @@ import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.message.queue.eclipse.server
  * @ClassName: MqttGateway
  * @Description: java类作用描述

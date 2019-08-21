@@ -1,13 +1,18 @@
 package com.cdkjframework.util.tool.mapper;
 
+<<<<<<< HEAD:cdkj-util/src/main/java/com/cdkjframework/util/tool/mapper/FieldMappingUtils.java
 import com.cdkjframework.annotation.FieldMapping;
 import com.cdkjframework.util.tool.StringUtils;
+=======
+import com.cdkjframework.core.annotation.FieldMapping;
+import com.cdkjframework.util.tool.StringUtil;
+>>>>>>> 3529775325e31b9888c0f35491b5b16cd53c6006:cdkj-util/src/main/java/com/cdkjframework/util/tool/mapper/FieldMappingUtil.java
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 
 /**
- * @ProjectName: cdkj.framework
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.util.tool
  * @ClassName: FieldMappingUtil
  * @Description: java类作用描述
