@@ -6,3 +6,14 @@
 /cdkj-util/target
 /cdkj-entity/target
 /.idea/libraries/*.xml
+/cdkj-constant/*.iml
+/cdkj-web/*.iml
+/cdkj-util/*.iml
+/cdkj-pay/*.iml
+/cdkj-message/*.iml
+/cdkj-datasource/*.iml
+/cdkj-core/*.iml
+/cdkj-cloud/*.iml
+/*.iml
+/cdkj-pom/*.iml
+/cdkj-entity/*.iml

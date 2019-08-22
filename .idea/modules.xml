@@ -8,6 +8,7 @@
       <module fileurl="file://$PROJECT_DIR$/cdkj-datasource/cdkj-datasource.iml" filepath="$PROJECT_DIR$/cdkj-datasource/cdkj-datasource.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-entity/cdkj-entity.iml" filepath="$PROJECT_DIR$/cdkj-entity/cdkj-entity.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-framework.iml" filepath="$PROJECT_DIR$/cdkj-framework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/cdkj-framework.iml" filepath="$PROJECT_DIR$/cdkj-framework.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-message/cdkj-message.iml" filepath="$PROJECT_DIR$/cdkj-message/cdkj-message.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-pay/cdkj-pay.iml" filepath="$PROJECT_DIR$/cdkj-pay/cdkj-pay.iml" />
       <module fileurl="file://$PROJECT_DIR$/cdkj-pom/cdkj-pom.iml" filepath="$PROJECT_DIR$/cdkj-pom/cdkj-pom.iml" />
