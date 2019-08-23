@@ -24,6 +24,16 @@ public class SwaggerConfig {
     private String basePackage;
 
     /**
+     * 头部
+     */
+    private String headers;
+
+    /**
+     * 是否隐藏
+     */
+    private Boolean hidden = false;
+
+    /**
      * 标题
      */
     private String title = "cdkj 框架中使用 Swagger2 构建 RESTful APIs";
@@ -59,6 +69,22 @@ public class SwaggerConfig {
 
     public void setBasePackage(String basePackage) {
         this.basePackage = basePackage;
+    }
+
+    public String getHeaders() {
+        return headers;
+    }
+
+    public void setHeaders(String headers) {
+        this.headers = headers;
+    }
+
+    public Boolean getHidden() {
+        return hidden;
+    }
+
+    public void setHidden(Boolean hidden) {
+        this.hidden = hidden;
     }
 
     public String getTitle() {
