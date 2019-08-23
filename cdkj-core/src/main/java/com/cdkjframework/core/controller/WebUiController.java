@@ -2,7 +2,6 @@ package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.consts.CacheConstant;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
@@ -41,7 +40,7 @@ public class WebUiController extends AbstractController {
     public ResponseBuilder quit(String id) {
         ResponseBuilder builder = new ResponseBuilder();
         try {
-            final String key = CacheConstant.userLogin + id;
+            final String key = com.cdkjframework.consts.CacheConsts.userLogin + id;
             JedisPoolUtil.exists(key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -103,7 +102,7 @@ public class WebUiController extends AbstractController {
     public <T> T getCurrentUser(String id, Class<T> clazz) {
         T userEntity = null;
         try {
-            userEntity = JedisPoolUtil.getEntity(CacheConstant.userLogin + id, clazz);
+            userEntity = JedisPoolUtil.getEntity(com.cdkjframework.consts.CacheConsts.userLogin + id, clazz);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

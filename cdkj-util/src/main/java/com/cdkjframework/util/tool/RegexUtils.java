@@ -1,6 +1,6 @@
 package com.cdkjframework.util.tool;
 
-import com.cdkjframework.constant.RegexConstant;
+import com.cdkjframework.constant.RegexConsts;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +24,17 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isNumber(String character) {
-        return isPattern(character, RegexConstant.regexNumber);
+        return isPattern(character, RegexConsts.regexNumber);
+    }
+
+    /**
+     * 验证是否为浮点数
+     *
+     * @param character 字符
+     * @return 返回结果
+     */
+    public static boolean isFloatPoint(String character) {
+        return isPattern(character, RegexConsts.regexFloatPoint);
     }
 
     /**
@@ -33,7 +43,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isMaxLengthNumber(String character) {
-        return isPattern(character, RegexConstant.regexMaxLengthNumber);
+        return isPattern(character, RegexConsts.regexMaxLengthNumber);
     }
 
     /**
@@ -42,7 +52,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isLeastLengthNumber(String character) {
-        return isPattern(character, RegexConstant.regexLeastLengthNumber);
+        return isPattern(character, RegexConsts.regexLeastLengthNumber);
     }
 
     /**
@@ -51,7 +61,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isSpecifiedLengthNumber(String character) {
-        return isPattern(character, RegexConstant.regexSpecifiedLengthNumber);
+        return isPattern(character, RegexConsts.regexSpecifiedLengthNumber);
     }
 
     /**
@@ -60,7 +70,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isNonZreoNumber(String character) {
-        return isPattern(character, RegexConstant.regexNonZreoNumber);
+        return isPattern(character, RegexConsts.regexNonZreoNumber);
     }
 
     /**
@@ -69,7 +79,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isTwoDecimalFractionNumber(String character) {
-        return isPattern(character, RegexConstant.regexTwoDecimalFractionNumber);
+        return isPattern(character, RegexConsts.regexTwoDecimalFractionNumber);
     }
 
     /**
@@ -78,7 +88,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isSpecifiedDecimalFractionNumber(String character) {
-        return isPattern(character, RegexConstant.regexSpecifiedDecimalFractionNumber);
+        return isPattern(character, RegexConsts.regexSpecifiedDecimalFractionNumber);
     }
 
     /**
@@ -87,7 +97,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isNonzeroPositiveIntegersNumber(String character) {
-        return isPattern(character, RegexConstant.regexNonzeroPositiveIntegersNumber);
+        return isPattern(character, RegexConsts.regexNonzeroPositiveIntegersNumber);
     }
 
     /**
@@ -96,7 +106,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isNonzeroNegativeIntegersNumber(String character) {
-        return isPattern(character, RegexConstant.regexNonzeroNegativeIntegersNumber);
+        return isPattern(character, RegexConsts.regexNonzeroNegativeIntegersNumber);
     }
 
     /**
@@ -105,7 +115,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isThreeLengthCharacter(String character) {
-        return isPattern(character, RegexConstant.regexThreeLengthCharacter);
+        return isPattern(character, RegexConsts.regexThreeLengthCharacter);
     }
 
     /**
@@ -114,7 +124,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isEnglishCharacter(String character) {
-        return isPattern(character, RegexConstant.regexEmailCharacter);
+        return isPattern(character, RegexConsts.regexEmailCharacter);
     }
 
     /**
@@ -123,7 +133,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isCapitalizationEnglishCharacter(String character) {
-        return isPattern(character, RegexConstant.regexCapitalizationEnglishCharacter);
+        return isPattern(character, RegexConsts.regexCapitalizationEnglishCharacter);
     }
 
     /**
@@ -132,7 +142,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isLowercaseEnglishCharacter(String character) {
-        return isPattern(character, RegexConstant.regexLowercaseEnglishCharacter);
+        return isPattern(character, RegexConsts.regexLowercaseEnglishCharacter);
     }
 
     /**
@@ -141,7 +151,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isEnglishAndNumberCharacter(String character) {
-        return isPattern(character, RegexConstant.regexEnglishAndNumberCharacter);
+        return isPattern(character, RegexConsts.regexEnglishAndNumberCharacter);
     }
 
     /**
@@ -150,7 +160,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isNonSpecialCharacter(String character) {
-        return isPattern(character, RegexConstant.regexNonSpecialCharacter);
+        return isPattern(character, RegexConsts.regexNonSpecialCharacter);
     }
 
     /**
@@ -160,7 +170,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isPasswordCharacter(String character) {
-        return isPattern(character, RegexConstant.regexPasswordCharacter);
+        return isPattern(character, RegexConsts.regexPasswordCharacter);
     }
 
     /**
@@ -169,7 +179,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isChineseCharacter(String character) {
-        return isPattern(character, RegexConstant.regexChineseCharacter);
+        return isPattern(character, RegexConsts.regexChineseCharacter);
     }
 
     /**
@@ -178,7 +188,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isEmailCharacter(String character) {
-        return isPattern(character, RegexConstant.regexEmailCharacter);
+        return isPattern(character, RegexConsts.regexEmailCharacter);
     }
 
     /**
@@ -187,7 +197,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isInternetUrlCharacter(String character) {
-        return isPattern(character, RegexConstant.regexInternetUrlCharacter);
+        return isPattern(character, RegexConsts.regexInternetUrlCharacter);
     }
 
     /**
@@ -197,7 +207,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isPhoneCharacter(String character) {
-        return isPattern(character, RegexConstant.regexPhoneCharacter);
+        return isPattern(character, RegexConsts.regexPhoneCharacter);
     }
 
     /**
@@ -206,7 +216,7 @@ public class RegexUtils {
      * @param character 字符
      */
     public static boolean isIdNumberCharacter(String character) {
-        return isPattern(character, RegexConstant.regexIdNumberCharacter);
+        return isPattern(character, RegexConsts.regexIdNumberCharacter);
     }
 
     /**

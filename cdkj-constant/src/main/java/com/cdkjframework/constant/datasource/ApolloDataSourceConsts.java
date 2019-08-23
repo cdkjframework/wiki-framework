@@ -9,7 +9,7 @@ package com.cdkjframework.constant.datasource;
  * @Version: 1.0
  */
 
-public class ApolloDataSourceConstant extends ApolloBasicsConstant {
+public class ApolloDataSourceConsts extends ApolloBasicsConsts {
 
     /**
      * 类型

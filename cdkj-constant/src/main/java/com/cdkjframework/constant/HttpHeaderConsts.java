@@ -9,7 +9,7 @@ package com.cdkjframework.consts;
  * @Version: 1.0
  */
 
-public class HttpHeaderConstant {
+public class HttpHeaderConsts {
 
     /**
      * 接受

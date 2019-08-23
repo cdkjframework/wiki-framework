@@ -2,16 +2,13 @@ package com.cdkjframework.util.network.https;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.cdkjframework.consts.HttpHeaderConstant;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.network.http.HttpRequestUtils;
 import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
@@ -20,12 +17,6 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +63,7 @@ public class HttpsClientUtils {
                 param = JSONObject.toJSONString(requestEntity.getParamsMap());
             }
 
-            String basicHeader = requestEntity.getHeaderMap().get(HttpHeaderConstant.contentType);
+            String basicHeader = requestEntity.getHeaderMap().get(com.cdkjframework.consts.HttpHeaderConsts.contentType);
             if (StringUtils.isNullAndSpaceOrEmpty(basicHeader)) {
                 basicHeader = "application/json";
             }
@@ -89,7 +80,7 @@ public class HttpsClientUtils {
             //设置请求类型
             stringEntity.setContentType(requestEntity.getContentType());
 
-            stringEntity.setContentEncoding(new BasicHeader(HttpHeaderConstant.contentType, basicHeader));
+            stringEntity.setContentEncoding(new BasicHeader(com.cdkjframework.consts.HttpHeaderConsts.contentType, basicHeader));
             httpPost.setEntity(stringEntity);
             //请求并获取结果
             HttpResponse response = httpClient.execute(httpPost);
@@ -173,7 +164,7 @@ public class HttpsClientUtils {
         List<Header> headerList = new ArrayList<>();
         //验证是否开启数据压缩
         if (requestEntity.isCompress()) {
-            headerList.add(new BasicHeader(HttpHeaderConstant.contentEncoding, "gzip"));
+            headerList.add(new BasicHeader(com.cdkjframework.consts.HttpHeaderConsts.contentEncoding, "gzip"));
         }
 
         Set<Map.Entry<String, String>> entrySet = mapHeader.entrySet();

@@ -9,7 +9,7 @@ package com.cdkjframework.constant;
  * @Version: 1.0
  */
 
-public class DataTypeConst {
+public class DataTypeConsts {
 
     /**
      * 字符串

@@ -1,6 +1,6 @@
 package com.cdkjframework.util.tool.mapper;
 
-import com.cdkjframework.constant.DataTypeConst;
+import com.cdkjframework.constant.DataTypeConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
@@ -241,31 +241,31 @@ public class ReflectionUtils {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String value = parameters[0].toString();
         switch (dataType) {
-            case DataTypeConst.booleanName:
-            case DataTypeConst
+            case DataTypeConsts.booleanName:
+            case DataTypeConsts
                     .bigBooleanName:
                 obj = StringUtils.convertBoolean(value);
                 break;
-            case DataTypeConst.bigDecimalName:
+            case DataTypeConsts.bigDecimalName:
                 obj = BigDecimal.valueOf(Float.valueOf(value));
                 break;
-            case DataTypeConst.dateName:
+            case DataTypeConsts.dateName:
                 if (value.contains("CST")) {
                     obj = new Date(value);
                 } else {
                     try {
                         obj = dateFormat.parse(value);
                     } catch (ParseException e) {
-                        logUtil.error(DataTypeConst.dateName + "：" + value);
+                        logUtil.error(DataTypeConsts.dateName + "：" + value);
                         logUtil.error(e);
                     }
                 }
                 break;
-            case DataTypeConst.intName:
-            case DataTypeConst.integerName:
+            case DataTypeConsts.intName:
+            case DataTypeConsts.integerName:
                 obj = Integer.valueOf(value);
                 break;
-            case DataTypeConst.timestampName:
+            case DataTypeConsts.timestampName:
                 Long timestamp = StringUtils.convertLong(value);
                 if (timestamp > 0) {
                     obj = new Timestamp(Long.valueOf(value));
@@ -273,14 +273,14 @@ public class ReflectionUtils {
                     obj = new Timestamp(new Date(value).getTime());
                 }
                 break;
-            case DataTypeConst.sqlDateName:
+            case DataTypeConsts.sqlDateName:
                 obj = new java.sql.Date(Long.valueOf(value));
                 break;
-            case DataTypeConst.StringName:
+            case DataTypeConsts.StringName:
                 obj = String.valueOf(value);
                 break;
-            case DataTypeConst.doubleName:
-            case DataTypeConst.bigDoubleName:
+            case DataTypeConsts.doubleName:
+            case DataTypeConsts.bigDoubleName:
                 obj = Double.valueOf(value);
                 break;
             default:

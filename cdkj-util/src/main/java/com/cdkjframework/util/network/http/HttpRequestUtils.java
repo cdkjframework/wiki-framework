@@ -1,7 +1,6 @@
 package com.cdkjframework.util.network.http;
 
 import com.cdkjframework.entity.http.HttpRequestEntity;
-import com.cdkjframework.consts.HttpHeaderConstant;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
 import com.alibaba.fastjson.JSONArray;
@@ -222,7 +221,7 @@ public class HttpRequestUtils {
 
         //验证是否开启数据压缩
         if (httpRequestEntity.isCompress()) {
-            connection.setRequestProperty(HttpHeaderConstant.contentEncoding, "gzip");
+            connection.setRequestProperty(com.cdkjframework.consts.HttpHeaderConsts.contentEncoding, "gzip");
         }
     }
 }

@@ -9,7 +9,7 @@ package com.cdkjframework.constant.datasource;
  * @Version: 1.0
  */
 
-public class ApolloBasicsConstant {
+public class ApolloBasicsConsts {
     /**
      * 数据库前缀
      */

@@ -163,7 +163,8 @@ public class ConvertUtils {
             return false;
         }
         //验证是否为数字
-        return RegexUtils.isNumber(obj.toString());
+        return RegexUtils.isNumber(String.valueOf(obj)) ||
+                RegexUtils.isFloatPoint(String.valueOf(obj));
     }
 
 }

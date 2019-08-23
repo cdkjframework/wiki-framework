@@ -9,7 +9,7 @@ package com.cdkjframework.consts;
  * @Version: 1.0
  */
 
-public class CacheConstant {
+public class CacheConsts {
 
     /**
      * 用户登录缓存
