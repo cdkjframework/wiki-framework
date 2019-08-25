@@ -6,6 +6,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 
 /**
@@ -16,11 +17,14 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
  * @Author: xiaLin
  * @Version: 1.0
  */
-@SpringBootApplication
-@EnableAutoConfiguration(exclude = {
+@SpringBootApplication(scanBasePackages = {
+        "com.cdkjframework.config",
+        "com.cdkjframework.util"
+},exclude = {
         HibernateJpaAutoConfiguration.class,
         JpaRepositoriesAutoConfiguration.class,
-        DruidDataSourceAutoConfigure.class
+        DruidDataSourceAutoConfigure.class,
+        DataSourceAutoConfiguration.class
 })
 @EnableApolloConfig
 public class WebApplication {

@@ -7,7 +7,7 @@ import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.enums.basics.BasicsEnum;
-import com.cdkjframework.util.cache.JedisPoolUtil;
+import com.cdkjframework.util.cache.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import io.jsonwebtoken.Claims;
@@ -41,7 +41,7 @@ public class WebUiController extends AbstractController {
         ResponseBuilder builder = new ResponseBuilder();
         try {
             final String key = com.cdkjframework.consts.CacheConsts.userLogin + id;
-            JedisPoolUtil.exists(key);
+            RedisUtils.aSyncDel(key);
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -102,7 +102,7 @@ public class WebUiController extends AbstractController {
     public <T> T getCurrentUser(String id, Class<T> clazz) {
         T userEntity = null;
         try {
-            userEntity = JedisPoolUtil.getEntity(com.cdkjframework.consts.CacheConsts.userLogin + id, clazz);
+            userEntity = RedisUtils.aSyncGetEntity(com.cdkjframework.consts.CacheConsts.userLogin + id, clazz);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

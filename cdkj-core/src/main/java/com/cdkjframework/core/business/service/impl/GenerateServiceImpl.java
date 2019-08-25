@@ -185,7 +185,7 @@ public class GenerateServiceImpl implements GenerateService {
         loadData(entity, treeEntity, dataBase, fields);
         try {
 
-            final String os = HostUtil.getOs();
+            final String os = HostUtils.getOs();
             String division = "/";
             if (os.startsWith("win")) {
                 division = "\\";
