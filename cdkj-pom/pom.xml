@@ -55,7 +55,10 @@
         <jxls.poi.version>1.2.0</jxls.poi.version>
         <apache.poi.version>4.1.0</apache.poi.version>
         <logback.version>1.2.3</logback.version>
-        <jedis.version>3.1.0</jedis.version>
+        <lettuce-core.version>5.1.8.RELEASE</lettuce-core.version>
+        <commons-pool2.version>2.7.0</commons-pool2.version>
+
+
         <fileupload.version>1.4</fileupload.version>
         <kryo.version>4.0.2</kryo.version>
         <kryo.erializers.version>0.42</kryo.erializers.version>
@@ -67,6 +70,7 @@
         <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
         <lombok.version>1.18.8</lombok.version>
         <commons.io.version>2.6</commons.io.version>
+
         <java.jwt.version>3.8.1</java.jwt.version>
         <jjwt.version>0.9.1</jjwt.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
@@ -147,10 +151,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-data-jpa</artifactId>
                 <version>${spring.boot.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-data-redis</artifactId>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
@@ -324,9 +324,14 @@
             <!-- end swagger2 -->
             <!-- Redis begin -->
             <dependency>
-                <groupId>redis.clients</groupId>
-                <artifactId>jedis</artifactId>
-                <version>${jedis.version}</version>
+                <groupId>io.lettuce</groupId>
+                <artifactId>lettuce-core</artifactId>
+                <version>${lettuce-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${commons-pool2.version}</version>
             </dependency>
             <!-- Redis end -->
 

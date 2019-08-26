@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,6 +24,12 @@ public class ComparisonUtils {
      * 日志
      */
     private static LogUtils logUtil = LogUtils.getLogger(ComparisonUtils.class);
+
+
+    /**
+     * 调用object 的 method 所代表的方法，其方法的参数是 parameters
+     */
+    static List<String> dataTypeList = Arrays.asList("java.util.ArrayList", "java.util.List");
 
     /**
      * 实体比较
@@ -52,10 +59,6 @@ public class ComparisonUtils {
         if (source == null || target == null) {
             return entityList;
         }
-        //调用object 的 method 所代表的方法，其方法的参数是 parameters
-        final List<String> dataTypeList = new ArrayList<>();
-        dataTypeList.add("java.util.ArrayList");
-        dataTypeList.add("java.util.List");
 
         List<Field> sourceFields = ReflectionUtils.getDeclaredFields(source.getClass());
         try {

@@ -1,13 +1,9 @@
 package com.cdkjframework.util.files;
 
 import com.cdkjframework.exceptions.GlobalException;
-<<<<<<< HEAD
 import com.cdkjframework.util.log.LogUtils;
-=======
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.tool.HostUtil;
-import com.cdkjframework.util.tool.StringUtil;
->>>>>>> 3529775325e31b9888c0f35491b5b16cd53c6006
+import com.cdkjframework.util.tool.HostUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -270,7 +266,7 @@ public class FileUtil {
      * @return 返回结果
      */
     public static String getPath(String path) {
-        final String os = HostUtil.getOs();
+        final String os = HostUtils.getOs();
         String division = "/";
         if (os.startsWith("win")) {
             division = "\\";

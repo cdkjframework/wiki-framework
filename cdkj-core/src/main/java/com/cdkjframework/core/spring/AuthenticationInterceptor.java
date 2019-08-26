@@ -6,7 +6,7 @@ import com.cdkjframework.core.spring.interceptor.AbstractInterceptor;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.cache.JedisPoolUtil;
+import com.cdkjframework.util.cache.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -142,7 +142,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
         String key = com.cdkjframework.consts.CacheConsts.userLogin + claims.get("token").toString();
 
         //获取用户信息
-        UserEntity userEntity = JedisPoolUtil.getEntity(key, UserEntity.class);
+        UserEntity userEntity = RedisUtils.aSyncGetEntity(key, UserEntity.class);
         if (userEntity == null && verified) {
             throw new GlobalException(ResponseBuilderEnum.LogonFailure.getName());
         }

@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.config
@@ -19,7 +21,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @ToString
 @Component
-@ConfigurationProperties(prefix = "spring.cdkj.redis")
+@ConfigurationProperties(prefix = "spring.cache.redis")
 public class RedisConfig {
 
     /**
@@ -30,7 +32,7 @@ public class RedisConfig {
     /**
      * Redis服务器地址
      */
-    private String host;
+    private List<String> host;
 
     /**
      * Redis服务器连接端口
@@ -44,23 +46,38 @@ public class RedisConfig {
     /**
      * 连接池最大连接数（使用负值表示没有限制）
      */
-    private Integer poolMaxActive = 200;
+    private Integer maxActive = 200;
 
     /**
      * 连接池最大阻塞等待时间（使用负值表示没有限制）
      */
-    private Integer poolMaxWait = -1;
+    private Integer maxWaitMillis = 0;
 
 
     /**
      * 连接池中的最大空闲连接
      */
-    private Integer pooMaxIdle = 10;
+    private Integer maxIdle = 10;
+
+    /**
+     * 最小可检测时间毫秒
+     */
+    private Integer minEvictableIdleTimeMillis = 1000 * 30;
+
+    /**
+     * 软最小可检测时间毫秒
+     */
+    private Integer softMinEvictableIdleTimeMillis = 1000 * 30;
+
+    /**
+     * 最大总数
+     */
+    private Integer maxTotal = 16;
 
     /**
      * 连接池中的最小空闲连接
      */
-    private Integer poolMinIdle = 0;
+    private Integer minIdle = 0;
 
     /**
      * 连接超时时间（毫秒）
