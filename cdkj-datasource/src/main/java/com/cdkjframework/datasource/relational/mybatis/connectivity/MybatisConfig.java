@@ -2,7 +2,8 @@ package com.cdkjframework.datasource.relational.mybatis.connectivity;
 
 import com.cdkjframework.datasource.relational.mybatis.config.MybatisReadConfig;
 import com.cdkjframework.util.log.LogUtils;
-import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInterceptor;
+import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -78,7 +79,7 @@ public class MybatisConfig {
             sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
 
             //分页
-            pageHelper();
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
         } catch (Exception ex) {
             logUtil.error(ex.getMessage());
         }
@@ -115,7 +116,8 @@ public class MybatisConfig {
      */
     private org.apache.ibatis.session.Configuration myBatisConfiguration() {
         //配置
-        org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
+        org.apache.ibatis.session.Configuration configuration =
+                new org.apache.ibatis.session.Configuration();
         Properties properties = new Properties();
         configuration.setVariables(properties);
         configuration.setCallSettersOnNulls(true);
@@ -144,9 +146,9 @@ public class MybatisConfig {
     /**
      * 分页设置
      */
-    private void pageHelper() {
+    private PageInterceptor pageHelper() {
         // 分页控件
-        PageHelper pageHelper = new PageHelper();
+        PageInterceptor pageHelper = new PageInterceptor();
         Properties prop = new Properties();
         // 启用合理化后，如果pageNumM<1会查询第一页，如果pageNum>pages会查询最后一页
         prop.setProperty("reasonable", "false");
@@ -165,5 +167,7 @@ public class MybatisConfig {
         prop.setProperty("returnPageInfo", "none");
         //添加插件
         pageHelper.setProperties(prop);
+
+        return pageHelper;
     }
 }
