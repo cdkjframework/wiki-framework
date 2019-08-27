@@ -1,5 +1,6 @@
 package com.cdkjframework.datasource.relational.mybatis.connectivity;
 
+import com.cdkjframework.datasource.relational.mybatis.LogbackImpl;
 import com.cdkjframework.datasource.relational.mybatis.config.MybatisReadConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.github.pagehelper.PageInterceptor;
@@ -138,6 +139,9 @@ public class MybatisConfig {
         configuration.setDefaultStatementTimeout(25000);
         // 设置字段和类是否支持驼峰命名的属性。 系统默认值是false
         configuration.setMapUnderscoreToCamelCase(true);
+
+        //  添加日志输出
+        configuration.setLogImpl(LogbackImpl.class);
 
         //返回结果
         return configuration;
