@@ -17,29 +17,6 @@ import java.math.BigDecimal;
 public class CompareUtils {
 
     /**
-     * decimal数据相加
-     *
-     * @param decimalList 数据列表
-     * @return 返回相加结果
-     */
-    public static BigDecimal decimalAddition(BigDecimal... decimalList) {
-        BigDecimal result = BigDecimal.ZERO;
-        // 验证是否有数据
-        if (decimalList == null || decimalList.length == 0) {
-            return result;
-        }
-
-        // 值相加
-        for (BigDecimal value :
-                decimalList) {
-            result = result.add(ConvertUtils.convertDecimal(value));
-        }
-
-        // 返回结果
-        return result;
-    }
-
-    /**
      * 验证前一个数据是否大于
      *
      * @param sourceDigital 源数据
