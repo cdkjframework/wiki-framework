@@ -1,6 +1,7 @@
 package com.cdkjframework.web;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import com.cdkjframework.core.spring.CdkjApplication;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -8,6 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @ProjectName: cdkj-framework
@@ -19,7 +21,9 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
  */
 @SpringBootApplication(scanBasePackages = {
         "com.cdkjframework.config",
-        "com.cdkjframework.util"
+        "com.cdkjframework.util",
+        "com.cdkjframework.constant",
+        "com.cdkjframework.core.base.swagger"
 },exclude = {
         HibernateJpaAutoConfiguration.class,
         JpaRepositoriesAutoConfiguration.class,
@@ -27,6 +31,7 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfigurat
         DataSourceAutoConfiguration.class
 })
 @EnableApolloConfig
+//@EnableSwagger2
 public class WebApplication {
 
     /**
@@ -35,6 +40,6 @@ public class WebApplication {
      * @param args 参数
      */
     public static void main(String[] args) {
-        SpringApplication.run(WebApplication.class, args);
+        CdkjApplication.run(WebApplication.class, args);
     }
 }

@@ -3,6 +3,7 @@ package com.cdkjframework.constant;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class Application implements ApplicationContextAware {
     /**
      * 应用程序上下文
      */
-    public static ApplicationContext applicationContext;
+    public static ConfigurableApplicationContext applicationContext;
 
     /**
      * 批注元数据
@@ -36,6 +37,6 @@ public class Application implements ApplicationContextAware {
      */
     @Override
     public void setApplicationContext(ApplicationContext appContext) throws BeansException {
-        applicationContext = appContext;
+        applicationContext = (ConfigurableApplicationContext) appContext;
     }
 }

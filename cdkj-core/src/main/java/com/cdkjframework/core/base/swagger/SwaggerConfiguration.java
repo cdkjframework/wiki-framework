@@ -1,6 +1,7 @@
 package com.cdkjframework.core.base.swagger;
 
 import com.cdkjframework.config.SwaggerConfig;
+import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -8,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.context.ApplicationContextInitializer;
-import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -38,7 +38,7 @@ import java.util.List;
 
 @Configuration
 @EnableSwagger2
-public class SwaggerConfiguration implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+public class SwaggerConfiguration {
 
     /**
      * 读取配置
@@ -55,8 +55,8 @@ public class SwaggerConfiguration implements ApplicationContextInitializer<Confi
      *
      * @return
      */
-    @Override
-    public void initialize(ConfigurableApplicationContext applicationContext) {
+    @Bean
+    public void run() throws Exception {
 
         //接口信息
         List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
@@ -93,7 +93,7 @@ public class SwaggerConfiguration implements ApplicationContextInitializer<Confi
                     });
 
             BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-            BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) applicationContext.getBeanFactory();
+            BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) Application.applicationContext.getBeanFactory();
             beanFactory.registerBeanDefinition(entity.getBeanName(), beanDefinition);
         }
     }
