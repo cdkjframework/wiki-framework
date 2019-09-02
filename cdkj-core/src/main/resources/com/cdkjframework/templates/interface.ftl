@@ -46,5 +46,5 @@ public interface ${className}Service extends BasicService {
      * @param ${classLowName}Dto 查询实体
      * @return 返回分页数据实体
      */
-    PageEntity find${className}PageList(${className}Dto ${classLowName}Dto);
+    PageEntity<${className}Dto> find${className}PageList(${className}Dto ${classLowName}Dto);
 }

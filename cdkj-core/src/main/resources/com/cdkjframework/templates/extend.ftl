@@ -1,6 +1,6 @@
-package ${packageName}.extends.entity;
+package ${packageName}.entity.extend;
 
-import com.cdkjframework.entity.BaseEntity;
+import ${packageName}.entity.${className}Entity;
 <#list leading as item>
     import ${item};
 </#list>
@@ -25,11 +25,11 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "${table}", catalog = "${dataBase}")
-public class ${className}ExtendsEntity extends BaseEntity {
+public class ${className}ExtendEntity extends ${className}Entity {
 
 private static final long serialVersionUID = ${serialVersionUID};
 <#list children as item>
-    <#if item.columnShow>
+    <#if item.columnShow && item.isExtension==1>
 
         /**
         *

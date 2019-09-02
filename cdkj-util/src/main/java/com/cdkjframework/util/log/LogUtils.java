@@ -75,7 +75,7 @@ public class LogUtils {
      * @param msg 错误信息
      */
     public void debug(String msg) {
-        Log(Level.SEVERE, msg);
+        Log(Level.CONFIG, msg);
     }
 
     /**
@@ -86,9 +86,9 @@ public class LogUtils {
      */
     public void debug(Throwable throwable, String msg) {
         if (throwable != null) {
-            Log(Level.SEVERE, throwable, msg);
+            Log(Level.CONFIG, throwable, msg);
         } else {
-            Log(Level.SEVERE, msg);
+            Log(Level.CONFIG, msg);
         }
     }
 

@@ -28,7 +28,7 @@ public class ${className}Dto extends RequestEntity {
     private static final long serialVersionUID = ${serialVersionUID};
 
 <#list children as item>
-    <#if item.columnShow>
+    <#if item.columnShow && item.isExtension==0>
     /**
      * ${item.columnDescription}
      */

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -36,7 +37,7 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-
+@Component
 @Configuration
 @EnableSwagger2
 public class SwaggerConfiguration {
@@ -57,7 +58,7 @@ public class SwaggerConfiguration {
      * @return
      */
     @Bean
-    public void run() throws Exception {
+    public void runSwagger() {
 
         //接口信息
         List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils

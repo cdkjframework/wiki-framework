@@ -39,6 +39,11 @@ public class ChildrenEntity {
     private boolean columnShow = true;
 
     /**
+     * 是否为扩展字段
+     */
+    private int isExtension = 0;
+
+    /**
      * 字段类型
      */
     private String dataType;

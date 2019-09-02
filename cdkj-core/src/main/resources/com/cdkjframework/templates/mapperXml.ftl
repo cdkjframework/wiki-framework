@@ -3,16 +3,18 @@
 <mapper namespace="${packageName}.mapper.${className}Mapper">
     <resultMap id="baseResultMap" type="${packageName}.entity.${className}Entity">
         <#list children as item>
-            <#if item.columnName=='id'>
+            <#if (item.columnName=='id' && item.isExtension==0)>
             <id column="${item.tableColumnName}" property="${item.columnName}" jdbcType="${item.columnType}"/>
-            <#else>
+            <#elseif item.isExtension==0>
             <result column="${item.tableColumnName}" property="${item.columnName}" jdbcType="${item.columnType}"/>
             </#if>
         </#list>
     </resultMap>
     <sql id="base_Column_List">
         <#list children as item>
-            t.${item.tableColumnName},
+            <#if item.isExtension==0>
+                t.${item.tableColumnName},
+            </#if>
         </#list>
         '' as emptyValue
     </sql>
@@ -21,10 +23,12 @@
         SET
         <trim prefix="" suffix="" suffixOverrides=",">
         <#list children as item>
-            <#if !item.columnKey>
+            <#if item.isExtension==0>
+                <#if !item.columnKey>
             <if test="${item.columnName} != null ">
                 ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end],
             </if>
+            </#if>
             </#if>
         </#list>
         </trim>
@@ -40,16 +44,20 @@
         INSERT INTO ${table}
         <trim prefix="(" suffix=")" suffixOverrides=",">
         <#list children as item>
-            <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>">
-                ${item.tableColumnName},
-            </if>
+            <#if item.isExtension==0>
+                <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>">
+                    ${item.tableColumnName},
+                </if>
+            </#if>
         </#list>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <#list children as item>
-                <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>">
-                    [begin]${item.columnName},jdbcType=${item.columnType}[end],
-                </if>
+                <#if item.isExtension==0>
+                    <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>">
+                        [begin]${item.columnName},jdbcType=${item.columnType}[end],
+                    </if>
+                </#if>
             </#list>
         </trim>
     </insert>
@@ -72,9 +80,11 @@
         FROM ${table} t
        <where>
         <#list children as item>
-            <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>" >
-                AND t.${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]
-            </if>
+            <#if item.isExtension==0>
+                <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>" >
+                    AND t.${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]
+                </if>
+            </#if>
         </#list>
        </where>
     </select>
@@ -84,9 +94,11 @@
         FROM ${table} t
         <where>
         <#list children as item>
+            <#if item.isExtension==0>
             <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>" >
                 AND t.${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]
             </if>
+            </#if>
         </#list>
         </where>
     </select>

@@ -152,6 +152,21 @@ public class ConvertUtils {
     }
 
     /**
+     * 转换为字段串类型
+     *
+     * @param obj 数据
+     * @return 返回结果
+     */
+    public static String convertString(Object obj) {
+        if (StringUtils.isNullAndSpaceOrEmpty(obj)) {
+            return "";
+        }
+
+        // 返回结果
+        return String.valueOf(obj);
+    }
+
+    /**
      * 数据类型判断
      *
      * @param obj 值

@@ -1,4 +1,4 @@
-package com.cdkjframework.exceptions;
+package com.cdkjframework.core.spring.body;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;

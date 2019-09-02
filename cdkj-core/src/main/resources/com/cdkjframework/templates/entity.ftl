@@ -25,12 +25,12 @@ import javax.persistence.*;
 @Setter
 @ToString
 @Table(name = "${table}", catalog = "${dataBase}")
-public class ${className}Entity extends ${className}ExtendsEntity {
+public class ${className}Entity extends BaseEntity {
 
     private static final long serialVersionUID = ${serialVersionUID};
 
 <#list children as item>
-    <#if item.columnShow>
+    <#if item.columnShow && item.isExtension==0>
     /**
      * ${item.columnDescription}
      */

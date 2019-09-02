@@ -52,6 +52,7 @@ public class HttpServletContentRequestWrapper extends HttpServletRequestWrapper 
         if (headerValue != null) {
             return headerValue;
         }
+
         // else return from into the original wrapped object
         return ((HttpServletRequest) getRequest()).getHeader(name);
     }

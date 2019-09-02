@@ -1,10 +1,13 @@
 package com.cdkjframework.entity;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -18,7 +21,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class PageEntity implements Serializable {
+@ApiModel("分页数据")
+public class PageEntity<T> implements Serializable {
 
     private static final long serialVersionUID = -766231940524932922L;
 
@@ -35,7 +39,7 @@ public class PageEntity implements Serializable {
      * @param total 总条数
      * @param data  数据集 list
      */
-    public PageEntity(long index, long total, Object data) {
+    public PageEntity(long index, long total, List<T> data) {
         this.pageIndex = index;
         this.total = total;
         this.data = data;
@@ -44,20 +48,24 @@ public class PageEntity implements Serializable {
     /**
      * 编码
      */
+    @ApiModelProperty("编码")
     private int code;
 
     /**
      * 当前页码
      */
+    @ApiModelProperty("当前页码")
     private long pageIndex;
 
     /**
      * 总条数
      */
+    @ApiModelProperty("总条数")
     private long total;
 
     /**
      * 分页数据集
      */
-    private Object data;
+    @ApiModelProperty("分页数据集")
+    private List<T> data;
 }

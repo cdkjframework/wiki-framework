@@ -59,11 +59,6 @@ public class MybatisDruidDbConfig {
     @Bean(name = "mybatisDataSource")
     @Qualifier("mybatisDataSource")
     public DataSource mybatisDataSource() {
-        //验证是否通过 apollo 读取
-        Boolean isConfig = apolloConfig == null || apolloConfig.getPropertyNames().size() == 0;
-        if (!isConfig && StringUtils.isNullAndSpaceOrEmpty(mybatisSqlConfig.getUrl())) {
-            setConfiguration();
-        }
 
         DruidDataSource datasource = new DruidDataSource();
 
@@ -125,21 +120,5 @@ public class MybatisDruidDbConfig {
         datasource.setConnectionProperties(dataSourceConfig.getConnectionProperties());
 
         return datasource;
-    }
-
-    /**
-     * 设置配置信息
-     */
-    private void setConfiguration() {
-        try {
-            mybatisSqlConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), MybatisReadConfig.class);
-            dataSourceConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), DataSourceConfig.class);
-        } catch (IllegalAccessException e) {
-            logUtil.error(e.getMessage());
-            logUtil.error(e.getStackTrace());
-        } catch (InstantiationException e) {
-            logUtil.error(e.getMessage());
-            logUtil.error(e.getStackTrace());
-        }
     }
 }

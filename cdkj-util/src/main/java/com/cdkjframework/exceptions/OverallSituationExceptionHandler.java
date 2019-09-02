@@ -45,32 +45,28 @@ public class OverallSituationExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseBuilder defultExcepitonHandler(Exception e) {
-        ResponseBuilder ResponseBuilder = new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseBuilderEnum.Error.getValue());
-        ResponseBuilder.setMessage(ResponseBuilderEnum.Error.getName());
+        ResponseBuilder builder =  ResponseBuilder.failBuilder();
         Map<String, Object> params = new HashMap<>(10);
         params.put("error", e.getMessage());
-        ResponseBuilder.setData(params);
-        return ResponseBuilder;
+        builder.setData(params);
+        return builder;
     }
 
     @ExceptionHandler(GlobalException.class)
     @ResponseBody
     public ResponseBuilder GlobalException(GlobalException e) {
-        ResponseBuilder ResponseBuilder = new ResponseBuilder();
-        ResponseBuilder.setCode(ResponseBuilderEnum.Error.getValue());
-        ResponseBuilder.setMessage(e.getMessage());
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+        builder.setMessage(e.getMessage());
         Map<String, Object> params = new HashMap<>(10);
         params.put("error", e.getMessage());
-        ResponseBuilder.setData(params);
-        return ResponseBuilder;
+        builder.setData(params);
+        return builder;
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ResponseBuilder MethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        ResponseBuilder builder = new ResponseBuilder();
-        builder.setCode(ResponseBuilderEnum.Error.getValue());
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
 
         BindingResult bindingResult = e.getBindingResult();
         List<String> errorList = new ArrayList<>();
@@ -97,8 +93,6 @@ public class OverallSituationExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
     public ResponseBuilder constraintViolationExceptionHandler(ConstraintViolationException e) {
-        ResponseBuilder builder = new ResponseBuilder();
-        builder.setCode(ResponseBuilderEnum.Error.getValue());
         String message = e.getMessage();
         Integer begin = message.indexOf(":") + 1;
         Integer end = message.indexOf(",");
@@ -107,9 +101,8 @@ public class OverallSituationExceptionHandler {
         } else {
             message = message.substring(begin);
         }
-        builder.setMessage(message);
         logUtil.info(e, "the business has verify info!!!!");
-        return builder;
+        return ResponseBuilder.failBuilder(message);
     }
 
     /**
@@ -121,13 +114,10 @@ public class OverallSituationExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     @ResponseBody
     public ResponseBuilder sizeLimitExceededExceptionExceptionHandler(MaxUploadSizeExceededException e) {
-        ResponseBuilder builder = new ResponseBuilder();
-        builder.setCode(ResponseBuilderEnum.Error.getValue());
         Long size = Long.valueOf(1024);
         Long fileSizeM = size / (1024 * 1024L);
         String info = String.format("文件请勿超过%sM", fileSizeM);
-        builder.setMessage(info);
         logUtil.info(info);
-        return builder;
+        return ResponseBuilder.failBuilder(info);
     }
 }

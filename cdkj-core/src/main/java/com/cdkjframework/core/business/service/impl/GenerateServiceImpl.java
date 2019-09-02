@@ -58,21 +58,21 @@ public class GenerateServiceImpl implements GenerateService {
      */
     @Override
     public DatabaseEntity findDatabase() {
-        //获取当前用户数据库
+        // 获取当前用户数据库
         List<DatabaseEntity> myDataBase = generateMapper.findDatabase();
         if (myDataBase == null || myDataBase.size() == 0) {
             return new DatabaseEntity();
         }
 
-        //获取到数据
+        // 获取到数据
         DatabaseEntity entity = myDataBase.get(0);
-        //获取到全部数据
+        // 获取到全部数据
         List<DatabaseEntity> entityList = generateMapper.findDatabaseList();
         if (entityList != null) {
             entity.getChildren().addAll(entityList);
         }
 
-        //返回结果
+        // 返回结果
         return entity;
     }
 
@@ -93,7 +93,7 @@ public class GenerateServiceImpl implements GenerateService {
             tree.setLabel(entity.getTableName());
             tree.setExplain(entity.getTableComment());
 
-            //字段
+            // 字段
             TableColumnEntity columnEntity = new TableColumnEntity();
             columnEntity.setTableName(entity.getTableName());
             columnEntity.setTableSchema(entity.getTableSchema());
@@ -105,15 +105,15 @@ public class GenerateServiceImpl implements GenerateService {
                 treeColumn.setLabel(column.getColumnName());
                 treeColumn.setExplain(column.getColumnComment());
 
-                //添加子节点
+                // 添加子节点
                 tree.getChildren().add(treeColumn);
             }
 
-            //添加节点
+            // 添加节点
             treeEntityList.add(tree);
         }
 
-        //返回结果
+        // 返回结果
         return treeEntityList;
     }
 
@@ -145,7 +145,7 @@ public class GenerateServiceImpl implements GenerateService {
             if (treeEntityList == null || treeEntityList.size() == 0) {
                 return false;
             }
-            //获取基础类里的属性
+            // 获取基础类里的属性
             Field[] fields = BaseEntity.class.getDeclaredFields();
             for (TreeEntity entity :
                     entityList) {
@@ -157,10 +157,10 @@ public class GenerateServiceImpl implements GenerateService {
                     continue;
                 }
 
-                //找到表
+                // 找到表
                 TreeEntity treeEntity = optional.get();
 
-                //模板生成
+                // 模板生成
                 templateGeneration(treeEntity, dataBase, fields);
             }
             isGenerate = true;
@@ -168,7 +168,7 @@ public class GenerateServiceImpl implements GenerateService {
             logUtil.error(ex);
         }
 
-        //返回结果
+        // 返回结果
         return isGenerate;
     }
 
@@ -190,25 +190,25 @@ public class GenerateServiceImpl implements GenerateService {
             if (os.startsWith("win")) {
                 division = "\\";
             }
-            //生成 entity
+            // 生成 entity
             template(entity, "entity", division + "entity" + division, "Entity.java");
-            template(entity, "extend", division + "entity" + division + "extends" + division, "ExtendsEntity.java");
+            template(entity, "extend", division + "entity" + division + "extend" + division, "ExtendEntity.java");
 
-            //生成 dto
+            // 生成 dto
             template(entity, "dto", division + "dto" + division, "Dto.java");
-            //生成 vo
+            // 生成 vo
             template(entity, "vo", division + "vo" + division, "Vo.java");
 
-            //生成 service
+            // 生成 service
             template(entity, "service", division + "service" + division + "impl" + division, "ServiceImpl.java");
 
-            //生成 service Interface
+            // 生成 service Interface
             template(entity, "interface", division + "service" + division, "Service.java");
 
-            //生成 mapper java
+            // 生成 mapper java
             template(entity, "mapper", division + "mapper" + division, "Mapper.java");
 
-            //生成 mapper xml
+            // 生成 mapper xml
             template(entity, "mapperXml", division + "mapper" + division + "xml" + division, "Mapper.xml");
         } catch (IOException e) {
             logUtil.error(e);
@@ -232,15 +232,15 @@ public class GenerateServiceImpl implements GenerateService {
      */
     private void template(GenerateEntity entity, String templateName, String cateLog, String suffix) throws IOException, TemplateException, GlobalException {
         String path = FileUtil.getPath(entity.getPackageName());
-        //生成 解析模板
-        //读取模板
+        // 生成 解析模板
+        // 读取模板
         String html = FreemarkerUtil.analyticalTemplate(templateName, entity);
         html = html.replace("[begin]", "#{")
                 .replace("[end]", "}")
                 .replace("[this]", "this.");
-        //文件名
+        // 文件名
         String fileName = entity.getClassName() + suffix;
-        //保存文件
+        // 保存文件
         FileUtil.saveFile(html, path, cateLog, fileName);
     }
 
@@ -260,7 +260,7 @@ public class GenerateServiceImpl implements GenerateService {
         entity.setClassName(StringUtils.classFormat(treeEntity.getLabel()));
         entity.setClassLowName(StringUtils.attributeNameFormat(treeEntity.getLabel()));
 
-        //读取配置信息
+        // 读取配置信息
         entity.setProjectName(ClassMetadataUtil.getAttributeString(EnableAutoGenerate.class, "projectName")
                 .replace("[", "")
                 .replace("]", ""));
@@ -270,19 +270,19 @@ public class GenerateServiceImpl implements GenerateService {
         entity.setDescription(treeEntity.getExplain());
         entity.setAuthor(HostUtils.getHostName());
 
-        //查询字段
+        // 查询字段
         List<ChildrenEntity> childrenEntityList = new ArrayList<>();
 
-        //字段
+        // 字段
         TableColumnEntity columnEntity = new TableColumnEntity();
         columnEntity.setTableName(treeEntity.getLabel());
         columnEntity.setTableSchema(dataBase);
         List<TableColumnEntity> columnEntityList = findTableColumnList(columnEntity);
 
-        //列
+        // 列
         for (TableColumnEntity column :
                 columnEntityList) {
-            //验证基类是否有相同属性
+            // 验证基类是否有相同属性
             String columnName = StringUtils.attributeNameFormat(column.getColumnName());
             List list = Arrays.stream(fields)
                     .filter(f -> columnName.equals(f.getName()))
@@ -296,23 +296,32 @@ public class GenerateServiceImpl implements GenerateService {
 
             childrenEntity.setColumnName(columnName);
             childrenEntity.setColumnDescription(column.getColumnComment());
-            childrenEntity.setColumnKey(StringUtils.isNotNullAndEmpty(column.getColumnKey()));
+            boolean keyIsShow = StringUtils.isNotNullAndEmpty(column.getColumnKey()) &&
+                    column.getColumnKey().toLowerCase().equals("fk");
+            childrenEntity.setColumnKey(keyIsShow);
 
-            //数据类型
+            // 数据类型
             String dataType = column.getDataType();
 
-            //验证是否为空
+            // 验证是否为空
             if (!StringUtils.isNullAndSpaceOrEmpty(dataType)) {
-                //MyBatis类型
+                // MyBatis类型
                 MySqlJdbcTypeContrastEnum jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnum.valueOf(dataType.toUpperCase());
                 childrenEntity.setColumnType(jdbcTypeContrastEnum.getCode());
 
-                //Java 数据类型
+                // Java 数据类型
                 MySqlDataTypeContrastEnum contrastEnum = MySqlDataTypeContrastEnum.valueOf(dataType.toUpperCase());
                 childrenEntity.setDataType(contrastEnum.getValue());
                 String code = contrastEnum.getCode();
                 if (!entity.getLeading().contains(code) && StringUtils.isNotNullAndEmpty(code)) {
                     entity.getLeading().add(code);
+                }
+
+                // 记录是否为生成扩展字段
+                if (MySqlDataTypeContrastEnum.DATE.equals(contrastEnum) ||
+                        MySqlDataTypeContrastEnum.TIMESTAMP.equals(contrastEnum) ||
+                        MySqlDataTypeContrastEnum.DATETIME.equals(contrastEnum)) {
+                    columnExtension(childrenEntityList, column, contrastEnum);
                 }
             }
             childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()));
@@ -320,9 +329,38 @@ public class GenerateServiceImpl implements GenerateService {
             childrenEntity.setLength(StringUtils.isNullAndSpaceOrEmpty(column.getCharacterMaximumLength()) ? "-1" : column.getCharacterMaximumLength());
             childrenEntity.setNullable("YES".equals(column.getIsNullable()) ? "true" : "false");
             childrenEntity.setTableColumnName(column.getColumnName());
-            //添加子节点
+            // 添加子节点
             childrenEntityList.add(childrenEntity);
         }
         entity.setChildren(childrenEntityList);
+    }
+
+    /**
+     * 扩展字段
+     *
+     * @param childrenEntityList 数据
+     * @param column             字段名称
+     * @param contrastEnum       数据类型
+     */
+    private void columnExtension(List<ChildrenEntity> childrenEntityList, TableColumnEntity column,
+                                 MySqlDataTypeContrastEnum contrastEnum) {
+        // 扩展字段开始
+        ChildrenEntity childrenEntity = new ChildrenEntity();
+        childrenEntity.setIsExtension(1);
+        childrenEntity.setColumnDescription(column.getColumnComment());
+        childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "Start");
+        childrenEntity.setDataType(contrastEnum.getValue());
+
+
+        childrenEntityList.add(childrenEntity);
+        // 扩展字段结束
+        ChildrenEntity entity = new ChildrenEntity();
+        entity.setIsExtension(1);
+        entity.setColumnDescription(column.getColumnComment());
+        entity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "End");
+        entity.setDataType(contrastEnum.getValue());
+
+        // 添加子节点
+        childrenEntityList.add(entity);
     }
 }

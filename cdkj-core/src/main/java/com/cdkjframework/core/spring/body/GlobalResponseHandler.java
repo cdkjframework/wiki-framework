@@ -1,4 +1,4 @@
-package com.cdkjframework.exceptions;
+package com.cdkjframework.core.spring.body;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.enums.ResponseBuilderEnum;
@@ -32,7 +32,10 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
     public boolean supports(MethodParameter methodParameter, Class aClass) {
         final String returnTypeName = methodParameter.getParameterType().getName();
 
-        return returnTypeName.startsWith("java.lang") || returnTypeName.contains("ResponseBuilder");
+        return !(returnTypeName.startsWith("java.lang") ||
+                returnTypeName.contains("ResponseBuilder") ||
+                returnTypeName.contains("PageEntity") ||
+                returnTypeName.contains("org.springframework.http.ResponseEntity"));
     }
 
     /**

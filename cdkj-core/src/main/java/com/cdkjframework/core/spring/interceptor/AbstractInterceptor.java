@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.InterceptorConfig;
+import com.cdkjframework.constant.HeaderConsts;
 import com.cdkjframework.core.business.service.MongoService;
 import com.cdkjframework.core.business.service.OrderNumberService;
 import com.cdkjframework.core.spring.filter.HttpServletContentRequestWrapper;
@@ -12,10 +13,12 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.ConvertUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -41,7 +44,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
     /**
      * 不过虑类型
      */
-    protected List<String> noFilterMethod = new ArrayList<>();
+    protected List<String> noFilterMethod = Arrays.asList("POST", "GET");
 
     /**
      * 读取过虑配置信息
@@ -68,6 +71,11 @@ public abstract class AbstractInterceptor implements IInterceptor {
     protected MongoService mongoServiceImpl;
 
     /**
+     * 错误地址
+     */
+    private final String ERROR = "/error";
+
+    /**
      * 左括号
      */
     private final String leftBrackets = "[";
@@ -76,14 +84,6 @@ public abstract class AbstractInterceptor implements IInterceptor {
      * 右括号
      */
     private final String rightBrackets = "]";
-
-    /**
-     * 构造函数
-     */
-    public AbstractInterceptor() {
-        noFilterMethod.add("POST");
-        noFilterMethod.add("GET");
-    }
 
     /**
      * 验证用户是否登录
@@ -106,14 +106,15 @@ public abstract class AbstractInterceptor implements IInterceptor {
     public void modifyParameters(HttpServletRequest httpServletRequest, UserEntity userEntity) {
 
         try {
-            String contentType = httpServletRequest.getHeader("Content-Type");
-            if (StringUtils.isNullAndSpaceOrEmpty(contentType)) {
-                contentType = "";
-            }
-            //如果是错误地址则不进行修改
-            if (httpServletRequest.getServletPath().contains("/error") ||
+            // 获取参数类型
+            String contentType = ConvertUtils.convertString(httpServletRequest.getContentType());
+            String servletPath = ConvertUtils.convertString(httpServletRequest.getServletPath());
+
+            // 如果是错误地址则不进行修改
+            if (servletPath.contains(ERROR) ||
                     !noFilterMethod.contains(httpServletRequest.getMethod()) ||
-                    contentType.contains("multipart/form-data")) {
+                    contentType.contains(MediaType.MULTIPART_FORM_DATA_VALUE) ||
+                    !contentType.contains(MediaType.APPLICATION_JSON_VALUE)) {
                 return;
             }
 
@@ -128,6 +129,11 @@ public abstract class AbstractInterceptor implements IInterceptor {
             bodyChangeJson(body, builder, userEntity);
             //回写数据
             requestWrapper.setBody(builder.toString().getBytes());
+
+//            requestWrapper.putHeader(HeaderConsts.logId, userEntity.getLogId());
+//            requestWrapper.putHeader(HeaderConsts.organizationId, userEntity.getLogId());
+//            requestWrapper.putHeader(HeaderConsts.organizationCode, userEntity.getLogId());
+//            requestWrapper.putHeader(HeaderConsts.organizationName, userEntity.getLogId());
         } catch (IOException e) {
             logUtil.error(e);
         }
@@ -252,7 +258,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
         jsonObject.put("topOrganizationId", userEntity.getTopOrganizationId());
         jsonObject.put("topOrganizationCode", userEntity.getTopOrganizationCode());
         jsonObject.put("topOrganizationName", userEntity.getTopOrganizationName());
-        jsonObject.put("logId", userEntity.getLogId());
+        jsonObject.put(HeaderConsts.logId, userEntity.getLogId());
     }
 
     /**

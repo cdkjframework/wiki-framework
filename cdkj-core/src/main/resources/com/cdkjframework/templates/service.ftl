@@ -2,9 +2,9 @@ package ${packageName}.service.impl;
 
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.PageEntity;
-import com.cdkjframework.util.log.LogUtil;
-import com.cdkjframework.util.make.GeneratedValueUtil;
-import com.cdkjframework.util.tool.CopyUtil;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;
@@ -32,7 +32,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     /**
      * 日志
      */
-    private static LogUtil logUtil = LogUtil.getLogger(${className}ServiceImpl.class);
+    private static LogUtils logUtil = LogUtils.getLogger(${className}ServiceImpl.class);
 
     /**
      * ${description} mapper
@@ -47,9 +47,9 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     @Override
     public void modify${className}(${className}Dto ${classLowName}Dto) {
-        ${classLowName}Dto.setId(GeneratedValueUtil.getUuidString());
+        ${classLowName}Dto.setId(GeneratedValueUtils.getUuidString());
         ${className}Entity entity = new ${className}Entity();
-        CopyUtil.copyProperties(${classLowName}Dto, entity);
+        CopyUtils.copyProperties(${classLowName}Dto, entity);
         ${classLowName}Mapper.modify${className}(entity);
     }
 
@@ -61,7 +61,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     public void add${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = new ${className}Entity();
-        CopyUtil.copyProperties(${classLowName}Dto, entity);
+        CopyUtils.copyProperties(${classLowName}Dto, entity);
         ${classLowName}Mapper.add${className}(entity);
     }
     /**
@@ -72,7 +72,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     public void delete${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = new ${className}Entity();
-        CopyUtil.copyProperties(${classLowName}Dto, entity);
+        CopyUtils.copyProperties(${classLowName}Dto, entity);
         ${classLowName}Mapper.delete${className}(entity);
     }
 
@@ -93,7 +93,7 @@ public class ${className}ServiceImpl implements ${className}Service {
 
         //对象转换 dto -> entity
         ${className}Entity entity = new ${className}Entity();
-        CopyUtil.copyProperties(${classLowName}Dto, entity);
+        CopyUtils.copyProperties(${classLowName}Dto, entity);
 
         ${classLowName}Mapper.find${className}PageList(entity);
 
