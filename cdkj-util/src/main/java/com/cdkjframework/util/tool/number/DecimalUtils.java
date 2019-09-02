@@ -1,4 +1,7 @@
-package com.cdkjframework.util.tool;
+package com.cdkjframework.util.tool.number;
+
+import com.cdkjframework.util.tool.CompareUtils;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
@@ -11,6 +14,7 @@ import java.math.BigDecimal;
  * @Version: 1.0
  */
 
+@Component
 public class DecimalUtils {
 
     /**
