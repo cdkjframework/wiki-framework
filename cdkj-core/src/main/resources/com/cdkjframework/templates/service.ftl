@@ -50,7 +50,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setId(GeneratedValueUtils.getUuidString());
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
-        ${classLowName}Mapper.modify${className}(entity);
+        ${classLowName}Mapper.modify(entity);
     }
 
     /**
@@ -62,7 +62,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     public void add${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
-        ${classLowName}Mapper.add${className}(entity);
+        ${classLowName}Mapper.insert(entity);
     }
     /**
      * 删除数据
@@ -73,7 +73,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     public void delete${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
-        ${classLowName}Mapper.delete${className}(entity);
+        ${classLowName}Mapper.delete(entity);
     }
 
     /**
@@ -95,7 +95,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
 
-        ${classLowName}Mapper.find${className}PageList(entity);
+        ${classLowName}Mapper.listFindByEntity(entity);
 
         pageEntity.setPageIndex(${classLowName}Dto.getPageIndex());
         pageEntity.setTotal(page.getTotal());
