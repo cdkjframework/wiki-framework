@@ -77,7 +77,7 @@ public class FreemarkerUtil {
                 stringBuffer.append(lineString).append("\r\n");
             }
         } catch (Exception e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(), e.getMessage());
         } finally {
             bufferedReader.close();
             reader.close();

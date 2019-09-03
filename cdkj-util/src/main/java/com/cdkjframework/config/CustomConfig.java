@@ -1,5 +1,8 @@
 package com.cdkjframework.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,6 +14,9 @@ import org.springframework.context.annotation.Configuration;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Getter
+@Setter
+@ToString
 @Configuration
 @ConfigurationProperties(prefix = "spring.custom")
 public class CustomConfig {
@@ -30,27 +36,8 @@ public class CustomConfig {
      */
     private String modular = "[]";
 
-    public String getJwtKey() {
-        return jwtKey;
-    }
-
-    public void setJwtKey(String jwtKey) {
-        this.jwtKey = jwtKey;
-    }
-
-    public String getLogPath() {
-        return logPath;
-    }
-
-    public void setLogPath(String logPath) {
-        this.logPath = logPath;
-    }
-
-    public String getModular() {
-        return modular;
-    }
-
-    public void setModular(String modular) {
-        this.modular = modular;
-    }
+    /**
+     * 日志级别
+     */
+    private String level = "ERROR";
 }

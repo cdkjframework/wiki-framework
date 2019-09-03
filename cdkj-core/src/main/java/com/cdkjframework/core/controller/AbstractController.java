@@ -125,7 +125,7 @@ public abstract class AbstractController implements IController {
         try {
             mongoServiceImpl.updateLog(logRecordEntity);
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
     }
 

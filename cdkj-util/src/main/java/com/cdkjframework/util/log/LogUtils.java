@@ -2,10 +2,21 @@ package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetEncoder;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Formatter;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -32,6 +43,26 @@ public class LogUtils {
      * 自定义配置
      */
     private CustomConfig customConfig;
+
+    /**
+     * 操作系统
+     */
+    private String OS = "win";
+
+    /**
+     * 编码
+     */
+    private String CHARSETNAME = "utf-8";
+
+    /**
+     * 追加
+     */
+    private boolean APPEND = true;
+
+    /**
+     * 日志级别
+     */
+    private List<String> level = Arrays.asList("DEBUG", "INFO", "WARN", "ERROR", "FATAL");
 
     /**
      * getLogger
@@ -75,7 +106,7 @@ public class LogUtils {
      * @param msg 错误信息
      */
     public void debug(String msg) {
-        Log(Level.CONFIG, msg);
+        debug(null, msg);
     }
 
     /**
@@ -85,10 +116,13 @@ public class LogUtils {
      * @param msg       错误信息
      */
     public void debug(Throwable throwable, String msg) {
+        if (!isDebug()) {
+            return;
+        }
         if (throwable != null) {
-            Log(Level.CONFIG, throwable, msg);
+            log(Level.CONFIG, throwable, msg);
         } else {
-            Log(Level.CONFIG, msg);
+            log(Level.CONFIG, msg);
         }
     }
 
@@ -98,7 +132,7 @@ public class LogUtils {
      * @param msg 错误信息
      */
     public void info(String msg) {
-        Log(Level.INFO, msg);
+        info(null, msg);
     }
 
     /**
@@ -108,10 +142,39 @@ public class LogUtils {
      * @param msg       错误信息
      */
     public void info(Throwable throwable, String msg) {
+        if (!isInfo()) {
+            return;
+        }
         if (throwable != null) {
-            Log(Level.INFO, throwable, msg);
+            log(Level.INFO, throwable, msg);
         } else {
-            Log(Level.INFO, msg);
+            log(Level.INFO, msg);
+        }
+    }
+
+    /**
+     * 警告日志
+     *
+     * @param msg 日志信息
+     */
+    public void warn(String msg) {
+        warn(null, msg);
+    }
+
+    /**
+     * 警告日志
+     *
+     * @param throwable 错误信息
+     * @param msg       日志信息
+     */
+    public void warn(Throwable throwable, String msg) {
+        if (!isWarn()) {
+            return;
+        }
+        if (throwable != null) {
+            log(Level.INFO, throwable, msg);
+        } else {
+            log(Level.INFO, msg);
         }
     }
 
@@ -121,34 +184,7 @@ public class LogUtils {
      * @param msg 错误信息
      */
     public void error(String msg) {
-        Log(Level.SEVERE, msg);
-    }
-
-    /**
-     * 错误异常日志
-     *
-     * @param ex Exception
-     */
-    public void error(Exception ex) {
-        Log(Level.SEVERE, ex.toString());
-        Log(Level.SEVERE, ex.getMessage());
-        StackTraceElement[] elements = ex.getStackTrace();
-        for (StackTraceElement ele :
-                elements) {
-            Log(Level.SEVERE, ele.getClassName() + "." + ele.getMethodName() + "(" + ele.getFileName() + ":" + ele.getLineNumber() + ")");
-        }
-    }
-
-    /**
-     * 错误异常日志
-     *
-     * @param elements StackTraceElement
-     */
-    public void error(StackTraceElement[] elements) {
-        for (StackTraceElement ele :
-                elements) {
-            Log(Level.SEVERE, ele.getClassName() + "." + ele.getMethodName() + "(" + ele.getFileName() + ":" + ele.getLineNumber() + ")");
-        }
+        error(null, msg);
     }
 
     /**
@@ -158,7 +194,14 @@ public class LogUtils {
      * @param msg       错误信息
      */
     public void error(Throwable throwable, String msg) {
-        Log(Level.FINEST, throwable, msg);
+        if (!isError()) {
+            return;
+        }
+        if (throwable == null) {
+            log(Level.FINEST, msg);
+        } else {
+            log(Level.FINEST, throwable, msg);
+        }
     }
 
     /**
@@ -168,11 +211,17 @@ public class LogUtils {
      * @param throwable 错误信息
      * @param msg       错误信息
      */
-    private void Log(Level level, Throwable throwable, String msg) {
+    private void log(Level level, Throwable throwable, String msg) {
         try {
-            logger.log(level, msg, throwable);
+            if (throwable == null) {
+                logger.log(level, msg);
+            } else {
+                logger.log(level, msg, throwable);
+            }
+            //写入日志
+            writeLog(level, throwable, msg);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
     }
 
@@ -182,59 +231,161 @@ public class LogUtils {
      * @param level 等级
      * @param msg   错误信息
      */
-    private void Log(Level level, String msg) {
+    private void log(Level level, String msg) {
+        try {
+            log(level, null, msg);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+
+    /**
+     * 写入日志至文件系统
+     *
+     * @param level
+     * @param throwable 错误信息
+     * @param msg
+     */
+    private void writeLog(Level level, Throwable throwable, String msg) {
+        Lock lock = new ReentrantLock();
+        lock.lock();
         try {
             if (customConfig == null) {
                 customConfig = new CustomConfig();
             }
-
             //验证目录存不存在
-//            String logPath = customConfig.getLogPath();
-//            if (HostUtil.getOs().startsWith("win")) {
-//                logPath = "c:" + logPath;
-//            }
-//            File file = new File(logPath);
-//            if (!file.exists()) {
-//                file.mkdirs();
-//            }
-//            Date date = new Date();
-//            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-//            String logFileName = logPath + level.getName().toLowerCase() + sd.format(date) + ".log";
-//            //设置日志输出信息
-//            FileHandler fileHandler = new FileHandler(logFileName, 10000, 11, true);
-//            fileHandler.setLevel(level);
-//            fileHandler.setFormatter(new CdkjLogHander());
-//            logger.addHandler(fileHandler);
+            String logPath = customConfig.getLogPath();
+            if (HostUtils.getOs().startsWith(OS)) {
+                logPath = "c:" + logPath;
+            }
+            File file = new File(logPath);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            if (!file.exists()) {
+                return;
+            }
 
-            logger.log(level, msg);
+            String logFileName = logPath + "log-" + level.getName().toLowerCase() + "-" + DateUtils.format(new Date()) + ".log";
+
+            //验证文件是否存在
+            file = new File(logPath + logFileName);
+            try {
+                if (!file.exists()) {
+                    file.createNewFile();
+                    file = new File(logPath + logFileName);
+                }
+            } catch (IOException e) {
+                System.out.println(e);
+                return;
+            }
+
+            //日志时间
+            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
+            builder.append("   " + level.getName() + "   " + logger.getName() + " : " + msg);
+            outputStream(file, builder);
+            // 异常信息
+            if (throwable != null) {
+                StackTraceElement[] elements = throwable.getStackTrace();
+                for (StackTraceElement ele :
+                        elements) {
+                    builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
+                    builder.append("   " + ele.getClassName() + "." + ele.getMethodName() + "(" + ele.getFileName() + ":" + ele.getLineNumber() + ")");
+
+                    outputStream(file, builder);
+                }
+            }
+
         } catch (Exception ex) {
-            ex.printStackTrace();
+            System.out.println(ex);
+        } finally {
+            lock.unlock();
         }
     }
 
     /**
      * 写入日志
      *
-     * @param msg 错误信息
+     * @param file    文件
+     * @param builder 日志信息
      */
-    private void Log(String msg) {
+    private void outputStream(File file, StringBuilder builder) {
+        Writer writer = null;
+        FileOutputStream outputStream = null;
         try {
-            logger.log(Level.SEVERE, msg);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            outputStream = new FileOutputStream(file, APPEND);
+            writer = new OutputStreamWriter(outputStream, CHARSETNAME);
+            writer.write(builder.toString());
+            String newline = System.getProperty("line.separator");
+            //写入换行  
+            writer.write(newline);
+        } catch (FileNotFoundException e) {
+            System.out.println(e);
+        } catch (UnsupportedEncodingException e) {
+            System.out.println(e);
+        } catch (IOException e) {
+            System.out.println(e);
+        } finally {
+            if (writer != null) {
+                try {
+                    writer.close();
+                    outputStream.flush();
+                    outputStream.close();
+                } catch (IOException e) {
+                    System.out.println(e);
+                }
+            }
         }
     }
 
     /**
-     * 设置日志格式
+     * 是否 debug 模式
+     *
+     * @return 返回结果
      */
-    class CdkjLogHander extends Formatter {
-        @Override
-        public String format(LogRecord record) {
-            Date date = new Date();
-            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String d = sd.format(date);
-            return "[" + d + "]" + "[" + record.getLevel() + "]" + record.getClass() + " :" + record.getMessage() + "\n";
-        }
+    private boolean isDebug() {
+        int index = level.indexOf(customConfig.getLevel());
+        return index == 0;
+    }
+
+    /**
+     * 是否 INFO 模式
+     *
+     * @return 返回结果
+     */
+    private boolean isInfo() {
+        int index = level.indexOf(customConfig.getLevel());
+        return index <= 1;
+    }
+
+    /**
+     * 是否 WARN 模式
+     *
+     * @return 返回结果
+     */
+    private boolean isWarn() {
+        int index = level.indexOf(customConfig.getLevel());
+        return index <= 2;
+    }
+
+    /**
+     * 是否 WARN 模式
+     *
+     * @return 返回结果
+     */
+    private boolean isError() {
+        int index = level.indexOf(customConfig.getLevel());
+        return index <= 3;
+    }
+
+    /**
+     * 是否 FATAL 模式
+     *
+     * @return 返回结果
+     */
+    private boolean isFatal() {
+        int index = level.indexOf(customConfig.getLevel());
+        return index <= 4;
     }
 }

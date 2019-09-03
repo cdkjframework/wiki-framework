@@ -2,13 +2,10 @@ package com.cdkjframework.datasource.relational.jpa.connectivity;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.cdkjframework.config.DataSourceConfig;
-import com.cdkjframework.datasource.relational.jpa.config.JpaReadConfig;
+import com.cdkjframework.datasource.relational.jpa.config.JpaConfig;
 import com.cdkjframework.enums.datasource.ApolloDataSourceEnum;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.mapper.MapperUtils;
-import com.ctrip.framework.apollo.Config;
-import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -28,30 +25,24 @@ import java.sql.SQLException;
  */
 
 @Component
-public class JpaDruidDbConfig {
+public class JpaDruidDbConfiguration {
 
     /**
      * 日志
      */
-    private LogUtils logUtil = LogUtils.getLogger(JpaDruidDbConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(JpaDruidDbConfiguration.class);
 
     /**
      * 读取配置
      */
     @Autowired
-    private JpaReadConfig jpaReadConfig;
+    private JpaConfig jpaReadConfig;
 
     /**
      * 基础配置
      */
     @Autowired
     private DataSourceConfig dataSourceConfig;
-
-    /**
-     * 读取 myBatis 配置
-     */
-    @ApolloConfig(value = "cdkj.jdbc.jpa")
-    private Config apolloConfig;
 
     /**
      * 加载数据源
@@ -62,10 +53,6 @@ public class JpaDruidDbConfig {
     @Qualifier("jpaDataSource")
     @Primary
     public DataSource jpaDataSource() {
-        Boolean isConfig = apolloConfig == null || apolloConfig.getPropertyNames().size() == 0;
-        if (!isConfig && StringUtils.isNullAndSpaceOrEmpty(jpaReadConfig.getUrl())) {
-            setConfiguration();
-        }
         DruidDataSource datasource = new DruidDataSource();
 
         //设置数据库连接
@@ -99,22 +86,5 @@ public class JpaDruidDbConfig {
 
         //返回结果
         return datasource;
-    }
-
-
-    /**
-     * 设置配置信息
-     */
-    private void setConfiguration() {
-        try {
-            jpaReadConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), JpaReadConfig.class);
-            dataSourceConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloDataSourceEnum.values(), DataSourceConfig.class);
-        } catch (IllegalAccessException e) {
-            logUtil.error(e.getMessage());
-            logUtil.error(e.getStackTrace());
-        } catch (InstantiationException e) {
-            logUtil.error(e.getMessage());
-            logUtil.error(e.getStackTrace());
-        }
     }
 }

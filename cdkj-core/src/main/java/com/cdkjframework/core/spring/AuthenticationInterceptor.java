@@ -9,7 +9,6 @@ import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.cache.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.tool.ConvertUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
@@ -21,7 +20,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
-import java.io.PrintWriter;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
@@ -87,7 +85,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
                     authenticateUserLogin(token, false, httpServletRequest);
                 }
             } catch (GlobalException ex) {
-                logUtil.error(ex);
+                logUtil.error(ex.getCause(),ex.getMessage());
             }
         }
 

@@ -74,7 +74,7 @@ public class GenerateController extends WebUiController {
             DatabaseEntity databaseEntity = generateServiceImpl.findDatabase();
             builder = ResponseBuilder.successBuilder(databaseEntity);
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 
@@ -96,7 +96,7 @@ public class GenerateController extends WebUiController {
             List<TreeEntity> tableList = generateServiceImpl.findDatabaseTableList(tableEntity);
             builder = ResponseBuilder.successBuilder(tableList);
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 
@@ -118,7 +118,7 @@ public class GenerateController extends WebUiController {
             List<TableColumnEntity> columnList = generateServiceImpl.findTableColumnList(columnEntity);
             builder = ResponseBuilder.successBuilder(columnList);
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 
@@ -145,7 +145,7 @@ public class GenerateController extends WebUiController {
                 builder = ResponseBuilder.successBuilder("生成失败！");
             }
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 

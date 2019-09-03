@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @ToString
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.mongodb")
-public class MongoReadConfig {
+public class MongoConfig {
 
     /**
      * 连接地址

@@ -50,7 +50,7 @@ public class DateJsonDeserializerUtils extends JsonDeserializer<Date> {
                 return null;
             }
         } catch (Exception e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
 
         return null;

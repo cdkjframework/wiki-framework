@@ -32,7 +32,7 @@ public class HostUtils {
             InetAddress address = InetAddress.getLocalHost();
             hostName = address.getHostName();
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
 
         //主机名
@@ -49,7 +49,7 @@ public class HostUtils {
         try {
             os = System.getProperty("os.name").toLowerCase();
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
 
         //主机名

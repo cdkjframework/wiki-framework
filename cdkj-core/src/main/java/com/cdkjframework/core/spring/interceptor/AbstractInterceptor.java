@@ -13,9 +13,9 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
-import com.cdkjframework.util.tool.ConvertUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -135,7 +135,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
 //            requestWrapper.putHeader(HeaderConsts.organizationCode, userEntity.getLogId());
 //            requestWrapper.putHeader(HeaderConsts.organizationName, userEntity.getLogId());
         } catch (IOException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
     }
 

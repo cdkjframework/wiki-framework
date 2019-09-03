@@ -79,7 +79,7 @@ public class MqttClientRunner implements ApplicationRunner {
             }
         } catch (MqttException e) {
             logUtil.error("重新连接失败");
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
     }
 
@@ -135,7 +135,7 @@ public class MqttClientRunner implements ApplicationRunner {
             }
             client.subscribe(topicArray, Qos);
         } catch (Exception e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
     }
 }

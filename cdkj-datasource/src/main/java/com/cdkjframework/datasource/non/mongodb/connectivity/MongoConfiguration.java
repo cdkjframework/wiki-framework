@@ -1,6 +1,6 @@
 package com.cdkjframework.datasource.non.mongodb.connectivity;
 
-import com.cdkjframework.datasource.non.mongodb.config.MongoReadConfig;
+import com.cdkjframework.datasource.non.mongodb.config.MongoConfig;
 import com.cdkjframework.enums.datasource.ApolloMongoEnum;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -24,7 +24,7 @@ import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
  * @Version: 1.0
  */
 @Configuration
-public class MongoConfig {
+public class MongoConfiguration {
 
     /**
      * 日志
@@ -35,7 +35,7 @@ public class MongoConfig {
      * 读取配置文件配置
      */
     @Autowired
-    private MongoReadConfig mongodbConfig;
+    private MongoConfig mongodbConfig;
 
     /**
      * apollo配置
@@ -86,13 +86,11 @@ public class MongoConfig {
      */
     private void setConfiguration() {
         try {
-            mongodbConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloMongoEnum.values(), MongoReadConfig.class);
-        } catch (IllegalAccessException e) {
-            logUtil.error(e.getMessage());
-            logUtil.error(e.getStackTrace());
-        } catch (InstantiationException e) {
-            logUtil.error(e.getMessage());
-            logUtil.error(e.getStackTrace());
+            mongodbConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloMongoEnum.values(), MongoConfig.class);
+        } catch (IllegalAccessException ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+        } catch (InstantiationException ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
     }
 }

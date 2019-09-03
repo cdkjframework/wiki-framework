@@ -54,7 +54,7 @@ public class WebSocketService {
         try {
             sendMessage("连接成功");
         } catch (IOException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(), e.getMessage());
         }
     }
 
@@ -84,7 +84,7 @@ public class WebSocketService {
             try {
                 item.sendMessage(message);
             } catch (IOException e) {
-                logUtil.error(e);
+                logUtil.error(e.getCause(), e.getMessage());
             }
         }
     }
@@ -97,8 +97,7 @@ public class WebSocketService {
      */
     @OnError
     public void onError(Session session, Throwable error) {
-        logUtil.error(error.getMessage());
-        logUtil.error(error.getStackTrace());
+        logUtil.error(error.getCause(), error.getMessage());
     }
 
     /**

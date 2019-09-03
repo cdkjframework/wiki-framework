@@ -2,11 +2,9 @@ package com.cdkjframework.datasource.relational.mybatis.connectivity;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import com.cdkjframework.config.DataSourceConfig;
-import com.cdkjframework.datasource.relational.mybatis.config.MybatisReadConfig;
-import com.cdkjframework.enums.datasource.ApolloDataSourceEnum;
+import com.cdkjframework.datasource.relational.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import com.cdkjframework.util.tool.mapper.MapperUtils;
 import com.ctrip.framework.apollo.Config;
 import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,30 +24,24 @@ import java.sql.SQLException;
  * @Version: 1.0
  */
 @Component
-public class MybatisDruidDbConfig {
+public class MybatisDruidDbConfiguration {
 
     /**
      * 日志
      */
-    private LogUtils logUtil = LogUtils.getLogger(MybatisDruidDbConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(MybatisDruidDbConfiguration.class);
 
     /**
      * 读取配置
      */
     @Autowired
-    private MybatisReadConfig mybatisSqlConfig;
+    private MybatisConfig mybatisSqlConfig;
 
     /**
      * 基础配置
      */
     @Autowired
     private DataSourceConfig dataSourceConfig;
-
-    /**
-     * 读取 myBatis 配置
-     */
-    @ApolloConfig(value = "cdkj.jdbc.myBatis")
-    private Config apolloConfig;
 
     /**
      * 加载数据源

@@ -2,6 +2,7 @@ package com.cdkjframework.util.tool.number;
 
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.RegexUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -40,7 +41,7 @@ public class ConvertUtils {
 
             value = Integer.valueOf(obj.toString());
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -62,7 +63,7 @@ public class ConvertUtils {
 
             value = Float.valueOf(obj.toString());
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -84,7 +85,7 @@ public class ConvertUtils {
 
             value = Double.valueOf(obj.toString());
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -101,7 +102,7 @@ public class ConvertUtils {
         try {
             value = BigDecimal.valueOf(convertDouble(obj));
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -123,7 +124,7 @@ public class ConvertUtils {
 
             value = Long.valueOf(obj.toString());
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -146,7 +147,7 @@ public class ConvertUtils {
             //直接转换
             value = Boolean.valueOf(obj.toString());
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;

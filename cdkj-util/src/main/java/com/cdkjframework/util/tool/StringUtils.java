@@ -95,7 +95,7 @@ public class StringUtils {
                 value = Integer.valueOf(obj.toString());
             }
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
         //返回结果
         return value;
@@ -114,7 +114,7 @@ public class StringUtils {
                 value = Long.valueOf(obj.toString());
             }
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
         //返回结果
         return value;
@@ -136,7 +136,7 @@ public class StringUtils {
                 value = Boolean.valueOf(obj.toString());
             }
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
         //返回结果
         return value;

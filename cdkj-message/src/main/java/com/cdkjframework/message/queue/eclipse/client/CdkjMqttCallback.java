@@ -132,7 +132,7 @@ public class CdkjMqttCallback implements MqttCallback {
             invokeMethod(callbackEntity);
             //通知成功
         } catch (MqttException e) {
-            logUtil.error(e.getStackTrace());
+            logUtil.error(e.getCause(), e.getMessage());
         }
     }
 

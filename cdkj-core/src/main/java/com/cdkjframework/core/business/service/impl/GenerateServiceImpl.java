@@ -165,7 +165,7 @@ public class GenerateServiceImpl implements GenerateService {
             }
             isGenerate = true;
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
 
         // 返回结果
@@ -186,10 +186,7 @@ public class GenerateServiceImpl implements GenerateService {
         try {
 
             final String os = HostUtils.getOs();
-            String division = "/";
-            if (os.startsWith("win")) {
-                division = "\\";
-            }
+            String division = os.startsWith("win") ? "\\" : "/";
             // 生成 entity
             template(entity, "entity", division + "entity" + division, "Entity.java");
             template(entity, "extend", division + "entity" + division + "extend" + division, "ExtendEntity.java");
@@ -209,13 +206,18 @@ public class GenerateServiceImpl implements GenerateService {
             template(entity, "mapper", division + "mapper" + division, "Mapper.java");
 
             // 生成 mapper xml
-            template(entity, "mapperXml", division + "mapper" + division + "xml" + division, "Mapper.xml");
+            String xmlPath = division + "mapper" + division + "xml" + division;
+            template(entity, "mapperXml", xmlPath, "Mapper.xml");
+
+            // 生成 mapper extend xml
+            xmlPath += "extend" + division;
+            template(entity, "extendXml", xmlPath, "Mapper.xml");
         } catch (IOException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         } catch (TemplateException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         } catch (GlobalException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
     }
 

@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 @ToString
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.jpa")
-public class JpaReadConfig {
+public class JpaConfig {
 
     /**
      * 数据库连接地址

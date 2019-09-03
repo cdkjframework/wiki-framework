@@ -115,7 +115,7 @@ public class RedisUtils implements ApplicationRunner {
 
             redisAsyncCommands = connection.async();
         } catch (Exception ex) {
-            logUtils.error(ex);
+            logUtils.error(ex.getCause(), ex.getMessage());
         }
     }
 
@@ -154,7 +154,7 @@ public class RedisUtils implements ApplicationRunner {
             commands = connection.async();
             clusterCommands = connection.sync();
         } catch (Exception ex) {
-            logUtils.error(ex);
+            logUtils.error(ex.getCause(), ex.getMessage());
         }
     }
 
@@ -234,7 +234,7 @@ public class RedisUtils implements ApplicationRunner {
                     redisAsyncCommands.expire(key, time);
             return redisFuture.get();
         } catch (Exception e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
             return false;
         }
     }
@@ -254,9 +254,9 @@ public class RedisUtils implements ApplicationRunner {
                 return false;
             }
         } catch (InterruptedException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         }
 
         return false;
@@ -295,9 +295,9 @@ public class RedisUtils implements ApplicationRunner {
         try {
             return redisFuture.get();
         } catch (InterruptedException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         }
         return null;
     }
@@ -318,7 +318,7 @@ public class RedisUtils implements ApplicationRunner {
             }
             return true;
         } catch (Exception e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
             return false;
         }
     }
@@ -344,7 +344,7 @@ public class RedisUtils implements ApplicationRunner {
             }
             return true;
         } catch (Exception e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
             return false;
         }
     }
@@ -367,9 +367,9 @@ public class RedisUtils implements ApplicationRunner {
         try {
             return redisFuture.get();
         } catch (InterruptedException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         }
         return 0L;
     }
@@ -392,9 +392,9 @@ public class RedisUtils implements ApplicationRunner {
         try {
             return redisFuture.get();
         } catch (InterruptedException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
         }
         return 0L;
     }
@@ -427,7 +427,7 @@ public class RedisUtils implements ApplicationRunner {
             aSyncSet(key, value);
             return true;
         } catch (Exception e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
             return false;
         }
     }
@@ -449,7 +449,7 @@ public class RedisUtils implements ApplicationRunner {
             }
             return true;
         } catch (Exception e) {
-            logUtils.error(e);
+            logUtils.error(e.getCause(), e.getMessage());
             return false;
         }
     }

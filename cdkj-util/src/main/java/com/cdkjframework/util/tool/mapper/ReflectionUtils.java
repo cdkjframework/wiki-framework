@@ -71,7 +71,7 @@ public class ReflectionUtils {
             try {
                 method = clazz.getDeclaredMethod(methodName, parameterTypes);
             } catch (Exception e) {
-                logUtil.error(e);
+                logUtil.error(e.getCause(),e.getMessage());
             }
         }
         return method;
@@ -108,11 +108,11 @@ public class ReflectionUtils {
             }
         } catch (IllegalArgumentException e) {
             logUtil.info(dataType);
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         } catch (IllegalAccessException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         } catch (InvocationTargetException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
         return null;
     }
@@ -136,7 +136,7 @@ public class ReflectionUtils {
                 field = optional.get();
             }
         } catch (Exception e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
         return field;
     }
@@ -174,7 +174,7 @@ public class ReflectionUtils {
             List list = Arrays.stream(parentFields).collect(Collectors.toList());
             fieldList.addAll(list);
         } catch (Exception ex) {
-            logUtil.error(ex);
+            logUtil.error(ex.getCause(),ex.getMessage());
         }
 
         //返回结果
@@ -197,9 +197,9 @@ public class ReflectionUtils {
             //将 object 中 field 所代表的值 设置为 value
             field.set(object, value);
         } catch (IllegalArgumentException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         } catch (IllegalAccessException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
 
     }
@@ -220,7 +220,7 @@ public class ReflectionUtils {
             //获的属性值
             return field.get(object);
         } catch (Exception e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
         return null;
     }
@@ -257,7 +257,7 @@ public class ReflectionUtils {
                         obj = dateFormat.parse(value);
                     } catch (ParseException e) {
                         logUtil.error(DataTypeConsts.dateName + "：" + value);
-                        logUtil.error(e);
+                        logUtil.error(e.getCause(),e.getMessage());
                     }
                 }
                 break;

@@ -1,7 +1,7 @@
 package com.cdkjframework.datasource.relational.mybatis.connectivity;
 
 import com.cdkjframework.datasource.relational.mybatis.LogbackImpl;
-import com.cdkjframework.datasource.relational.mybatis.config.MybatisReadConfig;
+import com.cdkjframework.datasource.relational.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
@@ -34,18 +34,18 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-public class MybatisConfig {
+public class MybatisConfiguration {
 
     /**
      * 日志
      */
-    private LogUtils logUtil = LogUtils.getLogger(MybatisConfig.class);
+    private LogUtils logUtil = LogUtils.getLogger(MybatisConfiguration.class);
 
     /**
      * 读取配置
      */
     @Autowired
-    private MybatisReadConfig mybatisSqlConfig;
+    private MybatisConfig mybatisConfig;
 
     /**
      * 数据源
@@ -76,7 +76,7 @@ public class MybatisConfig {
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
             //Mapper xml 路径
-            MAPPER_LOCATION += mybatisSqlConfig.getMybatisMapperXml();
+            MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
             sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
 
             //分页

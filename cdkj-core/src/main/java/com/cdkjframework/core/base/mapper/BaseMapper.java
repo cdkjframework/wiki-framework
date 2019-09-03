@@ -44,10 +44,10 @@ public interface BaseMapper<T> {
     /**
      * 根据 entity 条件，删除记录
      *
-     * @param list 实体对象封装操作类（可以为 null）
+     * @param t 实体对象封装操作类（可以为 null）
      * @return int
      */
-    Integer delete(@Param("list") List<T> list);
+    Integer delete(T t);
 
     /**
      * <p>
@@ -86,6 +86,14 @@ public interface BaseMapper<T> {
     <T> T findEntityById(Serializable id);
 
     /**
+     * 查询（根据ID 批量查询）
+     *
+     * @param idList 主键ID列表
+     * @return List<T>
+     */
+    <T> List<T> listFindByIds(@Param("coll") Collection<? extends Serializable> idList);
+
+    /**
      * 根据 entity 条件，查询一条记录
      *
      * @param entity 实体对象
@@ -94,18 +102,10 @@ public interface BaseMapper<T> {
     <T> T findEntity(T entity);
 
     /**
-     * 查询（根据ID 批量查询）
-     *
-     * @param idList 主键ID列表
-     * @return List<T>
-     */
-    <T> List<T> findBatchIds(@Param("coll") Collection<? extends Serializable> idList);
-
-    /**
      * 根据 entity 条件，查询全部记录
      *
      * @param entity 实体对象封装操作类（可以为 null）
      * @return List<T>
      */
-    <T> List<T> findList(T entity);
+    <T> List<T> listFindByEntity(T entity);
 }

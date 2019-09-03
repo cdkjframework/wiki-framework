@@ -84,7 +84,7 @@ public class TlsPool extends HttpClientBuilder implements ApplicationRunner {
             }
         } catch (Exception e) {
             // TODO Auto-generated catch block
-            logUtils.error(e);
+            logUtils.error(e.getCause(),e.getMessage());
         }
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx,
                 new String[]{"TLSv1", "TLSv2", "TLSv3"}, null,

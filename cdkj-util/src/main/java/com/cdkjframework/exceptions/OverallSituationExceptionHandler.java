@@ -3,6 +3,7 @@ package com.cdkjframework.exceptions;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -45,10 +46,13 @@ public class OverallSituationExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ResponseBuilder defultExcepitonHandler(Exception e) {
-        ResponseBuilder builder =  ResponseBuilder.failBuilder();
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
         Map<String, Object> params = new HashMap<>(10);
         params.put("error", e.getMessage());
         builder.setData(params);
+
+        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+
         return builder;
     }
 
@@ -59,6 +63,9 @@ public class OverallSituationExceptionHandler {
         builder.setMessage(e.getMessage());
         Map<String, Object> params = new HashMap<>(10);
         params.put("error", e.getMessage());
+
+        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+
         builder.setData(params);
         return builder;
     }
@@ -80,6 +87,9 @@ public class OverallSituationExceptionHandler {
                 }
             }
         }
+
+        logUtil.error(e.getCause(), String.join(";", errorList));
+
         builder.setData(errorList);
         return builder;
     }
@@ -101,7 +111,7 @@ public class OverallSituationExceptionHandler {
         } else {
             message = message.substring(begin);
         }
-        logUtil.info(e, "the business has verify info!!!!");
+        logUtil.error(e.getCause(), message);
         return ResponseBuilder.failBuilder(message);
     }
 
@@ -117,7 +127,8 @@ public class OverallSituationExceptionHandler {
         Long size = Long.valueOf(1024);
         Long fileSizeM = size / (1024 * 1024L);
         String info = String.format("文件请勿超过%sM", fileSizeM);
-        logUtil.info(info);
+        logUtil.error(e.getCause(), info);
+
         return ResponseBuilder.failBuilder(info);
     }
 }

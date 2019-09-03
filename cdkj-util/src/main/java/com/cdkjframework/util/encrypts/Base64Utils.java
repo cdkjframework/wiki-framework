@@ -35,7 +35,7 @@ public class Base64Utils {
             }
             return new String(Base64.decodeBase64(inputData.getBytes(UTF_8)), UTF_8);
         } catch (UnsupportedEncodingException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
 
         return "";
@@ -51,7 +51,7 @@ public class Base64Utils {
             }
             return new String(encode(inputData.getBytes(UTF_8)));
         } catch (UnsupportedEncodingException e) {
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
 
         return "";
@@ -71,7 +71,7 @@ public class Base64Utils {
             return new String(Base64.encodeBase64(dataList), UTF_8);
         } catch (UnsupportedEncodingException e) {
             logUtil.error("生成二维码出错误");
-            logUtil.error(e);
+            logUtil.error(e.getCause(),e.getMessage());
         }
         return "";
     }

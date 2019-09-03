@@ -20,7 +20,7 @@ import org.springframework.context.annotation.Configuration;
 @ToString
 @Configuration
 @ConfigurationProperties(prefix = "spring.datasource.mybatis")
-public class MybatisReadConfig {
+public class MybatisConfig {
 
     /**
      * 数据库连接地址
