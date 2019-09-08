@@ -1,7 +1,7 @@
 package com.cdkjframework.util.files.excel.easy;
 
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.files.FileUtil;
+import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -74,13 +74,13 @@ public class ExcelEasyPoiUtil<T> {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
             //保存文件
             if (StringUtils.isNotNullAndEmpty(directoryPath)) {
-                FileUtil.saveFile(inputStream, directoryPath, filePath, fileName);
+                FileUtils.saveFile(inputStream, directoryPath, filePath, fileName);
             } else {
-                FileUtil.saveFile(inputStream, filePath, fileName);
+                FileUtils.saveFile(inputStream, filePath, fileName);
             }
             //删除历史文件
             long date = System.currentTimeMillis() - 1000 * 60 * 60 * 24 * 2;
-            FileUtil.beforeDeleteSpecifiedTimeFile(new Date(date), filePath);
+            FileUtils.beforeDeleteSpecifiedTimeFile(new Date(date), filePath);
 
             filePath += fileName;
         } catch (GlobalException ex) {

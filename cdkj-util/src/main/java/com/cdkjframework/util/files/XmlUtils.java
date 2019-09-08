@@ -15,12 +15,12 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class XmlUtil {
+public class XmlUtils {
 
     /**
      * 日志
      */
-    private static LogUtils logUtil = LogUtils.getLogger(XmlUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(XmlUtils.class);
 
     /**
      * 将 xml 转换为实体

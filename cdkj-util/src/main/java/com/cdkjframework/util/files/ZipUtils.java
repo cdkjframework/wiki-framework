@@ -20,12 +20,12 @@ import java.util.zip.ZipOutputStream;
  * @Version: 1.0
  */
 @Component
-public class ZipUtil {
+public class ZipUtils {
 
     /**
      * 日志
      */
-    private static LogUtils logUtil = LogUtils.getLogger(ZipUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(ZipUtils.class);
 
     /**
      * 做压缩

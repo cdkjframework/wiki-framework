@@ -21,12 +21,12 @@ import java.util.List;
  */
 
 @Component
-public class FileUtil {
+public class FileUtils {
 
     /**
      * 日志
      */
-    private static LogUtils logUtil = LogUtils.getLogger(FileUtil.class);
+    private static LogUtils logUtil = LogUtils.getLogger(FileUtils.class);
 
     /**
      * 保存文件
@@ -80,7 +80,6 @@ public class FileUtil {
      * @throws GlobalException 异常信息
      */
     public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName) throws GlobalException {
-        boolean isSuccess = false;
         OutputStream outputStream = null;
         try {
             directoryPath = splicingPath(directoryPath, catalog);
@@ -101,9 +100,11 @@ public class FileUtil {
             while ((len = inputStream.read(bs)) != -1) {
                 outputStream.write(bs, 0, len);
             }
-
+            String newline = System.getProperty("line.separator");
+            //写入换行  
+            outputStream.write(newline.getBytes());
+            return true;
         } catch (Exception ex) {
-            ex.printStackTrace();
             throw new GlobalException(ex.getMessage());
         } finally {
             // 完毕，关闭所有链接
@@ -114,9 +115,6 @@ public class FileUtil {
                 e.printStackTrace();
             }
         }
-
-        //返回结果
-        return isSuccess;
     }
 
     /**

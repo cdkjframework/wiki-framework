@@ -13,12 +13,12 @@
 
 
     <sql id="base_Extend_Column_List">
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    ${item.tableColumnName},
-                </#if>
-            </#list>
-        </trim>
+        (
+        <#list children as item>
+            <#if item.isExtension==0>
+                ${item.tableColumnName}<#if item_has_next >,</#if>
+            </#if>
+        </#list>
+        )
     </sql>
 </mapper>

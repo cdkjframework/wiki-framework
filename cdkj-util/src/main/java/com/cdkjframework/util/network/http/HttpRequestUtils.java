@@ -7,10 +7,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
@@ -86,7 +83,7 @@ public class HttpRequestUtils {
      * @return 返回结果
      */
     private static StringBuilder post(HttpRequestEntity httpRequestEntity) {
-        PrintWriter printWriter = null;
+        OutputStream printWriter = null;
         BufferedReader bufferedReader = null;
         StringBuilder result = new StringBuilder();
         try {
@@ -101,7 +98,7 @@ public class HttpRequestUtils {
             connection.setDoOutput(true);
             connection.setDoInput(true);
             // 获取URLConnection对象对应的输出流
-            printWriter = new PrintWriter(connection.getOutputStream());
+            printWriter = connection.getOutputStream();
 
             //将参数转换为 json 对象
             String param;
@@ -116,10 +113,10 @@ public class HttpRequestUtils {
             //是否 gzip 加密
             if (httpRequestEntity.isCompress()) {
                 String gzipParams = GzipUtils.gZip(param, httpRequestEntity.getCharset());
-                printWriter.write(gzipParams);
+                printWriter.write(gzipParams.getBytes());
             } else {
                 // 发送请求参数
-                printWriter.print(param);
+                printWriter.write(param.getBytes());
             }
             // flush输出流的缓冲
             printWriter.flush();

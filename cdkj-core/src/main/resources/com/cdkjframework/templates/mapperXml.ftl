@@ -13,60 +13,41 @@
 
 
     <sql id="base_Column_List">
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    ${item.tableColumnName},
-                </#if>
-            </#list>
-        </trim>
+        (
+        <#list children as item>
+            <#if item.isExtension==0>
+                ${item.tableColumnName}<#if item_has_next >,</#if>
+            </#if>
+        </#list>
+        )
     </sql>
 
 
     <insert id="insert" parameterType="${packageName}.entity.${className}Entity">
         INSERT INTO ${table}
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>">
-                        ${item.tableColumnName},
-                    </if>
-                </#if>
-            </#list>
-        </trim>
-        <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    <if test="${item.columnName} != null <#if item.columnType=='VARCHAR'> and ${item.columnName} != '' </#if>">
-                        [begin]${item.columnName},jdbcType=${item.columnType}[end],
-                    </if>
-                </#if>
-            </#list>
-        </trim>
+        <include refid="base_Column_List"></include>
+        VALUES
+        (
+        <#list children as item>
+            <#if item.isExtension==0>
+                [begin]${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
+            </#if>
+        </#list>
+        )
     </insert>
 
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO ${table}
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    t.${item.tableColumnName},
-                </#if>
-            </#list>
-        </trim>
+        <include refid="base_Column_List"></include>
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
-            <trim prefix="(" suffix=")" suffixOverrides=",">
-                <#list children as item>
-                    <#if item.isExtension==0>
-                        <#if !item.columnKey>
-                            <if test="${item.columnName} != null ">
-                                ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end],
-                            </if>
-                        </#if>
-                    </#if>
-                </#list>
-            </trim>
+        (<#list children as item>
+            <#if item.isExtension==0>
+                <#if !item.columnKey>
+                    [begin]${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
+                </#if>
+            </#if>
+        </#list>)
         </foreach>
     </insert>
 
@@ -75,16 +56,15 @@
         DELETE
         FROM
         ${table}
-        WHERE
-        <trim prefix="" suffix="" suffixOverrides="AND">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    <if test="${item.columnName} != null ">
-                        AND ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]
-                    </if>
-                </#if>
-            </#list>
-        </trim>
+        <where>
+        <#list children as item>
+            <#if item.isExtension==0>
+                <if test="${item.columnName} != null ">
+                    AND ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]
+                </if>
+            </#if>
+        </#list>
+        </where>
     </delete>
 
     <delete id="deleteById">
@@ -99,7 +79,7 @@
         FROM
         ${table}
         WHERE id IN
-        <foreach collection="col" item="item" index="index" prefix="(" suffix=")" separator=",">
+        <foreach collection="col" item="item" index="index" open="(" close=")" separator=",">
             [begin]item[end]
         </foreach>
     </delete>
@@ -108,16 +88,16 @@
     <update id="modify" parameterType="${packageName}.entity.${className}Entity">
         UPDATE ${table}
         SET
-        <trim prefix="" suffix="" suffixOverrides=",">
-            <#list children as item>
-                <#if item.isExtension==0>
-                    <#if !item.columnKey>
-                        <if test="${item.columnName} != null ">
-                            ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end],
-                        </if>
-                    </#if>
+        <trim suffixOverrides=",">
+        <#list children as item>
+            <#if item.isExtension==0>
+                <#if !item.columnKey>
+                    <if test="${item.columnName} != null ">
+                        ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
+                    </if>
                 </#if>
-            </#list>
+            </#if>
+        </#list>
         </trim>
         WHERE
         <#list children as item>
@@ -131,16 +111,16 @@
         <foreach collection="list" item="item" index="index" separator=";">
             UPDATE ${table}
             SET
-            <trim prefix="" suffix="" suffixOverrides=",">
-                <#list children as item>
-                    <#if item.isExtension==0>
-                        <#if !item.columnKey>
-                            <if test="${item.columnName} != null ">
-                                ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end],
-                            </if>
-                        </#if>
+            <trim suffixOverrides=",">
+            <#list children as item>
+                <#if item.isExtension==0>
+                    <#if !item.columnKey>
+                        <if test="${item.columnName} != null ">
+                            ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
+                        </if>
                     </#if>
-                </#list>
+                </#if>
+            </#list>
             </trim>
             WHERE
             <#list children as item>
@@ -164,7 +144,7 @@
         <include refid="base_Column_List"></include>
         FROM ${table}
         WHERE id IN
-        <foreach collection="col" item="item" index="index" prefix="(" suffix=")" separator=",">
+        <foreach collection="col" item="item" index="index" open="(" close=")" separator=",">
             [begin]item[end]
         </foreach>
     </select>

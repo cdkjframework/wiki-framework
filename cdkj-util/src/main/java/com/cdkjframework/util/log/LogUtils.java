@@ -3,23 +3,17 @@ package com.cdkjframework.util.log;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Formatter;
 import java.util.logging.Level;
-import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 /**
@@ -96,6 +90,8 @@ public class LogUtils {
     public LogUtils(String name) {
         if (Application.applicationContext != null) {
             customConfig = Application.applicationContext.getBean(CustomConfig.class);
+        } else {
+            customConfig = new CustomConfig();
         }
         logger = Logger.getLogger(name);
     }
@@ -251,9 +247,6 @@ public class LogUtils {
         Lock lock = new ReentrantLock();
         lock.lock();
         try {
-            if (customConfig == null) {
-                customConfig = new CustomConfig();
-            }
             //验证目录存不存在
             String logPath = customConfig.getLogPath();
             if (HostUtils.getOs().startsWith(OS)) {
@@ -284,7 +277,7 @@ public class LogUtils {
             //日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append("   " + level.getName() + "   " + logger.getName() + " : " + msg);
-            outputStream(file, builder);
+            FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
             // 异常信息
             if (throwable != null) {
                 StackTraceElement[] elements = throwable.getStackTrace();
@@ -293,7 +286,7 @@ public class LogUtils {
                     builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
                     builder.append("   " + ele.getClassName() + "." + ele.getMethodName() + "(" + ele.getFileName() + ":" + ele.getLineNumber() + ")");
 
-                    outputStream(file, builder);
+                    FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
                 }
             }
 

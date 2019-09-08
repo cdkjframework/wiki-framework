@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import org.springframework.stereotype.Service;
 
 /**
  * @ProjectName: ${projectName}
@@ -27,6 +28,7 @@ import javax.persistence.*;
  * @Version: 1.0
  */
 
+@Service
 public class ${className}ServiceImpl implements ${className}Service {
 
     /**

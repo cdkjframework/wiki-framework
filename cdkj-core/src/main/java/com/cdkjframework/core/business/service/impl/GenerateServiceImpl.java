@@ -9,7 +9,7 @@ import com.cdkjframework.entity.generate.template.children.ChildrenEntity;
 import com.cdkjframework.enums.datasource.MySqlDataTypeContrastEnum;
 import com.cdkjframework.enums.datasource.MySqlJdbcTypeContrastEnum;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.files.FileUtil;
+import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.files.freemarker.FreemarkerUtil;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.HostUtils;
@@ -17,7 +17,6 @@ import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.meta.ClassMetadataUtil;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -211,7 +210,7 @@ public class GenerateServiceImpl implements GenerateService {
 
             // 生成 mapper extend xml
             xmlPath += "extend" + division;
-            template(entity, "extendXml", xmlPath, "Mapper.xml");
+            template(entity, "extendXml", xmlPath, "ExtendMapper.xml");
         } catch (IOException e) {
             logUtil.error(e.getCause(),e.getMessage());
         } catch (TemplateException e) {
@@ -233,7 +232,7 @@ public class GenerateServiceImpl implements GenerateService {
      * @throws GlobalException   公共异常信息
      */
     private void template(GenerateEntity entity, String templateName, String cateLog, String suffix) throws IOException, TemplateException, GlobalException {
-        String path = FileUtil.getPath(entity.getPackageName());
+        String path = FileUtils.getPath(entity.getPackageName());
         // 生成 解析模板
         // 读取模板
         String html = FreemarkerUtil.analyticalTemplate(templateName, entity);
@@ -243,7 +242,7 @@ public class GenerateServiceImpl implements GenerateService {
         // 文件名
         String fileName = entity.getClassName() + suffix;
         // 保存文件
-        FileUtil.saveFile(html, path, cateLog, fileName);
+        FileUtils.saveFile(html, path, cateLog, fileName);
     }
 
     /**

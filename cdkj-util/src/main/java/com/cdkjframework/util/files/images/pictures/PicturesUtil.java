@@ -1,7 +1,7 @@
 package com.cdkjframework.util.files.images.pictures;
 
 import com.cdkjframework.entity.file.ImageEntity;
-import com.cdkjframework.util.files.FileUtil;
+import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 
@@ -60,7 +60,7 @@ public class PicturesUtil {
             //文件名
             String fileName = imageEntity.getFileName() + imageEntity.getSuffix();
             //保存为文件
-            FileUtil.saveFile(inputStream, imageEntity.getDirectoryPath(), catalog, fileName);
+            FileUtils.saveFile(inputStream, imageEntity.getDirectoryPath(), catalog, fileName);
 
             //图片路径
             picturesPath = catalog + fileName;

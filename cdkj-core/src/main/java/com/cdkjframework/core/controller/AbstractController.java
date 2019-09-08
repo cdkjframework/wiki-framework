@@ -11,8 +11,8 @@ import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.files.FileUtil;
-import com.cdkjframework.util.files.ZipUtil;
+import com.cdkjframework.util.files.FileUtils;
+import com.cdkjframework.util.files.ZipUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
@@ -270,7 +270,7 @@ public abstract class AbstractController implements IController {
     @Override
     public String zipFile(FileEntity fileEntity) throws IOException {
         //生成文件 并返回文件路径
-        return ZipUtil.doZip(fileEntity);
+        return ZipUtils.doZip(fileEntity);
     }
 
     /**
@@ -303,9 +303,9 @@ public abstract class AbstractController implements IController {
 
         //保存文件
         if (StringUtils.isNotNullAndEmpty(directoryPath)) {
-            FileUtil.saveFile(inputStream, directoryPath, catalog, fileName);
+            FileUtils.saveFile(inputStream, directoryPath, catalog, fileName);
         } else {
-            FileUtil.saveFile(inputStream, catalog, fileName);
+            FileUtils.saveFile(inputStream, catalog, fileName);
         }
 
         //返回文件浏览路径

@@ -1,7 +1,7 @@
 package com.cdkjframework.util.network.http;
 
 import com.cdkjframework.entity.http.WebServiceEntity;
-import com.cdkjframework.util.files.XmlUtil;
+import com.cdkjframework.util.files.XmlUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -43,7 +43,7 @@ public class WebServiceUtils<T> {
         T t = null;
         switch (entity.getDataFormat()) {
             case "xml":
-                t = XmlUtil.xmlToBean(clazz, result);
+                t = XmlUtils.xmlToBean(clazz, result);
                 break;
             default:
                 if (name.equals(clazz.getName())) {

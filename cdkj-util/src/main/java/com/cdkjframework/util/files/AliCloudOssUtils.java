@@ -20,7 +20,7 @@ import java.io.InputStream;
  */
 
 @Component
-public class AliCloudOssUtil {
+public class AliCloudOssUtils {
 
     /**
      * 基础配置信息
@@ -66,7 +66,7 @@ public class AliCloudOssUtil {
         OSSClient ossClient = new OSSClient(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
         //获取文件名
-        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtil.getFileSuffix(fileName);
+        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtils.getFileSuffix(fileName);
 
         // 上传文件流。
         ossClient.putObject(config.getBucketName(), fileName, inputStream);
@@ -89,7 +89,7 @@ public class AliCloudOssUtil {
 
         //获取文件名
         String fileName = file.getName();
-        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtil.getFileSuffix(fileName);
+        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtils.getFileSuffix(fileName);
 
         // 上传文件流。
         ossClient.putObject(config.getBucketName(), fileName, file);

@@ -1,15 +1,14 @@
 package com.cdkjframework.util.tool;
 
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * @ProjectName: com.cdkjframework.webcode
@@ -33,7 +32,7 @@ public class CopyUtils {
      * @param source 原数据源
      * @return 返回结果
      */
-    public static String[] getNullPropertyNames(Object source) {
+    public static <S> String[] getNullPropertyNames(S source) {
         //包装 bean
         final BeanWrapper src = new BeanWrapperImpl(source);
         //获取属性描述符
@@ -58,14 +57,38 @@ public class CopyUtils {
      * @param target 要转换成的对象
      * @return 返回对象数据集
      */
-    public static List copyPropertiesList(List<?> list, Class target) {
-        List<Object> result = new ArrayList();
+    public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
+        List<T> result = new ArrayList();
         if (list != null) {
-            for (Object o : list) {
+            for (S o : list) {
                 try {
 
-                    Object d = target.newInstance();
-                    CopyUtils.copyProperties(o, d);
+                    T d = target.newInstance();
+                    copyProperties(o, d, false);
+                    result.add(d);
+                } catch (Exception e) {
+                    logUtil.error(e.getMessage());
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 拷贝 list 数据
+     *
+     * @param list   源数据
+     * @param target 要转换成的对象
+     * @return 返回对象数据集
+     */
+    public static <S, T> List<T> copyNoNullPropertiesList(List<S> list, Class<T> target) {
+        List<T> result = new ArrayList();
+        if (list != null) {
+            for (S o : list) {
+                try {
+
+                    T d = target.newInstance();
+                    copyProperties(o, d, true);
                     result.add(d);
                 } catch (Exception e) {
                     logUtil.error(e.getMessage());
@@ -81,7 +104,103 @@ public class CopyUtils {
      * @param source 原数据源
      * @param target 当前数据
      */
-    public static void copyProperties(Object source, Object target) {
-        BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
+    public static <S, T> void copyProperties(S source, T target) {
+        copyProperties(source, target, false);
+    }
+
+    /**
+     * 拷贝数据
+     *
+     * @param source 原数据源
+     * @param target 当前数据
+     */
+    public static <S, T> void copyNoNullProperties(S source, T target) {
+        copyProperties(source, target, true);
+    }
+
+    /**
+     * 拷贝数据
+     *
+     * @param source 原数据源
+     * @param target 当前数据
+     */
+    public static <S, T> T copyProperties(S source, Class<T> target) {
+        T t;
+        try {
+            t = target.newInstance();
+            copyProperties(source, t, false);
+            return t;
+        } catch (Exception ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 拷贝数据
+     *
+     * @param source 原数据源
+     * @param target 当前数据
+     */
+    public static <S, T> T copyNoNullProperties(S source, Class<T> target) {
+        T t;
+        try {
+            t = target.newInstance();
+            copyProperties(source, t, true);
+            return t;
+        } catch (Exception ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * 拷贝数据
+     *
+     * @param source 原数据源
+     * @param target 当前数据
+     * @param isNull 是否过虑空值
+     * @param <S>    原参数
+     * @param <T>    指定实体
+     */
+    private static <S, T> void copyProperties(S source, T target, boolean isNull) {
+        try {
+            if (isNull) {
+                BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
+            } else {
+                BeanUtils.copyProperties(source, target);
+            }
+            // 验证是否有实体信息
+            Field[] targetFields = target.getClass().getDeclaredFields();
+            Field[] fields = source.getClass().getDeclaredFields();
+            for (Field targetField :
+                    targetFields) {
+                targetField.setAccessible(true);
+                // 读取值
+                Object value = ReflectionUtils.getFieldValue(targetField, target);
+                if (value != "") {
+                    continue;
+                }
+                // 验证是否有相同字段
+                Optional<Field> optionalField = Arrays.stream(fields)
+                        .filter(f -> f.getName().equals(targetField.getName()))
+                        .findFirst();
+                if (!optionalField.isPresent()) {
+                    continue;
+                }
+                Field field = optionalField.get();
+                field.setAccessible(true);
+                // 读取值
+                value = ReflectionUtils.getFieldValue(field, source);
+                if (value == "") {
+                    continue;
+                }
+                Object clazz = targetField.getType().newInstance();
+                copyProperties(value, clazz);
+                ReflectionUtils.setFieldValue(target, targetField, clazz);
+            }
+        } catch (Exception ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+        }
     }
 }

@@ -27,15 +27,15 @@ import javax.persistence.*;
 @Table(name = "${table}", catalog = "${dataBase}")
 public class ${className}ExtendEntity extends ${className}Entity {
 
-private static final long serialVersionUID = ${serialVersionUID};
+    private static final long serialVersionUID = ${serialVersionUID};
 <#list children as item>
     <#if item.columnShow && item.isExtension==1>
 
-        /**
-        *
-        * ${item.columnDescription}
-        */
-        private ${item.dataType} ${item.columnName};
+    /**
+    *
+    * ${item.columnDescription}
+    */
+    private ${item.dataType} ${item.columnName};
     </#if>
 </#list>
 }

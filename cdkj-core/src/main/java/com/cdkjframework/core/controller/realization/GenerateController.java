@@ -74,7 +74,7 @@ public class GenerateController extends WebUiController {
             DatabaseEntity databaseEntity = generateServiceImpl.findDatabase();
             builder = ResponseBuilder.successBuilder(databaseEntity);
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 
@@ -96,7 +96,7 @@ public class GenerateController extends WebUiController {
             List<TreeEntity> tableList = generateServiceImpl.findDatabaseTableList(tableEntity);
             builder = ResponseBuilder.successBuilder(tableList);
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 
@@ -118,7 +118,7 @@ public class GenerateController extends WebUiController {
             List<TableColumnEntity> columnList = generateServiceImpl.findTableColumnList(columnEntity);
             builder = ResponseBuilder.successBuilder(columnList);
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
             builder = new ResponseBuilder(ex.getMessage());
         }
 
@@ -142,11 +142,11 @@ public class GenerateController extends WebUiController {
             if (isGenerate) {
                 builder = ResponseBuilder.successBuilder("生成成功！");
             } else {
-                builder = ResponseBuilder.successBuilder("生成失败！");
+                builder = ResponseBuilder.failBuilder("生成失败！");
             }
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
-            builder = new ResponseBuilder(ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
+            builder = ResponseBuilder.failBuilder(ex.getMessage());
         }
 
         //返回结果

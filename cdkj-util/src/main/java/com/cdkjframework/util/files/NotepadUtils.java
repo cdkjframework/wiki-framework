@@ -21,7 +21,7 @@ import java.util.Date;
  */
 
 @Component
-public class NotepadUtil {
+public class NotepadUtils {
 
     /**
      * 日志

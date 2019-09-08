@@ -23,11 +23,11 @@ import java.net.URL;
 
 @Component
 @ConfigurationProperties(prefix = "spring.script")
-public class ScriptUtil {
+public class ScriptUtils {
     /**
      * 日志
      */
-    private LogUtils logUtil = LogUtils.getLogger(ScriptUtil.class);
+    private LogUtils logUtil = LogUtils.getLogger(ScriptUtils.class);
 
     /**
      * 地址
