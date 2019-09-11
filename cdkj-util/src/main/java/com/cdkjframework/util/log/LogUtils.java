@@ -7,7 +7,8 @@ import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +47,7 @@ public class LogUtils {
     /**
      * 编码
      */
-    private String CHARSETNAME = "utf-8";
+    private String CHARSET_NAME = "utf-8";
 
     /**
      * 追加
@@ -94,6 +95,7 @@ public class LogUtils {
             customConfig = new CustomConfig();
         }
         logger = Logger.getLogger(name);
+        setLoggerLevel(logger);
     }
 
     /**
@@ -112,9 +114,6 @@ public class LogUtils {
      * @param msg       错误信息
      */
     public void debug(Throwable throwable, String msg) {
-        if (!isDebug()) {
-            return;
-        }
         if (throwable != null) {
             log(Level.CONFIG, throwable, msg);
         } else {
@@ -138,9 +137,6 @@ public class LogUtils {
      * @param msg       错误信息
      */
     public void info(Throwable throwable, String msg) {
-        if (!isInfo()) {
-            return;
-        }
         if (throwable != null) {
             log(Level.INFO, throwable, msg);
         } else {
@@ -164,9 +160,6 @@ public class LogUtils {
      * @param msg       日志信息
      */
     public void warn(Throwable throwable, String msg) {
-        if (!isWarn()) {
-            return;
-        }
         if (throwable != null) {
             log(Level.INFO, throwable, msg);
         } else {
@@ -190,9 +183,6 @@ public class LogUtils {
      * @param msg       错误信息
      */
     public void error(Throwable throwable, String msg) {
-        if (!isError()) {
-            return;
-        }
         if (throwable == null) {
             log(Level.FINEST, msg);
         } else {
@@ -214,7 +204,7 @@ public class LogUtils {
             } else {
                 logger.log(level, msg, throwable);
             }
-            //写入日志
+            // 写入日志
             writeLog(level, throwable, msg);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -243,11 +233,11 @@ public class LogUtils {
      * @param throwable 错误信息
      * @param msg
      */
-    private void writeLog(Level level, Throwable throwable, String msg) {
+    private synchronized void writeLog(Level level, Throwable throwable, String msg) {
         Lock lock = new ReentrantLock();
         lock.lock();
         try {
-            //验证目录存不存在
+            // 验证目录存不存在
             String logPath = customConfig.getLogPath();
             if (HostUtils.getOs().startsWith(OS)) {
                 logPath = "c:" + logPath;
@@ -259,10 +249,11 @@ public class LogUtils {
             if (!file.exists()) {
                 return;
             }
+            // 日志文件
+            String logFileName = logPath + "log-" + level.getName().toLowerCase() +
+                    "-" + DateUtils.format(new Date()) + ".log";
 
-            String logFileName = logPath + "log-" + level.getName().toLowerCase() + "-" + DateUtils.format(new Date()) + ".log";
-
-            //验证文件是否存在
+            // 验证文件是否存在
             file = new File(logPath + logFileName);
             try {
                 if (!file.exists()) {
@@ -274,11 +265,11 @@ public class LogUtils {
                 return;
             }
 
-            //日志时间
+            // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append("   " + level.getName() + "   " + logger.getName() + " : " + msg);
             FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
-            // 异常信息
+            //  异常信息
             if (throwable != null) {
                 StackTraceElement[] elements = throwable.getStackTrace();
                 for (StackTraceElement ele :
@@ -289,7 +280,6 @@ public class LogUtils {
                     FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
                 }
             }
-
         } catch (Exception ex) {
             System.out.println(ex);
         } finally {
@@ -298,87 +288,31 @@ public class LogUtils {
     }
 
     /**
-     * 写入日志
-     *
-     * @param file    文件
-     * @param builder 日志信息
-     */
-    private void outputStream(File file, StringBuilder builder) {
-        Writer writer = null;
-        FileOutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(file, APPEND);
-            writer = new OutputStreamWriter(outputStream, CHARSETNAME);
-            writer.write(builder.toString());
-            String newline = System.getProperty("line.separator");
-            //写入换行  
-            writer.write(newline);
-        } catch (FileNotFoundException e) {
-            System.out.println(e);
-        } catch (UnsupportedEncodingException e) {
-            System.out.println(e);
-        } catch (IOException e) {
-            System.out.println(e);
-        } finally {
-            if (writer != null) {
-                try {
-                    writer.close();
-                    outputStream.flush();
-                    outputStream.close();
-                } catch (IOException e) {
-                    System.out.println(e);
-                }
-            }
-        }
-    }
-
-    /**
      * 是否 debug 模式
      *
      * @return 返回结果
      */
-    private boolean isDebug() {
+    private void setLoggerLevel(Logger loggerLevel) {
         int index = level.indexOf(customConfig.getLevel());
-        return index == 0;
-    }
-
-    /**
-     * 是否 INFO 模式
-     *
-     * @return 返回结果
-     */
-    private boolean isInfo() {
-        int index = level.indexOf(customConfig.getLevel());
-        return index <= 1;
-    }
-
-    /**
-     * 是否 WARN 模式
-     *
-     * @return 返回结果
-     */
-    private boolean isWarn() {
-        int index = level.indexOf(customConfig.getLevel());
-        return index <= 2;
-    }
-
-    /**
-     * 是否 WARN 模式
-     *
-     * @return 返回结果
-     */
-    private boolean isError() {
-        int index = level.indexOf(customConfig.getLevel());
-        return index <= 3;
-    }
-
-    /**
-     * 是否 FATAL 模式
-     *
-     * @return 返回结果
-     */
-    private boolean isFatal() {
-        int index = level.indexOf(customConfig.getLevel());
-        return index <= 4;
+        switch (index) {
+            case 0:
+                loggerLevel.setLevel(Level.SEVERE);
+                break;
+            case 1:
+                loggerLevel.setLevel(Level.WARNING);
+                break;
+            case 2:
+                loggerLevel.setLevel(Level.INFO);
+                break;
+            case 3:
+                loggerLevel.setLevel(Level.CONFIG);
+                break;
+            case 4:
+                loggerLevel.setLevel(Level.FINE);
+                break;
+            default:
+                loggerLevel.setLevel(Level.ALL);
+                break;
+        }
     }
 }

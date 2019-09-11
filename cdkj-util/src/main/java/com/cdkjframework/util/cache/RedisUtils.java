@@ -2,6 +2,7 @@ package com.cdkjframework.util.cache;
 
 import com.alibaba.fastjson.JSONArray;
 import com.cdkjframework.config.RedisConfig;
+import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.AssertUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -24,9 +25,10 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @ProjectName: cdkj-framework
@@ -74,16 +76,18 @@ public class RedisUtils implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         AssertUtils.isListEmpty(redisConfig.getHost(), "redis 没有配置连接地址");
-
         int port = redisConfig.getPort();
         // redis 集群连接
         if (redisConfig.getHost().size() > 1) {
+            logUtils.info("Redis 集群配置开始：" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
             redisClusterClient(port);
             return;
+        } else {
+            logUtils.info("Redis 配置开始：" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
+            // redis 连接
+            redisClient(port);
         }
-
-        // redis 连接
-        redisClient(port);
+        logUtils.info("Redis 配置结束" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
     }
 
     /**
@@ -91,14 +95,12 @@ public class RedisUtils implements ApplicationRunner {
      */
     private void redisClient(int port) {
         String url = redisConfig.getHost().get(0);
-
+        // 创建地址
         RedisClient redisClient = RedisClient.create(createRedisUrl(url, port));
         redisClient.setOptions(clientOptions());
         redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
 
-
         GenericObjectPool<StatefulRedisConnection<String, String>> pool;
-
         GenericObjectPoolConfig<StatefulRedisConnection<String, String>> poolConfig =
                 genericObjectPoolConfig();
 
@@ -176,7 +178,7 @@ public class RedisUtils implements ApplicationRunner {
         if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
             redisURI.setPassword(redisConfig.getPassword());
         }
-
+        // 返回地址
         return redisURI;
     }
 
@@ -197,7 +199,6 @@ public class RedisUtils implements ApplicationRunner {
         return poolConfig;
     }
 
-
     /**
      * 配置集群选项,自动重连,最多重定型1次
      *
@@ -215,6 +216,7 @@ public class RedisUtils implements ApplicationRunner {
     private ClientOptions clientOptions() {
         return ClientOptions.builder().autoReconnect(true).build();
     }
+
     // =============================common============================
 
     /**
@@ -224,7 +226,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param time 时间(秒)
      * @return 0
      */
-    public static boolean aSyncExpire(String key, long time) {
+    public static boolean syncExpire(String key, long time) {
         try {
             if (time < 0) {
                 time = 30 * 60;
@@ -244,7 +246,7 @@ public class RedisUtils implements ApplicationRunner {
      *
      * @param key 键 不能为nullogUtils* @return 时间(秒) 返回0代表为永久有效
      */
-    public static boolean aSyncExists(String... key) {
+    public static boolean syncExists(String... key) {
         RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.exists(key) :
                 redisAsyncCommands.exists(key);
         try {
@@ -270,7 +272,7 @@ public class RedisUtils implements ApplicationRunner {
      */
 
     @SuppressWarnings("unchecked")
-    public static void aSyncDel(String... key) {
+    public static void syncDel(String... key) {
         if (redisAsyncCommands == null) {
             commands.del(key);
         } else {
@@ -286,8 +288,8 @@ public class RedisUtils implements ApplicationRunner {
      * @param key 键
      * @return 值
      */
-    public static String aSyncGet(String key) {
-        if (aSyncExists(key)) {
+    public static String syncGet(String key) {
+        if (syncExists(key)) {
             return null;
         }
         RedisFuture<String> redisFuture = redisAsyncCommands == null ? commands.get(key) :
@@ -309,7 +311,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param value 值
      * @return true成功 false失败
      */
-    public static boolean aSyncSet(String key, String value) {
+    public static boolean syncSet(String key, String value) {
         try {
             if (redisAsyncCommands == null) {
                 commands.set(key, value);
@@ -331,7 +333,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param time  时间(秒) time要大于0 如果time小于等于0 将设置无限期
      * @return true成功 false 失败
      */
-    public static boolean aSyncSet(String key, String value, long time) {
+    public static boolean syncSet(String key, String value, long time) {
         try {
             if (time > 0) {
                 if (redisAsyncCommands == null) {
@@ -340,7 +342,7 @@ public class RedisUtils implements ApplicationRunner {
                     redisAsyncCommands.setex(key, time, value);
                 }
             } else {
-                aSyncSet(key, value);
+                syncSet(key, value);
             }
             return true;
         } catch (Exception e) {
@@ -356,7 +358,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param delta 要增加几(大于0)
      * @return 返回增加值
      */
-    public static long aSyncIncr(String key, long delta) {
+    public static long syncIncr(String key, long delta) {
         RedisFuture<Long> redisFuture;
         if (delta <= 0) {
             redisFuture = redisAsyncCommands == null ? commands.incr(key) : redisAsyncCommands.incr(key);
@@ -381,7 +383,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param delta 要减少几(小于0)
      * @return
      */
-    public static long aSyncDecr(String key, long delta) {
+    public static long syncDecr(String key, long delta) {
         RedisFuture<Long> redisFuture;
         if (delta <= 0) {
             redisFuture = redisAsyncCommands == null ? commands.decr(key) : redisAsyncCommands.decr(key);
@@ -408,8 +410,8 @@ public class RedisUtils implements ApplicationRunner {
      * @return 对应的多个键值
      * 0
      */
-    public static Map<String, Object> aSyncHashGet(String key) {
-        String value = aSyncGet(key);
+    public static Map<String, Object> syncHashGet(String key) {
+        String value = syncGet(key);
         return JsonUtils.jsonStringToMap(value);
     }
 
@@ -421,10 +423,10 @@ public class RedisUtils implements ApplicationRunner {
      * @return true 成功 false 失败
      * 0
      */
-    public static boolean aSyncHashSet(String key, Map<String, Object> map) {
+    public static boolean syncHashSet(String key, Map<String, Object> map) {
         try {
             String value = JsonUtils.objectToJsonString(map);
-            aSyncSet(key, value);
+            syncSet(key, value);
             return true;
         } catch (Exception e) {
             logUtils.error(e.getCause(), e.getMessage());
@@ -440,12 +442,12 @@ public class RedisUtils implements ApplicationRunner {
      * @param time 时间(秒)
      * @return true成功 false失败
      */
-    public static boolean aSyncHashSet(String key, Map<String, Object> map, long time) {
+    public static boolean syncHashSet(String key, Map<String, Object> map, long time) {
         try {
             String value = JsonUtils.objectToJsonString(map);
-            aSyncSet(key, value);
+            syncSet(key, value);
             if (time > 0) {
-                aSyncExpire(key, time);
+                syncExpire(key, time);
             }
             return true;
         } catch (Exception e) {
@@ -465,8 +467,8 @@ public class RedisUtils implements ApplicationRunner {
      * @param <T>
      * @return 返回实体
      */
-    public static <T> T aSyncGetEntity(String key, Class<T> clazz) {
-        String value = aSyncGet(key);
+    public static <T> T syncGetEntity(String key, Class<T> clazz) {
+        String value = syncGet(key);
         return JsonUtils.jsonStringToBean(value, clazz);
     }
 
@@ -478,9 +480,9 @@ public class RedisUtils implements ApplicationRunner {
      * @param <T> 实体类型
      * @return 返回执行结果
      */
-    public static <T> boolean aSyncEntitySet(String key, T t) {
+    public static <T> boolean syncEntitySet(String key, T t) {
         String value = JsonUtils.objectToJsonString(t);
-        return aSyncSet(key, value);
+        return syncSet(key, value);
     }
 
     /**
@@ -491,9 +493,9 @@ public class RedisUtils implements ApplicationRunner {
      * @param <T> 实体类型
      * @return 返回执行结果
      */
-    public static <T> boolean aSyncEntitySet(String key, T t, long time) {
+    public static <T> boolean syncEntitySet(String key, T t, long time) {
         String value = JsonUtils.objectToJsonString(t);
-        return aSyncSet(key, value, time);
+        return syncSet(key, value, time);
     }
 
     // ================================ List =================================
@@ -506,8 +508,8 @@ public class RedisUtils implements ApplicationRunner {
      * @param <T>
      * @return 返回实体
      */
-    public static <T> List<T> aSyncGetList(String key, Class<T> clazz) {
-        String value = aSyncGet(key);
+    public static <T> List<T> syncGetList(String key, Class<T> clazz) {
+        String value = syncGet(key);
         return JsonUtils.jsonStringToList(value, clazz);
     }
 
@@ -519,12 +521,12 @@ public class RedisUtils implements ApplicationRunner {
      * @param <T>  实体类型
      * @return 返回执行结果
      */
-    public static <T> boolean aSyncListSet(String key, List<T> list) {
+    public static <T> boolean syncListSet(String key, List<T> list) {
         JSONArray value = JsonUtils.listToJsonArray(list);
         if (value == null) {
             return false;
         }
-        return aSyncSet(key, value.toJSONString());
+        return syncSet(key, value.toJSONString());
     }
 
     /**
@@ -535,11 +537,11 @@ public class RedisUtils implements ApplicationRunner {
      * @param <T>  实体类型
      * @return 返回执行结果
      */
-    public static <T> boolean aSyncListSet(String key, List<T> list, long time) {
+    public static <T> boolean syncListSet(String key, List<T> list, long time) {
         JSONArray value = JsonUtils.listToJsonArray(list);
         if (value == null) {
             return false;
         }
-        return aSyncSet(key, value.toJSONString(), time);
+        return syncSet(key, value.toJSONString(), time);
     }
 }
