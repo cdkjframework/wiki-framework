@@ -111,7 +111,6 @@
         <foreach collection="list" item="item" index="index" separator=";">
             UPDATE ${table}
             <set>
-            <trim suffixOverrides=",">
             <#list children as item>
                 <#if item.isExtension==0>
                     <#if !item.columnKey>
