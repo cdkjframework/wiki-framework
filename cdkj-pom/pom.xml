@@ -245,7 +245,11 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${javax-mail.version}</version>
+            </dependency>
             <!-- jwt begin -->
             <dependency>
                 <groupId>com.auth0</groupId>
