@@ -71,8 +71,6 @@ public class RocketMqConsumerClient implements ApplicationRunner {
         Properties properties = new Properties();
         // 设置 GROUP_ID 提换 MQ ConsumerId ID
         properties.put(PropertyKeyConst.GROUP_ID, aliCloudRocketMqConfig.getGroupId());
-        // 鉴权用 ConsumerId
-        properties.put(PropertyKeyConst.ConsumerId, aliCloudRocketMqConfig.getGroupId());
         // 鉴权用 AccessKey
         properties.put(PropertyKeyConst.AccessKey, aliCloudRocketMqConfig.getAccessKey());
         // 鉴权用 SecretKey

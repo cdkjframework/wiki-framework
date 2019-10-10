@@ -50,7 +50,7 @@ public class HttpsClientUtils {
         HttpPost httpPost = null;
         String result = null;
         try {
-            httpClient = TlsPool.createSSLContext();
+            httpClient = TlsPool.createSslContext();
             httpPost = new HttpPost(requestEntity.getRequestAddress());
             //设置 http 请头
             Header[] headers = setHeader(requestEntity);
@@ -112,7 +112,7 @@ public class HttpsClientUtils {
         HttpGet httpGet = null;
         StringBuilder result = null;
         try {
-            httpClient = TlsPool.createSSLContext();
+            httpClient = TlsPool.createSslContext();
             // 设置 http 请头
             Header[] headers = setHeader(requestEntity);
             httpGet.setHeaders(headers);

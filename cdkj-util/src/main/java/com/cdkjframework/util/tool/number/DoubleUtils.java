@@ -16,6 +16,11 @@ import org.springframework.stereotype.Component;
 public class DoubleUtils {
 
     /**
+     * 规模
+     */
+    private final static int SCALE = 2;
+
+    /**
      * double数据相加
      *
      * @param doubleList 数据列表
@@ -47,8 +52,8 @@ public class DoubleUtils {
      */
     public static double divide(double dividend, double divisor) {
         double targetDigital = 0D;
-        if (CompareUtils.equal(dividend, targetDigital, 2) ||
-                CompareUtils.equal(divisor, targetDigital, 2)) {
+        if (CompareUtils.equal(dividend, targetDigital, SCALE) ||
+                CompareUtils.equal(divisor, targetDigital, SCALE)) {
             return targetDigital;
         }
 
@@ -65,8 +70,8 @@ public class DoubleUtils {
      */
     public static double multiply(double multiplier, double multiplicand) {
         double targetDigital = 0D;
-        if (CompareUtils.equal(multiplier, targetDigital, 2) ||
-                CompareUtils.equal(multiplicand, targetDigital, 2)) {
+        if (CompareUtils.equal(multiplier, targetDigital, SCALE) ||
+                CompareUtils.equal(multiplicand, targetDigital, SCALE)) {
             return targetDigital;
         }
 

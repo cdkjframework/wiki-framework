@@ -119,9 +119,9 @@ public class ChineseToEnglishUtils {
     public static String getCnAscii(String cnStr) {
         StringBuffer strBuf = new StringBuffer();
         //转换为字节
-        byte[] bGBK = cnStr.getBytes();
-        for (int i = 0; i < bGBK.length; i++) {
-            strBuf.append(Integer.toHexString(bGBK[i] & 0xff));
+        byte[] cnStrBytes = cnStr.getBytes();
+        for (int i = 0; i < cnStrBytes.length; i++) {
+            strBuf.append(Integer.toHexString(cnStrBytes[i] & 0xff));
         }
         return strBuf.toString();
     }

@@ -164,7 +164,7 @@ public class AliCloudSms {
 
         //初始化acsClient,暂不支持region化
         IClientProfile profile = DefaultProfile.getProfile(smsConfig.getEndpoint(), smsConfig.getAccessKeyId(), smsConfig.getAccessKeySecret());
-        DefaultProfile.addEndpoint(smsConfig.getEndpoint(), smsConfig.getEndpoint(), smsConfig.getProduct(), smsConfig.getDomain());
+        DefaultProfile.addEndpoint(smsConfig.getRegionId(), smsConfig.getProduct(), smsConfig.getEndpoint());
         //返回结果
         return new DefaultAcsClient(profile);
     }

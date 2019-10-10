@@ -10,9 +10,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -102,7 +106,7 @@ public class ReflectionUtils {
                 if (dataTypeList.contains(dataType)) {
                     return method.invoke(object, parameters);
                 } else {
-                    Object value = ConvertDataTypes(parameters, dataType);
+                    Object value = convertDataTypes(parameters, dataType);
                     return method.invoke(object, new Object[]{value});
                 }
             }
@@ -254,13 +258,14 @@ public class ReflectionUtils {
      * @param dataType   数据类型
      * @return 返回结果
      */
-    private static Object ConvertDataTypes(Object[] parameters, String dataType) {
+    private static Object convertDataTypes(Object[] parameters, String dataType) {
         Object obj = null;
         if (parameters.length == 0 || StringUtils.isNullAndSpaceOrEmpty(parameters[0])) {
             return obj;
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String value = parameters[0].toString();
+        DateFormat format = DateFormat.getDateInstance();
         switch (dataType) {
             case DataTypeConsts.booleanName:
             case DataTypeConsts
@@ -271,8 +276,9 @@ public class ReflectionUtils {
                 obj = BigDecimal.valueOf(Float.valueOf(value));
                 break;
             case DataTypeConsts.dateName:
-                if (value.contains("CST")) {
-                    obj = new Date(value);
+                final String cst = "CST";
+                if (value.contains(cst)) {
+                    obj = format.format(value);
                 } else {
                     try {
                         obj = dateFormat.parse(value);
@@ -291,7 +297,11 @@ public class ReflectionUtils {
                 if (timestamp > 0) {
                     obj = new Timestamp(Long.valueOf(value));
                 } else {
-                    obj = new Timestamp(new Date(value).getTime());
+                    try {
+                        obj = new Timestamp(format.parse(value).getTime());
+                    } catch (ParseException e) {
+                        logUtil.error(e.getCause(), e.getMessage());
+                    }
                 }
                 break;
             case DataTypeConsts.sqlDateName:

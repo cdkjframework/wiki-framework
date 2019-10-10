@@ -42,17 +42,17 @@ public class LogUtils {
     /**
      * 操作系统
      */
-    private String OS = "win";
+    private final String OS = "win";
 
     /**
      * 编码
      */
-    private String CHARSET_NAME = "utf-8";
+    private final String CHARSET_NAME = "utf-8";
 
     /**
      * 追加
      */
-    private boolean APPEND = true;
+    private final boolean APPEND = true;
 
     /**
      * 日志级别

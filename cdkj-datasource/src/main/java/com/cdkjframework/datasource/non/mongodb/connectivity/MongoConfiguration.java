@@ -74,8 +74,8 @@ public class MongoConfiguration {
         } else {
             uri = String.format("mongodb://%s:%s@%s:%s/%s", mongodbConfig.getUserName(), mongodbConfig.getPassword(), mongodbConfig.getUri(), mongodbConfig.getPort(), mongodbConfig.getDataSource());
         }
-        MongoClientURI mongoClientURI = new MongoClientURI(uri, mongoBuilder);
-        SimpleMongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongoClientURI);
+        MongoClientURI mongoClientUrl = new MongoClientURI(uri, mongoBuilder);
+        SimpleMongoDbFactory mongoDbFactory = new SimpleMongoDbFactory(mongoClientUrl);
 
         logUtil.info("mongodb 配置结束");
         return mongoDbFactory;

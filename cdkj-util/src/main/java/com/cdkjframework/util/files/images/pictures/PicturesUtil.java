@@ -163,9 +163,9 @@ public class PicturesUtil {
             if (imageEntity.isCharacterDistortion()) {
                 AffineTransform affine = new AffineTransform();
                 double theta = Math.PI / 4 * random.nextDouble() * (random.nextBoolean() ? 1 : -1);
-                double anChorX = (w / contentSize) * i + fontSize / 2;
-                double anChorY = h / 2;
-                affine.setToRotation(theta, anChorX, anChorY);
+                double x = (w / contentSize) * i + fontSize / 2;
+                double y = h / 2;
+                affine.setToRotation(theta, x, y);
                 g2.setTransform(affine);
             }
             g2.drawChars(chars, i, 1, ((w - 10) / contentSize) * i + 5, h / 2 + fontSize / 2 - 10);
@@ -216,7 +216,8 @@ public class PicturesUtil {
      */
     private static int[] getRandomRgb() {
         int[] rgb = new int[3];
-        for (int i = 0; i < 3; i++) {
+        int length = 3;
+        for (int i = 0; i < length; i++) {
             rgb[i] = random.nextInt(255);
         }
         return rgb;
@@ -231,8 +232,8 @@ public class PicturesUtil {
      * @param color 颜色
      */
     private static void shear(Graphics g, int w1, int h1, Color color) {
-        shearX(g, w1, h1, color);
-        shearY(g, w1, h1, color);
+        shearXaxis(g, w1, h1, color);
+        shearYaxis(g, w1, h1, color);
     }
 
     /**
@@ -243,7 +244,7 @@ public class PicturesUtil {
      * @param h1    高度
      * @param color 颜色
      */
-    private static void shearX(Graphics g, int w1, int h1, Color color) {
+    private static void shearXaxis(Graphics g, int w1, int h1, Color color) {
         int period = random.nextInt(2);
         boolean borderGap = true;
         int frames = 1;
@@ -271,7 +272,7 @@ public class PicturesUtil {
      * @param h1    高度
      * @param color 颜色
      */
-    private static void shearY(Graphics g, int w1, int h1, Color color) {
+    private static void shearYaxis(Graphics g, int w1, int h1, Color color) {
         // 50;
         int period = random.nextInt(40) + 10;
         boolean borderGap = true;

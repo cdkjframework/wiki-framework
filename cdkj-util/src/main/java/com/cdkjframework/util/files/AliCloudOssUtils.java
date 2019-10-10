@@ -1,6 +1,8 @@
 package com.cdkjframework.util.files;
 
+import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.OSSClientBuilder;
 import com.cdkjframework.config.AliCloudOssConfig;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +48,7 @@ public class AliCloudOssUtils {
      */
     public static void createBucket() {
         // 创建OSSClient实例。
-        OSSClient ossClient = new OSSClient(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
         // 创建存储空间。
         ossClient.createBucket(config.getBucketName());
@@ -63,7 +65,7 @@ public class AliCloudOssUtils {
      */
     public static String publishInputStream(InputStream inputStream, String fileName) {
         // 创建OSSClient实例。
-        OSSClient ossClient = new OSSClient(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
         //获取文件名
         fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtils.getFileSuffix(fileName);
@@ -85,7 +87,7 @@ public class AliCloudOssUtils {
      */
     public static String publishFile(File file) {
         // 创建OSSClient实例。
-        OSSClient ossClient = new OSSClient(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
         //获取文件名
         String fileName = file.getName();
@@ -108,7 +110,7 @@ public class AliCloudOssUtils {
      */
     public static void deleteFiles(String fileName) {
         // 创建OSSClient实例。
-        OSSClient ossClient = new OSSClient(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
         // 创建存储空间。
         ossClient.deleteObject(config.getBucketName(), fileName);

@@ -21,9 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 @ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = MockServletContext.class)
-//@WebAppConfiguration
 @Ignore
-public abstract class MockitoUtils {
+public abstract class AbstractMockitoUtils {
 
     /**
      * 数据模型

@@ -29,7 +29,7 @@ public class ClassMetadataUtil {
      */
     public static Map<String, Object> getAttribute(Class beanClass) {
         MultiValueMap<String, Object> valueMap = Application.annotationMetadata.getAllAnnotationAttributes(beanClass.getName());
-        Map<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>(32);
         for (Map.Entry<String, List<Object>> entry :
                 valueMap.entrySet()) {
             map.put(entry.getKey(), entry.getValue());

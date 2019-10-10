@@ -33,7 +33,7 @@ public class WebSocketService {
     /**
      * on current包的线程安全Set，用来存放每个客户端对应的WebSocketService对象。
      */
-    private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<WebSocketService>();
+    private static CopyOnWriteArraySet<WebSocketService> webSocketSet = new CopyOnWriteArraySet<>();
 
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据

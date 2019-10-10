@@ -129,11 +129,6 @@ public abstract class AbstractInterceptor implements IInterceptor {
             bodyChangeJson(body, builder, userEntity);
             //回写数据
             requestWrapper.setBody(builder.toString().getBytes());
-
-//            requestWrapper.putHeader(HeaderConsts.logId, userEntity.getLogId());
-//            requestWrapper.putHeader(HeaderConsts.organizationId, userEntity.getLogId());
-//            requestWrapper.putHeader(HeaderConsts.organizationCode, userEntity.getLogId());
-//            requestWrapper.putHeader(HeaderConsts.organizationName, userEntity.getLogId());
         } catch (IOException e) {
             logUtil.error(e.getCause(),e.getMessage());
         }

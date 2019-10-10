@@ -46,7 +46,7 @@ public class LogRecordEntity {
     /**
      * 操作账号
      */
-    private String UserName;
+    private String userName;
 
     /**
      * 操作人名称

@@ -125,15 +125,15 @@ public class RedisUtils implements ApplicationRunner {
      * redis 集群连接
      */
     private void redisClusterClient(int port) {
-        List<RedisURI> redisURIList = new ArrayList<>();
+        List<RedisURI> redisUrlList = new ArrayList<>();
 
         for (String key :
                 redisConfig.getHost()) {
-            redisURIList.add(createRedisUrl(key, port));
+            redisUrlList.add(createRedisUrl(key, port));
         }
 
         // redis 集群
-        RedisClusterClient clusterClient = RedisClusterClient.create(redisURIList);
+        RedisClusterClient clusterClient = RedisClusterClient.create(redisUrlList);
         clusterClient.setOptions(clusterClientOptions());
         clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
 
@@ -168,18 +168,18 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     private RedisURI createRedisUrl(String redisUrl, int port) {
-        RedisURI redisURI;
+        RedisURI redisUri;
         if (port == 0) {
-            redisURI = RedisURI.create("redis://" + redisUrl);
+            redisUri = RedisURI.create("redis://" + redisUrl);
         } else {
-            redisURI = RedisURI.create(redisUrl, port);
+            redisUri = RedisURI.create(redisUrl, port);
         }
-        redisURI.setDatabase(redisConfig.getDatabase());
+        redisUri.setDatabase(redisConfig.getDatabase());
         if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
-            redisURI.setPassword(redisConfig.getPassword());
+            redisUri.setPassword(redisConfig.getPassword());
         }
         // 返回地址
-        return redisURI;
+        return redisUri;
     }
 
     /**
