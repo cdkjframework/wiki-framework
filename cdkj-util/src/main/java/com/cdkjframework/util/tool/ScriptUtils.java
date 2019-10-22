@@ -50,7 +50,7 @@ public class ScriptUtils {
      * @return 返回结果
      * @throws IOException 异常信息
      */
-    public String ScriptParsing(String jsonString, String findLocation) throws IOException {
+    public String scriptParsing(String jsonString, String findLocation) throws IOException {
         //验证是否为空
         if (StringUtils.isNullAndSpaceOrEmpty(jsonString)) {
             return "";

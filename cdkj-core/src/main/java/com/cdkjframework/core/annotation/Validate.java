@@ -1,13 +1,16 @@
 package com.cdkjframework.core.annotation;
 
-
 import com.cdkjframework.enums.ERegexType;
 
 import java.lang.annotation.*;
 
 /**
- * Created by Administrator on 2017/7/4.
- * 数据验证注解
+ * @ProjectName: cdkjframework
+ * @Package: com.cdkjframework.core.annotation
+ * @ClassName: Validate
+ * @Description: 数据验证注解
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 @Documented
 @Target(ElementType.FIELD)

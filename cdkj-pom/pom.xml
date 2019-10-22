@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0</version>
+    <version>1.0-191022</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -245,7 +245,11 @@
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${javax-mail.version}</version>
+            </dependency>
             <!-- jwt begin -->
             <dependency>
                 <groupId>com.auth0</groupId>
@@ -496,4 +500,13 @@
             </plugin>
         </plugins>
     </build>
+
+
+    <distributionManagement>
+        <repository>
+            <id>shanWeiYun Maven Repository</id>
+            <layout>default</layout>
+            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+        </repository>
+    </distributionManagement>
 </project>

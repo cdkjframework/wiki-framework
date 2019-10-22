@@ -67,7 +67,7 @@ public class TlsPool extends HttpClientBuilder implements ApplicationRunner {
     /**
      * 构造函数
      */
-    public static CloseableHttpClient createSSLContext() {
+    public static CloseableHttpClient createSslContext() {
         SSLContext ctx = null;
         try {
             if (StringUtils.isNotNullAndEmpty(tlsConfig.getFile()) &&

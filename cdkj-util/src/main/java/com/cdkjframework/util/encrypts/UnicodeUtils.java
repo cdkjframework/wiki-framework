@@ -23,10 +23,10 @@ public class UnicodeUtils {
     public static String unicodeToCn(String unicode) {
 
         StringBuilder builder = new StringBuilder();
-        int i = -1;
+        int i;
         int pos = 0;
-
-        while ((i = unicode.indexOf("\\u", pos)) != -1) {
+        final String unicodeValue = "\\u";
+        while ((i = unicode.indexOf(unicodeValue, pos)) != -1) {
             builder.append(unicode.substring(pos, i));
             if (i + 5 < unicode.length()) {
                 pos = i + 6;

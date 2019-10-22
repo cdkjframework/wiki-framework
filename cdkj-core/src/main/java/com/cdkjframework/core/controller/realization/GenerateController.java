@@ -24,9 +24,6 @@ import java.util.List;
  * @Version: 1.0
  */
 
-/**
- * 自动生成
- */
 @RestController
 @RequestMapping("/code/generate")
 public class GenerateController extends WebUiController {

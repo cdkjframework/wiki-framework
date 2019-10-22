@@ -1,5 +1,8 @@
 package com.cdkjframework.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -12,10 +15,12 @@ import org.springframework.stereotype.Component;
  * @Author: xiaLin
  * @Version: 1.0
  */
-
+@Getter
+@Setter
+@ToString
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "spring.sms.aliyun")
+@ConfigurationProperties(prefix = "spring.aliyun.sms")
 public class SmsConfig {
 
     /**
@@ -57,67 +62,8 @@ public class SmsConfig {
      */
     private String signName;
 
-    public String getProduct() {
-        return product;
-    }
-
-    public void setProduct(String product) {
-        this.product = product;
-    }
-
-    public String getDomain() {
-        return domain;
-    }
-
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
-    public String getDefaultConnectTimeout() {
-        return defaultConnectTimeout;
-    }
-
-    public void setDefaultConnectTimeout(String defaultConnectTimeout) {
-        this.defaultConnectTimeout = defaultConnectTimeout;
-    }
-
-    public String getDefaultReadTimeout() {
-        return defaultReadTimeout;
-    }
-
-    public void setDefaultReadTimeout(String defaultReadTimeout) {
-        this.defaultReadTimeout = defaultReadTimeout;
-    }
-
-    public String getAccessKeyId() {
-        return accessKeyId;
-    }
-
-    public void setAccessKeyId(String accessKeyId) {
-        this.accessKeyId = accessKeyId;
-    }
-
-    public String getAccessKeySecret() {
-        return accessKeySecret;
-    }
-
-    public void setAccessKeySecret(String accessKeySecret) {
-        this.accessKeySecret = accessKeySecret;
-    }
-
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public String getSignName() {
-        return signName;
-    }
-
-    public void setSignName(String signName) {
-        this.signName = signName;
-    }
+    /**
+     * 区域ID
+     */
+    private String regionId;
 }

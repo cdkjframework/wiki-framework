@@ -70,7 +70,7 @@ public class JsonUtils {
      * @return 返回 map
      */
     public static Map<String, Object> jsonStringToMap(String jsonStr) {
-        Map mapList = new HashMap();
+        Map mapList = new HashMap(73);
         if (StringUtils.isNullAndSpaceOrEmpty(jsonStr)) {
             return mapList;
         }
@@ -127,7 +127,7 @@ public class JsonUtils {
             return new HashMap<String, Object>(initialCapacity);
         }
         //将数据转换
-        Map<String, Object> mapList = new HashMap<String, Object>();
+        Map<String, Object> mapList = new HashMap<String, Object>(130);
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Map<String, Object> map = jsonObjectToMap(jsonObject);

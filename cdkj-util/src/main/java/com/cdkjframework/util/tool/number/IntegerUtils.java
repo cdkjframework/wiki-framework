@@ -20,16 +20,16 @@ public class IntegerUtils {
      * @param IntegerList 数据列表
      * @return 返回相加结果
      */
-    public static Integer addition(Integer... IntegerList) {
+    public static Integer addition(Integer... integerList) {
         Integer result = 0;
         // 验证是否有数据
-        if (IntegerList == null || IntegerList.length == 0) {
+        if (integerList == null || integerList.length == 0) {
             return result;
         }
 
         // 值相加
         for (Integer value :
-                IntegerList) {
+                integerList) {
             result = result + ConvertUtils.convertInt(value);
         }
 

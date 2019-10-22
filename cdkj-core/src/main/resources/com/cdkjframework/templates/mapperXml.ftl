@@ -110,8 +110,7 @@
     <update id="modifyBatch" parameterType="java.util.List">
         <foreach collection="list" item="item" index="index" separator=";">
             UPDATE ${table}
-            SET
-            <trim suffixOverrides=",">
+            <set>
             <#list children as item>
                 <#if item.isExtension==0>
                     <#if !item.columnKey>
@@ -121,7 +120,7 @@
                     </#if>
                 </#if>
             </#list>
-            </trim>
+            </set>
             WHERE
             <#list children as item>
                 <#if item.columnName=='id'>

@@ -1,5 +1,8 @@
 package com.cdkjframework.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -13,9 +16,12 @@ import org.springframework.stereotype.Component;
  * @Version: 1.0
  */
 
+@Getter
+@Setter
+@ToString
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "spring.ec.ali.oss")
+@ConfigurationProperties(prefix = "spring.aliyun.oss")
 public class AliCloudOssConfig {
 
     /**
@@ -44,41 +50,5 @@ public class AliCloudOssConfig {
 
     public String getEndpoint() {
         return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    public String getAccessKeyId() {
-        return accessKeyId;
-    }
-
-    public void setAccessKeyId(String accessKeyId) {
-        this.accessKeyId = accessKeyId;
-    }
-
-    public String getAccessKeySecret() {
-        return accessKeySecret;
-    }
-
-    public void setAccessKeySecret(String accessKeySecret) {
-        this.accessKeySecret = accessKeySecret;
-    }
-
-    public String getBucketName() {
-        return bucketName;
-    }
-
-    public void setBucketName(String bucketName) {
-        this.bucketName = bucketName;
-    }
-
-    public String getBucketDomain() {
-        return bucketDomain;
-    }
-
-    public void setBucketDomain(String bucketDomain) {
-        this.bucketDomain = bucketDomain;
     }
 }

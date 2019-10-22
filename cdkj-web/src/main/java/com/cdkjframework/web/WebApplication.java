@@ -31,7 +31,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         DataSourceAutoConfiguration.class
 })
 @EnableApolloConfig
-//@EnableSwagger2
 public class WebApplication {
 
     /**

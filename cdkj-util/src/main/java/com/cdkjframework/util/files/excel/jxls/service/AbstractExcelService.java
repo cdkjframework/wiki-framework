@@ -46,6 +46,9 @@ public abstract class AbstractExcelService<T> implements IExcel<T> {
      * @param inputStream 文件流
      * @param tClass      实体
      * @return 返回数据集结果
+     * @throws IOException     IO异常
+     * @throws SAXException    异常
+     * @throws GlobalException 公共异常
      */
     @Override
     public abstract List<T> readExcelToList(InputStream inputStream, Class<T> tClass) throws IOException, SAXException, GlobalException;

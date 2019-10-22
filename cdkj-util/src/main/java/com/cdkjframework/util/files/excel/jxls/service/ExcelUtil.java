@@ -49,7 +49,7 @@ public class ExcelUtil<T> extends AbstractExcelService<T> {
             XLSReader reader = ReaderBuilder.buildFromXML(xmlStream);
             //读取数据
             Map mapList = new HashMap(1);
-            mapList.put("list", new HashMap<>());
+            mapList.put("list", new HashMap<>(52));
             reader.read(inputStream, mapList);
             int n = mapList.size();
         } catch (InvalidFormatException e) {

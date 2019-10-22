@@ -128,12 +128,12 @@ public class MqttClientRunner implements ApplicationRunner {
             client.connect(options);
             //订阅消息
             String[] topicArray = mqttConfig.getToPicList().split(",");
-            int[] Qos = new int[topicArray.length];
+            int[] qOs = new int[topicArray.length];
             for (int k = 0; k < topicArray.length; k++) {
-                Qos[k] = 1;
+                qOs[k] = 1;
                 topicArray[k] = mqttConfig.getRegion() + topicArray[k];
             }
-            client.subscribe(topicArray, Qos);
+            client.subscribe(topicArray, qOs);
         } catch (Exception e) {
             logUtil.error(e.getCause(),e.getMessage());
         }

@@ -27,7 +27,7 @@ public class JwtUtils {
      * @param base64Security 密钥
      * @return 返回结果
      */
-    public static Claims parseJWT(String jsonWebToken, String base64Security) {
+    public static Claims parseJwt(String jsonWebToken, String base64Security) {
         try {
             Claims claims = Jwts.parser()
                     .setSigningKey(base64Security.getBytes())
@@ -58,7 +58,7 @@ public class JwtUtils {
     }
 
     public static void main(String[] args) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(61);
         map.put("token", "13e3fa74-ba00-4609-98d3-7d7215020300");
 
 
@@ -66,6 +66,6 @@ public class JwtUtils {
         String key = "ht-oms-project-jwt";
         String token = JwtUtils.createJwt(map, key);
         System.out.println("JWT加密的结果：" + token);
-        System.out.println("JWT解密的结果：" + parseJWT(token, key));
+        System.out.println("JWT解密的结果：" + parseJwt(token, key));
     }
 }

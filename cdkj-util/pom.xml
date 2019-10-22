@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-framework</artifactId>
-        <version>1.0</version>
+        <version>1.0-191022</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -27,6 +27,10 @@
                     <artifactId>cdkj-constant</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>javax.mail-api</artifactId>
         </dependency>
 
         <dependency>
@@ -322,4 +326,12 @@
         </plugins>
     </build>
 
+
+    <distributionManagement>
+        <repository>
+            <id>shanWeiYun Maven Repository</id>
+            <layout>default</layout>
+            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+        </repository>
+    </distributionManagement>
 </project>

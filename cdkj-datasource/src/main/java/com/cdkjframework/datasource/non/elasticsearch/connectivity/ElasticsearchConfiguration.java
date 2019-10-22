@@ -12,6 +12,8 @@ import org.springframework.beans.factory.InitializingBean;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -77,16 +79,16 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
      */
     private void buildClient() {
         try {
-            final String splitCharacter = ",";
             final String regexCharacter = ":";
             PreBuiltTransportClient preBuiltTransportClient = new PreBuiltTransportClient(settings());
             if (!"".equals(elasticSearchConfig.getClusterNodes())) {
-                for (String nodes : elasticSearchConfig.getClusterNodes().split(splitCharacter)) {
-                    String InetSocket[] = nodes.split(regexCharacter);
-                    String Address = InetSocket[0];
-                    Integer port = Integer.valueOf(InetSocket[1]);
+                List<String> nodeList = Arrays.asList(elasticSearchConfig.getClusterNodes());
+                for (String nodes : nodeList) {
+                    String[] nodeSocket = nodes.split(regexCharacter);
+                    String address = nodeSocket[0];
+                    Integer port = Integer.valueOf(nodeSocket[1]);
                     preBuiltTransportClient.addTransportAddress(new
-                            TransportAddress(InetAddress.getByName(Address), port));
+                            TransportAddress(InetAddress.getByName(address), port));
                 }
                 client = preBuiltTransportClient;
             }

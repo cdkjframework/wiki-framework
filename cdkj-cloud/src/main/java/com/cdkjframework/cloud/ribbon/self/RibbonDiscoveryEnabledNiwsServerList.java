@@ -6,10 +6,14 @@ import com.netflix.niws.loadbalancer.DiscoveryEnabledServer;
 import java.util.List;
 
 /**
- * @author xialin
- * RibbonDiscoveryEnabledNIWSServerList
+ * @ProjectName: cdkj-framework
+ * @Package: com.cdkjframework.cloud.ribbon.self
+ * @ClassName: RibbonDiscoveryEnabledNIWSServerList
+ * @Description: java类作用描述
+ * @Author: xiaLin
+ * @Version: 1.0
  */
-public class RibbonDiscoveryEnabledNIWSServerList extends DiscoveryEnabledNIWSServerList {
+public class RibbonDiscoveryEnabledNiwsServerList extends DiscoveryEnabledNIWSServerList {
 
     @Override
     public List<DiscoveryEnabledServer> getInitialListOfServers() {

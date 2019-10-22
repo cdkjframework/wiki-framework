@@ -29,15 +29,15 @@ public abstract class AbstractUserEntity extends BaseEntity {
     /**
      * 用户账号
      */
-    private String UserName;
+    private String userName;
     /**
      * 用户编码
      */
-    private String UserCode;
+    private String userCode;
     /**
      * 用户类型（默认为0）
      */
-    private Integer UserType;
+    private Integer userType;
     /**
      * 用户密码
      */

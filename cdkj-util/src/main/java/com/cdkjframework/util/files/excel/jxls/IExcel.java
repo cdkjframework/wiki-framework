@@ -25,6 +25,9 @@ public interface IExcel<T> {
      * @param inputStream 文件流
      * @param tClass      实体
      * @return 返回数据集结果
+     * @throws IOException     IO异常
+     * @throws SAXException    异常
+     * @throws GlobalException 公共异常
      */
     List<T> readExcelToList(InputStream inputStream, Class<T> tClass) throws IOException, SAXException, GlobalException;
 
@@ -67,6 +70,7 @@ public interface IExcel<T> {
      *
      * @param tClass 返回结果
      * @return 返回表头结果
+     * @throws GlobalException 公共异常
      */
     List<String> readListToHeader(Class<T> tClass) throws GlobalException;
 }

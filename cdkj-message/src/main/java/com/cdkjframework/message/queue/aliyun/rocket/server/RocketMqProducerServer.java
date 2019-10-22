@@ -95,10 +95,9 @@ public class RocketMqProducerServer implements ApplicationRunner {
             //出现异常则说明消息发送失败
             logUtil.error(ex.getMessage());
             successful = false;
-        } finally {
-            //返回结果
-            return successful;
         }
+        //返回结果
+        return successful;
     }
 
     /**
@@ -106,8 +105,6 @@ public class RocketMqProducerServer implements ApplicationRunner {
      */
     private Properties setProperties() {
         Properties properties = new Properties();
-        // MQ Producer ID
-        properties.put(PropertyKeyConst.ProducerId, aliCloudRocketMqConfig.getGroupId());
         // 设置 GROUP_ID 提换 MQ Producer ID
         properties.put(PropertyKeyConst.GROUP_ID, aliCloudRocketMqConfig.getGroupId());
         // 鉴权用 AccessKey

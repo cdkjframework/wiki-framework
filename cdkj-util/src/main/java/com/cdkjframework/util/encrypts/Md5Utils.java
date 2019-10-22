@@ -4,7 +4,12 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 
 /**
- * 实现 md5 加密
+ * @ProjectName: com.cdkjframework
+ * @Package: com.cdkjframework.util.encrypts
+ * @ClassName: Md5Utils
+ * @Description: 实现 md5 加密
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 public class Md5Utils {
     /**

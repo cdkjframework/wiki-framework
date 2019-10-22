@@ -84,15 +84,14 @@ public class WebServiceUtils<T> {
         Client client = clientFactory.createClient(entity.getWebServiceAddress());
 
         // 需要密码的情况需要加上用户名和密码
-        if (!StringUtils.isNullAndSpaceOrEmpty(entity.getUserName()) && !StringUtils.isNullAndSpaceOrEmpty(entity.getPassword())) {
+        if (StringUtils.isNotNullAndEmpty(entity.getUserName()) && StringUtils.isNotNullAndEmpty(entity.getPassword())) {
             client.getOutInterceptors().add(new LoggingInInterceptor(entity.getUserName(), entity.getPassword()));
         }
-
-        Object[] result = null;
+        Object[] result;
         try {
             //如果有命名空间的话
             //如果有命名空间需要加上这个，第一个参数为命名空间名称，第二个参数为WebService方法名称
-            if (!StringUtils.isNullAndSpaceOrEmpty(entity.getNamespace())) {
+            if (StringUtils.isNotNullAndEmpty(entity.getNamespace())) {
                 QName operationName = new QName(entity.getNamespace(), entity.getMethodName());
                 result = client.invoke(operationName, entity.getParams());
             } else {

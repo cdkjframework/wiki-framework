@@ -40,8 +40,8 @@ public class ComparisonUtils {
      * @param <S>    目标实体
      * @return 返回结果
      */
-    public static <T, S> List<ComparisonEntity> EntityComparison(T source, S target) {
-        return EntityComparison(source, target, false);
+    public static <T, S> List<ComparisonEntity> entityComparison(T source, S target) {
+        return entityComparison(source, target, false);
     }
 
     /**
@@ -54,7 +54,7 @@ public class ComparisonUtils {
      * @param <S>    目标实体
      * @return 返回结果
      */
-    public static <T, S> List<ComparisonEntity> EntityComparison(T source, S target, boolean isList) {
+    public static <T, S> List<ComparisonEntity> entityComparison(T source, S target, boolean isList) {
         List<ComparisonEntity> entityList = new ArrayList<>();
         if (source == null || target == null) {
             return entityList;
@@ -74,7 +74,7 @@ public class ComparisonUtils {
                 String dataType = field.getType().getName();
                 if (dataTypeList.contains(dataType) && isList) {
                     Object sourceList = ReflectionUtils.getFieldValue(field, source);
-                    List list = ListComparison((List) sourceList, (List) targetValue, true);
+                    List list = listComparison((List) sourceList, (List) targetValue, true);
                     entityList.addAll(list);
                     continue;
                 }
@@ -107,8 +107,8 @@ public class ComparisonUtils {
      * @param <S>    目标实体
      * @return 返回结果
      */
-    public static <T, S> List<ComparisonEntity> ListComparison(List<T> source, List<S> target) {
-        return ListComparison(source, target, false);
+    public static <T, S> List<ComparisonEntity> listComparison(List<T> source, List<S> target) {
+        return listComparison(source, target, false);
     }
 
     /**
@@ -121,7 +121,7 @@ public class ComparisonUtils {
      * @param <S>    目标实体
      * @return 返回结果
      */
-    public static <T, S> List<ComparisonEntity> ListComparison(List<T> source, List<S> target, boolean isList) {
+    public static <T, S> List<ComparisonEntity> listComparison(List<T> source, List<S> target, boolean isList) {
         List<ComparisonEntity> entityList = new ArrayList<>();
         if (source == null || target == null) {
             return entityList;
@@ -133,7 +133,7 @@ public class ComparisonUtils {
             T t = source.get(i);
             S s = target.get(i);
             //数据
-            List list = EntityComparison(t, s, isList);
+            List list = entityComparison(t, s, isList);
             entityList.addAll(list);
         }
         //返回结果

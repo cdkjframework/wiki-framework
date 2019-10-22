@@ -139,11 +139,11 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
     @Override
     public void authenticateUserLogin(String token, boolean verified, HttpServletRequest httpServletRequest) throws GlobalException {
         // jwt 解密
-        Claims claims = JwtUtils.parseJWT(token, customConfig.getJwtKey());
+        Claims claims = JwtUtils.parseJwt(token, customConfig.getJwtKey());
         String key = com.cdkjframework.consts.CacheConsts.userLogin + claims.get("token").toString();
 
         //获取用户信息
-        UserEntity userEntity = RedisUtils.aSyncGetEntity(key, UserEntity.class);
+        UserEntity userEntity = RedisUtils.syncGetEntity(key, UserEntity.class);
         if (userEntity == null && verified) {
             throw new GlobalException(ResponseBuilderEnum.LogonFailure.getName());
         }

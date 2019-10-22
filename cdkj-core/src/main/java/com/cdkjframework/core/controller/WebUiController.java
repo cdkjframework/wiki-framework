@@ -41,7 +41,7 @@ public class WebUiController extends AbstractController {
         ResponseBuilder builder = new ResponseBuilder();
         try {
             final String key = com.cdkjframework.consts.CacheConsts.userLogin + id;
-            RedisUtils.aSyncDel(key);
+            RedisUtils.syncDel(key);
         } catch (Exception ex) {
             ex.printStackTrace();
 
@@ -80,7 +80,7 @@ public class WebUiController extends AbstractController {
         T userEntity = null;
         try {
             String key = getRequestHeader("token");
-            Claims claims = JwtUtils.parseJWT(key, customConfig.getJwtKey());
+            Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
             String token = claims.get("token").toString();
             return getCurrentUser(token, clazz);
         } catch (Exception ex) {
@@ -102,7 +102,7 @@ public class WebUiController extends AbstractController {
     public <T> T getCurrentUser(String id, Class<T> clazz) {
         T userEntity = null;
         try {
-            userEntity = RedisUtils.aSyncGetEntity(com.cdkjframework.consts.CacheConsts.userLogin + id, clazz);
+            userEntity = RedisUtils.syncGetEntity(com.cdkjframework.consts.CacheConsts.userLogin + id, clazz);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

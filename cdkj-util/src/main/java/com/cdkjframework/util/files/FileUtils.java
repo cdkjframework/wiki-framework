@@ -227,8 +227,9 @@ public class FileUtils {
             return fileName;
         }
         //网络地址
-        if (filePath.contains("/")) {
-            fileName = filePath.substring(filePath.lastIndexOf("/") + 1);
+        final String splitValue = "/";
+        if (filePath.contains(splitValue)) {
+            fileName = filePath.substring(filePath.lastIndexOf(splitValue) + 1);
         } else {
             //目录地址
             fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
@@ -266,7 +267,8 @@ public class FileUtils {
     public static String getPath(String path) {
         final String os = HostUtils.getOs();
         String division = "/";
-        if (os.startsWith("win")) {
+        final String osKey = "win";
+        if (os.startsWith(osKey)) {
             division = "\\";
         }
         String classPath;

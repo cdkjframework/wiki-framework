@@ -8,13 +8,9 @@ import org.springframework.messaging.handler.annotation.Header;
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.message.queue.eclipse.server
  * @ClassName: MqttGateway
- * @Description: java类作用描述
+ * @Description: MQTT 接口
  * @Author: xiaLin
  * @Version: 1.0
- */
-
-/**
- * MQTT 接口
  */
 @MessagingGateway(defaultRequestChannel = "mqttOutboundChannel")
 public interface MqttGateway {

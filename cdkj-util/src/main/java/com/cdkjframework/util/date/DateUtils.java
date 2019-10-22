@@ -21,6 +21,11 @@ import java.util.*;
 public class DateUtils {
 
     /**
+     * 对应值
+     */
+    private final static int VALUE = 10;
+
+    /**
      * 日志
      */
     private static LogUtils logUtil = LogUtils.getLogger(DateUtils.class);
@@ -221,13 +226,13 @@ public class DateUtils {
         cal2.setTime(date2);
         int month1 = cal1.get(Calendar.MONTH);
         int month2 = cal2.get(Calendar.MONTH);
-        if (((month1 >= Calendar.JANUARY && month1 <= Calendar.MARCH) && (month2 >= Calendar.JANUARY && month2 <= Calendar.MARCH))
-                || ((month1 >= Calendar.APRIL && month1 <= Calendar.JUNE) && (month2 >= Calendar.APRIL && month2 <= Calendar.JUNE))
-                || ((month1 >= Calendar.JULY && month1 <= Calendar.SEPTEMBER) && (month2 >= Calendar.JULY && month2 <= Calendar.SEPTEMBER))
-                || ((month1 >= Calendar.OCTOBER && month1 <= Calendar.DECEMBER) && (month2 >= Calendar.OCTOBER && month2 <= Calendar.DECEMBER))) {
-            return true;
-        }
-        return false;
+        boolean condition = ((month1 >= Calendar.JANUARY && month1 <= Calendar.MARCH) && (month2 >= Calendar.JANUARY && month2 <= Calendar.MARCH)) ||
+                ((month1 >= Calendar.APRIL && month1 <= Calendar.JUNE) && (month2 >= Calendar.APRIL && month2 <= Calendar.JUNE)) ||
+                ((month1 >= Calendar.JULY && month1 <= Calendar.SEPTEMBER) && (month2 >= Calendar.JULY && month2 <= Calendar.SEPTEMBER)) ||
+                ((month1 >= Calendar.OCTOBER && month1 <= Calendar.DECEMBER) && (month2 >= Calendar.OCTOBER && month2 <= Calendar.DECEMBER));
+
+        // 返回结果
+        return condition;
     }
 
     /**
@@ -298,68 +303,69 @@ public class DateUtils {
         Calendar date = Calendar.getInstance();
         date.setTime(dateArg);
 
-        int nowY = now.get(Calendar.YEAR);
-        int dateY = date.get(Calendar.YEAR);
+        int nowYear = now.get(Calendar.YEAR);
+        int dateYear = date.get(Calendar.YEAR);
 
-        int nowM = now.get(Calendar.MONTH);
-        int dateM = date.get(Calendar.MONTH);
+        int nowMonth = now.get(Calendar.MONTH);
+        int dateMonth = date.get(Calendar.MONTH);
 
-        int nowD = now.get(Calendar.DAY_OF_MONTH);
-        int dateD = date.get(Calendar.DAY_OF_MONTH);
+        int nowDay = now.get(Calendar.DAY_OF_MONTH);
+        int dateDay = date.get(Calendar.DAY_OF_MONTH);
 
 
         long l = now.getTimeInMillis() - date.getTimeInMillis();
-        long m = nowM - dateM;
-        long day = nowD - dateD;
+        long m = nowMonth - dateMonth;
+        long day = nowDay - dateDay;
 
         int dateHour = date.get(Calendar.HOUR_OF_DAY);
         int dateMinutes = date.get(Calendar.MINUTE);
 
         long hour = (l / (60 * 60 * 1000) - day * 24);
         long min = ((l / (60 * 1000)) - day * 24 * 60 - hour * 60);
-        long y = nowY - dateY;
+        long y = nowYear - dateYear;
         String ret = "";
         if (y > 0) {
             //大于一年的
-            ret += (dateY + 1900) + "-";
+            ret += (dateYear + 1900) + "-";
         }
         // 大于一天的
         if (day > 0 || y > 0 || m > 0) {
-            if (dateM + 1 < 10) {
+            if (dateMonth + 1 < VALUE) {
                 ret += "0";
             }
 
-            ret += (dateM + 1) + "-";
-            if (dateD < 10) {
+            ret += (dateMonth + 1) + "-";
+            if (dateDay < VALUE) {
                 ret += "0";
             }
-            ret += dateD + " ";
+            ret += dateDay + " ";
         }
         // 大于一小时
         if (hour > 0 || day > 0 || y > 0 || m > 0) {
-            if (dateHour < 10) {
+            if (dateHour < VALUE) {
                 ret += "0";
             }
             ret += dateHour + ":";
-            if (dateMinutes < 10) {
+            if (dateMinutes < VALUE) {
                 ret += "0";
             }
             ret += dateMinutes;
         }
-        if (y == 0 && (day * 24 + hour) == 0 && min != 0) {
+        final int dayHour = 24;
+        if (y == 0 && (day * dayHour + hour) == 0 && min != 0) {
             ret = min + " 分前";
         }
-        if (y == 0 && (day * 24 + hour) == 0 && min == 0) {
+        if (y == 0 && (day * dayHour + hour) == 0 && min == 0) {
             ret = "1  分前";
         }
         return ret;
     }
 
-    public static long getFormatedTime(long time) {
-        return getFormatedTime(new Date(time));
+    public static long getFormatTime(long time) {
+        return getFormatTime(new Date(time));
     }
 
-    public static long getFormatedTime(Date date) {
+    public static long getFormatTime(Date date) {
         if (date == null) {
             return 0;
         }
@@ -382,20 +388,24 @@ public class DateUtils {
             long hour = (deltaMillis / (60 * 60 * 1000) - day * 24);
             long min = ((deltaMillis / (60 * 1000)) - day * 24 * 60 - hour * 60);
             long sec = (deltaMillis / 1000 - day * 24 * 60 * 60 - hour * 60 * 60 - min * 60);
-            //long millis=(deltaMillis-day*24*60*60*1000-hour*60*60*1000-min*60*1000-sec*1000);
-            if (day > 0 && format.contains("d")) {
+            // long millis=(deltaMillis-day*24*60*60*1000-hour*60*60*1000-min*60*1000-sec*1000);
+            final String dayValue = "d";
+            if (day > 0 && format.contains(dayValue)) {
                 res.append(day + "天");
             }
-            if (hour > 0 && format.contains("H")) {
+            final String hourValue = "H";
+            if (hour > 0 && format.contains(hourValue)) {
                 res.append(hour + "小时");
             }
-            if (min > 0 && format.contains("m")) {
+            final String minValue = "m";
+            if (min > 0 && format.contains(minValue)) {
                 res.append(min + "分钟");
             }
-            if (sec > 0 && format.contains("s")) {
+            final String secValue = "s";
+            if (sec > 0 && format.contains(secValue)) {
                 res.append(sec + "秒");
             }
-            //String res = day+"天"+hour+"小时"+min+"分"+sec+"秒"+millis+"毫秒";
+            // String res = day+"天"+hour+"小时"+min+"分"+sec+"秒"+millis+"毫秒";
             return res.toString();
         }
     }

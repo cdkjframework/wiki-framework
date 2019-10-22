@@ -297,8 +297,9 @@ public class GenerateServiceImpl implements GenerateService {
 
             childrenEntity.setColumnName(columnName);
             childrenEntity.setColumnDescription(column.getColumnComment());
+            final String value = "fk";
             boolean keyIsShow = StringUtils.isNotNullAndEmpty(column.getColumnKey()) &&
-                    column.getColumnKey().toLowerCase().equals("fk");
+                    column.getColumnKey().toLowerCase().equals(value);
             childrenEntity.setColumnKey(keyIsShow);
 
             // 数据类型

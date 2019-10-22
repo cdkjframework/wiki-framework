@@ -46,12 +46,12 @@ public class LogUtils {
     /**
      * 编码
      */
-    private String CHARSETNAME = "utf-8";
+    private final String CHARSET_NAME = "utf-8";
 
     /**
      * 追加
      */
-    private boolean APPEND = true;
+    private final boolean APPEND = true;
 
     /**
      * 日志级别
@@ -94,8 +94,7 @@ public class LogUtils {
             customConfig = new CustomConfig();
         }
         logger = Logger.getLogger(name);
-        // 设置日志等级
-        setLevels();
+        setLoggerLevel(logger);
     }
 
     /**
@@ -259,11 +258,11 @@ public class LogUtils {
      * @param throwable 错误信息
      * @param msg
      */
-    private void writeLog(Level level, Throwable throwable, String msg) {
+    private synchronized void writeLog(Level level, Throwable throwable, String msg) {
         Lock lock = new ReentrantLock();
         lock.lock();
         try {
-            //验证目录存不存在
+            // 验证目录存不存在
             String logPath = customConfig.getLogPath();
             if (HostUtils.getOs().startsWith(OS)) {
                 logPath = "c:" + logPath;
@@ -275,10 +274,11 @@ public class LogUtils {
             if (!file.exists()) {
                 return;
             }
+            // 日志文件
+            String logFileName = logPath + "log-" + level.getName().toLowerCase() +
+                    "-" + DateUtils.format(new Date()) + ".log";
 
-            String logFileName = logPath + "log-" + level.getName().toLowerCase() + "-" + DateUtils.format(new Date()) + ".log";
-
-            //验证文件是否存在
+            // 验证文件是否存在
             file = new File(logPath + logFileName);
             try {
                 if (!file.exists()) {
@@ -290,11 +290,11 @@ public class LogUtils {
                 return;
             }
 
-            //日志时间
+            // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append("   " + level.getName() + "   " + logger.getName() + " : " + msg);
             FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
-            // 异常信息
+            //  异常信息
             if (throwable != null) {
                 StackTraceElement[] elements = throwable.getStackTrace();
                 for (StackTraceElement ele :
@@ -305,11 +305,39 @@ public class LogUtils {
                     FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
                 }
             }
-
         } catch (Exception ex) {
             System.out.println(ex);
         } finally {
             lock.unlock();
+        }
+    }
+
+    /**
+     * 是否 debug 模式
+     *
+     * @return 返回结果
+     */
+    private void setLoggerLevel(Logger loggerLevel) {
+        int index = level.indexOf(customConfig.getLevel());
+        switch (index) {
+            case 0:
+                loggerLevel.setLevel(Level.SEVERE);
+                break;
+            case 1:
+                loggerLevel.setLevel(Level.WARNING);
+                break;
+            case 2:
+                loggerLevel.setLevel(Level.INFO);
+                break;
+            case 3:
+                loggerLevel.setLevel(Level.CONFIG);
+                break;
+            case 4:
+                loggerLevel.setLevel(Level.FINE);
+                break;
+            default:
+                loggerLevel.setLevel(Level.ALL);
+                break;
         }
     }
 }

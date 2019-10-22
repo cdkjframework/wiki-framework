@@ -1,7 +1,7 @@
 package com.cdkjframework.util.tool.mapper;
 
-import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.core.annotation.FieldMapping;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -32,7 +32,8 @@ public class FieldMappingUtils {
     public static String getFieldNameByField(Field field) {
         String fieldName = field.getName();
         mapping = field.getAnnotation(FieldMapping.class);
-        if (mapping != null && !StringUtils.isNullAndSpaceOrEmpty(mapping.name()) && !mapping.name().equals("")) {
+        final String value = "";
+        if (mapping != null && !StringUtils.isNullAndSpaceOrEmpty(mapping.name()) && !mapping.name().equals(value)) {
             fieldName = mapping.name();
         }
         return fieldName;
