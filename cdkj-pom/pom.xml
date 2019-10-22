@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0</version>
+    <version>1.0-191022</version>
     <packaging>pom</packaging>
 
     <parent>
