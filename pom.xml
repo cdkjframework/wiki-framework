@@ -65,7 +65,7 @@
     <distributionManagement>
         <repository>
             <id>shanWeiYun Maven Repository</id>
-            <name>shanWeiYun Maven Repository</name>
+            <layout>default</layout>
             <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>

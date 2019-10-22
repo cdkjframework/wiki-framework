@@ -115,10 +115,10 @@ public class OddNumbersUtils {
                 }
                 String key = ODD_NUMBER_KEY + date;
                 //设置过期时间
-                RedisUtils.aSyncExpire(key, 1 * 24 * 60 * 60);
+                RedisUtils.syncExpire(key, 1 * 24 * 60 * 60);
 
                 //获取单号记录
-                long target = RedisUtils.aSyncIncr(key, init);
+                long target = RedisUtils.syncIncr(key, init);
                 if (target > 0) {
                     // 生成单号
                     String number = String.valueOf(target);
