@@ -116,7 +116,7 @@
                 <#if item.isExtension==0>
                     <#if !item.columnKey>
                         <if test="${item.columnName} != null ">
-                            ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
+                            ${item.tableColumnName} = [begin]item.${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
                         </if>
                     </#if>
                 </#if>
@@ -125,7 +125,7 @@
             WHERE
             <#list children as item>
                 <#if item.columnName=='id'>
-                    ${item.tableColumnName} = [begin]${item.columnName},jdbcType=${item.columnType}[end]
+                    ${item.tableColumnName} = [begin]item.${item.columnName},jdbcType=${item.columnType}[end]
                 </#if>
             </#list>
         </foreach>
