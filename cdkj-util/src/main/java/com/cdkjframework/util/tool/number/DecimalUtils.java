@@ -107,4 +107,35 @@ public class DecimalUtils {
         //返回结果
         return multiplier.multiply(multiplicand).setScale(scale, BigDecimal.ROUND_HALF_UP);
     }
+
+    /**
+     * 减
+     *
+     * @param reduction 减数
+     * @param minuend   被减数
+     * @return 返回结果
+     */
+    public static BigDecimal subtract(BigDecimal reduction, BigDecimal minuend) {
+        return subtract(reduction, minuend, Integer.valueOf("2"));
+    }
+
+    /**
+     * 减
+     *
+     * @param reduction 减数
+     * @param minuend   被减数
+     * @param scale     保留小数位数
+     * @return 返回结果
+     */
+    public static BigDecimal subtract(BigDecimal reduction, BigDecimal minuend, int scale) {
+        if (CompareUtils.equal(reduction, BigDecimal.ZERO)) {
+            reduction = BigDecimal.ZERO;
+        }
+        if (CompareUtils.equal(minuend, BigDecimal.ZERO)) {
+            minuend = BigDecimal.ZERO;
+        }
+
+        //返回结果
+        return reduction.subtract(minuend).setScale(scale, BigDecimal.ROUND_HALF_UP);
+    }
 }
