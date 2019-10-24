@@ -86,6 +86,6 @@ public class LogbackImpl implements Log {
 
     @Override
     public void warn(String message) {
-        logUtils.debug(message);
+        logUtils.warn(message);
     }
 }

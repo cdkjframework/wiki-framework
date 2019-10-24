@@ -7,8 +7,7 @@ import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -42,7 +41,7 @@ public class LogUtils {
     /**
      * 操作系统
      */
-    private final String OS = "win";
+    private String OS = "win";
 
     /**
      * 编码
@@ -184,9 +183,9 @@ public class LogUtils {
      */
     public void error(Throwable throwable, String msg) {
         if (throwable == null) {
-            log(Level.FINEST, msg);
+            log(Level.SEVERE, msg);
         } else {
-            log(Level.FINEST, throwable, msg);
+            log(Level.SEVERE, throwable, msg);
         }
     }
 
@@ -204,7 +203,10 @@ public class LogUtils {
             } else {
                 logger.log(level, msg, throwable);
             }
-            // 写入日志
+            if (!logger.isLoggable(level)) {
+                return;
+            }
+            //写入日志
             writeLog(level, throwable, msg);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -225,6 +227,29 @@ public class LogUtils {
         }
     }
 
+    /**
+     * 设置日志等级
+     */
+    private void setLevels() {
+        int index = level.indexOf(customConfig.getLevel());
+        switch (index) {
+            case 0:
+                logger.setLevel(Level.CONFIG);
+                break;
+            case 1:
+                logger.setLevel(Level.INFO);
+                break;
+            case 2:
+                logger.setLevel(Level.WARNING);
+                break;
+            case 3:
+                logger.setLevel(Level.SEVERE);
+                break;
+            default:
+                logger.setLevel(Level.ALL);
+                break;
+        }
+    }
 
     /**
      * 写入日志至文件系统
