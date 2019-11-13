@@ -12,8 +12,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -43,16 +42,6 @@ public class LogUtils {
      * 操作系统
      */
     private String OS = "win";
-
-    /**
-     * 编码
-     */
-    private final String CHARSET_NAME = "utf-8";
-
-    /**
-     * 追加
-     */
-    private final boolean APPEND = true;
 
     /**
      * 日志级别
@@ -191,6 +180,15 @@ public class LogUtils {
     }
 
     /**
+     * 错误输出日志
+     *
+     * @param ex 错误信息
+     */
+    public void error(Exception ex) {
+        log(Level.SEVERE, ex.getCause(), ex.getMessage());
+    }
+
+    /**
      * 写入日志
      *
      * @param level     等级
@@ -229,30 +227,6 @@ public class LogUtils {
     }
 
     /**
-     * 设置日志等级
-     */
-    private void setLevels() {
-        int index = level.indexOf(customConfig.getLevel());
-        switch (index) {
-            case 0:
-                logger.setLevel(Level.CONFIG);
-                break;
-            case 1:
-                logger.setLevel(Level.INFO);
-                break;
-            case 2:
-                logger.setLevel(Level.WARNING);
-                break;
-            case 3:
-                logger.setLevel(Level.SEVERE);
-                break;
-            default:
-                logger.setLevel(Level.ALL);
-                break;
-        }
-    }
-
-    /**
      * 写入日志至文件系统
      *
      * @param level
@@ -260,8 +234,6 @@ public class LogUtils {
      * @param msg
      */
     private synchronized void writeLog(Level level, Throwable throwable, String msg) {
-        Lock lock = new ReentrantLock();
-        lock.lock();
         try {
             // 验证目录存不存在
             String logPath = customConfig.getLogPath();
@@ -284,7 +256,6 @@ public class LogUtils {
             try {
                 if (!file.exists()) {
                     file.createNewFile();
-                    file = new File(logPath + logFileName);
                 }
             } catch (IOException e) {
                 System.out.println(e);
@@ -293,7 +264,8 @@ public class LogUtils {
 
             // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
-            builder.append("   " + level.getName() + "   " + logger.getName() + " : " + msg);
+            builder.append(String.format("    【%s】    ", level.getName()));
+            builder.append(String.format(" %s:%s ", logger.getName(), msg));
             FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
             //  异常信息
             if (throwable != null) {
@@ -301,15 +273,40 @@ public class LogUtils {
                 for (StackTraceElement ele :
                         elements) {
                     builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
-                    builder.append("   " + ele.getClassName() + "." + ele.getMethodName() + "(" + ele.getFileName() + ":" + ele.getLineNumber() + ")");
+                    builder.append(String.format("    【%s】    ", level.getName()));
+                    builder.append(String.format("   %s.%s(%s:%d)" + ele.getClassName(),
+                            ele.getMethodName(), ele.getFileName(), ele.getLineNumber()));
 
+                    // 保存文件
                     FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
                 }
             }
         } catch (Exception ex) {
             System.out.println(ex);
-        } finally {
-            lock.unlock();
+        }
+    }
+
+    /**
+     * 设置日志等级
+     */
+    private void getLevels(Logger loggerLevel) {
+        int index = level.indexOf(customConfig.getLevel());
+        switch (index) {
+            case 0:
+                logger.setLevel(Level.CONFIG);
+                break;
+            case 1:
+                logger.setLevel(Level.INFO);
+                break;
+            case 2:
+                logger.setLevel(Level.WARNING);
+                break;
+            case 3:
+                logger.setLevel(Level.SEVERE);
+                break;
+            default:
+                logger.setLevel(Level.ALL);
+                break;
         }
     }
 
