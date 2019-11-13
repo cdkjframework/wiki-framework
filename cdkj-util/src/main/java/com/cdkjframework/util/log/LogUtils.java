@@ -276,11 +276,11 @@ public class LogUtils {
                 return;
             }
             // 日志文件
-            String logFileName = logPath + "log-" + level.getName().toLowerCase() +
+            String logFileName = "log-" + level.getName().toLowerCase() +
                     "-" + DateUtils.format(new Date()) + ".log";
 
             // 验证文件是否存在
-            file = new File(logFileName);
+            file = new File(logPath + logFileName);
             try {
                 if (!file.exists()) {
                     file.createNewFile();
@@ -294,7 +294,7 @@ public class LogUtils {
             // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append("   " + level.getName() + "   " + logger.getName() + " : " + msg);
-            FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
+            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
             //  异常信息
             if (throwable != null) {
                 StackTraceElement[] elements = throwable.getStackTrace();
@@ -303,7 +303,7 @@ public class LogUtils {
                     builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
                     builder.append("   " + ele.getClassName() + "." + ele.getMethodName() + "(" + ele.getFileName() + ":" + ele.getLineNumber() + ")");
 
-                    FileUtils.saveFile(builder.toString(), file.getPath(), "", logFileName);
+                    FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
                 }
             }
         } catch (Exception ex) {

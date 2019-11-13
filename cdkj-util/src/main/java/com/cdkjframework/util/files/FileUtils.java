@@ -95,7 +95,7 @@ public class FileUtils {
             // 读取到的数据长度
             int len;
 
-            outputStream = new FileOutputStream(file.getPath() + File.separator + fileName);
+            outputStream = new FileOutputStream(file.getPath() + File.separator + fileName, true);
             // 开始读取
             while ((len = inputStream.read(bs)) != -1) {
                 outputStream.write(bs, 0, len);
