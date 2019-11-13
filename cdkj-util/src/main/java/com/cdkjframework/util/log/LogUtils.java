@@ -7,7 +7,8 @@ import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -279,7 +280,7 @@ public class LogUtils {
                     "-" + DateUtils.format(new Date()) + ".log";
 
             // 验证文件是否存在
-            file = new File(logPath + logFileName);
+            file = new File(logFileName);
             try {
                 if (!file.exists()) {
                     file.createNewFile();

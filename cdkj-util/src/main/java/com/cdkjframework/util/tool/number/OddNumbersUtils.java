@@ -1,13 +1,12 @@
-package com.cdkjframework.util.tool;
+package com.cdkjframework.util.tool.number;
 
-import com.cdkjframework.entity.generate.OrderNumberEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.cache.RedisUtils;
 import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
