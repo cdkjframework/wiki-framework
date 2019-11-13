@@ -12,7 +12,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -265,7 +264,7 @@ public class LogUtils {
             // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format(" %s:%s ", logger.getName(), msg));
+            builder.append(String.format("%s:%s ", logger.getName(), msg));
             FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
             //  异常信息
             if (throwable != null) {
@@ -274,7 +273,7 @@ public class LogUtils {
                         elements) {
                     builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
                     builder.append(String.format("    【%s】    ", level.getName()));
-                    builder.append(String.format("   %s.%s(%s:%d)" + ele.getClassName(),
+                    builder.append(String.format("%s.%s(%s:%d)", ele.getClassName(),
                             ele.getMethodName(), ele.getFileName(), ele.getLineNumber()));
 
                     // 保存文件
