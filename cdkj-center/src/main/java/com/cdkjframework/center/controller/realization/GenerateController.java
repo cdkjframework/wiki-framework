@@ -1,8 +1,8 @@
-package com.cdkjframework.core.controller.realization;
+package com.cdkjframework.center.controller.realization;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.core.business.service.GenerateService;
-import com.cdkjframework.core.controller.WebUiController;
+import com.cdkjframework.center.controller.WebUiController;
+import com.cdkjframework.center.service.GenerateService;
 import com.cdkjframework.entity.generate.template.DatabaseEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;

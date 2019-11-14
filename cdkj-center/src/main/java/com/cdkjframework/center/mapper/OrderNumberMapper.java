@@ -1,4 +1,4 @@
-package com.cdkjframework.core.business.mapper;
+package com.cdkjframework.center.mapper;
 
 import com.cdkjframework.entity.generate.OrderNumberEntity;
 

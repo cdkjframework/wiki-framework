@@ -1,6 +1,6 @@
-package com.cdkjframework.core.annotation;
+package com.cdkjframework.center.annotation;
 
-import com.cdkjframework.core.generate.CdkjCoreConfigRegistrar;
+import com.cdkjframework.center.generate.CdkjCoreConfigRegistrar;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;

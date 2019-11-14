@@ -1,7 +1,7 @@
-package com.cdkjframework.core.generate;
+package com.cdkjframework.center.generate;
 
 import com.cdkjframework.constant.Application;
-import com.cdkjframework.core.annotation.EnableAutoGenerate;
+import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.ctrip.framework.apollo.spring.util.BeanRegistrationUtil;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;

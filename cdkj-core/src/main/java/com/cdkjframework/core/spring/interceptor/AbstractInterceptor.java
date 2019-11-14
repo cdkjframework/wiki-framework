@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.InterceptorConfig;
 import com.cdkjframework.constant.HeaderConsts;
-import com.cdkjframework.core.business.service.MongoService;
-import com.cdkjframework.core.business.service.OrderNumberService;
 import com.cdkjframework.core.spring.filter.HttpServletContentRequestWrapper;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
@@ -58,17 +56,17 @@ public abstract class AbstractInterceptor implements IInterceptor {
     @Autowired
     protected CustomConfig customConfig;
 
-    /**
-     * 单据生成
-     */
-    @Autowired
-    protected OrderNumberService orderNumberServiceImpl;
-
-    /**
-     * mongo 数据库操作
-     */
-    @Autowired
-    protected MongoService mongoServiceImpl;
+//    /**
+//     * 单据生成
+//     */
+//    @Autowired
+//    protected OrderNumberService orderNumberServiceImpl;
+//
+//    /**
+//     * mongo 数据库操作
+//     */
+//    @Autowired
+//    protected MongoService mongoServiceImpl;
 
     /**
      * 错误地址
@@ -193,11 +191,11 @@ public abstract class AbstractInterceptor implements IInterceptor {
     public void logRecord(HttpServletRequest httpServletRequest, UserEntity userEntity, String inString) {
         String id = GeneratedValueUtils.getUuidString();
         String serialNumber = "";
-        try {
-            serialNumber = orderNumberServiceImpl.generateNoDateNumber("R", 12).replace("R", "");
-        } catch (GlobalException e) {
-            logUtil.error(e.getMessage());
-        }
+//        try {
+//            serialNumber = orderNumberServiceImpl.generateNoDateNumber("R", 12).replace("R", "");
+//        } catch (GlobalException e) {
+//            logUtil.error(e.getMessage());
+//        }
         userEntity.setLogId(id);
         //日志记录
         LogRecordEntity recordEntity = new LogRecordEntity();
@@ -234,7 +232,7 @@ public abstract class AbstractInterceptor implements IInterceptor {
         recordEntity.setSerialNumber(Integer.valueOf(serialNumber).toString());
 
         //保存数据
-        mongoServiceImpl.saveLog(recordEntity);
+//        mongoServiceImpl.saveLog(recordEntity);
     }
 
     /**

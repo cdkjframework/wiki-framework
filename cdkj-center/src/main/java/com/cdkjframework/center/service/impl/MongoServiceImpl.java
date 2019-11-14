@@ -1,6 +1,6 @@
-package com.cdkjframework.core.business.service.impl;
+package com.cdkjframework.center.service.impl;
 
-import com.cdkjframework.core.business.service.MongoService;
+import com.cdkjframework.center.service.MongoService;
 import com.cdkjframework.datasource.non.mongodb.connectivity.IMongoDbRepository;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;

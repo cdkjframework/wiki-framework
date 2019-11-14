@@ -1,29 +1,35 @@
-package com.cdkjframework.core.business.service;
+package com.cdkjframework.center.mapper;
 
 import com.cdkjframework.entity.generate.template.DatabaseEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
-import com.cdkjframework.entity.generate.template.TreeEntity;
 
 import java.util.List;
 
 /**
  * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.core.business.service
- * @ClassName: GenerateService
+ * @Package: com.cdkjframework.core.business.mapper
+ * @ClassName: GenerateMapper
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public interface GenerateService {
+public interface GenerateMapper {
+
+    /**
+     * 获取当前用户数据库
+     *
+     * @return 返回结果
+     */
+    List<DatabaseEntity> findDatabase();
 
     /**
      * 获取数据库
      *
      * @return 返回结果
      */
-    DatabaseEntity findDatabase();
+    List<DatabaseEntity> findDatabaseList();
 
     /**
      * 获取数据库表
@@ -31,7 +37,7 @@ public interface GenerateService {
      * @param tableEntity 查询实体
      * @return 返回结果
      */
-    List<TreeEntity> findDatabaseTableList(TableEntity tableEntity);
+    List<TableEntity> findDatabaseTableList(TableEntity tableEntity);
 
     /**
      * 获取数据库表
@@ -40,13 +46,4 @@ public interface GenerateService {
      * @return 返回结果
      */
     List<TableColumnEntity> findTableColumnList(TableColumnEntity columnEntity);
-
-    /**
-     * 生成业务代码
-     *
-     * @param entityList 选择结果
-     * @param dataBase   数据库
-     * @return 返回是否成功
-     */
-    Boolean generateCode(List<TreeEntity> entityList, String dataBase);
 }

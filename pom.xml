@@ -19,6 +19,7 @@
         <module>cdkj-entity</module>
         <module>cdkj-constant</module>
         <module>cdkj-web</module>
+        <module>cdkj-center</module>
     </modules>
 
     <parent>
