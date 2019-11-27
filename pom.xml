@@ -20,6 +20,11 @@
         <module>cdkj-constant</module>
         <module>cdkj-web</module>
         <module>cdkj-center</module>
+        <module>cdkj-redis</module>
+        <module>cdkj-datasource-jpa</module>
+        <module>cdkj-datasource-jpa</module>
+        <module>cdkj-datasource-mongodb</module>
+        <module>cdkj-datasource-elasticsearch</module>
     </modules>
 
     <parent>
