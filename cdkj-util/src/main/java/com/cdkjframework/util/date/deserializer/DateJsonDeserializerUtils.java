@@ -30,7 +30,7 @@ public class DateJsonDeserializerUtils extends JsonDeserializer<Date> {
     /**
      * 日志转换格式
      */
-    public static final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final SimpleDateFormat FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
      * 序列化
@@ -45,7 +45,7 @@ public class DateJsonDeserializerUtils extends JsonDeserializer<Date> {
     public Date deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException, JsonProcessingException {
         try {
             if (jsonParser != null && !StringUtils.isNullAndSpaceOrEmpty(jsonParser.getText())) {
-                return format.parse(jsonParser.getText());
+                return FORMAT.parse(jsonParser.getText());
             } else {
                 return null;
             }

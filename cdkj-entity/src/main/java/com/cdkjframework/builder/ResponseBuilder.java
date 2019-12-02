@@ -80,7 +80,7 @@ public class ResponseBuilder implements Serializable {
         this.code = code;
         ResponseBuilderEnum builderEnum = ResponseBuilderEnum.valueOf(String.valueOf(code));
         switch (builderEnum) {
-            case Error:
+            default:
                 this.message = ResponseBuilderEnum.Error.getName();
                 break;
             case Success:

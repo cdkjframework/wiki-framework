@@ -36,7 +36,7 @@ public class ExcelEasyPoiUtil<T> {
     /**
      * 工作薄大小
      */
-    private static final int sheetListSize = 50000;
+    private static final int SHEET_LIST_SIZE = 50000;
 
     /**
      * 将 list 转换为 File
@@ -154,8 +154,8 @@ public class ExcelEasyPoiUtil<T> {
             Class clazz = classList.get(0).getClass();
 
             //读取工作薄个数
-            int pageSize = classList.size() / sheetListSize;
-            if (classList.size() % sheetListSize > 0) {
+            int pageSize = classList.size() / SHEET_LIST_SIZE;
+            if (classList.size() % SHEET_LIST_SIZE > 0) {
                 pageSize += 1;
             }
 
@@ -166,8 +166,8 @@ public class ExcelEasyPoiUtil<T> {
                 //取出数据
                 List list = (List) classList
                         .stream()
-                        .skip(i * sheetListSize)
-                        .limit(sheetListSize)
+                        .skip(i * SHEET_LIST_SIZE)
+                        .limit(SHEET_LIST_SIZE)
                         .collect(Collectors.toList());
 
                 // 创建参数对象（用来设定excel得sheet得内容等信息）

@@ -63,7 +63,7 @@ public class HttpsClientUtils {
                 param = JSONObject.toJSONString(requestEntity.getParamsMap());
             }
 
-            String basicHeader = requestEntity.getHeaderMap().get(com.cdkjframework.consts.HttpHeaderConsts.contentType);
+            String basicHeader = requestEntity.getHeaderMap().get(com.cdkjframework.consts.HttpHeaderConsts.CONTENT_TYPE);
             if (StringUtils.isNullAndSpaceOrEmpty(basicHeader)) {
                 basicHeader = "application/json";
             }
@@ -80,7 +80,7 @@ public class HttpsClientUtils {
             //设置请求类型
             stringEntity.setContentType(requestEntity.getContentType());
 
-            stringEntity.setContentEncoding(new BasicHeader(com.cdkjframework.consts.HttpHeaderConsts.contentType, basicHeader));
+            stringEntity.setContentEncoding(new BasicHeader(com.cdkjframework.consts.HttpHeaderConsts.CONTENT_TYPE, basicHeader));
             httpPost.setEntity(stringEntity);
             //请求并获取结果
             HttpResponse response = httpClient.execute(httpPost);
@@ -164,7 +164,7 @@ public class HttpsClientUtils {
         List<Header> headerList = new ArrayList<>();
         //验证是否开启数据压缩
         if (requestEntity.isCompress()) {
-            headerList.add(new BasicHeader(com.cdkjframework.consts.HttpHeaderConsts.contentEncoding, "gzip"));
+            headerList.add(new BasicHeader(com.cdkjframework.consts.HttpHeaderConsts.CONTENT_ENCODING, "gzip"));
         }
 
         Set<Map.Entry<String, String>> entrySet = mapHeader.entrySet();

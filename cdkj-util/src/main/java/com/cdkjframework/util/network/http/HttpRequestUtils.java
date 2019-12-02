@@ -218,7 +218,7 @@ public class HttpRequestUtils {
 
         //验证是否开启数据压缩
         if (httpRequestEntity.isCompress()) {
-            connection.setRequestProperty(com.cdkjframework.consts.HttpHeaderConsts.contentEncoding, "gzip");
+            connection.setRequestProperty(com.cdkjframework.consts.HttpHeaderConsts.CONTENT_ENCODING, "gzip");
         }
     }
 }

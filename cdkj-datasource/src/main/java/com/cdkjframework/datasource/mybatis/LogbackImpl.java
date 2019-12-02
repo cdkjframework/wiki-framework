@@ -5,7 +5,7 @@ import org.apache.ibatis.logging.Log;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.datasource.relational.mybatis
+ * @Package: com.cdkjframework.SPRING_DATASOURCE.relational.mybatis
  * @ClassName: LogbackImpl
  * @Description: myBatis 日志输出
  * @Author: xiaLin

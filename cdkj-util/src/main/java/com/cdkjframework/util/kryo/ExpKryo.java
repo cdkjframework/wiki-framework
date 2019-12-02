@@ -17,7 +17,7 @@ public class ExpKryo extends Kryo {
     @Override
     public Serializer getDefaultSerializer(Class type) {
         if (type == null) {
-            throw new IllegalArgumentException("type cannot be null.");
+            throw new IllegalArgumentException("TYPE cannot be null.");
         }
         if (!type.isArray() && !AbstractKryoCheckUtil.checkExistDefaultConstructor(type)) {
             return new JavaSerializer();

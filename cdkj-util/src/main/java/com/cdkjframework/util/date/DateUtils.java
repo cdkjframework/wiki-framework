@@ -64,7 +64,7 @@ public class DateUtils {
         formats.add(new SimpleDateFormat(DATE_HH_MM_SS_Z2));
         formats.add(new SimpleDateFormat(DATE_HH_MM_SS_Z3));
         formats.add(DateFormat.getDateTimeInstance());
-        /**XPDL examples format*/
+        /**XPDL examples FORMAT*/
         formats.add(new SimpleDateFormat(DATE_HH_MM_SS_A, Locale.US));
         formats.add(new SimpleDateFormat(DATE_HHMMSS));
         /**Only date, no time*/

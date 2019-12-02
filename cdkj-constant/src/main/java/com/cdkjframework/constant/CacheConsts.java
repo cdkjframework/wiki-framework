@@ -14,16 +14,16 @@ public class CacheConsts {
     /**
      * 用户登录缓存
      */
-    public static final String userLogin = "userLogin";
+    public static final String USER_LOGIN = "userLogin";
 
     /**
      * 验证码缓存
      */
-    public static final String verifyCode = "verifyCode";
+    public static final String VERIFY_CODE = "verifyCode";
 
     /**
      * 登录验证码
      */
-    public static final String loginVerifyCode = "loginVerifyCode";
+    public static final String LOGIN_VERIFY_CODE = "loginVerifyCode";
 
 }

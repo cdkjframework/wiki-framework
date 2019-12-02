@@ -22,7 +22,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.type";
+            return "spring.datasource.TYPE";
         }
 
         /**
@@ -169,7 +169,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.connectionProperties";
+            return "spring.datasource.CONNECTION_PROPERTIES";
         }
 
         /**

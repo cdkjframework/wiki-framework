@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 /**
@@ -148,5 +149,24 @@ public class WebSocketService {
      */
     public static synchronized void subOnlineCount() {
         WebSocketService.onlineCount--;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        WebSocketService that = (WebSocketService) o;
+        return Objects.equals(logUtil, that.logUtil) &&
+                Objects.equals(session, that.session);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(logUtil, session);
     }
 }

@@ -1,8 +1,10 @@
 package com.cdkjframework.cloud.ribbon.self;
 
+import com.netflix.discovery.EurekaClient;
 import com.netflix.niws.loadbalancer.DiscoveryEnabledNIWSServerList;
 import com.netflix.niws.loadbalancer.DiscoveryEnabledServer;
 
+import javax.inject.Provider;
 import java.util.List;
 
 /**
@@ -14,6 +16,10 @@ import java.util.List;
  * @Version: 1.0
  */
 public class RibbonDiscoveryEnabledNiwsServerList extends DiscoveryEnabledNIWSServerList {
+
+    public RibbonDiscoveryEnabledNiwsServerList(String vipAddresses, Provider<EurekaClient> eurekaClientProvider) {
+        super(vipAddresses, eurekaClientProvider);
+    }
 
     @Override
     public List<DiscoveryEnabledServer> getInitialListOfServers() {

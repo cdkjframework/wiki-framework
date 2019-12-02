@@ -4,7 +4,7 @@ import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
  * @ProjectName: cdkjframework.core
- * @Package: com.cdkjframework.core.enums.datasource
+ * @Package: com.cdkjframework.core.enums.SPRING_DATASOURCE
  * @ClassName: ApolloMongoEnum
  * @Description: java类作用描述
  * @Author: xiaLin
@@ -20,7 +20,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.uri";
+            return "spring.SPRING_DATASOURCE.mongodb.uri";
         }
 
         /**
@@ -41,7 +41,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.port";
+            return "spring.SPRING_DATASOURCE.mongodb.port";
         }
 
         /**
@@ -62,7 +62,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.userName";
+            return "spring.SPRING_DATASOURCE.mongodb.userName";
         }
 
         /**
@@ -83,7 +83,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.password";
+            return "spring.SPRING_DATASOURCE.mongodb.password";
         }
 
         /**
@@ -104,7 +104,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.dataSource";
+            return "spring.SPRING_DATASOURCE.mongodb.dataSource";
         }
 
         /**
@@ -125,7 +125,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.maxWaitTime";
+            return "spring.SPRING_DATASOURCE.mongodb.maxWaitTime";
         }
 
         /**
@@ -146,7 +146,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.connectTimeout";
+            return "spring.SPRING_DATASOURCE.mongodb.connectTimeout";
         }
 
         /**
@@ -167,7 +167,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.minConnectionsPerHost";
+            return "spring.SPRING_DATASOURCE.mongodb.minConnectionsPerHost";
         }
 
         /**
@@ -188,7 +188,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.maxConnectionsPerHost";
+            return "spring.SPRING_DATASOURCE.mongodb.maxConnectionsPerHost";
         }
 
         /**

@@ -4,7 +4,7 @@ import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
  * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.core.enums.datasource
+ * @Package: com.cdkjframework.core.enums.SPRING_DATASOURCE
  * @ClassName: MySqlDataTypeContrastEnum
  * @Description: mysql 数据类型对照
  * @Author: xiaLin

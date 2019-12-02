@@ -90,7 +90,7 @@ public class QrCodeUtil {
     }
 
     /**
-     * set image format
+     * set image FORMAT
      *
      * @param formatName
      */

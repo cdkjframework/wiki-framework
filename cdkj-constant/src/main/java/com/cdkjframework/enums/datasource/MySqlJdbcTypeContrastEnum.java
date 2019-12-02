@@ -4,7 +4,7 @@ import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
  * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.core.enums.datasource
+ * @Package: com.cdkjframework.core.enums.SPRING_DATASOURCE
  * @ClassName: MySQLMyBatisContrastEnum
  * @Description: java类作用描述
  * @Author: xiaLin

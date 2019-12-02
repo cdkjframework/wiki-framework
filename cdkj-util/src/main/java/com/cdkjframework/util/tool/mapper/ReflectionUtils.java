@@ -267,15 +267,15 @@ public class ReflectionUtils {
         String value = parameters[0].toString();
         DateFormat format = DateFormat.getDateInstance();
         switch (dataType) {
-            case DataTypeConsts.booleanName:
+            case DataTypeConsts.BOOLEAN_NAME:
             case DataTypeConsts
-                    .bigBooleanName:
+                    .BIG_BOOLEAN_NAME:
                 obj = StringUtils.convertBoolean(value);
                 break;
-            case DataTypeConsts.bigDecimalName:
+            case DataTypeConsts.BIG_DECIMAL_NAME:
                 obj = BigDecimal.valueOf(Float.valueOf(value));
                 break;
-            case DataTypeConsts.dateName:
+            case DataTypeConsts.DATE_NAME:
                 final String cst = "CST";
                 if (value.contains(cst)) {
                     obj = format.format(value);
@@ -283,16 +283,16 @@ public class ReflectionUtils {
                     try {
                         obj = dateFormat.parse(value);
                     } catch (ParseException e) {
-                        logUtil.error(DataTypeConsts.dateName + "：" + value);
+                        logUtil.error(DataTypeConsts.DATE_NAME + "：" + value);
                         logUtil.error(e.getCause(), e.getMessage());
                     }
                 }
                 break;
-            case DataTypeConsts.intName:
-            case DataTypeConsts.integerName:
+            case DataTypeConsts.INT_NAME:
+            case DataTypeConsts.INTEGER_NAME:
                 obj = Integer.valueOf(value);
                 break;
-            case DataTypeConsts.timestampName:
+            case DataTypeConsts.JAVA_SQL_TIMESTAMP:
                 Long timestamp = StringUtils.convertLong(value);
                 if (timestamp > 0) {
                     obj = new Timestamp(Long.valueOf(value));
@@ -304,14 +304,14 @@ public class ReflectionUtils {
                     }
                 }
                 break;
-            case DataTypeConsts.sqlDateName:
+            case DataTypeConsts.SQL_DATE_NAME:
                 obj = new java.sql.Date(Long.valueOf(value));
                 break;
-            case DataTypeConsts.StringName:
+            case DataTypeConsts.STRING_NAME:
                 obj = String.valueOf(value);
                 break;
-            case DataTypeConsts.doubleName:
-            case DataTypeConsts.bigDoubleName:
+            case DataTypeConsts.DOUBLE_NAME:
+            case DataTypeConsts.BIG_DOUBLE_NAME:
                 obj = Double.valueOf(value);
                 break;
             default:

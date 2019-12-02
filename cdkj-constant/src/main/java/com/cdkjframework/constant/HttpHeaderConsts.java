@@ -14,75 +14,75 @@ public class HttpHeaderConsts {
     /**
      * 接受
      */
-    public static final String accept = "Accept";
+    public static final String ACCEPT = "Accept";
 
     /**
      * 接受编码
      */
-    public static final String acceptEncoding = "Accept-Encoding";
+    public static final String ACCEPT_ENCODING = "Accept-Encoding";
 
     /**
      * 接受语言
      */
-    public static final String acceptLanguage = "Accept-Language";
+    public static final String ACCEPT_LANGUAGE = "Accept-Language";
 
     /**
      * 访问控制允许邮件头
      */
-    public static final String acceptControlAllowHeaders = "Access-Control-Allow-Headers";
+    public static final String ACCEPT_CONTROL_ALLOW_HEADERS = "Access-Control-Allow-Headers";
 
     /**
      * 访问控制允许方法
      */
-    public static final String acceptControlAllowMethods = "Access-Control-Allow-Methods";
+    public static final String ACCEPT_CONTROL_ALLOW_METHODS = "Access-Control-Allow-Methods";
 
     /**
      * 访问控制允许来源
      */
-    public static final String acceptControlAllowOrigin = "Access-Control-Allow-Origin";
+    public static final String ACCEPT_CONTROL_ALLOW_ORIGIN = "Access-Control-Allow-Origin";
 
     /**
      * 连接
      */
-    public static final String connection = "Connection";
+    public static final String CONNECTION = "Connection";
 
     /**
      * 内容长度
      */
-    public static final String contentLength = "Content-Length";
+    public static final String CONTENT_LENGTH = "Content-Length";
 
     /**
      * 内容类型
      */
-    public static final String contentType = "Content-Type";
+    public static final String CONTENT_TYPE = "Content-Type";
 
     /**
      * 内容编码
      */
-    public static final String contentEncoding = "Content-Encoding";
+    public static final String CONTENT_ENCODING = "Content-Encoding";
 
     /**
      * 主机
      */
-    public static final String host = "Host";
+    public static final String HOST = "Host";
 
     /**
      * 起源
      */
-    public static final String origin = "Origin";
+    public static final String ORIGIN = "Origin";
 
     /**
      * 引用者
      */
-    public static final String referer = "Referer";
+    public static final String REFERER = "Referer";
 
     /**
      * 用户代理
      */
-    public static final String userAgent = "User-Agent";
+    public static final String USER_AGENT = "User-Agent";
 
     /**
      * 请求用
      */
-    public static final String xRequestedWith = "X-Requested-With";
+    public static final String X_REQUESTED_WITH = "X-Requested-With";
 }

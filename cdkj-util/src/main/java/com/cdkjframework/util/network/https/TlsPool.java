@@ -89,7 +89,7 @@ public class TlsPool extends HttpClientBuilder implements ApplicationRunner {
         SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx,
                 new String[]{"TLSv1", "TLSv2", "TLSv3"}, null,
                 SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-        // Create a registry of custom connection socket factories for supported
+        // Create a registry of custom CONNECTION socket factories for supported
         // protocol schemes.
         Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
                 .<ConnectionSocketFactory>create()
@@ -99,7 +99,7 @@ public class TlsPool extends HttpClientBuilder implements ApplicationRunner {
         PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(
                 socketFactoryRegistry);
         // Configure total max or per route limits for persistent connections
-        // that can be kept in the pool or leased by the connection manager.
+        // that can be kept in the pool or leased by the CONNECTION manager.
         connManager.setMaxTotal(100);
         connManager.setDefaultMaxPerRoute(10);
         // 个性化设置某个url的连接

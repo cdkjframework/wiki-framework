@@ -14,35 +14,35 @@ public class HeaderConsts {
     /**
      * 日志ID
      */
-    public final static String logId = "logId";
+    public final static String LOG_ID = "logId";
 
     /**
      * 机构ID
      */
-    public final static String organizationId = "organizationId";
+    public final static String ORGANIZATION_ID = "organizationId";
 
     /**
      * 机构 编码
      */
-    public final static String organizationCode = "organizationCode";
+    public final static String ORGANIZATION_CODE = "organizationCode";
 
     /**
      * 机构 名称
      */
-    public final static String organizationName = "organizationName";
+    public final static String ORGANIZATION_NAME = "organizationName";
 
     /**
      * 顶级机构ID
      */
-    public final static String topOrganizationId = "topOrganizationId";
+    public final static String TOP_ORGANIZATION_ID = "topOrganizationId";
 
     /**
      * 顶级机构 编码
      */
-    public final static String topOrganizationCode = "topOrganizationCode";
+    public final static String TOP_ORGANIZATION_CODE = "topOrganizationCode";
 
     /**
      * 顶级机构 名称
      */
-    public final static String topOrganizationName = "topOrganizationName";
+    public final static String TOP_ORGANIZATION_NAME = "topOrganizationName";
 }

@@ -28,72 +28,72 @@ public class PayConfigEntity {
     private String id;
 
     /**
-     * 主键
+     * APPID
      */
     private String appId;
 
     /**
-     * 主键
+     * 密钥
      */
     private String secretKey;
 
     /**
-     * 主键
+     * MCHID
      */
     private String mchId;
 
     /**
-     * 主键
+     * 支付类型
      */
     private String payType;
 
     /**
-     * 主键
+     * 公钥
      */
     private String publicKey;
 
     /**
-     * 主键
+     * 私钥
      */
     private String privateKey;
 
     /**
-     * 主键
+     * 添加时间
      */
     private Timestamp addTime;
 
     /**
-     * 主键
+     * 备注
      */
     private String remarks;
 
     /**
-     * 主键
+     * 通知URL
      */
     private String notifyUrl;
 
     /**
-     * 主键
+     * 故障时间 超时时间秒
      */
     private int failureTime;
 
     /**
-     * 主键
+     * 接口地址
      */
     private String apiAddress;
 
     /**
-     * 主键
+     * 查询地址
      */
     private String queryAddress;
 
     /**
-     * 主键
+     * 支付金额
      */
     private BigDecimal payAmount;
 
     /**
-     * 主键
+     * 单价
      */
     private BigDecimal unitPrice;
 }

@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @Version: 1.0
  */
 
-@ConfigurationProperties(prefix = "spring.cdkj.datasource.elasticsearch")
+@ConfigurationProperties(prefix = "spring.cdkj.SPRING_DATASOURCE.elasticsearch")
 public class ElasticSearchConfig {
 
     /**
