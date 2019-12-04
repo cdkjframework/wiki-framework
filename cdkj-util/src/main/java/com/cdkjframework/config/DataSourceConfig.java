@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "spring.cdkj.SPRING_DATASOURCE")
+@ConfigurationProperties(prefix = "spring.cdkj.datasource")
 public class DataSourceConfig {
 
     private int minIdle;
