@@ -17,3 +17,8 @@
 /*.iml
 /cdkj-pom/*.iml
 /cdkj-entity/*.iml
+/cdkj-center/*.iml
+/cdkj-datasource-jpa/*.iml
+/cdkj-redis/*.iml
+/cdkj-datasource-mongodb/*.iml
+/cdkj-datasource-elasticsearch/*.iml

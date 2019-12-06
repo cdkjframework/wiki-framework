@@ -31,7 +31,7 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
      * @param request      请求信息
      */
     @Override
-    public abstract void buildPaymentData(T t, PayConfigEntity configEntity, PayRecordEntity recordEntity, HttpServletRequest request);
+    public abstract void buildPaymentData(T t, PayConfigEntity configEntity, PayRecordEntity recordEntity, HttpServletRequest request) throws Exception;
 
     /**
      * 生成支付订单及完成支付

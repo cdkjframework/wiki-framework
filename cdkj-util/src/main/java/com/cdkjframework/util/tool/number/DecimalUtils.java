@@ -18,6 +18,11 @@ import java.math.BigDecimal;
 public class DecimalUtils {
 
     /**
+     * 规模
+     */
+    private static final Integer SCALE = 2;
+
+    /**
      * decimal数据相加
      *
      * @param decimalList 数据列表
@@ -25,7 +30,7 @@ public class DecimalUtils {
      */
     public static BigDecimal addition(BigDecimal... decimalList) {
         // 返回结果
-        return addition(Integer.valueOf("2"), decimalList);
+        return addition(SCALE, decimalList);
     }
 
     /**
@@ -59,7 +64,7 @@ public class DecimalUtils {
      * @return 返回结果
      */
     public static BigDecimal divide(BigDecimal dividend, BigDecimal divisor) {
-        return divide(dividend, divisor, Integer.valueOf("2"));
+        return divide(dividend, divisor, SCALE);
     }
 
 
@@ -88,7 +93,7 @@ public class DecimalUtils {
      * @return 返回结果
      */
     public static BigDecimal multiply(BigDecimal multiplier, BigDecimal multiplicand) {
-        return multiply(multiplier, multiplicand, Integer.valueOf("2"));
+        return multiply(multiplier, multiplicand, SCALE);
     }
 
     /**
@@ -116,7 +121,7 @@ public class DecimalUtils {
      * @return 返回结果
      */
     public static BigDecimal subtract(BigDecimal reduction, BigDecimal minuend) {
-        return subtract(reduction, minuend, Integer.valueOf("2"));
+        return subtract(reduction, minuend, SCALE);
     }
 
     /**

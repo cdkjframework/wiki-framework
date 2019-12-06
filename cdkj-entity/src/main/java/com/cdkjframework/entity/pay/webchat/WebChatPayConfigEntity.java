@@ -1,11 +1,22 @@
 package com.cdkjframework.entity.pay.webchat;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
- * 微信支付配置实体
+ * @ProjectName: cdkj-framework
+ * @Package: com.cdkjframework.entity.pay.webchat
+ * @ClassName: WebChatPayConfigEntity
+ * @Description: 微信支付配置实体
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 @XStreamAlias("xml")
+@Getter
+@Setter
+@ToString
 public class WebChatPayConfigEntity {
 
     /**
@@ -94,116 +105,4 @@ public class WebChatPayConfigEntity {
      */
     @XStreamAlias("time_expire")
     private String timeExpire;
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getMchId() {
-        return mchId;
-    }
-
-    public void setMchId(String mchId) {
-        this.mchId = mchId;
-    }
-
-    public String getDeviceInfo() {
-        return deviceInfo;
-    }
-
-    public void setDeviceInfo(String deviceInfo) {
-        this.deviceInfo = deviceInfo;
-    }
-
-    public String getNonceStr() {
-        return nonceStr;
-    }
-
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
-    }
-
-    public String getSign() {
-        return sign;
-    }
-
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
-
-    public String getSignType() {
-        return signType;
-    }
-
-    public void setSignType(String signType) {
-        this.signType = signType;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
-
-    public String getOutTradeNo() {
-        return outTradeNo;
-    }
-
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public int getTotalFee() {
-        return totalFee;
-    }
-
-    public void setTotalFee(int totalFee) {
-        this.totalFee = totalFee;
-    }
-
-    public String getSpbillCreateIp() {
-        return spbillCreateIp;
-    }
-
-    public void setSpbillCreateIp(String spbillCreateIp) {
-        this.spbillCreateIp = spbillCreateIp;
-    }
-
-    public String getNotifyUrl() {
-        return notifyUrl;
-    }
-
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
-    }
-
-    public String getTradeType() {
-        return tradeType;
-    }
-
-    public void setTradeType(String tradeType) {
-        this.tradeType = tradeType;
-    }
-
-    public String getTimeStart() {
-        return timeStart;
-    }
-
-    public void setTimeStart(String timeStart) {
-        this.timeStart = timeStart;
-    }
-
-    public String getTimeExpire() {
-        return timeExpire;
-    }
-
-    public void setTimeExpire(String timeExpire) {
-        this.timeExpire = timeExpire;
-    }
 }

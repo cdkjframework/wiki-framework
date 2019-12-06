@@ -35,5 +35,5 @@ public interface PaymentService<T> {
      * @param recordEntity 记录信息
      * @param request      请求信息
      */
-    void buildPaymentData(T t, PayConfigEntity configEntity, PayRecordEntity recordEntity, HttpServletRequest request);
+    void buildPaymentData(T t, PayConfigEntity configEntity, PayRecordEntity recordEntity, HttpServletRequest request) throws Exception;
 }
