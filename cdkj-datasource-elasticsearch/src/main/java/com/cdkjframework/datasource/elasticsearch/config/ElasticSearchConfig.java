@@ -1,6 +1,7 @@
 package com.cdkjframework.datasource.elasticsearch.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -10,8 +11,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @Author: xiaLin
  * @Version: 1.0
  */
-
-@ConfigurationProperties(prefix = "spring.cdkj.SPRING_DATASOURCE.elasticsearch")
+@Configuration
+@ConfigurationProperties(prefix = "spring.cdkj.datasource.elasticsearch")
 public class ElasticSearchConfig {
 
     /**

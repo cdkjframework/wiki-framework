@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @ToString
 @Configuration
-@ConfigurationProperties(prefix = "spring.SPRING_DATASOURCE.mongodb")
+@ConfigurationProperties(prefix = "spring.cdkj.datasource.mongodb")
 public class MongoConfig {
 
     /**
