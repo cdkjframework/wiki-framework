@@ -33,6 +33,11 @@ public class PayConfigEntity {
     private String appId;
 
     /**
+     * 订单前缀
+     */
+    private String orderPrefix;
+
+    /**
      * 密钥
      */
     private String secretKey;

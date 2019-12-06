@@ -20,6 +20,16 @@
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-constant</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-redis</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-entity</artifactId>
             <version>${project.parent.version}</version>
         </dependency>

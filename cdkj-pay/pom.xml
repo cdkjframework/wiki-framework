@@ -17,6 +17,16 @@
             <artifactId>cdkj-util</artifactId>
             <version>1.0-191022</version>
         </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-redis</artifactId>
+            <version>1.0-191022</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-constant</artifactId>
+            <version>1.0-191022</version>
+        </dependency>
     </dependencies>
 
     <build>

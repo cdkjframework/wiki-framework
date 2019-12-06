@@ -1,7 +1,7 @@
-package com.cdkjframework.util.tool.number;
+package com.cdkjframework.redis.number;
 
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.cache.RedisUtils;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @Version: 1.0
  */
 @Component
-public class OddNumbersUtils {
+public class RedisNumbersUtils {
 
 
     /**
@@ -35,7 +35,7 @@ public class OddNumbersUtils {
     /**
      * 日志
      */
-    private static LogUtils logUtils = LogUtils.getLogger(OddNumbersUtils.class);
+    private static LogUtils logUtils = LogUtils.getLogger(RedisNumbersUtils.class);
 
     /**
      * 生成单据号
@@ -112,7 +112,7 @@ public class OddNumbersUtils {
                 if (isDate) {
                     buffer.append(date);
                 }
-                String key = ODD_NUMBER_KEY + date;
+                String key = prefix + "-" + ODD_NUMBER_KEY + "-" + date;
                 //设置过期时间
                 RedisUtils.syncExpire(key, 1 * 24 * 60 * 60);
 

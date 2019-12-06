@@ -1,4 +1,4 @@
-package com.cdkjframework.consts;
+package com.cdkjframework.constant;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode

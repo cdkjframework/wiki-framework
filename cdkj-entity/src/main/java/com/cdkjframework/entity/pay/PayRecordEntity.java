@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * @ProjectName: com.cdkjframework.webcode
@@ -64,12 +65,12 @@ public class PayRecordEntity {
     /**
      * 支付时间
      */
-    private Timestamp payTime;
+    private Date payTime;
 
     /**
      * 生成时间
      */
-    private Timestamp addTime;
+    private Date addTime;
 
     /**
      * 备注

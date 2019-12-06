@@ -2,11 +2,12 @@ package com.cdkjframework.core.spring;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.core.spring.interceptor.AbstractInterceptor;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.cache.RedisUtils;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -140,7 +141,7 @@ public class AuthenticationInterceptor extends AbstractInterceptor implements Ha
     public void authenticateUserLogin(String token, boolean verified, HttpServletRequest httpServletRequest) throws GlobalException {
         // jwt 解密
         Claims claims = JwtUtils.parseJwt(token, customConfig.getJwtKey());
-        String key = com.cdkjframework.consts.CacheConsts.userLogin + claims.get("token").toString();
+        String key = CacheConsts.USER_LOGIN + claims.get("token").toString();
 
         //获取用户信息
         UserEntity userEntity = RedisUtils.syncGetEntity(key, UserEntity.class);
