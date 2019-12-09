@@ -4,12 +4,18 @@ import com.cdkjframework.constant.PayTypeConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.pay.PayConfigService;
+import com.cdkjframework.pay.PayRecordService;
 import com.cdkjframework.pay.PaymentService;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @ProjectName: cdkj-framework
@@ -21,6 +27,23 @@ import java.util.Date;
  */
 
 public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T> {
+
+    /**
+     * 支付配置服务
+     */
+    @Autowired
+    private PayConfigService payConfigServiceImpl;
+
+    /**
+     * 支付记录
+     */
+    @Autowired
+    private PayRecordService payRecordServiceImpl;
+
+    /**
+     * 支付宝支付标示常量
+     */
+    private final String ALIPAY_CLIENT = "AlipayClient";
 
     /**
      * 生成支付配置
@@ -45,19 +68,66 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
     public abstract boolean paymentQueryResults(PayConfigEntity configEntity, PayRecordEntity recordEntity);
 
     /**
-     * 生成支付订单及完成支付
+     * 构造支付订单
+     *
+     * @param businessNo 业务单号
+     * @param request    请求信息
+     * @throws GlobalException 异常信息
+     */
+    @Override
+    public void buildPayOrder(String businessNo, HttpServletRequest request) throws GlobalException {
+        String userAgent = request.getHeader("user-agent");
+        if (StringUtils.isNullAndSpaceOrEmpty(userAgent)) {
+            throw new GlobalException("未知支付方式");
+        }
+
+        // 获取支付方式
+        PayConfigEntity configEntity = new PayConfigEntity();
+        configEntity.setIsDeleted(0);
+        List<PayConfigEntity> payConfigEntities = payConfigServiceImpl
+                .listFindByEntity(configEntity);
+
+        // 获取数据
+        Optional<PayConfigEntity> optional;
+        if (userAgent.contains(ALIPAY_CLIENT)) {
+            optional = payConfigEntities.stream()
+                    .filter(f -> PayTypeConsts.ALI_PAY.equals(f.getPayType()))
+                    .findFirst();
+        } else {
+            optional = payConfigEntities.stream()
+                    .filter(f -> PayTypeConsts.ALI_PAY.equals(f.getPayType()))
+                    .findFirst();
+        }
+        // 获取数据
+        if (!optional.isPresent()) {
+            throw new GlobalException("未配置支付方式");
+        }
+        configEntity = optional.get();
+
+        // 生成支付订单
+        PayRecordEntity recordEntity = new PayRecordEntity();
+        recordEntity.setBusinessId(businessNo);
+        buildPayOrderRecord(configEntity, recordEntity);
+        // 写入记录
+        payRecordServiceImpl.insertPayRecord(recordEntity);
+    }
+
+    /**
+     * 生成支付订单
      *
      * @param configEntity 支付配置
      * @param recordEntity 支付记录信息
      * @return 返回结果
      */
     @Override
-    public void buildPayOrder(PayConfigEntity configEntity, PayRecordEntity recordEntity) throws GlobalException {
+    public void buildPayOrderRecord(PayConfigEntity configEntity, PayRecordEntity recordEntity) throws GlobalException {
         recordEntity.setId(GeneratedValueUtils.getUuidString());
         recordEntity.setNonceStr(GeneratedValueUtils.getUuidNotTransverseLine());
         recordEntity.setOrderNo(RedisNumbersUtils.generateDocumentNumber(configEntity.getOrderPrefix(), 5));
         recordEntity.setAddTime(new Date());
         recordEntity.setPayStatus(0);
+        recordEntity.setIsDeleted(0);
+        recordEntity.setAddTime(new Date());
         switch (configEntity.getPayType()) {
             case PayTypeConsts
                     .ALI_PAY:

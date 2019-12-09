@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.pay;
 
+import com.cdkjframework.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,7 +21,7 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 @ToString
-public class PayConfigEntity {
+public class PayConfigEntity extends BaseEntity {
 
     /**
      * 主键

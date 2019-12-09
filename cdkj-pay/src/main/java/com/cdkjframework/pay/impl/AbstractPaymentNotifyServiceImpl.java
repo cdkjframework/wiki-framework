@@ -20,5 +20,5 @@ public abstract class AbstractPaymentNotifyServiceImpl<T> implements PaymentNoti
      * @return 返回验证结果
      */
     @Override
-    public abstract <T> T payNotifyCallback(StringBuilder builder);
+    public abstract T payNotifyCallback(StringBuilder builder);
 }

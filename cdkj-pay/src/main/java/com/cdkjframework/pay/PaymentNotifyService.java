@@ -1,5 +1,8 @@
 package com.cdkjframework.pay;
 
+import com.cdkjframework.entity.pay.PayConfigEntity;
+import com.cdkjframework.entity.pay.PayRecordEntity;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.pay
@@ -15,8 +18,16 @@ public interface PaymentNotifyService<T> {
      * 支付结果
      *
      * @param builder 返回结果
-     * @param <T>     实体对象
      * @return
      */
-    <T> T payNotifyCallback(StringBuilder builder);
+    T payNotifyCallback(StringBuilder builder);
+
+    /**
+     * 验证签名
+     *
+     * @param configEntity 配置信息
+     * @param recordEntity 支付记录
+     * @param t            实体
+     */
+    void checkSignature(PayConfigEntity configEntity, PayRecordEntity recordEntity, T t);
 }

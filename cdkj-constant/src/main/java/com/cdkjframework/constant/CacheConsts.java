@@ -17,6 +17,11 @@ public class CacheConsts {
     public static final String USER_LOGIN = "userLogin";
 
     /**
+     * 支付配置
+     */
+    public static final String PAY_CONFIG = "payConfig";
+
+    /**
      * 验证码缓存
      */
     public static final String VERIFY_CODE = "verifyCode";
