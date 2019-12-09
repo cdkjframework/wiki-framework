@@ -1,13 +1,19 @@
 package com.cdkjframework.entity.pay.webchat;
 
-import com.hongli.tms.entity.pay.webChat.impl.WebChatEntity;
+import com.cdkjframework.entity.pay.webchat.impl.WebChatEntity;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 
 /**
  * 微支付成功异步回调实体
  */
 @XStreamAlias("xml")
+@Getter
+@Setter
+@ToString
 public class WebChatPayActionEntity extends WebChatEntity<WebChatPayActionEntity> {
 
     /**
@@ -25,23 +31,6 @@ public class WebChatPayActionEntity extends WebChatEntity<WebChatPayActionEntity
     private String couponId0;
     @XStreamAlias("coupon_fee_0")
     private String couponFee0;
-
-    public String getCouponId0() {
-        return couponId0;
-    }
-
-    public void setCouponId0(String couponId0) {
-        this.couponId0 = couponId0;
-    }
-
-    public String getCouponFee0() {
-        return couponFee0;
-    }
-
-    public void setCouponFee0(String couponFee0) {
-        this.couponFee0 = couponFee0;
-    }
-
     /**
      * 用户在商户appid下的唯一标识
      */
@@ -131,124 +120,4 @@ public class WebChatPayActionEntity extends WebChatEntity<WebChatPayActionEntity
      */
     @XStreamAlias("time_end")
     private String timeEnd;
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    public String getIsSubscribe() {
-        return isSubscribe;
-    }
-
-    public void setIsSubscribe(String isSubscribe) {
-        this.isSubscribe = isSubscribe;
-    }
-
-    public String getTradeType() {
-        return tradeType;
-    }
-
-    public void setTradeType(String tradeType) {
-        this.tradeType = tradeType;
-    }
-
-    public String getBankType() {
-        return bankType;
-    }
-
-    public void setBankType(String bankType) {
-        this.bankType = bankType;
-    }
-
-    public String getTotalFee() {
-        return totalFee;
-    }
-
-    public void setTotalFee(String totalFee) {
-        this.totalFee = totalFee;
-    }
-
-    public String getSettlementTotalFee() {
-        return settlementTotalFee;
-    }
-
-    public void setSettlementTotalFee(String settlementTotalFee) {
-        this.settlementTotalFee = settlementTotalFee;
-    }
-
-    public String getFeeType() {
-        return feeType;
-    }
-
-    public void setFeeType(String feeType) {
-        this.feeType = feeType;
-    }
-
-    public String getCashFee() {
-        return cashFee;
-    }
-
-    public void setCashFee(String cashFee) {
-        this.cashFee = cashFee;
-    }
-
-    public String getCashFeeType() {
-        return cashFeeType;
-    }
-
-    public void setCashFeeType(String cashFeeType) {
-        this.cashFeeType = cashFeeType;
-    }
-
-    public String getCouponFee() {
-        return couponFee;
-    }
-
-    public void setCouponFee(String couponFee) {
-        this.couponFee = couponFee;
-    }
-
-    public String getCouponCount() {
-        return couponCount;
-    }
-
-    public void setCouponCount(String couponCount) {
-        this.couponCount = couponCount;
-    }
-
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    public String getOutTradeNo() {
-        return outTradeNo;
-    }
-
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public String getAttach() {
-        return attach;
-    }
-
-    public void setAttach(String attach) {
-        this.attach = attach;
-    }
-
-    public String getTimeEnd() {
-        return timeEnd;
-    }
-
-    public void setTimeEnd(String timeEnd) {
-        this.timeEnd = timeEnd;
-    }
 }

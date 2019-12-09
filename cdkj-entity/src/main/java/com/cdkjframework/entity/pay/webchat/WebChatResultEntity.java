@@ -1,11 +1,18 @@
 package com.cdkjframework.entity.pay.webchat;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 微信异步回调结果通知
+ * @author frank
  */
 @XStreamAlias("xml")
+@Getter
+@Setter
+@ToString
 public class WebChatResultEntity {
 
     /**
@@ -20,20 +27,4 @@ public class WebChatResultEntity {
      */
     @XStreamAlias("return_msg")
     private String returnMsg = "OK";
-
-    public String getReturnCode() {
-        return returnCode;
-    }
-
-    public void setReturnCode(String returnCode) {
-        this.returnCode = returnCode;
-    }
-
-    public String getReturnMsg() {
-        return returnMsg;
-    }
-
-    public void setReturnMsg(String returnMsg) {
-        this.returnMsg = returnMsg;
-    }
 }

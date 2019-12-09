@@ -1,13 +1,20 @@
 package com.cdkjframework.entity.pay.alipay;
 
-import com.hongli.tms.util.annotation.FieldMapping;
+import com.cdkjframework.core.annotation.FieldMapping;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
  * 支付宝支付配置实体
+ * @author frank
  */
+@Getter
+@Setter
+@ToString
 public class AliPayConfigEntity implements Serializable {
 
     /**
@@ -58,7 +65,7 @@ public class AliPayConfigEntity implements Serializable {
     /**
      * 商户请求参数的签名串
      */
-//    private String sign;
+    private String sign;
 
     /**
      * 发送请求的时间，格式"yyyy-MM-dd HH:mm:ss"
@@ -86,116 +93,4 @@ public class AliPayConfigEntity implements Serializable {
      * 仅支持JSON
      */
     private String format = "JSON";
-
-    public String getOutTradeNo() {
-        return outTradeNo;
-    }
-
-    public void setOutTradeNo(String outTradeNo) {
-        this.outTradeNo = outTradeNo;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-//    public String getSellerId() {
-//        return sellerId;
-//    }
-//
-//    public void setSellerId(String sellerId) {
-//        this.sellerId = sellerId;
-//    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
-    }
-
-    public String getSignType() {
-        return signType;
-    }
-
-    public void setSignType(String signType) {
-        this.signType = signType;
-    }
-
-//    public String getSign() {
-//        return sign;
-//    }
-//
-//    public void setSign(String sign) {
-//        this.sign = sign;
-//    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getNotifyUrl() {
-        return notifyUrl;
-    }
-
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
-    }
-
-    public String getBizContent() {
-        return bizContent;
-    }
-
-    public void setBizContent(String bizContent) {
-        this.bizContent = bizContent;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
 }

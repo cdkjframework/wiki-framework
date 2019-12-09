@@ -1,12 +1,19 @@
 package com.cdkjframework.entity.pay.alipay.impl;
 
-import com.hongli.tms.util.annotation.FieldMapping;
+import com.cdkjframework.core.annotation.FieldMapping;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
 /**
  * 支付宝接口实体基类
+ * @author frank
  */
+@Getter
+@Setter
+@ToString
 public class AliEntity implements Serializable {
     /**
      * 支付宝分配给开发者的应用ID
@@ -67,92 +74,4 @@ public class AliEntity implements Serializable {
      */
     @FieldMapping(name = "app_auth_token")
     private String appAuthToken;
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public String getMethod() {
-        return method;
-    }
-
-    public void setMethod(String method) {
-        this.method = method;
-    }
-
-    public String getCharset() {
-        return charset;
-    }
-
-    public void setCharset(String charset) {
-        this.charset = charset;
-    }
-
-    public String getSignType() {
-        return signType;
-    }
-
-    public void setSignType(String signType) {
-        this.signType = signType;
-    }
-
-    public String getSign() {
-        return sign;
-    }
-
-    public void setSign(String sign) {
-        this.sign = sign;
-    }
-
-    public String getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public String getVersion() {
-        return version;
-    }
-
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public String getNotifyUrl() {
-        return notifyUrl;
-    }
-
-    public void setNotifyUrl(String notifyUrl) {
-        this.notifyUrl = notifyUrl;
-    }
-
-    public String getBizContent() {
-        return bizContent;
-    }
-
-    public void setBizContent(String bizContent) {
-        this.bizContent = bizContent;
-    }
-
-    public String getFormat() {
-        return format;
-    }
-
-    public void setFormat(String format) {
-        this.format = format;
-    }
-
-    public String getAppAuthToken() {
-        return appAuthToken;
-    }
-
-    public void setAppAuthToken(String appAuthToken) {
-        this.appAuthToken = appAuthToken;
-    }
 }

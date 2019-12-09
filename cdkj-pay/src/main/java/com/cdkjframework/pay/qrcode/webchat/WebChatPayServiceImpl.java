@@ -3,9 +3,16 @@ package com.cdkjframework.pay.qrcode.webchat;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.entity.pay.webchat.WebChatPayConfigEntity;
+import com.cdkjframework.entity.pay.webchat.query.WebChatQueryEntity;
+import com.cdkjframework.entity.pay.webchat.query.WebChatQueryResultEntity;
+import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.pay.impl.AbstractPaymentServiceImpl;
 import com.cdkjframework.util.encrypts.WebChatPayAutographUtils;
+import com.cdkjframework.util.files.XmlUtils;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.number.DecimalUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,12 +27,28 @@ import java.util.Map;
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.pay.qrcode.webchat
  * @ClassName: WebChatPayServiceImpl
- * @Description: java类作用描述
+ * @Description: 微信支付服务
  * @Author: xiaLin
  * @Version: 1.0
  */
 @Service
 public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPayConfigEntity> {
+
+    /**
+     * 日志
+     */
+    private LogUtils logUtils = LogUtils.getLogger(WebChatPayServiceImpl.class);
+
+    /**
+     * 支付请求
+     */
+    @Autowired
+    private PayRequest payRequest;
+
+    /**
+     * 验证结果常量
+     */
+    private final String RESULTS_CODE = "SUCCESS";
 
     /**
      * 生成支付配置
@@ -80,5 +103,63 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
         data.put("trade_type", webChatEntity.getTradeType());
 
         webChatEntity.setSign(WebChatPayAutographUtils.generateSignature(data, configEntity.getSecretKey()));
+    }
+
+    /**
+     * 支付查询结果
+     *
+     * @param configEntity 配置
+     * @param recordEntity 支付记录
+     * @return 返回结果
+     */
+    @Override
+    public boolean paymentQueryResults(PayConfigEntity configEntity, PayRecordEntity recordEntity) {
+        WebChatQueryEntity webChatQueryEntity = new WebChatQueryEntity();
+        webChatQueryEntity.setAppId(configEntity.getAppId());
+        webChatQueryEntity.setMchId(configEntity.getMchId());
+        webChatQueryEntity.setOutTradeNo(recordEntity.getOrderNo());
+        webChatQueryEntity.setNonceStr(GeneratedValueUtils.getUuidNotTransverseLine());
+
+        //签名
+        Map<String, String> data = new HashMap<>();
+        data.put("appid", webChatQueryEntity.getAppId());
+        data.put("mch_id", webChatQueryEntity.getMchId());
+        data.put("nonce_str", webChatQueryEntity.getNonceStr());
+        data.put("out_trade_no", webChatQueryEntity.getOutTradeNo());
+        data.put("sign_type", webChatQueryEntity.getSignType());
+
+        boolean result = true;
+        try {
+            webChatQueryEntity.setSign(WebChatPayAutographUtils.generateSignature(data, configEntity.getSecretKey()));
+
+            /**
+             *
+             * 以下为调用支付接口及校验逻辑
+             *
+             */
+            //发送请求 并返回请求结果
+            String xml = payRequest.request(webChatQueryEntity, configEntity.getQueryAddress());
+
+            logUtils.info("resultsEntity xml：" + xml);
+
+            //将返回结果解析为实体
+            WebChatQueryResultEntity resultsEntity = XmlUtils.xmlToBean(WebChatQueryResultEntity.class, xml);
+            //验证返回结果
+            if (!RESULTS_CODE.equals(resultsEntity.getTrade_state())) {
+                logUtils.info("ReturnMsg：" + resultsEntity.getTrade_state_desc());
+                throw new GlobalException(resultsEntity.getReturnMsg());
+            } else {
+                recordEntity.setPayStatus(1);
+                //支付金额
+                recordEntity.setPayAmount(recordEntity.getPrice());
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            result = false;
+            logUtils.info("webChat 查询支付结果异常：" + ex.getMessage());
+        }
+
+        //返回结果
+        return result;
     }
 }

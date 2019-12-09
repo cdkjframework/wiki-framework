@@ -1,12 +1,18 @@
 package com.cdkjframework.entity.pay.webchat;
 
-import com.hongli.tms.entity.pay.webChat.impl.WebChatEntity;
+import com.cdkjframework.entity.pay.webchat.impl.WebChatEntity;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * 支付成功返回结果实体
  */
 @XStreamAlias("xml")
+@Getter
+@Setter
+@ToString
 public class WebChatPayResultsEntity extends WebChatEntity<WebChatPayResultsEntity> {
 
     /**
@@ -40,32 +46,4 @@ public class WebChatPayResultsEntity extends WebChatEntity<WebChatPayResultsEnti
      */
     @XStreamAlias("code_url")
     private String codeUrl;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public String getTradeType() {
-        return tradeType;
-    }
-
-    public void setTradeType(String tradeType) {
-        this.tradeType = tradeType;
-    }
-
-    public String getPrepayId() {
-        return prepayId;
-    }
-
-    public void setPrepayId(String prepayId) {
-        this.prepayId = prepayId;
-    }
-
-    public String getCodeUrl() {
-        return codeUrl;
-    }
-
-    public void setCodeUrl(String codeUrl) {
-        this.codeUrl = codeUrl;
-    }
 }
