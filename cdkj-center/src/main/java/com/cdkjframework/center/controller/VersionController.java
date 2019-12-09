@@ -1,6 +1,6 @@
-package com.cdkjframework.center.controller.realization;
+package com.cdkjframework.center.controller;
 
-import com.cdkjframework.center.controller.WebUiController;
+import com.cdkjframework.core.controller.WebUiController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

@@ -1,4 +1,4 @@
-package com.cdkjframework.center.controller;
+package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.entity.PageEntity;

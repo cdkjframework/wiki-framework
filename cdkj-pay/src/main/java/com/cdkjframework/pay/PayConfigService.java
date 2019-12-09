@@ -23,4 +23,11 @@ public interface PayConfigService {
      */
     List<PayConfigEntity> listFindByEntity(PayConfigEntity entity);
 
+    /**
+     * 获取一个配置
+     *
+     * @param entity 查询实体
+     * @return 返回实体
+     */
+    PayConfigEntity findEntity(PayConfigEntity entity);
 }

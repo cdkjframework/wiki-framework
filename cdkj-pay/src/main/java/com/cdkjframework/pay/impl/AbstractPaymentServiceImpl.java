@@ -3,6 +3,8 @@ package com.cdkjframework.pay.impl;
 import com.cdkjframework.constant.PayTypeConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
+import com.cdkjframework.entity.pay.alipay.AliPayConfigEntity;
+import com.cdkjframework.entity.pay.webchat.WebChatPayConfigEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.pay.PayConfigService;
 import com.cdkjframework.pay.PayRecordService;
@@ -10,6 +12,7 @@ import com.cdkjframework.pay.PaymentService;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -75,7 +78,7 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
      * @throws GlobalException 异常信息
      */
     @Override
-    public void buildPayOrder(String businessNo, HttpServletRequest request) throws GlobalException {
+    public void buildPayOrder(String businessNo, HttpServletRequest request) throws Exception {
         String userAgent = request.getHeader("user-agent");
         if (StringUtils.isNullAndSpaceOrEmpty(userAgent)) {
             throw new GlobalException("未知支付方式");
@@ -84,25 +87,23 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
         // 获取支付方式
         PayConfigEntity configEntity = new PayConfigEntity();
         configEntity.setIsDeleted(0);
-        List<PayConfigEntity> payConfigEntities = payConfigServiceImpl
-                .listFindByEntity(configEntity);
 
+        // 支付信息
+        WebChatPayConfigEntity webChat = null;
+        AliPayConfigEntity aliPay = null;
         // 获取数据
-        Optional<PayConfigEntity> optional;
         if (userAgent.contains(ALIPAY_CLIENT)) {
-            optional = payConfigEntities.stream()
-                    .filter(f -> PayTypeConsts.ALI_PAY.equals(f.getPayType()))
-                    .findFirst();
+            aliPay = new AliPayConfigEntity();
+            configEntity.setPayType(PayTypeConsts.ALI_PAY);
         } else {
-            optional = payConfigEntities.stream()
-                    .filter(f -> PayTypeConsts.ALI_PAY.equals(f.getPayType()))
-                    .findFirst();
+            webChat = new WebChatPayConfigEntity();
+            configEntity.setPayType(PayTypeConsts.WEB_CHAT);
         }
+        configEntity = payConfigServiceImpl.findEntity(configEntity);
         // 获取数据
-        if (!optional.isPresent()) {
+        if (configEntity == null) {
             throw new GlobalException("未配置支付方式");
         }
-        configEntity = optional.get();
 
         // 生成支付订单
         PayRecordEntity recordEntity = new PayRecordEntity();
@@ -110,6 +111,15 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
         buildPayOrderRecord(configEntity, recordEntity);
         // 写入记录
         payRecordServiceImpl.insertPayRecord(recordEntity);
+
+        // 微信生成支付信息
+        if (webChat != null) {
+            buildPaymentData((T) webChat, configEntity, recordEntity, request);
+        }
+        // 支付宝生成支付信息
+        if (aliPay != null) {
+            buildPaymentData((T) aliPay, configEntity, recordEntity, request);
+        }
     }
 
     /**

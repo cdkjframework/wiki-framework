@@ -1,13 +1,14 @@
-package com.cdkjframework.center.controller;
+package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.enums.basics.BasicsEnum;
-import com.cdkjframework.util.cache.RedisUtils;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import io.jsonwebtoken.Claims;
@@ -40,7 +41,7 @@ public class WebUiController extends AbstractController {
     public ResponseBuilder quit(String id) {
         ResponseBuilder builder = new ResponseBuilder();
         try {
-            final String key = com.cdkjframework.consts.CacheConsts.userLogin + id;
+            final String key = CacheConsts.USER_LOGIN + id;
             RedisUtils.syncDel(key);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -102,7 +103,7 @@ public class WebUiController extends AbstractController {
     public <T> T getCurrentUser(String id, Class<T> clazz) {
         T userEntity = null;
         try {
-            userEntity = RedisUtils.syncGetEntity(com.cdkjframework.consts.CacheConsts.userLogin + id, clazz);
+            userEntity = RedisUtils.syncGetEntity(CacheConsts.USER_LOGIN + id, clazz);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

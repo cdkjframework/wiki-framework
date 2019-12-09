@@ -24,6 +24,16 @@
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-constant</artifactId>
+            <version>1.0-191022</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-core</artifactId>
+            <version>1.0-191022</version>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-datasource</artifactId>
             <version>1.0-191022</version>
         </dependency>

@@ -2,7 +2,7 @@ package com.cdkjframework.center.service.impl;
 
 import com.cdkjframework.center.mapper.GenerateMapper;
 import com.cdkjframework.center.service.GenerateService;
-import com.cdkjframework.center.annotation.EnableAutoGenerate;
+import com.cdkjframework.core.annotation.EnableAutoGenerate;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.generate.template.*;
 import com.cdkjframework.entity.generate.template.children.ChildrenEntity;

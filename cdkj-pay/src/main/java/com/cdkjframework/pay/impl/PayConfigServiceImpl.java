@@ -1,6 +1,7 @@
 package com.cdkjframework.pay.impl;
 
 import com.cdkjframework.constant.CacheConsts;
+import com.cdkjframework.constant.PayTypeConsts;
 import com.cdkjframework.core.business.mapper.PayConfigMapper;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.pay.PayConfigService;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ProjectName: cdkj-framework
@@ -49,5 +51,29 @@ public class PayConfigServiceImpl implements PayConfigService {
         }
         // 返回结果
         return configEntities;
+    }
+
+    /**
+     * 获取一个配置
+     *
+     * @param entity 查询实体 payType 必须传
+     * @return 返回实体
+     */
+    @Override
+    public PayConfigEntity findEntity(PayConfigEntity entity) {
+        String payType = entity.getPayType();
+        entity.setPayType("");
+        List<PayConfigEntity> configEntities = listFindByEntity(entity);
+
+        // 获取数据
+        Optional<PayConfigEntity> optional = configEntities.stream()
+                .filter(f -> payType.equals(f.getPayType()))
+                .findFirst();
+
+        if (optional.isPresent()) {
+            return optional.get();
+        }
+        // 返回结果
+        return null;
     }
 }
