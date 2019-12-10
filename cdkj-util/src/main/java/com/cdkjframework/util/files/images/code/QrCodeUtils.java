@@ -4,6 +4,9 @@ import com.google.zxing.*;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.common.HybridBinarizer;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -26,7 +29,10 @@ import java.util.Map;
  */
 
 @Component
-public class QrCodeUtil {
+@Getter
+@Setter
+@ToString
+public class QrCodeUtils {
 
     /**
      * 宽度
@@ -51,70 +57,7 @@ public class QrCodeUtil {
     private static final int BLACK = 0xFF000000;
     private static final int WHITE = 0xFFFFFFFF;
 
-    public int getWidth() {
-        return width;
-    }
-
-    /**
-     * set width of QRCOde
-     *
-     * @param width
-     */
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
-    public int getHeight() {
-        return height;
-    }
-
-    /**
-     * set height of RQCode
-     *
-     * @param height
-     */
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public String getEncoding() {
-        return encoding;
-    }
-
-    public void setEncoding(String encoding) {
-        this.encoding = encoding;
-    }
-
-    public String getFormatName() {
-        return formatName;
-    }
-
-    /**
-     * set image FORMAT
-     *
-     * @param formatName
-     */
-    public void setFormatName(String formatName) {
-        this.formatName = formatName;
-    }
-
-    public float getLogoScale() {
-        return logoScale;
-    }
-
-    /**
-     * 设置logo相对于二维码的缩放比例
-     *
-     * @param logoScale
-     */
-    public void setLogoScale(float logoScale) {
-        if (logoScale < 0 || logoScale > 1) {
-            this.logoScale = 0.2f;
-        }
-        this.logoScale = logoScale;
-    }
-
-    public QrCodeUtil() {
+    public QrCodeUtils() {
 
     }
 
@@ -124,7 +67,7 @@ public class QrCodeUtil {
      * @param width
      * @param height
      */
-    public QrCodeUtil(int width, int height) {
+    public QrCodeUtils(int width, int height) {
         this.width = width;
         this.height = height;
     }
@@ -209,9 +152,9 @@ public class QrCodeUtil {
     /**
      * 添加 logo 到二维码上
      *
-     * @param image
-     * @param logoInput
-     * @throws Exception
+     * @param image     图片
+     * @param logoInput 输出
+     * @throws Exception 异常信息
      */
     private void addLogoToImage(BufferedImage image, InputStream logoInput) throws Exception {
         BufferedImage logoImage = ImageIO.read(logoInput);

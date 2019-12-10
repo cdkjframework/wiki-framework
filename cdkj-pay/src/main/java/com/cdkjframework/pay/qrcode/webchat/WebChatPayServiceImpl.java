@@ -3,6 +3,7 @@ package com.cdkjframework.pay.qrcode.webchat;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.entity.pay.webchat.WebChatPayConfigEntity;
+import com.cdkjframework.entity.pay.webchat.WebChatPayResultsEntity;
 import com.cdkjframework.entity.pay.webchat.query.WebChatQueryEntity;
 import com.cdkjframework.entity.pay.webchat.query.WebChatQueryResultEntity;
 import com.cdkjframework.exceptions.GlobalException;
@@ -103,6 +104,57 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
         data.put("trade_type", webChatEntity.getTradeType());
 
         webChatEntity.setSign(WebChatPayAutographUtils.generateSignature(data, configEntity.getSecretKey()));
+    }
+
+    /**
+     * 获取支付连接
+     *
+     * @param webChatPayConfigEntity 实体
+     * @param configEntity           配置
+     * @param recordEntity           支付记录
+     * @return 返回结果
+     */
+    @Override
+    public void buildPaymentConnection(WebChatPayConfigEntity webChatPayConfigEntity, PayConfigEntity configEntity, PayRecordEntity recordEntity) throws Exception {
+        /**
+         * 以下为调用支付接口及校验逻辑
+         */
+        //发送请求 并返回请求结果
+        String xml = payRequest.request(webChatPayConfigEntity, configEntity.getApiAddress());
+
+        //将返回结果解析为实体
+        WebChatPayResultsEntity resultsEntity = XmlUtils.xmlToBean(WebChatPayResultsEntity.class, xml);
+        //验证返回结果
+        if (!RESULTS_CODE.equals(resultsEntity.getResultCode())) {
+            logUtils.error("ReturnMsg：" + resultsEntity.getReturnMsg());
+            throw new GlobalException(resultsEntity.getReturnMsg());
+        }
+
+        //验证签名
+
+        //签名
+        Map<String, String> data = new HashMap<>(9);
+        data.put("appid", webChatPayConfigEntity.getAppId());
+        data.put("mch_id", webChatPayConfigEntity.getMchId());
+        data.put("nonce_str", resultsEntity.getNonceStr());
+        data.put("prepay_id", resultsEntity.getPrepayId());
+        data.put("trade_type", resultsEntity.getTradeType());
+        data.put("return_code", resultsEntity.getReturnCode());
+        data.put("return_msg", resultsEntity.getReturnMsg());
+        data.put("result_code", resultsEntity.getResultCode());
+        data.put("code_url", resultsEntity.getCodeUrl());
+        String sign = WebChatPayAutographUtils.generateSignature(data, configEntity.getSecretKey());
+        if (!resultsEntity.getSign().equals(sign)) {
+            logUtils.error("Sign：" + "签名验证失败，可能存在拦截串改数据！");
+            throw new GlobalException("生成支付二维码失败，请重试！");
+        }
+
+        //生成二维码是否成功验证
+        if (RESULTS_CODE.equals(resultsEntity.getReturnCode())) {
+            recordEntity.setQrCode(resultsEntity.getCodeUrl());
+        } else {
+            throw new GlobalException(resultsEntity.getErrCodeDes());
+        }
     }
 
     /**

@@ -4,6 +4,7 @@ package com.cdkjframework.pay;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.pay.dto.PaymentResultDto;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,7 +26,7 @@ public interface PaymentService<T> {
      * @param request    请求信息
      * @throws GlobalException 异常信息
      */
-    void buildPayOrder(String businessNo, HttpServletRequest request) throws Exception;
+    PaymentResultDto buildPayOrder(String businessNo, HttpServletRequest request) throws Exception;
 
     /**
      * 生成支付订单及完成支付
@@ -33,8 +34,27 @@ public interface PaymentService<T> {
      * @param configEntity 支付配置
      * @param recordEntity 支付记录信息
      * @return 返回结果
+     * @throws GlobalException 异常信息
      */
     void buildPayOrderRecord(PayConfigEntity configEntity, PayRecordEntity recordEntity) throws GlobalException;
+
+    /**
+     * 获取支付连接
+     *
+     * @param t            实体
+     * @param configEntity 配置
+     * @param recordEntity 支付记录
+     * @return 返回结果
+     */
+    void buildPaymentConnection(T t, PayConfigEntity configEntity, PayRecordEntity recordEntity) throws Exception;
+
+    /**
+     * 生成二维码并返回 base64 编码
+     *
+     * @param address 支付地址
+     * @return 返回结果
+     */
+    String generateQrCode(String address);
 
     /**
      * 生成支付配置

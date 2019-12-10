@@ -1,6 +1,11 @@
 package com.cdkjframework.pay.impl;
 
+import com.cdkjframework.entity.pay.PayConfigEntity;
+import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.pay.PayConfigService;
 import com.cdkjframework.pay.PaymentNotifyService;
+import com.cdkjframework.util.log.LogUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @ProjectName: cdkj-framework
@@ -11,14 +16,43 @@ import com.cdkjframework.pay.PaymentNotifyService;
  * @Version: 1.0
  */
 
-public abstract class AbstractPaymentNotifyServiceImpl<T> implements PaymentNotifyService<T> {
+public abstract class AbstractPaymentNotifyServiceImpl implements PaymentNotifyService {
+
+    /**
+     * 日志
+     */
+    private LogUtils logUtils = LogUtils.getLogger(AbstractPaymentNotifyServiceImpl.class);
+
+    /**
+     * 支付配置服务
+     */
+    @Autowired
+    private PayConfigService payConfigServiceImpl;
+
+    /**
+     * 验证签名
+     *
+     * @param configEntity 配置信息
+     * @param builder      数据结果
+     */
+    @Override
+    public abstract void checkSignature(PayConfigEntity configEntity, StringBuilder builder) throws Exception;
 
     /**
      * 支付结果
      *
      * @param builder 返回结果
-     * @return 返回验证结果
+     * @param payType 支付类型
      */
     @Override
-    public abstract T payNotifyCallback(StringBuilder builder);
+    public void payNotifyCallback(StringBuilder builder, String payType) {
+        logUtils.info("Callback Result：" + builder.toString());
+        PayConfigEntity configEntity = new PayConfigEntity();
+        configEntity.setIsDeleted(0);
+        configEntity.setPayType(payType);
+        configEntity = payConfigServiceImpl.findEntity(configEntity);
+
+        // 验证
+        checkSignature(configEntity, builder);
+    }
 }

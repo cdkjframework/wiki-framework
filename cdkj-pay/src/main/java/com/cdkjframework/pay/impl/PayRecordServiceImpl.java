@@ -6,6 +6,8 @@ import com.cdkjframework.pay.PayRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.pay.impl
@@ -43,5 +45,16 @@ public class PayRecordServiceImpl implements PayRecordService {
     @Override
     public PayRecordEntity findPayRecordEntity(PayRecordEntity entity) {
         return payRecordMapper.findEntity(entity);
+    }
+
+    /**
+     * 根据 entity 条件，查询全部记录
+     *
+     * @param entity 实体对象封装操作类（可以为 null）
+     * @return List<T>
+     */
+    @Override
+    public List<PayRecordEntity> listFindByEntity(PayRecordEntity entity) {
+        return payRecordMapper.listFindByEntity(entity);
     }
 }

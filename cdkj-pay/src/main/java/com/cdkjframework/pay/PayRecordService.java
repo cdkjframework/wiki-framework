@@ -2,6 +2,8 @@ package com.cdkjframework.pay;
 
 import com.cdkjframework.entity.pay.PayRecordEntity;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.pay
@@ -28,4 +30,12 @@ public interface PayRecordService {
      * @return PayRecordEntity
      */
     PayRecordEntity findPayRecordEntity(PayRecordEntity entity);
+
+    /**
+     * 根据 entity 条件，查询全部记录
+     *
+     * @param entity 实体对象封装操作类（可以为 null）
+     * @return List<T>
+     */
+    List<PayRecordEntity> listFindByEntity(PayRecordEntity entity);
 }

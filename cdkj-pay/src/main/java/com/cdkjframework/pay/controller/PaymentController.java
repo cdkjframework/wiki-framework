@@ -1,5 +1,6 @@
 package com.cdkjframework.pay.controller;
 
+import com.cdkjframework.core.controller.WebUiController;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/cdkj/pay/")
 @Api(tags = "支付接口")
-public class PaymentController {
+public class PaymentController extends WebUiController {
 
 }
