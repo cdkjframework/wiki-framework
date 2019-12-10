@@ -1,0 +1,10 @@
+com/cdkjframework/cloud/ribbon/DefaultRibbonConfig.class
+com/cdkjframework/cloud/ribbon/self/RibbonPingUrl.class
+com/cdkjframework/cloud/ribbon/self/RibbonRule.class
+com/cdkjframework/cloud/common/RibbonConfigurationBasedServerList.class
+com/cdkjframework/cloud/common/RibbonConfigurationBasedServerList$BazServiceList.class
+com/cdkjframework/cloud/config/FeignConfig.class
+com/cdkjframework/cloud/config/FeignHystrixConfig.class
+com/cdkjframework/cloud/ribbon/self/RibbonDiscoveryEnabledNiwsServerList.class
+com/cdkjframework/cloud/ribbon/CommonRibbonConfig.class
+com/cdkjframework/cloud/ribbon/self/RibbonDomainExtractingServerList.class

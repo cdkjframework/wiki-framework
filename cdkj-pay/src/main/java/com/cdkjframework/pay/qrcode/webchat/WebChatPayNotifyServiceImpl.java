@@ -95,7 +95,7 @@ public class WebChatPayNotifyServiceImpl extends AbstractPaymentNotifyServiceImp
 
             //修改支付记录
             logUtils.info("修改支付记录！");
-//            payRecordServiceImpl.updateOrderInfo(webChatEntity);
+            payRecordServiceImpl.modifyPayRecord(recordEntity);
         }
     }
 

@@ -37,6 +37,19 @@ public class PayRecordServiceImpl implements PayRecordService {
     }
 
     /**
+     * <p>
+     * 根据 ID 修改
+     * </p>
+     *
+     * @param entity 实体对象
+     * @return int
+     */
+    @Override
+    public Integer modifyPayRecord(PayRecordEntity entity) {
+        return payRecordMapper.modify(entity);
+    }
+
+    /**
      * 根据 entity 条件，查询一条记录
      *
      * @param entity 实体对象
