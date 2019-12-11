@@ -22,3 +22,7 @@
 /cdkj-redis/*.iml
 /cdkj-datasource-mongodb/*.iml
 /cdkj-datasource-elasticsearch/*.iml
+/cdkj-redis/*
+/cdkj-pay/*
+/cdkj-message/*
+/cdkj-cloud/*
