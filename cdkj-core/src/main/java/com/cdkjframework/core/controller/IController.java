@@ -1,11 +1,8 @@
 package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.file.FileEntity;
-import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
-import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.exceptions.GlobalException;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -155,29 +152,16 @@ public interface IController {
     void version(HttpServletRequest request);
 
     /**
-     * 写入日志
+     * 获取请求流
      *
-     * @param logRecordEntity 日志记录
+     * @return 返回流
      */
-    void writeLog(LogRecordEntity logRecordEntity);
+    InputStream getRequestStream() throws IOException;
 
     /**
-     * 定入日志
+     * 获取请求数据
      *
-     * @param builder      结果
-     * @param logId        日志ID
-     * @param businessType 业务类型
-     * @param modular      模块
+     * @return 返回数据
      */
-    void writeLog(ResponseBuilder builder, String logId, BasicsEnum businessType, BasicsEnum modular);
-
-    /**
-     * 定入日志
-     *
-     * @param pageEntity   结果
-     * @param logId        日志ID
-     * @param businessType 业务类型
-     * @param modular      模块
-     */
-    void writeLog(PageEntity pageEntity, String logId, BasicsEnum businessType, BasicsEnum modular);
+    StringBuilder getRequestStreamToString();
 }

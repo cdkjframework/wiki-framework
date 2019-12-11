@@ -3,14 +3,10 @@ package com.cdkjframework.core.controller;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.CacheConsts;
-import com.cdkjframework.entity.PageEntity;
-import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnum;
-import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
-import com.cdkjframework.util.tool.JsonUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -110,54 +106,5 @@ public class WebUiController extends AbstractController {
 
         //返回结果
         return userEntity;
-    }
-
-    /**
-     * 定入日志
-     *
-     * @param builder      结果
-     * @param logId        日志ID
-     * @param businessType 业务类型
-     * @param modular      模块
-     */
-    @Override
-    public void writeLog(ResponseBuilder builder, String logId, BasicsEnum businessType, BasicsEnum modular) {
-        setLog(builder, businessType, modular, logId, builder.getCode());
-    }
-
-    /**
-     * 定入日志
-     *
-     * @param pageEntity   结果
-     * @param logId        日志ID
-     * @param businessType 业务类型
-     * @param modular      模块
-     */
-    @Override
-    public void writeLog(PageEntity pageEntity, String logId, BasicsEnum businessType, BasicsEnum modular) {
-        setLog(pageEntity, businessType, modular, logId, pageEntity.getCode());
-    }
-
-    /**
-     * 设置日志记录信息
-     *
-     * @param result       返回结果
-     * @param businessType 业务类型
-     * @param modular      模块
-     * @param logId        日志ID
-     * @param code         编码
-     */
-    private void setLog(Object result, BasicsEnum businessType, BasicsEnum modular, String logId, int code) {
-        try {
-            LogRecordEntity logRecordEntity = new LogRecordEntity();
-            logRecordEntity.setId(logId);
-            logRecordEntity.setResult(JsonUtils.objectToJsonString(result));
-            logRecordEntity.setBusinessType(businessType.getValue());
-            logRecordEntity.setModular(modular.getValue());
-            logRecordEntity.setExecutionState(code == 0 ? 1 : 0);
-
-            writeLog(logRecordEntity);
-        } catch (Exception ex) {
-        }
     }
 }

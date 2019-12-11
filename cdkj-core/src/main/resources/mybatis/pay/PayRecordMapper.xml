@@ -89,6 +89,49 @@
         ORDER BY add_time DESC
     </select>
 
+    <select id="listFindByEntity" resultMap="ResultMapPayRecord"
+            parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
+        SELECT
+        id,
+        business_id,
+        pay_method,
+        order_no,
+        price,
+        pay_amount,
+        nonce_str,
+        pay_status,
+        pay_time,
+        add_time,
+        remarks,
+        qr_code
+        FROM
+        gms_pay_record
+        <where>
+            <if test="businessId != null and businessId!=''">
+                AND business_id = #{businessId}
+            </if>
+            <if test="payStatus != null and payStatus!=''">
+                AND pay_status = #{payStatus}
+            </if>
+            <if test="payMethod != null and payMethod!=''">
+                AND pay_method = #{payMethod}
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                AND order_no = #{orderNo}
+            </if>
+            <if test="nonceStr != null and nonceStr!=''">
+                AND nonce_str = #{nonceStr}
+            </if>
+            <if test="remarks != null and remarks!=''">
+                AND remarks = #{remarks}
+            </if>
+            <if test="addTime != null and addTime!=''">
+                AND add_time > #{addTime}
+            </if>
+        </where>
+        ORDER BY add_time DESC
+    </select>
+
     <insert id="insertBatch"></insert>
     <delete id="deleteBatchIds"></delete>
     <delete id="deleteById"></delete>

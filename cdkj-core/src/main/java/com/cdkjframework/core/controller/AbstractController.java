@@ -3,13 +3,9 @@ package com.cdkjframework.core.controller;
 import cn.afterturn.easypoi.excel.ExcelImportUtil;
 import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.center.service.MongoService;
 import com.cdkjframework.config.VersionConfig;
-import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.file.FileEntity;
-import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
-import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.files.ZipUtils;
@@ -52,12 +48,6 @@ public abstract class AbstractController implements IController {
     private VersionConfig versionConfig;
 
     /**
-     * mongo 数据库服务
-     */
-    @Autowired
-    private MongoService mongoServiceImpl;
-
-    /**
      * 登出登录
      *
      * @param id 主键
@@ -92,42 +82,6 @@ public abstract class AbstractController implements IController {
      */
     @Override
     public abstract <T> T getCurrentUser(String id, Class<T> clasz);
-
-    /**
-     * 定入日志
-     *
-     * @param builder      结果
-     * @param logId        日志ID
-     * @param businessType 业务类型
-     * @param modular      模块
-     */
-    @Override
-    public abstract void writeLog(ResponseBuilder builder, String logId, BasicsEnum businessType, BasicsEnum modular);
-
-    /**
-     * 定入日志
-     *
-     * @param pageEntity   结果
-     * @param logId        日志ID
-     * @param businessType 业务类型
-     * @param modular      模块
-     */
-    @Override
-    public abstract void writeLog(PageEntity pageEntity, String logId, BasicsEnum businessType, BasicsEnum modular);
-
-    /**
-     * 写入日志
-     *
-     * @param logRecordEntity 日志记录
-     */
-    @Override
-    public void writeLog(LogRecordEntity logRecordEntity) {
-        try {
-            mongoServiceImpl.updateLog(logRecordEntity);
-        } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
-        }
-    }
 
     /**
      * 获取程序版本信息
@@ -328,7 +282,7 @@ public abstract class AbstractController implements IController {
         try {
             list = ExcelImportUtil.importExcel(inputStream, clazz, params);
         } catch (Exception e) {
-            logUtil.error(e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         }
 
         //返回结果
@@ -350,7 +304,45 @@ public abstract class AbstractController implements IController {
             writer.write(content);
             writer.close();
         } catch (IOException ex) {
-            ex.printStackTrace();
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
+    }
+
+    /**
+     * 获取请求流
+     *
+     * @return 返回流
+     */
+    @Override
+    public InputStream getRequestStream() throws IOException {
+        return HttpServletUtils.getRequest().getInputStream();
+    }
+
+    /**
+     * 获取请求数据
+     *
+     * @return 返回数据
+     */
+    @Override
+    public StringBuilder getRequestStreamToString() {
+        StringBuilder builder = new StringBuilder();
+        try {
+            //获取流数据
+            InputStream stream = getRequestStream();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
+            //读取数据
+            String line;
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+
+            //返回结果
+            return builder;
+        } catch (IOException e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+        // 返回结果
+        return builder;
     }
 }
