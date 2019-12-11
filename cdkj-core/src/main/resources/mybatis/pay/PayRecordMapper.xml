@@ -49,18 +49,18 @@
     <select id="findEntity" resultMap="ResultMapPayRecord"
             parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
         SELECT
-            id,
-            business_id,
-            pay_method,
-            order_no,
-            price,
-            pay_amount,
-            nonce_str,
-            pay_status,
-            pay_time,
-            add_time,
-            remarks,
-            qr_code
+        id,
+        business_id,
+        pay_method,
+        order_no,
+        price,
+        pay_amount,
+        nonce_str,
+        pay_status,
+        pay_time,
+        add_time,
+        remarks,
+        qr_code
         FROM
         gms_pay_record
         <where>
@@ -136,7 +136,44 @@
     <delete id="deleteBatchIds"></delete>
     <delete id="deleteById"></delete>
     <delete id="delete"></delete>
-    <update id="modify"></update>
+    <update id="modify" parameterType="com.cdkjframework.core.business.mapper.PayRecordMapper">
+        UPDATE gms_pay_record
+        <set>
+            <if test="payMethod!=null">
+                pay_method = #{payMethod},
+            </if>
+            <if test="orderNo!='' and orderNo!=null">
+                order_no = #{orderNo},
+            </if>
+            <if test="price!=null">
+                price = #{price},
+            </if>
+            <if test="and payAmount!=null">
+                pay_amount = #{payAmount},
+            </if>
+            <if test="nonceStr!='' and nonceStr!=null">
+                nonce_str = #{nonceStr},
+            </if>
+            <if test="payStatus!=null">
+                pay_status = #{payStatus},
+            </if>
+            <if test="addTime!=null">
+                add_time = #{addTime},
+            </if>
+            <if test="remarks!='' and remarks!=null">
+                remarks = #{remarks}
+            </if>
+        </set>
+        <where>
+            <if test="businessId!='' and businessId!=null">
+                business_id = #{businessId}
+            </if>
+            <if test="orderNo!='' and orderNo!=null">
+                AND order_no = #{orderNo}
+            </if>
+        </where>
+
+    </update>
     <update id="modifyBatch"></update>
     <select id="findEntityById"></select>
     <select id="listFindByIds"></select>

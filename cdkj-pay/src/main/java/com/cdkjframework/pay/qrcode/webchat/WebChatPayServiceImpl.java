@@ -130,21 +130,9 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
             throw new GlobalException(resultsEntity.getReturnMsg());
         }
 
-        //验证签名
+        String signature = buildSignatureHasMap(configEntity, resultsEntity, webChatPayConfigEntity);
 
-        //签名
-        Map<String, String> data = new HashMap<>(9);
-        data.put("appid", webChatPayConfigEntity.getAppId());
-        data.put("mch_id", webChatPayConfigEntity.getMchId());
-        data.put("nonce_str", resultsEntity.getNonceStr());
-        data.put("prepay_id", resultsEntity.getPrepayId());
-        data.put("trade_type", resultsEntity.getTradeType());
-        data.put("return_code", resultsEntity.getReturnCode());
-        data.put("return_msg", resultsEntity.getReturnMsg());
-        data.put("result_code", resultsEntity.getResultCode());
-        data.put("code_url", resultsEntity.getCodeUrl());
-        String sign = WebChatPayAutographUtils.generateSignature(data, configEntity.getSecretKey());
-        if (!resultsEntity.getSign().equals(sign)) {
+        if (!signature.equals(resultsEntity.getSign())) {
             logUtils.error("Sign：" + "签名验证失败，可能存在拦截串改数据！");
             throw new GlobalException("生成支付二维码失败，请重试！");
         }
@@ -213,5 +201,31 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
 
         //返回结果
         return result;
+    }
+
+    /**
+     * 生成签名 hasMap
+     *
+     * @param configEntity           配置
+     * @param resultsEntity          返回结果
+     * @param webChatPayConfigEntity 支付数据
+     * @return 返回签名
+     * @throws Exception 异常信息
+     */
+    private String buildSignatureHasMap(PayConfigEntity configEntity, WebChatPayResultsEntity resultsEntity,
+                                        WebChatPayConfigEntity webChatPayConfigEntity) throws Exception {
+        //验证签名
+        Map<String, String> data = new HashMap<>(9);
+        data.put("appid", webChatPayConfigEntity.getAppId());
+        data.put("mch_id", webChatPayConfigEntity.getMchId());
+        data.put("nonce_str", resultsEntity.getNonceStr());
+        data.put("prepay_id", resultsEntity.getPrepayId());
+        data.put("trade_type", resultsEntity.getTradeType());
+        data.put("return_code", resultsEntity.getReturnCode());
+        data.put("return_msg", resultsEntity.getReturnMsg());
+        data.put("result_code", resultsEntity.getResultCode());
+        data.put("code_url", resultsEntity.getCodeUrl());
+        // 返回结果
+        return WebChatPayAutographUtils.generateSignature(data, configEntity.getPrivateKey());
     }
 }

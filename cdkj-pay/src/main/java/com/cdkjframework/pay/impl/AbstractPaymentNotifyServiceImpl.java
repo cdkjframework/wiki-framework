@@ -34,6 +34,7 @@ public abstract class AbstractPaymentNotifyServiceImpl implements PaymentNotifyS
      *
      * @param configEntity 配置信息
      * @param builder      数据结果
+     * @throws Exception 异常信息
      */
     @Override
     public abstract void checkSignature(PayConfigEntity configEntity, StringBuilder builder) throws Exception;
@@ -45,7 +46,7 @@ public abstract class AbstractPaymentNotifyServiceImpl implements PaymentNotifyS
      * @param payType 支付类型
      */
     @Override
-    public void payNotifyCallback(StringBuilder builder, String payType) {
+    public void payNotifyCallback(StringBuilder builder, String payType) throws Exception {
         logUtils.info("Callback Result：" + builder.toString());
         PayConfigEntity configEntity = new PayConfigEntity();
         configEntity.setIsDeleted(0);

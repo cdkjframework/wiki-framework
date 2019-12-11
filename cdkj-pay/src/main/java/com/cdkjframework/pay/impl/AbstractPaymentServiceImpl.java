@@ -73,7 +73,7 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
      * @param t            实体
      * @param configEntity 配置
      * @param recordEntity 支付记录
-     * @return 返回结果
+     * @throws Exception 异常信息
      */
     @Override
     public abstract void buildPaymentConnection(T t, PayConfigEntity configEntity, PayRecordEntity recordEntity) throws Exception;

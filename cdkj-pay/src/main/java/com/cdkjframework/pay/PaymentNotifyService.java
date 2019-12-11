@@ -20,7 +20,7 @@ public interface PaymentNotifyService {
      * @param builder 返回结果
      * @param payType 支付类型
      */
-    void payNotifyCallback(StringBuilder builder, String payType);
+    void payNotifyCallback(StringBuilder builder, String payType) throws Exception;
 
     /**
      * 验证签名
