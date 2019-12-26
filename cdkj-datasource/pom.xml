@@ -15,12 +15,15 @@
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <!-- 加载 jdbc 连接数据库 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
         </dependency>
         <!-- aliYun 数据库连接驱动 -->
         <dependency>

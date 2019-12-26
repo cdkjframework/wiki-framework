@@ -1,8 +1,8 @@
 package com.cdkjframework.center.service.impl;
 
-import com.cdkjframework.center.mapper.GenerateMapper;
 import com.cdkjframework.center.service.GenerateService;
-import com.cdkjframework.core.annotation.EnableAutoGenerate;
+import com.cdkjframework.center.annotation.EnableAutoGenerate;
+import com.cdkjframework.core.business.mapper.GenerateMapper;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.generate.template.*;
 import com.cdkjframework.entity.generate.template.children.ChildrenEntity;
@@ -14,7 +14,7 @@ import com.cdkjframework.util.files.freemarker.FreemarkerUtil;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import com.cdkjframework.util.tool.meta.ClassMetadataUtil;
+import com.cdkjframework.util.tool.meta.ClassMetadataUtils;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -82,8 +82,19 @@ public class GenerateServiceImpl implements GenerateService {
      * @return 返回结果
      */
     @Override
+    public List<TableEntity> findTableList(TableEntity tableEntity) {
+        return generateMapper.findDatabaseTableList(tableEntity);
+    }
+
+    /**
+     * 获取数据库表
+     *
+     * @param tableEntity 查询实体
+     * @return 返回结果
+     */
+    @Override
     public List<TreeEntity> findDatabaseTableList(TableEntity tableEntity) {
-        List<TableEntity> tableEntityList = generateMapper.findDatabaseTableList(tableEntity);
+        List<TableEntity> tableEntityList = findTableList(tableEntity);
         List<TreeEntity> treeEntityList = new ArrayList<>();
         for (TableEntity entity :
                 tableEntityList) {
@@ -148,8 +159,7 @@ public class GenerateServiceImpl implements GenerateService {
             Field[] fields = BaseEntity.class.getDeclaredFields();
             for (TreeEntity entity :
                     entityList) {
-                Optional<TreeEntity> optional = treeEntityList
-                        .stream()
+                Optional<TreeEntity> optional = treeEntityList.stream()
                         .filter(f -> f.getLabel().equals(entity.getLabel()))
                         .findFirst();
                 if (!optional.isPresent()) {
@@ -262,10 +272,10 @@ public class GenerateServiceImpl implements GenerateService {
         entity.setClassLowName(StringUtils.attributeNameFormat(treeEntity.getLabel()));
 
         // 读取配置信息
-        entity.setProjectName(ClassMetadataUtil.getAttributeString(EnableAutoGenerate.class, "projectName")
+        entity.setProjectName(ClassMetadataUtils.getAttributeString(EnableAutoGenerate.class, "projectName")
                 .replace("[", "")
                 .replace("]", ""));
-        entity.setPackageName(ClassMetadataUtil.getAttributeString(EnableAutoGenerate.class, "basePackage")
+        entity.setPackageName(ClassMetadataUtils.getAttributeString(EnableAutoGenerate.class, "basePackage")
                 .replace("[", "")
                 .replace("]", ""));
         entity.setDescription(treeEntity.getExplain());

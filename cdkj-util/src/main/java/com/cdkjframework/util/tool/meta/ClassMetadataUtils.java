@@ -19,7 +19,7 @@ import java.util.Map;
  */
 
 @Component
-public class ClassMetadataUtil {
+public class ClassMetadataUtils {
 
     /**
      * 获取属性

@@ -3,6 +3,7 @@ package com.cdkjframework.core.business.mapper;
 import com.cdkjframework.entity.generate.template.DatabaseEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-
+@Component
 public interface GenerateMapper {
 
     /**

@@ -15,7 +15,6 @@
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <!-- 加载 jdbc 连接数据库 -->
         <dependency>

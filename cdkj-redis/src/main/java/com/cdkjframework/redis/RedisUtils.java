@@ -8,6 +8,7 @@ import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -24,6 +25,7 @@ import java.util.concurrent.ExecutionException;
  * @Version: .0
  */
 @Component
+@Order(Integer.MIN_VALUE + 1)
 public class RedisUtils implements ApplicationRunner {
 
     /**

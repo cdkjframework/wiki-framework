@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @ToString
 @Configuration
-@ConfigurationProperties(prefix = "spring.cdkj.SPRING_DATASOURCE.mybatis")
+@ConfigurationProperties(prefix = "spring.datasource.mybatis")
 public class MybatisConfig {
 
     /**

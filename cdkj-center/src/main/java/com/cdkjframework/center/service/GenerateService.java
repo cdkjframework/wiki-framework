@@ -31,6 +31,14 @@ public interface GenerateService {
      * @param tableEntity 查询实体
      * @return 返回结果
      */
+    List<TableEntity> findTableList(TableEntity tableEntity);
+
+    /**
+     * 获取数据库表
+     *
+     * @param tableEntity 查询实体
+     * @return 返回结果
+     */
     List<TreeEntity> findDatabaseTableList(TableEntity tableEntity);
 
     /**

@@ -191,7 +191,6 @@ public abstract class AbstractInterceptor implements IInterceptor {
     public void logRecord(HttpServletRequest httpServletRequest, UserEntity userEntity, String inString) {
         String id = GeneratedValueUtils.getUuidString();
         String serialNumber = "";
-        userEntity.setLogId(id);
         //日志记录
         LogRecordEntity recordEntity = new LogRecordEntity();
         recordEntity.setId(id);
@@ -246,7 +245,6 @@ public abstract class AbstractInterceptor implements IInterceptor {
         jsonObject.put("topOrganizationId", userEntity.getTopOrganizationId());
         jsonObject.put("topOrganizationCode", userEntity.getTopOrganizationCode());
         jsonObject.put("topOrganizationName", userEntity.getTopOrganizationName());
-        jsonObject.put(HeaderConsts.LOG_ID, userEntity.getLogId());
     }
 
     /**

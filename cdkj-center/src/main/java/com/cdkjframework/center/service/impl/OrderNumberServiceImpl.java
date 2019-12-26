@@ -1,7 +1,7 @@
 package com.cdkjframework.center.service.impl;
 
-import com.cdkjframework.center.mapper.OrderNumberMapper;
 import com.cdkjframework.center.service.OrderNumberService;
+import com.cdkjframework.core.business.mapper.OrderNumberMapper;
 import com.cdkjframework.entity.generate.OrderNumberEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;

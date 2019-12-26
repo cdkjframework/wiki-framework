@@ -89,8 +89,7 @@
         ORDER BY add_time DESC
     </select>
 
-    <select id="listFindByEntity" resultMap="ResultMapPayRecord"
-            parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
+    <select id="listFindByEntity" resultMap="ResultMapPayRecord" parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
         SELECT
         id,
         business_id,
@@ -136,7 +135,7 @@
     <delete id="deleteBatchIds"></delete>
     <delete id="deleteById"></delete>
     <delete id="delete"></delete>
-    <update id="modify" parameterType="com.cdkjframework.core.business.mapper.PayRecordMapper">
+    <update id="modify">
         UPDATE gms_pay_record
         <set>
             <if test="payMethod!=null">
@@ -177,5 +176,4 @@
     <update id="modifyBatch"></update>
     <select id="findEntityById"></select>
     <select id="listFindByIds"></select>
-    <select id="listFindByEntity"></select>
 </mapper>
