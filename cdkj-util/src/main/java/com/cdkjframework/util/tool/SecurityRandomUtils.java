@@ -39,7 +39,7 @@ public class SecurityRandomUtils {
     /**
      * SHA标记
      */
-    private static final String SHA_TAGS = "www.chengdukeji.com";
+    private static final String SHA_TAGS = "SHA1PRNG";
 
     /**
      * 锁

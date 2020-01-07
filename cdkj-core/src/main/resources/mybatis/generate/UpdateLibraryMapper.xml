@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这里的namespace必须和是对应的mapper.java的地址-->
+<mapper namespace="com.cdkjframework.core.business.mapper.UpdateLibraryMapper">
+
+    <update id="createTable">
+        <foreach collection="list" item="item" index="index" separator=";">
+            CREATE TABLE
+            <choose>
+                <when test="item.schema!=null and item.schema!=''">
+                    ${item.schema}.${item.name}
+                </when>
+                <otherwise>
+                    ${item.name}
+                </otherwise>
+            </choose>
+            (
+            <foreach collection="item.layoutEntities" item="column" index="index" separator=",">
+                ${column.name} ${column.dataType}
+                <if test="column.dataType!='DATETIME'||column.dataType!='TIME'||column.dataType!='TIMESTAMP'">
+                    <choose>
+                        <when test="column.scale!=null and column.scale > 0">
+                            (${column.length},${column.scale})
+                        </when>
+                        <otherwise>
+                            (${column.length})
+                        </otherwise>
+                    </choose>
+                </if>
+                <choose>
+                    <when test="column.nullable">
+                        NOT NULL
+                    </when>
+                    <otherwise>
+                        NULL
+                    </otherwise>
+                </choose>
+                COMMENT '${column.comment}'
+            </foreach>
+            ,PRIMARY KEY ('id')
+            )
+        </foreach>
+    </update>
+
+    <update id="createTableColumn">
+        <foreach collection="list" item="item" index="index">
+            <foreach collection="item.layoutEntities" item="column" index="index" separator=";">
+                ALTER TABLE
+                <choose>
+                    <when test="item.schema!=null and item.schema!=''">
+                        ${item.schema}.${item.name}
+                    </when>
+                    <otherwise>
+                        ${item.name}
+                    </otherwise>
+                </choose>
+                ADD COLUMN ${column.name} ${column.dataType}
+                (
+                <choose>
+                    <when test="column.scale!=null and column.scale > 0">
+                        ${column.length},${column.scale}
+                    </when>
+                    <otherwise>
+                        ${column.length}
+                    </otherwise>
+                </choose>
+                )
+                <choose>
+                    <when test="column.nullable">
+                        NOT NULL
+                    </when>
+                    <otherwise>
+                        NULL
+                    </otherwise>
+                </choose>
+                COMMENT '${column.comment}';
+            </foreach>
+        </foreach>
+    </update>
+
+    <update id="deleteTableField">
+        <foreach collection="list" item="item" index="index">
+            <foreach collection="item.layoutEntities" item="column" index="index" separator=";">
+                ALTER TABLE ${item.name} DROP COLUMN ${column.name}
+            </foreach>
+        </foreach>
+    </update>
+
+    <update id="deleteTable">
+        <foreach collection="list" item="item" index="index">
+            DROP TABLE ${item.name};
+        </foreach>
+    </update>
+
+</mapper>

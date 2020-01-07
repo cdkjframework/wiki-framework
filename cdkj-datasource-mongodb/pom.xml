@@ -20,7 +20,6 @@
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 

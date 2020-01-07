@@ -1,8 +1,10 @@
 package com.cdkjframework.web;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
+import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.core.spring.CdkjApplication;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,16 +22,18 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Version: 1.0
  */
 @SpringBootApplication(scanBasePackages = {
+        "com.cdkjframework.center",
         "com.cdkjframework.config",
+        "com.cdkjframework.core",
         "com.cdkjframework.util",
+        "com.cdkjframework.entity",
         "com.cdkjframework.constant",
+        "com.cdkjframework.datasource.mybatis",
+        "com.cdkjframework.datasource.mongodb",
         "com.cdkjframework.core.base.swagger"
-},exclude = {
-        HibernateJpaAutoConfiguration.class,
-        JpaRepositoriesAutoConfiguration.class,
-        DruidDataSourceAutoConfigure.class,
-        DataSourceAutoConfiguration.class
 })
+@MapperScan(basePackages = "com.cdkjframework.core.business.mapper")
+@EnableAutoGenerate(update = true)
 @EnableApolloConfig
 public class WebApplication {
 

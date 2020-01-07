@@ -1,7 +1,7 @@
 package com.cdkjframework.center.service.impl;
 
 import com.cdkjframework.center.service.MongoService;
-import com.cdkjframework.datasource.mongodb.connectivity.IMongoDbRepository;
+import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,7 +23,7 @@ public class MongoServiceImpl implements MongoService {
      * mongo 数据库配置
      */
     @Autowired
-    private IMongoDbRepository mongoDbRepository;
+    private IMongoRepository mongoDbRepository;
 
     /**
      * 保存日志

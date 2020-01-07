@@ -17,6 +17,21 @@
     </parent>
 
     <properties>
+
+        <cdkj-cloud.version>1.0-191022</cdkj-cloud.version>
+        <cdkj-util.version>1.0-191022</cdkj-util.version>
+        <cdkj-constant.version>1.0-191022</cdkj-constant.version>
+        <cdkj-core.version>1.0-191022</cdkj-core.version>
+        <cdkj-datasource.version>1.0-191022</cdkj-datasource.version>
+        <cdkj-message.version>1.0-191022</cdkj-message.version>
+        <cdkj-redis.version>1.0-191022</cdkj-redis.version>
+        <cdkj-pay.version>1.0-191022</cdkj-pay.version>
+        <cdkj-entity.version>1.0-191022</cdkj-entity.version>
+        <cdkj-center.version>1.0-191022</cdkj-center.version>
+        <cdkj-datasource-jpa.version>1.0-191022</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-191022</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-191022</cdkj-datasource-elasticsearch.version>
+
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
@@ -85,6 +100,72 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-center</artifactId>
+                <version>${cdkj-center.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-cloud</artifactId>
+                <version>${cdkj-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-constant</artifactId>
+                <version>${cdkj-constant.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-core</artifactId>
+                <version>${cdkj-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-datasource</artifactId>
+                <version>${cdkj-datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-datasource-elasticsearch</artifactId>
+                <version>${cdkj-datasource-elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-datasource-jpa</artifactId>
+                <version>${cdkj-datasource-jpa.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-datasource-mongodb</artifactId>
+                <version>${cdkj-datasource-mongodb.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-entity</artifactId>
+                <version>${cdkj-entity.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-message</artifactId>
+                <version>${cdkj-message.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-pay</artifactId>
+                <version>${cdkj-pay.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-redis</artifactId>
+                <version>${cdkj-redis.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-util</artifactId>
+                <version>${cdkj-util.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>

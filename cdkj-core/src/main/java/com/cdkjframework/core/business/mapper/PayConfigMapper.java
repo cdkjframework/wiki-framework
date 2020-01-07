@@ -3,6 +3,8 @@ package com.cdkjframework.core.business.mapper;
 import com.cdkjframework.core.base.mapper.BaseMapper;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.core.business.mapper
@@ -13,4 +15,5 @@ import com.cdkjframework.entity.pay.PayConfigEntity;
  */
 
 public interface PayConfigMapper extends BaseMapper<PayConfigEntity> {
+
 }

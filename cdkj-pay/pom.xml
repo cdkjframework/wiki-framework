@@ -15,22 +15,18 @@
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-redis</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-constant</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
     </dependencies>
 
