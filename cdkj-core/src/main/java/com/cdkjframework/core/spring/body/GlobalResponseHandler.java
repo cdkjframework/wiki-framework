@@ -2,12 +2,18 @@ package com.cdkjframework.core.spring.body;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.enums.ResponseBuilderEnum;
+import com.cdkjframework.util.encrypts.AesUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ProjectName: cdkj-framework
@@ -22,6 +28,18 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 public class GlobalResponseHandler implements ResponseBodyAdvice {
 
     /**
+     * 参数列表
+     */
+    private static List<String> parameterList;
+
+    static {
+        parameterList = new ArrayList<>();
+        parameterList.add("java.lang");
+        parameterList.add("ResponseBuilder");
+        parameterList.add("PageEntity");
+    }
+
+    /**
      * 验证需要修改验证
      *
      * @param methodParameter 请求类型
@@ -30,12 +48,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
-        final String returnTypeName = methodParameter.getParameterType().getName();
-
-        return !(returnTypeName.startsWith("java.lang") ||
-                returnTypeName.contains("ResponseBuilder") ||
-                returnTypeName.contains("PageEntity") ||
-                returnTypeName.contains("org.springframework.http.ResponseEntity"));
+        return true;
     }
 
     /**
@@ -53,7 +66,15 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         //不是 json 格式直接返回
         if (!mediaType.includes(MediaType.APPLICATION_JSON)) {
-            return o;
+            return encryptHandle(JsonUtils.objectToJsonString(o));
+        }
+
+        final String returnTypeName = methodParameter.getParameterType().getName();
+        List<String> list = parameterList.stream()
+                .filter(f -> returnTypeName.contains(f))
+                .collect(Collectors.toList());
+        if (!list.isEmpty()) {
+            return encryptHandle(JsonUtils.objectToJsonString(o));
         }
 
         //封装对象
@@ -64,6 +85,16 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
         builder.setData(o);
 
         //返回结果
-        return builder;
+        return encryptHandle(JsonUtils.objectToJsonString(builder));
+    }
+
+    /**
+     * 加密处理
+     *
+     * @param o 数据
+     * @return 返回结果
+     */
+    private Object encryptHandle(String o) {
+        return AesUtils.base64Decrypt(o);
     }
 }
