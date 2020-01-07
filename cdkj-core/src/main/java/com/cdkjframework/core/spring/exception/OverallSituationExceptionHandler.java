@@ -1,7 +1,7 @@
-package com.cdkjframework.exceptions;
+package com.cdkjframework.core.spring.exception;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.enums.ResponseBuilderEnum;
+import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import org.springframework.util.CollectionUtils;

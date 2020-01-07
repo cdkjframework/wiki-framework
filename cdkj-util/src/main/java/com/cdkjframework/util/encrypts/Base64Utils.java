@@ -35,10 +35,58 @@ public class Base64Utils {
             }
             return new String(Base64.decodeBase64(inputData.getBytes(UTF_8)), UTF_8);
         } catch (UnsupportedEncodingException e) {
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         }
 
         return "";
+    }
+
+    /**
+     * 对给定的字符串进行base64解码操作
+     */
+    public static byte[] decodeDataToByte(String inputData) {
+        try {
+            if (null == inputData) {
+                return null;
+            }
+            return Base64.decodeBase64(inputData.getBytes(UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
+     * 对给定的字符串进行base64解码操作
+     */
+    public static String decodeData(byte[] inputData) {
+        try {
+            if (null == inputData) {
+                return "";
+            }
+            return new String(Base64.decodeBase64(inputData), UTF_8);
+        } catch (UnsupportedEncodingException e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+
+        return "";
+    }
+
+    /**
+     * 对给定的字符串进行base64解码操作
+     */
+    public static byte[] decodeDataToByte(byte[] inputData) {
+        try {
+            if (null == inputData) {
+                return null;
+            }
+            return Base64.decodeBase64(inputData);
+        } catch (Exception e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+
+        return null;
     }
 
     /**
@@ -51,7 +99,7 @@ public class Base64Utils {
             }
             return new String(encode(inputData.getBytes(UTF_8)));
         } catch (UnsupportedEncodingException e) {
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         }
 
         return "";
@@ -70,8 +118,8 @@ public class Base64Utils {
             }
             return new String(Base64.encodeBase64(dataList), UTF_8);
         } catch (UnsupportedEncodingException e) {
-            logUtil.error("生成二维码出错误");
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error("将字节转换为字符串");
+            logUtil.error(e.getCause(), e.getMessage());
         }
         return "";
     }

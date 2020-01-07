@@ -58,10 +58,10 @@ public class CopyUtils {
      * @return 返回对象数据集
      */
     public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
-        List<T> result = new ArrayList();
-        if (list != null) {
-            for (S o : list) {
-                try {
+                    List<T> result = new ArrayList();
+                    if (list != null) {
+                        for (S o : list) {
+                            try {
 
                     T d = target.newInstance();
                     copyProperties(o, d, false);

@@ -2,8 +2,7 @@ package com.cdkjframework.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @ProjectName: cdkj-framework
@@ -20,7 +19,8 @@ public class TestController {
 
     @RequestMapping("/getInteger")
     @ApiOperation("获取值")
-    public Integer getInteger() {
-        return 0;
+    @ResponseBody
+    public Integer getInteger(@RequestBody String id) {
+        return Integer.valueOf(id);
     }
 }

@@ -130,7 +130,16 @@ public class GenerateApplicationRunner implements ApplicationRunner {
         DataTypeContrastEnums dataType = DataTypeContrastEnums.valueOf(name.toUpperCase());
         entity.setDataType(dataType.getDataType());
         entity.setComment(column.columnDefinition());
-        entity.setLength(column.length());
+        switch (dataType.getDataType()) {
+            case "DATETIME":
+            case "TIME":
+            case "TIMESTAMP":
+                entity.setLength(0);
+                break;
+            default:
+                entity.setLength(column.length());
+                break;
+        }
         entity.setName(column.name());
         entity.setUnique(column.unique());
         entity.setNullable(column.nullable());

@@ -37,9 +37,9 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Component
-@Configuration
-@EnableSwagger2
+//@Component
+//@Configuration
+//@EnableSwagger2
 public class SwaggerConfiguration {
 
     /**

@@ -31,7 +31,7 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) {
-        return false;
+        return true;
     }
 
     /**
@@ -45,8 +45,10 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
      * @throws IOException 异常
      */
     @Override
-    public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) throws IOException {
-        return null;
+    public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage,
+                                           MethodParameter methodParameter, Type type,
+                                           Class<? extends HttpMessageConverter<?>> aClass) throws IOException {
+        return new HttpInputMessageAdvice(httpInputMessage);
     }
 
     /**
@@ -61,7 +63,7 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
      */
     @Override
     public Object afterBodyRead(Object o, HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) {
-        return null;
+        return o;
     }
 
     /**
@@ -76,6 +78,6 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
      */
     @Override
     public Object handleEmptyBody(Object o, HttpInputMessage httpInputMessage, MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) {
-        return null;
+        return o;
     }
 }

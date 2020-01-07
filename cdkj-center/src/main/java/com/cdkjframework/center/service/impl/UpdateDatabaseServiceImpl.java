@@ -11,11 +11,15 @@ import com.cdkjframework.entity.center.library.TableLayoutEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
 import com.cdkjframework.entity.generate.template.TreeEntity;
+import com.cdkjframework.util.tool.CopyUtils;
 import org.apache.poi.ss.formula.functions.T;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,6 +53,7 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
      * @param layoutEntityList 元数据注释
      */
     @Override
+    @Transactional(rollbackOn = {Exception.class, SQLSyntaxErrorException.class})
     public void updateEntityTable(List<TableLayoutEntity> layoutEntityList) {
         TableLayoutEntity layoutEntity = layoutEntityList.get(0);
         TableEntity entity = new TableEntity();
@@ -92,6 +97,37 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
         if (!insertTableList.isEmpty()) {
             updateLibraryMapper.createTable(insertTableList);
         }
+
+        // 创建唯一索引
+        createTableUniqueIndex(layoutEntityList);
+    }
+
+    /**
+     * 创建表唯一索引
+     */
+    private void createTableUniqueIndex(List<TableLayoutEntity> layoutEntityList) {
+        List<TableLayoutEntity> tableLayoutEntities = new ArrayList<>();
+        for (TableLayoutEntity entity :
+                layoutEntityList) {
+            List<ColumnLayoutEntity> columnLayoutEntities = entity.getLayoutEntities();
+            if (columnLayoutEntities == null || columnLayoutEntities.isEmpty()) {
+                continue;
+            }
+
+            // 验证是否有唯一索引字段
+            columnLayoutEntities = columnLayoutEntities.stream()
+                    .filter(f -> f.getUnique())
+                    .collect(Collectors.toList());
+            if (columnLayoutEntities.isEmpty()) {
+                continue;
+            }
+            entity.setLayoutEntities(columnLayoutEntities);
+            tableLayoutEntities.add(entity);
+        }
+
+        if (!tableLayoutEntities.isEmpty()) {
+            updateLibraryMapper.createTableUniqueIndex(tableLayoutEntities);
+        }
     }
 
     /**
@@ -101,29 +137,36 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
      */
     private void updateTable(List<TableLayoutEntity> updateTableList) {
         List<TableLayoutEntity> layoutEntities = new ArrayList<>();
+        List<TableLayoutEntity> deleteEntities = new ArrayList<>();
         for (TableLayoutEntity layoutEntity :
                 updateTableList) {
-            ValidationTableFields(layoutEntity);
+            TableLayoutEntity entity = ValidationTableFields(layoutEntity);
+            if (entity != null && !entity.getLayoutEntities().isEmpty()) {
+                deleteEntities.add(entity);
+            }
             if (layoutEntity.getLayoutEntities() == null || layoutEntity.getLayoutEntities().isEmpty()) {
                 continue;
             }
             layoutEntities.add(layoutEntity);
         }
 
-        if (layoutEntities.isEmpty()) {
-            return;
-        }
-
         // 修改数据
-        updateLibraryMapper.createTableColumn(layoutEntities);
+        if (!layoutEntities.isEmpty()) {
+            updateLibraryMapper.createTableColumn(layoutEntities);
+        }
+        // 删除字段
+        if (!deleteEntities.isEmpty()) {
+            updateLibraryMapper.deleteTableField(deleteEntities);
+        }
     }
 
     /**
      * 效验表字段
      *
      * @param tableLayoutEntity 表信息
+     * @return 返回要删了列
      */
-    private void ValidationTableFields(TableLayoutEntity tableLayoutEntity) {
+    private TableLayoutEntity ValidationTableFields(TableLayoutEntity tableLayoutEntity) {
         // 设置查询条件
         TableColumnEntity columnEntity = new TableColumnEntity();
         columnEntity.setTableName(tableLayoutEntity.getName());
@@ -135,7 +178,7 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
         // 列
         List<ColumnLayoutEntity> layoutEntityList = tableLayoutEntity.getLayoutEntities();
         if (layoutEntityList == null || layoutEntityList.isEmpty()) {
-            return;
+            return null;
         }
         List<String> columnList = columnEntities.stream()
                 .map(TableColumnEntity::getColumnName)
@@ -144,5 +187,24 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
                 .filter(f -> !columnList.contains(f.getName()))
                 .collect(Collectors.toList());
         tableLayoutEntity.setLayoutEntities(layoutEntities);
+
+        // 找到要删除的列
+        TableLayoutEntity entity = CopyUtils.copyProperties(tableLayoutEntity, TableLayoutEntity.class);
+        List<String> notColumnList = layoutEntityList.stream()
+                .map(ColumnLayoutEntity::getName)
+                .collect(Collectors.toList());
+        entity.setLayoutEntities(new ArrayList<>());
+        List<ColumnLayoutEntity> entityList = entity.getLayoutEntities();
+        for (TableColumnEntity column :
+                columnEntities) {
+            if (notColumnList.contains(column.getColumnName())) {
+                continue;
+            }
+            ColumnLayoutEntity layoutEntity = new ColumnLayoutEntity();
+            layoutEntity.setName(column.getColumnName());
+            entityList.add(layoutEntity);
+        }
+        // 返回结果
+        return entity;
     }
 }

@@ -25,31 +25,31 @@ public class BaseEntity implements Serializable {
     /**
      * 主键
      */
-    @Column(name = "id", columnDefinition = "主键", length = 36)
+    @Column(name = "id", columnDefinition = "主键", length = 36, nullable = false)
     protected String id;
 
     /**
      * 是否删除
      */
-    @Column(name = "deleted", columnDefinition = "是否删除")
+    @Column(name = "deleted", columnDefinition = "是否删除", nullable = false)
     protected Integer deleted;
 
     /**
      * 添加时间
      */
-    @Column(name = "add_time", columnDefinition = "添加时间")
+    @Column(name = "add_time", columnDefinition = "添加时间", nullable = false)
     protected Date addTime;
 
     /**
      * 添加用户ID
      */
-    @Column(name = "add_user_id", columnDefinition = "添加用户ID", length = 36)
+    @Column(name = "add_user_id", columnDefinition = "添加用户ID", length = 36, nullable = false)
     protected String addUserId;
 
     /**
      * 添加用户名称
      */
-    @Column(name = "add_user_name", columnDefinition = "添加用户名称", length = 500)
+    @Column(name = "add_user_name", columnDefinition = "添加用户名称", length = 500, nullable = false)
     protected String addUserName;
 
     /**

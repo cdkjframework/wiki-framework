@@ -43,4 +43,11 @@ public interface UpdateLibraryMapper {
      * @param tableList 表集合
      */
     void deleteTable(List<TableLayoutEntity> tableList);
+
+    /**
+     * 创建唯一索引
+     *
+     * @param tableList 表集合
+     */
+    void createTableUniqueIndex(List<TableLayoutEntity> tableList);
 }

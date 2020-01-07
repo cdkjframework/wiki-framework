@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
  */
 
 @ControllerAdvice
-public class GlobalResponseHandler implements ResponseBodyAdvice {
+public class GlobalResponseHandler implements ResponseBodyAdvice{
 
     /**
      * 参数列表
@@ -37,6 +37,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
         parameterList.add("java.lang");
         parameterList.add("ResponseBuilder");
         parameterList.add("PageEntity");
+        parameterList.add("org.springframework.http.ResponseEntity");
     }
 
     /**
@@ -95,6 +96,6 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      * @return 返回结果
      */
     private Object encryptHandle(String o) {
-        return AesUtils.base64Decrypt(o);
+        return AesUtils.base64Encode(o);
     }
 }

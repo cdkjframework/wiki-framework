@@ -22,6 +22,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Version: 1.0
  */
 @SpringBootApplication(scanBasePackages = {
+        "com.cdkjframework.web",
         "com.cdkjframework.center",
         "com.cdkjframework.config",
         "com.cdkjframework.core",
@@ -34,7 +35,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 })
 @MapperScan(basePackages = "com.cdkjframework.core.business.mapper")
 @EnableAutoGenerate(update = true)
-@EnableApolloConfig
+@EnableSwagger2
+//@EnableApolloConfig
 public class WebApplication {
 
     /**
