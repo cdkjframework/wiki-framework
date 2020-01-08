@@ -91,7 +91,6 @@ public class AesUtils {
      */
     public static byte[] encrypt(String content) throws Exception {
         Cipher cipher = initKey();
-        cipher.init(Cipher.ENCRYPT_MODE, new SecretKeySpec(DEFAULT_KEY.getBytes(), PASSWORD_TYPE));
 
         return cipher.doFinal(content.getBytes(CHARSET_NAME));
     }
