@@ -3,6 +3,7 @@ package com.cdkjframework.web;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.core.spring.CdkjApplication;
+import com.cdkjframework.util.encrypts.AesUtils;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

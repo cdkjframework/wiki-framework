@@ -8,6 +8,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -46,7 +47,7 @@ public class AesUtils {
     /**
      * 算法 PKCS5 Padding
      */
-    private static final String AES_ECB_PKCS5_PADDING = "AES/CBC/NoPadding";
+    private static final String AES_CBC_NO_PADDING = "AES/CBC/NoPadding";
 
     /**
      * 密码类型
@@ -57,11 +58,6 @@ public class AesUtils {
      * 编码类型
      */
     private static final String CHARSET_NAME = "utf-8";
-
-    /**
-     * 长度
-     */
-    private static int KEY_GENERATOR_LENGTH = 128;
 
     /**
      * Base 64 编码
@@ -90,9 +86,27 @@ public class AesUtils {
      * @throws Exception 异常信息
      */
     public static byte[] encrypt(String content) throws Exception {
+        // 初始化键值
         Cipher cipher = initKey();
 
-        return cipher.doFinal(content.getBytes(CHARSET_NAME));
+        // 初始化
+        cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
+        // 获取块大小
+        int blockSize = cipher.getBlockSize();
+        byte[] dataBytes = content.getBytes(CHARSET_NAME);
+        // 文本长度
+        int plainTextLength = dataBytes.length;
+
+        if (plainTextLength % blockSize != 0) {
+            plainTextLength = plainTextLength + (blockSize - (plainTextLength % blockSize));
+        }
+
+        byte[] plainText = new byte[plainTextLength];
+        System.arraycopy(dataBytes, 0, plainText, 0, dataBytes.length);
+
+
+        // 返回加密结果
+        return cipher.doFinal(plainText);
     }
 
     /**
@@ -102,16 +116,16 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Decrypt(String content) {
-        String encryptString = "";
+        String decryptString = "";
         try {
-            encryptString = Base64Utils.decodeData(content);
-            encryptString = decrypt(encryptString);
+            byte[] decodeDataToByte = Base64Utils.decodeDataToByte(content);
+            decryptString = decrypt(decodeDataToByte);
         } catch (Exception ex) {
             logUtils.error(ex.getCause(), ex.getMessage());
         }
 
         // 编码结果
-        return encryptString;
+        return decryptString;
     }
 
     /**
@@ -141,11 +155,10 @@ public class AesUtils {
      * @throws Exception 异常信息
      */
     public static String decrypt(String content) throws Exception {
-        byte[] encryptBytes = content.getBytes(CHARSET_NAME);
-        Cipher cipher = initKey();
-        byte[] decryptBytes = cipher.doFinal(encryptBytes);
+        // 转换为字节
+        byte[] decryptBytes = content.getBytes(CHARSET_NAME);
 
-        return new String(decryptBytes, CHARSET_NAME);
+        return decrypt(decryptBytes);
     }
 
     /**
@@ -156,10 +169,18 @@ public class AesUtils {
      * @throws Exception 异常信息
      */
     public static String decrypt(byte[] content) throws Exception {
+
+        // 初始化键值
         Cipher cipher = initKey();
+
+        // 初始化
+        cipher.init(Cipher.DECRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
+
+        // 解密
         byte[] decryptBytes = cipher.doFinal(content);
 
-        return new String(decryptBytes, CHARSET_NAME);
+        // 返回解密结果
+        return new String(decryptBytes, CHARSET_NAME).trim();
     }
 
     /**
@@ -168,23 +189,35 @@ public class AesUtils {
      * @return 返回 Cipher
      */
     private static Cipher initKey() throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException {
         if (cipher == null) {
             synchronized (AesUtils.class) {
                 if (cipher == null) {
-                    KeyGenerator keyGenerator = KeyGenerator.getInstance(PASSWORD_TYPE);
-                    keyGenerator.init(KEY_GENERATOR_LENGTH);
-                    cipher = Cipher.getInstance(AES_ECB_PKCS5_PADDING);
-
-                    // 密钥方式
-                    SecretKeySpec secretKeySpec = new SecretKeySpec(DEFAULT_KEY.getBytes(), PASSWORD_TYPE);
-                    IvParameterSpec ivParameterSpec = new IvParameterSpec(DEFAULT_IV.getBytes());
-
-                    cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+                    cipher = Cipher.getInstance(AES_CBC_NO_PADDING);
                 }
             }
         }
         // 返回结果
         return cipher;
+    }
+
+    /**
+     * 密钥规范
+     *
+     * @return 返回 密钥规范
+     * @throws UnsupportedEncodingException 异常信息
+     */
+    private static SecretKeySpec getSecretKeySpec() throws UnsupportedEncodingException {
+        return new SecretKeySpec(DEFAULT_KEY.getBytes(CHARSET_NAME), PASSWORD_TYPE);
+    }
+
+    /**
+     * 四、参数说明
+     *
+     * @return 返回 参数说明
+     * @throws UnsupportedEncodingException 异常信息
+     */
+    private static IvParameterSpec getIvParameterSpec() throws UnsupportedEncodingException {
+        return new IvParameterSpec(DEFAULT_IV.getBytes(CHARSET_NAME));
     }
 }

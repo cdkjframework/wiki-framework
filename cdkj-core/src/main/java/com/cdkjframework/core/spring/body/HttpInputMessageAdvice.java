@@ -63,7 +63,6 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
      * @throws IOException IO异常
      */
     private InputStream getBody(InputStream stream) throws IOException {
-        String content = AesUtils.base64Encode("{\"username\":\"admin\",\"password\":\"123456\"}");
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[1024];
         int read = 0;
