@@ -6,7 +6,10 @@ import org.springframework.stereotype.Component;
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
+import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 /**
@@ -26,14 +29,24 @@ public class AesUtils {
     private static LogUtils logUtils = LogUtils.getLogger(AesUtils.class);
 
     /**
+     * 密码
+     */
+    private static Cipher cipher;
+
+    /**
      * 密钥（16进制，和前台保持一致，或者是作为参数直接传过来也可以）
      */
     private static final String DEFAULT_KEY = "cn.framewiki.com";
 
     /**
+     * 使用AES-128-CBC加密模式，key需要为16位,key和iv可以相同！
+     */
+    private static String DEFAULT_IV = "hk.framewiki.com";
+
+    /**
      * 算法 PKCS5 Padding
      */
-    private static final String AES_ECB_PKCS5_PADDING = "AES/ECB/PKCS5Padding";
+    private static final String AES_ECB_PKCS5_PADDING = "AES/CBC/NoPadding";
 
     /**
      * 密码类型
@@ -131,7 +144,6 @@ public class AesUtils {
     public static String decrypt(String content) throws Exception {
         byte[] encryptBytes = content.getBytes(CHARSET_NAME);
         Cipher cipher = initKey();
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(DEFAULT_KEY.getBytes(), PASSWORD_TYPE));
         byte[] decryptBytes = cipher.doFinal(encryptBytes);
 
         return new String(decryptBytes, CHARSET_NAME);
@@ -146,7 +158,6 @@ public class AesUtils {
      */
     public static String decrypt(byte[] content) throws Exception {
         Cipher cipher = initKey();
-        cipher.init(Cipher.DECRYPT_MODE, new SecretKeySpec(DEFAULT_KEY.getBytes(), PASSWORD_TYPE));
         byte[] decryptBytes = cipher.doFinal(content);
 
         return new String(decryptBytes, CHARSET_NAME);
@@ -157,9 +168,24 @@ public class AesUtils {
      *
      * @return 返回 Cipher
      */
-    private static Cipher initKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
-        KeyGenerator keyGenerator = KeyGenerator.getInstance(PASSWORD_TYPE);
-        keyGenerator.init(KEY_GENERATOR_LENGTH);
-        return Cipher.getInstance(AES_ECB_PKCS5_PADDING);
+    private static Cipher initKey() throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
+        if (cipher == null) {
+            synchronized (AesUtils.class) {
+                if (cipher == null) {
+                    KeyGenerator keyGenerator = KeyGenerator.getInstance(PASSWORD_TYPE);
+                    keyGenerator.init(KEY_GENERATOR_LENGTH);
+                    Cipher cipher = Cipher.getInstance(AES_ECB_PKCS5_PADDING);
+
+                    // 密钥方式
+                    SecretKeySpec secretKeySpec = new SecretKeySpec(DEFAULT_KEY.getBytes(), PASSWORD_TYPE);
+                    IvParameterSpec ivParameterSpec = new IvParameterSpec(DEFAULT_IV.getBytes());
+
+                    cipher.init(Cipher.DECRYPT_MODE, secretKeySpec, ivParameterSpec);
+                }
+            }
+        }
+        // 返回结果
+        return cipher;
     }
 }
