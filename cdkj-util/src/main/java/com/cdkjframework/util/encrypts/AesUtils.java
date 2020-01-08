@@ -174,7 +174,7 @@ public class AesUtils {
                 if (cipher == null) {
                     KeyGenerator keyGenerator = KeyGenerator.getInstance(PASSWORD_TYPE);
                     keyGenerator.init(KEY_GENERATOR_LENGTH);
-                    Cipher cipher = Cipher.getInstance(AES_ECB_PKCS5_PADDING);
+                    cipher = Cipher.getInstance(AES_ECB_PKCS5_PADDING);
 
                     // 密钥方式
                     SecretKeySpec secretKeySpec = new SecretKeySpec(DEFAULT_KEY.getBytes(), PASSWORD_TYPE);
