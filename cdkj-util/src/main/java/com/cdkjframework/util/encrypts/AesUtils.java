@@ -4,7 +4,6 @@ import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
@@ -91,19 +90,9 @@ public class AesUtils {
 
         // 初始化
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
-        // 获取块大小
-        int blockSize = cipher.getBlockSize();
+
         byte[] dataBytes = content.getBytes(CHARSET_NAME);
-        // 文本长度
-        int plainTextLength = dataBytes.length;
-
-        if (plainTextLength % blockSize != 0) {
-            plainTextLength = plainTextLength + (blockSize - (plainTextLength % blockSize));
-        }
-
-        byte[] plainText = new byte[plainTextLength];
-        System.arraycopy(dataBytes, 0, plainText, 0, dataBytes.length);
-
+        byte[] plainText = byteLengthCompletion(cipher.getBlockSize(), dataBytes);
 
         // 返回加密结果
         return cipher.doFinal(plainText);
@@ -176,8 +165,10 @@ public class AesUtils {
         // 初始化
         cipher.init(Cipher.DECRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
 
+        byte[] plainText = byteLengthCompletion(cipher.getBlockSize(), content);
+
         // 解密
-        byte[] decryptBytes = cipher.doFinal(content);
+        byte[] decryptBytes = cipher.doFinal(plainText);
 
         // 返回解密结果
         return new String(decryptBytes, CHARSET_NAME).trim();
@@ -200,6 +191,29 @@ public class AesUtils {
         // 返回结果
         return cipher;
     }
+
+    /**
+     * 字节长度补全
+     *
+     * @param blockSize 块大小
+     * @param dataBytes 数据
+     * @return 返回补全字节数组
+     */
+    private static byte[] byteLengthCompletion(int blockSize, byte[] dataBytes) {
+        // 文本长度
+        int plainTextLength = dataBytes.length;
+
+        if (plainTextLength % blockSize != 0) {
+            plainTextLength = plainTextLength + (blockSize - (plainTextLength % blockSize));
+        }
+
+        byte[] plainText = new byte[plainTextLength];
+        System.arraycopy(dataBytes, 0, plainText, 0, dataBytes.length);
+
+        // 返回结果
+        return plainText;
+    }
+
 
     /**
      * 密钥规范
