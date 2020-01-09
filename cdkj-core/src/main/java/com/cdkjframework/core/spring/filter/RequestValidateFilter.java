@@ -73,7 +73,7 @@ public class RequestValidateFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletContentRequestWrapper requestWrapper = new HttpServletContentRequestWrapper((HttpServletRequest) request);
-        chain.doFilter(requestWrapper, response);
+        chain.doFilter(request, response);
     }
 
     /**

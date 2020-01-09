@@ -31,7 +31,7 @@ import java.io.OutputStream;
  * @Version: 1.0
  */
 
-@Component
+//@Component
 public class AuthenticationInterceptor extends AbstractInterceptor implements HandlerInterceptor {
 
     /**

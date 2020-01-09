@@ -6,8 +6,6 @@
     <!-- import CSS -->
     <link rel="stylesheet" href="/static/index.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
-    <script type="text/javascript" src="/static/aes.js"></script>
-    <script type="text/javascript" src="/static/mode-ecb.js"></script>
     <style type="text/css">
 
         .el-header, .el-footer {
@@ -67,49 +65,6 @@
             padding-right: 8px;
         }
     </style>
-    <script type="text/javascript">
-
-        /**
-         * 加密--应和后台java解密或是前台js解密的密钥保持一致（16进制）
-         * */
-        var KEY = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
-        var IV = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
-
-        var aes = {
-            encrypt(word) {
-                var key = KEY
-                var iv = IV
-                // 偏移量
-                var encryption = CryptoJS.enc.Utf8.parse(word)
-                // 算法
-                var encrypted = CryptoJS.AES.encrypt(encryption, key,
-                        {
-                            iv: iv,
-                            mode: CryptoJS.mode.CBC,
-                            padding: CryptoJS.pad.ZeroPadding
-                        })
-                return CryptoJS.enc.Base64.stringify(encrypted.ciphertext)
-            },
-            /**
-             * AES 解密 ：字符串 key iv  返回base64
-             *
-             */
-            decrypt(word) {
-                var key = KEY
-                var iv = IV
-                var base64 = CryptoJS.enc.Base64.parse(word)
-                var base64Value = CryptoJS.enc.Base64.stringify(base64)
-                // AES解密
-                var decrypt = CryptoJS.AES.decrypt(base64Value, key,
-                        {
-                            iv: iv,
-                            mode: CryptoJS.mode.CBC,
-                            padding: CryptoJS.pad.ZeroPadding
-                        })
-                return CryptoJS.enc.Utf8.stringify(decrypt).toString()
-            }
-        }
-    </script>
 </head>
 <body>
 <div id="app">
@@ -145,7 +100,9 @@
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
-<script>
+<script type="text/javascript" src="/aes.js"></script>
+<script type="text/javascript" src="/mode-ecb.js"></script>
+<script type="text/javascript">
     new Vue({
         el: '#app',
         data: function () {
@@ -184,7 +141,7 @@
             getDatabase() {
                 var that = this
                 that.$http.post('getDatabase', {}).then(function (res) {
-                    var json = aes.decrypt(res.data)
+                    var json = this.decrypt(res.data)
                     var data = JSON.parse(json).data
                     that.value = data['tableSchema']
                     for (var i = 0; i < data.children.length; i++) {
@@ -199,9 +156,9 @@
             },
             getTable() {
                 var that = this
-                var json = aes.encrypt("{\"tableSchema\": "+ that.value +"}")
+                var json = this.encrypt("{\"tableSchema\": \"" + that.value + "\"}")
                 that.$http.post('getDatabaseTableList', json).then(function (res) {
-                    var json = aes.decrypt(res.data)
+                    var json = this.decrypt(res.data)
                     console.log(json)
                     that.table = JSON.parse(json).data
                 }, function (res) {
@@ -222,9 +179,9 @@
                     var key = keyList[i]
                     data.push({"label": key})
                 }
-                var json = aes.encrypt(data)
+                var json = this.encrypt(data)
                 that.$http.post('generate?dataBase=' + that.value, json).then(function (res) {
-                    var json = aes.decrypt(res.data)
+                    var json = this.decrypt(res.data)
                     var data = JSON.parse(json).data
                     if (data.code === 0) {
                         that.$message.success('生成成功！')
@@ -236,6 +193,38 @@
                     console.log('失败')
                     loading.close()
                 })
+            },
+            encrypt(word) {
+                var key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
+                var iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
+                // 偏移量
+                var encryption = CryptoJS.enc.Utf8.parse(word);
+                // 算法
+                var encrypted = CryptoJS.AES.encrypt(encryption, key,
+                        {
+                            iv: iv,
+                            mode: CryptoJS.mode.CBC,
+                            padding: CryptoJS.pad.ZeroPadding
+                        });
+                return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+            },
+            /**
+             * AES 解密 ：字符串 key iv  返回base64
+             *
+             */
+            decrypt(word) {
+                var key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
+                var iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
+                var base64 = CryptoJS.enc.Base64.parse(word);
+                var base64Value = CryptoJS.enc.Base64.stringify(base64);
+                // AES解密
+                var decrypt = CryptoJS.AES.decrypt(base64Value, key,
+                        {
+                            iv: iv,
+                            mode: CryptoJS.mode.CBC,
+                            padding: CryptoJS.pad.ZeroPadding
+                        });
+                return CryptoJS.enc.Utf8.stringify(decrypt).toString();
             }
         }
     })

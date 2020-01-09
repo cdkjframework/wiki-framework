@@ -1,17 +1,9 @@
 package com.cdkjframework.web;
 
-import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.core.spring.CdkjApplication;
-import com.cdkjframework.util.encrypts.AesUtils;
-import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
@@ -35,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         "com.cdkjframework.core.base.swagger"
 })
 @MapperScan(basePackages = "com.cdkjframework.core.business.mapper")
-@EnableAutoGenerate(update = true)
+@EnableAutoGenerate(update = true, basePackage = "com.cdkjframework.web", projectName = "com.cdkjframework.web")
 @EnableSwagger2
 //@EnableApolloConfig
 public class WebApplication {

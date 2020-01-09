@@ -21,7 +21,7 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Configuration
+//@Configuration
 public class WebConfigurer extends WebMvcConfigurationSupport {
 
     /**
