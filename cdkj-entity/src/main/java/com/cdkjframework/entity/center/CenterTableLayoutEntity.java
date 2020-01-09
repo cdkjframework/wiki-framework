@@ -107,6 +107,12 @@ public class CenterTableLayoutEntity extends BaseEntity {
     private String offValue;
 
     /**
+     * 选中的
+     */
+    @Column(name = "checked", columnDefinition = "选中的")
+    private Integer checked;
+
+    /**
      * 排序
      */
     @Column(name = "sortable", columnDefinition = "排序")

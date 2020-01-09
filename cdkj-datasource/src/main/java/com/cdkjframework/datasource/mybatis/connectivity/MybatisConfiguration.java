@@ -73,6 +73,9 @@ public class MybatisConfiguration {
             sqlSessionFactoryBean.setDataSource(mybatisDataSource);
             //配置信息
             sqlSessionFactoryBean.setConfiguration(myBatisConfiguration());
+
+            sqlSessionFactoryBean.setTypeAliases(new Class[]{LogbackImpl.class});
+
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 
             //Mapper xml 路径
