@@ -104,7 +104,7 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
 
         // 获取支付方式
         PayConfigEntity configEntity = new PayConfigEntity();
-        configEntity.setIsDeleted(0);
+        configEntity.setDeleted(0);
 
         // 支付信息
         WebChatPayConfigEntity webChat = null;
@@ -196,7 +196,7 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
         recordEntity.setOrderNo(RedisNumbersUtils.generateDocumentNumber(configEntity.getOrderPrefix(), 5));
         recordEntity.setAddTime(new Date());
         recordEntity.setPayStatus(0);
-        recordEntity.setIsDeleted(0);
+        recordEntity.setDeleted(0);
         recordEntity.setAddTime(new Date());
         switch (configEntity.getPayType()) {
             case PayTypeConsts

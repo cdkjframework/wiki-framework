@@ -21,11 +21,6 @@ import java.util.Random;
 public class VerifyCodeUtils {
 
     /**
-     * 生成随即数
-     */
-    private static Random random = new Random();
-
-    /**
      * 生成随机验证码文件,并返回验证码值
      *
      * @param w          宽度
