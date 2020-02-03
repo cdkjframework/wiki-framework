@@ -2,9 +2,16 @@ package com.cdkjframework.web;
 
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.core.spring.CdkjApplication;
+import com.cdkjframework.util.files.images.code.BarCodeUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @ProjectName: cdkj-framework

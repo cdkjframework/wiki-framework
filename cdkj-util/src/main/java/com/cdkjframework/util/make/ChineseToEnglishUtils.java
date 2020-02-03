@@ -27,7 +27,7 @@ public class ChineseToEnglishUtils {
     /**
      * 多音字
      */
-    private static String polyPhone = "重庆|cq|chongqing,重庆市|cqs|chongqingshi";
+    private static String POLY_PHONE = "重庆|cq|chongqing,重庆市|cqs|chongqingshi";
 
     /**
      * 将汉字转换为全拼
@@ -37,7 +37,7 @@ public class ChineseToEnglishUtils {
      */
     public static String getPinYin(String src) {
 
-        String[] array = polyPhone.split(",");
+        String[] array = POLY_PHONE.split(",");
         for (String str :
                 array) {
             if (str.contains(src + "|")) {
@@ -86,7 +86,7 @@ public class ChineseToEnglishUtils {
      */
     public static String getPinYinHeadChar(String str) {
 
-        String[] array = polyPhone.split(",");
+        String[] array = POLY_PHONE.split(",");
         for (String strPy :
                 array) {
             if (strPy.contains(str + "|")) {
