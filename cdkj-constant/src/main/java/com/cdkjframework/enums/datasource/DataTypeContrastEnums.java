@@ -32,6 +32,10 @@ public enum DataTypeContrastEnums {
      */
     INTEGER("java.lang.Integer", "INT"),
     /**
+     * 整数
+     */
+    INT("java.lang.Int", "INT"),
+    /**
      * 布尔值
      */
     BOOLEAN("java.lang.Boolean", "BIT"),

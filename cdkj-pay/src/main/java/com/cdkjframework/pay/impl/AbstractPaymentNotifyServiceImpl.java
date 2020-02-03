@@ -49,7 +49,7 @@ public abstract class AbstractPaymentNotifyServiceImpl implements PaymentNotifyS
     public void payNotifyCallback(StringBuilder builder, String payType) throws Exception {
         logUtils.info("Callback Result：" + builder.toString());
         PayConfigEntity configEntity = new PayConfigEntity();
-        configEntity.setIsDeleted(0);
+        configEntity.setDeleted(0);
         configEntity.setPayType(payType);
         configEntity = payConfigServiceImpl.findEntity(configEntity);
 

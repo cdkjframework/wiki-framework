@@ -81,21 +81,21 @@
     <update id="deleteTableField">
         <foreach collection="list" item="item" index="index">
             <foreach collection="item.layoutEntities" item="column" index="index">
-                ALTER TABLE ${item.name} DROP COLUMN ${column.name};
+                ALTER TABLE ${item.schema}.${item.name} DROP COLUMN ${column.name};
             </foreach>
         </foreach>
     </update>
 
     <update id="deleteTable">
         <foreach collection="list" item="item" index="index">
-            DROP TABLE ${item.name};
+            DROP TABLE ${item.schema}.${item.name};
         </foreach>
     </update>
 
     <update id="createTableUniqueIndex">
         <foreach collection="list" item="item" index="index">
             <foreach collection="item.layoutEntities" item="column" index="index">
-                ALTER TABLE ${item.name} ADD UNIQUE INDEX ${column.name}_index(${column.name});
+                ALTER TABLE ${item.schema}.${item.name} ADD UNIQUE INDEX ${column.name}_index(${column.name});
             </foreach>
         </foreach>
     </update>
