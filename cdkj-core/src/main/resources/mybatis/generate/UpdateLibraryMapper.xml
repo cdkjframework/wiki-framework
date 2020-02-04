@@ -4,18 +4,8 @@
 <mapper namespace="com.cdkjframework.core.business.mapper.UpdateLibraryMapper">
 
     <update id="createTable">
-        <foreach collection="list" item="item" index="index">
-            CREATE TABLE
-            <choose>
-                <when test="item.schema!=null and item.schema!=''">
-                    ${item.schema}.${item.name}
-                </when>
-                <otherwise>
-                    ${item.name}
-                </otherwise>
-            </choose>
-            (
-            <foreach collection="item.layoutEntities" item="column" index="index" separator=",">
+            CREATE TABLE ${name} (
+            <foreach collection="layoutEntities" item="column" index="index" separator=",">
                 ${column.name} ${column.dataType}
                 <if test="column.length>0">
                     <choose>
@@ -37,9 +27,7 @@
                 </choose>
                 COMMENT '${column.comment}'
             </foreach>
-            ,PRIMARY KEY (id)
-            );
-        </foreach>
+            ,PRIMARY KEY (id));
     </update>
 
     <update id="createTableColumn">
@@ -48,7 +36,7 @@
                 ALTER TABLE
                 <choose>
                     <when test="item.schema!=null and item.schema!=''">
-                        ${item.schema}.${item.name}
+                        ${item.name}
                     </when>
                     <otherwise>
                         ${item.name}
@@ -81,21 +69,21 @@
     <update id="deleteTableField">
         <foreach collection="list" item="item" index="index">
             <foreach collection="item.layoutEntities" item="column" index="index">
-                ALTER TABLE ${item.schema}.${item.name} DROP COLUMN ${column.name};
+                ALTER TABLE ${item.name} DROP COLUMN ${column.name};
             </foreach>
         </foreach>
     </update>
 
     <update id="deleteTable">
         <foreach collection="list" item="item" index="index">
-            DROP TABLE ${item.schema}.${item.name};
+            DROP TABLE ${item.name};
         </foreach>
     </update>
 
     <update id="createTableUniqueIndex">
         <foreach collection="list" item="item" index="index">
             <foreach collection="item.layoutEntities" item="column" index="index">
-                ALTER TABLE ${item.schema}.${item.name} ADD UNIQUE INDEX ${column.name}_index(${column.name});
+                ALTER TABLE ${item.name} ADD UNIQUE INDEX ${column.name}_index(${column.name});
             </foreach>
         </foreach>
     </update>

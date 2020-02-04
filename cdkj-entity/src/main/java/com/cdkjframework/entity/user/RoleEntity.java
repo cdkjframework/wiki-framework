@@ -1,6 +1,5 @@
 package com.cdkjframework.entity.user;
 
-import com.cdkjframework.entity.RequestEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

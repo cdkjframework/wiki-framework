@@ -1,6 +1,6 @@
 package ${packageName}.dto;
 
-import com.cdkjframework.entity.RequestEntity;
+import com.cdkjframework.entity.base.BaseVo;
 <#list leading as item>
 import ${item};
 </#list>
@@ -23,7 +23,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @ToString
-public class ${className}Dto extends RequestEntity {
+public class ${className}Dto extends BaseDto {
 
     private static final long serialVersionUID = ${serialVersionUID};
 

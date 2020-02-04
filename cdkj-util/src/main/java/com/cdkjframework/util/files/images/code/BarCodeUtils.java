@@ -34,7 +34,6 @@ import java.io.*;
  * @Version: 1.0
  */
 
-@Component
 public class BarCodeUtils {
 
     /**

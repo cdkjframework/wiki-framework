@@ -19,9 +19,9 @@ public interface UpdateLibraryMapper {
     /**
      * 创建表
      *
-     * @param tableList 表集合
+     * @param table 表集合
      */
-    void createTable(List<TableLayoutEntity> tableList);
+    void createTable(TableLayoutEntity table);
 
     /**
      * 创建字段

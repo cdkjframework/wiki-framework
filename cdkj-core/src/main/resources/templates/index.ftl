@@ -179,10 +179,10 @@
                     var key = keyList[i]
                     data.push({"label": key})
                 }
-                var json = this.encrypt(data)
+                var json = this.encrypt(JSON.stringify(data))
                 that.$http.post('generate?dataBase=' + that.value, json).then(function (res) {
                     var json = this.decrypt(res.data)
-                    var data = JSON.parse(json).data
+                    var data = JSON.parse(json)
                     if (data.code === 0) {
                         that.$message.success('生成成功！')
                     } else {

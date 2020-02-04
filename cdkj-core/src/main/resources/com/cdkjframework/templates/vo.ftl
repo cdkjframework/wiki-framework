@@ -1,6 +1,6 @@
 package ${packageName}.vo;
 
-import com.cdkjframework.entity.RequestEntity;
+import com.cdkjframework.entity.base.BaseVo;
 <#list leading as item>
 import ${item};
 </#list>
@@ -26,7 +26,7 @@ import javax.persistence.*;
 @Setter
 @ToString
 @ApiModel(" ${description}")
-public class ${className}Vo extends RequestEntity {
+public class ${className}Vo extends BaseVo {
 
     private static final long serialVersionUID = ${serialVersionUID};
 

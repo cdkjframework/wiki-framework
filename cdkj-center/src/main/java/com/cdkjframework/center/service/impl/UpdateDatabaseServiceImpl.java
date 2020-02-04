@@ -95,7 +95,10 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
                 .collect(Collectors.toList());
 
         if (!insertTableList.isEmpty()) {
-            updateLibraryMapper.createTable(insertTableList);
+            for (TableLayoutEntity table :
+                    insertTableList) {
+                updateLibraryMapper.createTable(table);
+            }
         }
 
         // 创建唯一索引

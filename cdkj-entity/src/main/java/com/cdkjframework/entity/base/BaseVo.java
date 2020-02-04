@@ -21,6 +21,29 @@ import java.util.Date;
 @Setter
 public class BaseVo {
 
+    /**
+     * 计算后的页码大小
+     */
+    @ApiModelProperty("类目编码")
+    private int pageSize = 10;
+
+    /**
+     * 当前页索引
+     */
+    @ApiModelProperty("当前页索引")
+    private int pageIndex = 1;
+
+    /**
+     * 排序字段
+     */
+    @ApiModelProperty("排序字段")
+    private String sortField;
+
+    /**
+     * 排序类型
+     */
+    @ApiModelProperty("排序类型")
+    private String sortType = "descending";
 
     /**
      * 主键

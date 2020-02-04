@@ -5,6 +5,10 @@ import com.cdkjframework.constant.Application;
 import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,7 +29,7 @@ import java.util.logging.Logger;
  */
 
 @Component
-public class LogUtils {
+public class LogUtils implements BeanPostProcessor {
 
     /**
      * 日志
@@ -35,7 +39,9 @@ public class LogUtils {
     /**
      * 自定义配置
      */
-    private CustomConfig customConfig;
+    @Autowired
+    private CustomConfig config;
+    private static CustomConfig customConfig;
 
     /**
      * 操作系统
@@ -45,7 +51,7 @@ public class LogUtils {
     /**
      * 日志级别
      */
-    private List<String> level = Arrays.asList("DEBUG", "INFO", "WARN", "ERROR", "FATAL");
+    private List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
 
     /**
      * getLogger
@@ -71,17 +77,19 @@ public class LogUtils {
     public LogUtils() {
     }
 
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        customConfig = config;
+        return bean;
+
+    }
+
     /**
      * 构造函数
      *
      * @param name 输出名称
      */
     public LogUtils(String name) {
-        if (Application.applicationContext != null) {
-            customConfig = Application.applicationContext.getBean(CustomConfig.class);
-        } else {
-            customConfig = new CustomConfig();
-        }
         logger = Logger.getLogger(name);
         setLoggerLevel(logger);
     }
@@ -286,36 +294,12 @@ public class LogUtils {
     }
 
     /**
-     * 设置日志等级
-     */
-    private void getLevels(Logger loggerLevel) {
-        int index = level.indexOf(customConfig.getLevel());
-        switch (index) {
-            case 0:
-                logger.setLevel(Level.CONFIG);
-                break;
-            case 1:
-                logger.setLevel(Level.INFO);
-                break;
-            case 2:
-                logger.setLevel(Level.WARNING);
-                break;
-            case 3:
-                logger.setLevel(Level.SEVERE);
-                break;
-            default:
-                logger.setLevel(Level.ALL);
-                break;
-        }
-    }
-
-    /**
      * 是否 debug 模式
      *
      * @return 返回结果
      */
     private void setLoggerLevel(Logger loggerLevel) {
-        int index = level.indexOf(customConfig.getLevel());
+        int index = LEVEL.indexOf(customConfig.getLevel());
         switch (index) {
             case 0:
                 loggerLevel.setLevel(Level.SEVERE);
@@ -329,12 +313,11 @@ public class LogUtils {
             case 3:
                 loggerLevel.setLevel(Level.CONFIG);
                 break;
-            case 4:
-                loggerLevel.setLevel(Level.FINE);
-                break;
             default:
                 loggerLevel.setLevel(Level.ALL);
                 break;
         }
     }
+
+
 }

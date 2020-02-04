@@ -29,7 +29,7 @@ public class CenterTableLayoutEntity extends BaseEntity {
     /**
      * 页面表格名称
      */
-    @Column(name = "table_name", columnDefinition = "页面表格名称", unique = true, length = 500)
+    @Column(name = "table_name", columnDefinition = "页面表格名称", unique = true, length = 200)
     private String tableName;
     /**
      * 字段名称

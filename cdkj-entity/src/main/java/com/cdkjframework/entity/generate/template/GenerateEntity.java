@@ -71,7 +71,7 @@ public class GenerateEntity {
     /**
      * serialVersionUID
      */
-    private String serialVersionUid = "-1";
+    private String serialVersionUID = "-1";
 
     /**
      * 字段
