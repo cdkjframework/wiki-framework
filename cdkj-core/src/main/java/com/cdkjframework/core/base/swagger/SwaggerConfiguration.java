@@ -38,8 +38,8 @@ import java.util.List;
  * @Version: 1.0
  */
 //@Component
-//@Configuration
-//@EnableSwagger2
+@Configuration
+@EnableSwagger2
 public class SwaggerConfiguration {
 
     /**
@@ -82,7 +82,8 @@ public class SwaggerConfiguration {
                             pars.add(builderPar.build());
                         }
                         Docket result;
-                        ApiSelectorBuilder builder = new Docket(DocumentationType.SWAGGER_2).groupName(entity.getGroupName())
+                        ApiSelectorBuilder builder = new Docket(DocumentationType.SWAGGER_2)
+                                .groupName(entity.getGroupName())
                                 .select().apis(RequestHandlerSelectors
                                         .basePackage(entity.getBasePackage()));
                         if (hidden) {
@@ -95,7 +96,8 @@ public class SwaggerConfiguration {
                     });
 
             BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-            BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) Application.applicationContext.getBeanFactory();
+            BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) Application
+                    .applicationContext.getBeanFactory();
             beanFactory.registerBeanDefinition(entity.getBeanName(), beanDefinition);
         }
     }
@@ -108,7 +110,8 @@ public class SwaggerConfiguration {
      */
     private ApiInfo apiInfo() {
         //联系人信息
-        Contact contact = new Contact(swaggerConfig.getContact(), swaggerConfig.getTermsOfServiceUrl(), swaggerConfig.getEmail());
+        Contact contact = new Contact(swaggerConfig.getContact(),
+                swaggerConfig.getTermsOfServiceUrl(), swaggerConfig.getEmail());
 
         return new ApiInfoBuilder()
                 .title(swaggerConfig.getTitle())

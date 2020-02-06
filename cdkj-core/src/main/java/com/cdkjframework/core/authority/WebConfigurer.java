@@ -1,8 +1,5 @@
 package com.cdkjframework.core.authority;
 
-import com.cdkjframework.core.spring.AuthenticationInterceptor;
-import com.cdkjframework.core.spring.filter.RequestValidateFilter;
-import com.cdkjframework.core.spring.filter.SerializableHttpMessageConverter;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,7 +28,7 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(authInterceptor());
+//        registry.addInterceptor(authInterceptor());
         super.addInterceptors(registry);
     }
 
@@ -70,20 +67,20 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
      *
      * @return 返回结果
      */
-    @Bean
-    public AuthenticationInterceptor authInterceptor() {
-        return new AuthenticationInterceptor();
-    }
+//    @Bean
+//    public AuthenticationInterceptor authInterceptor() {
+//        return new AuthenticationInterceptor();
+//    }
 
     /**
      * HTTP消息转换器
      *
      * @return 返回结果
      */
-    @Bean
-    public SerializableHttpMessageConverter httpMessageConverter() {
-        return new SerializableHttpMessageConverter();
-    }
+//    @Bean
+//    public SerializableHttpMessageConverter httpMessageConverter() {
+//        return new SerializableHttpMessageConverter();
+//    }
 
     /**
      * 验证过虑
@@ -93,8 +90,8 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
     @Bean
     public FilterRegistrationBean requestValidateFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-        RequestValidateFilter validateFilter = new RequestValidateFilter();
-        registration.setFilter(validateFilter);
+//        RequestValidateFilter validateFilter = new RequestValidateFilter();
+//        registration.setFilter(validateFilter);
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;

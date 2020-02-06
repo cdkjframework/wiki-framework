@@ -165,16 +165,6 @@
         </dependency>
         <!--end Excel-->
 
-        <!-- begin swagger2 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-        <!-- end swagger2 -->
         <!-- aliYun-sdk-oss -->
         <dependency>
             <groupId>com.aliyun.oss</groupId>

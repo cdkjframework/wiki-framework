@@ -60,6 +60,18 @@
             <artifactId>spring-boot-test</artifactId>
             <scope>compile</scope>
         </dependency>
+
+
+        <!-- begin swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <!-- end swagger2 -->
     </dependencies>
 
     <build>
@@ -108,7 +120,6 @@
             </plugin>
         </plugins>
     </build>
-
 
     <distributionManagement>
         <repository>

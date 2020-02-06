@@ -129,7 +129,13 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
         }
 
         if (!tableLayoutEntities.isEmpty()) {
-            updateLibraryMapper.createTableUniqueIndex(tableLayoutEntities);
+            for (TableLayoutEntity table :
+                    tableLayoutEntities) {
+                for (ColumnLayoutEntity entity :
+                        table.getLayoutEntities()) {
+                    updateLibraryMapper.createTableUniqueIndex(table, entity);
+                }
+            }
         }
     }
 
@@ -155,11 +161,23 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
 
         // 修改数据
         if (!layoutEntities.isEmpty()) {
-            updateLibraryMapper.createTableColumn(layoutEntities);
+            for (TableLayoutEntity table :
+                    layoutEntities) {
+                for (ColumnLayoutEntity entity :
+                        table.getLayoutEntities()) {
+                    updateLibraryMapper.createTableColumn(table, entity);
+                }
+            }
         }
         // 删除字段
         if (!deleteEntities.isEmpty()) {
-            updateLibraryMapper.deleteTableField(deleteEntities);
+            for (TableLayoutEntity table :
+                    deleteEntities) {
+                for (ColumnLayoutEntity entity :
+                        table.getLayoutEntities()) {
+                    updateLibraryMapper.deleteTableField(table, entity);
+                }
+            }
         }
     }
 

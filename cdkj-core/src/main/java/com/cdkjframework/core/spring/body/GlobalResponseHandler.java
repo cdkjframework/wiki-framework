@@ -25,12 +25,14 @@ import java.util.stream.Collectors;
  */
 
 @ControllerAdvice
-public class GlobalResponseHandler implements ResponseBodyAdvice{
+public class GlobalResponseHandler implements ResponseBodyAdvice {
 
     /**
      * 参数列表
      */
     private static List<String> parameterList;
+    private static String SWAGGER = "swagger";
+    private static String ERROR = "error";
 
     static {
         parameterList = new ArrayList<>();
@@ -49,6 +51,12 @@ public class GlobalResponseHandler implements ResponseBodyAdvice{
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
+        String name = methodParameter.getMember().getDeclaringClass().getName();
+        if (name.contains(SWAGGER) ||
+                name.contains(ERROR)) {
+            return false;
+        }
+
         return true;
     }
 

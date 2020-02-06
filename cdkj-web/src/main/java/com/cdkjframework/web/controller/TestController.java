@@ -1,4 +1,4 @@
-package com.cdkjframework.web;
+package com.cdkjframework.web.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.*;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@RestController
 @RequestMapping("/test")
 @Api(tags = "测试")
-@RestController
 public class TestController {
 
     @RequestMapping("/getInteger")

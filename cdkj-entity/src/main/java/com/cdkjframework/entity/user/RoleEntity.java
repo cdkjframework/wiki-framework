@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.user;
 
+import com.cdkjframework.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +19,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class RoleEntity extends RequestEntity implements Serializable {
+public class RoleEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

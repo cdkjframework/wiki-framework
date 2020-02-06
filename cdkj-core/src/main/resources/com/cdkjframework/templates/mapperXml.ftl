@@ -13,19 +13,17 @@
 
 
     <sql id="base_Column_List">
-        (
-        <#list children as item>
-            <#if item.isExtension==0>
-                ${item.tableColumnName}<#if item_has_next >,</#if>
-            </#if>
-        </#list>
-        )
+    <#list children as item>
+        <#if item.isExtension==0>
+            ${item.tableColumnName}<#if item_has_next >,</#if>
+        </#if>
+    </#list>
     </sql>
 
 
     <insert id="insert" parameterType="${packageName}.entity.${className}Entity">
         INSERT INTO ${table}
-        <include refid="base_Column_List"></include>
+        (<include refid="base_Column_List"></include>)
         VALUES
         (
         <#list children as item>
@@ -38,7 +36,7 @@
 
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO ${table}
-        <include refid="base_Column_List"></include>
+        (<include refid="base_Column_List"></include>)
         VALUES
         <foreach collection="list" item="item" index="index" separator=",">
         (<#list children as item>

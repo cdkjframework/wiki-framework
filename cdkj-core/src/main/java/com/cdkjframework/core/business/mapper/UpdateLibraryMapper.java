@@ -1,6 +1,8 @@
 package com.cdkjframework.core.business.mapper;
 
+import com.cdkjframework.entity.center.library.ColumnLayoutEntity;
 import com.cdkjframework.entity.center.library.TableLayoutEntity;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -26,16 +28,18 @@ public interface UpdateLibraryMapper {
     /**
      * 创建字段
      *
-     * @param tableList 表集合
+     * @param table  表集合
+     * @param column 字段
      */
-    void createTableColumn(List<TableLayoutEntity> tableList);
+    void createTableColumn(@Param("item") TableLayoutEntity table, @Param("column") ColumnLayoutEntity column);
 
     /**
      * 删了表字段
      *
-     * @param tableList 表集合
+     * @param table  表集合
+     * @param column 字段
      */
-    void deleteTableField(List<TableLayoutEntity> tableList);
+    void deleteTableField(@Param("item") TableLayoutEntity table, @Param("column") ColumnLayoutEntity column);
 
     /**
      * 删除表
@@ -47,7 +51,8 @@ public interface UpdateLibraryMapper {
     /**
      * 创建唯一索引
      *
-     * @param tableList 表集合
+     * @param table  表集合
+     * @param column 字段
      */
-    void createTableUniqueIndex(List<TableLayoutEntity> tableList);
+    void createTableUniqueIndex(@Param("item") TableLayoutEntity table, @Param("column") ColumnLayoutEntity column);
 }

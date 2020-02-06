@@ -5,7 +5,10 @@ import com.cdkjframework.core.spring.CdkjApplication;
 import com.cdkjframework.util.files.images.code.BarCodeUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.io.File;
@@ -33,9 +36,11 @@ import java.io.IOException;
         "com.cdkjframework.datasource.mongodb",
         "com.cdkjframework.core.base.swagger"
 })
-@MapperScan(basePackages = "com.cdkjframework.core.business.mapper")
-@EnableAutoGenerate(update = true, basePackage = "com.cdkjframework.web", projectName = "com.cdkjframework.web")
+//@EnableTransactionManagement
+@Configuration
 @EnableSwagger2
+@MapperScan(basePackages = "com.cdkjframework.core.business.mapper")
+//@EnableAutoGenerate(update = true, basePackage = "com.cdkjframework.web", projectName = "com.cdkjframework.web")
 //@EnableApolloConfig
 public class WebApplication {
 
@@ -45,6 +50,6 @@ public class WebApplication {
      * @param args 参数
      */
     public static void main(String[] args) {
-        CdkjApplication.run(WebApplication.class, args);
+        SpringApplication.run(WebApplication.class, args);
     }
 }
