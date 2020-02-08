@@ -49,6 +49,9 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     @Override
     public void modify${className}(${className}Dto ${classLowName}Dto) {
+        ${classLowName}Dto.setEditTime(new Date());
+        ${classLowName}Dto.setEditUserId(CurrentUser.getUserId());
+        ${classLowName}Dto.setEditUserName(CurrentUser.getUserName());
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
         ${classLowName}Mapper.modify(entity);
@@ -62,6 +65,9 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     public void add${className}(${className}Dto ${classLowName}Dto) {
         ${classLowName}Dto.setId(GeneratedValueUtils.getUuidString());
+        ${classLowName}Dto.setAddTime(new Date());
+        ${classLowName}Dto.setAddUserId(CurrentUser.getUserId());
+        ${classLowName}Dto.setAddUserName(CurrentUser.getUserName());
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
         ${classLowName}Mapper.insert(entity);
