@@ -44,7 +44,7 @@ public class SecurityRandomUtils {
     /**
      * 锁
      */
-    private static final Object locker = new Object();
+    private static final Object LOCKER = new Object();
 
     /**
      * 类状态加载
@@ -74,7 +74,7 @@ public class SecurityRandomUtils {
             byte[] bytes = new byte[WIND_POS];
             secureInstance.nextBytes(bytes);
 
-            synchronized (locker) {
+            synchronized (LOCKER) {
                 byte[] seedNums = secureInstance.generateSeed(NUMBER_BYTES);
                 secureInstance.setSeed(seedNums);
             }
@@ -94,7 +94,7 @@ public class SecurityRandomUtils {
         try {
             SecureRandom customerRandom;
 
-            synchronized (locker) {
+            synchronized (LOCKER) {
                 if (StringUtils.isNullAndSpaceOrEmpty(algorithm)) {
                     customerRandom = SecureRandom.getInstance(algorithm);
                 } else {

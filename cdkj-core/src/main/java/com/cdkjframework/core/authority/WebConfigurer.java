@@ -28,7 +28,6 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-//        registry.addInterceptor(authInterceptor());
         super.addInterceptors(registry);
     }
 
@@ -63,26 +62,6 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
     }
 
     /**
-     * 注册信息
-     *
-     * @return 返回结果
-     */
-//    @Bean
-//    public AuthenticationInterceptor authInterceptor() {
-//        return new AuthenticationInterceptor();
-//    }
-
-    /**
-     * HTTP消息转换器
-     *
-     * @return 返回结果
-     */
-//    @Bean
-//    public SerializableHttpMessageConverter httpMessageConverter() {
-//        return new SerializableHttpMessageConverter();
-//    }
-
-    /**
      * 验证过虑
      *
      * @return 返回结果
@@ -90,8 +69,6 @@ public class WebConfigurer extends WebMvcConfigurationSupport {
     @Bean
     public FilterRegistrationBean requestValidateFilter() {
         FilterRegistrationBean registration = new FilterRegistrationBean();
-//        RequestValidateFilter validateFilter = new RequestValidateFilter();
-//        registration.setFilter(validateFilter);
         registration.addUrlPatterns("/*");
         registration.setOrder(1);
         return registration;

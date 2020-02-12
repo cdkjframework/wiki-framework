@@ -33,7 +33,7 @@
     <update id="createTableColumn">
         ALTER TABLE ${item.name} ADD COLUMN ${column.name} ${column.dataType} (${column.length}
         <if test="column.scale!=null and column.scale > 0">,${column.scale}</if>)
-        <if test="column.nullable">NOT</if>
+        <if test="!column.nullable">NOT</if>
         NULL COMMENT '${column.comment}';
     </update>
 

@@ -83,6 +83,8 @@ public class CurrentUser {
         UserEntity entity = getCurrentUser(UserEntity.class);
         if (entity == null) {
             entity = new UserEntity();
+            entity.setId("438a848a-60b6-4c00-b6fd-7dfc6dd94aac");
+            entity.setUserName("测试用记");
         }
 
         //返回结果

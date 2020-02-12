@@ -46,12 +46,12 @@ public class LogUtils implements BeanPostProcessor {
     /**
      * 操作系统
      */
-    private String OS = "win";
+    private final String OS = "win";
 
     /**
      * 日志级别
      */
-    private List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
+    private final List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
 
     /**
      * getLogger
@@ -209,9 +209,7 @@ public class LogUtils implements BeanPostProcessor {
             } else {
                 logger.log(level, msg, throwable);
             }
-            if (!logger.isLoggable(level)) {
-                return;
-            }
+
             //写入日志
             writeLog(level, throwable, msg);
         } catch (Exception ex) {

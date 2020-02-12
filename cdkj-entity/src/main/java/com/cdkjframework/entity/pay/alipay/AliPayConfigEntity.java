@@ -30,12 +30,6 @@ public class AliPayConfigEntity implements Serializable {
     private BigDecimal totalAmount;
 
     /**
-     * 卖家支付宝用户ID。 如果该值为空，则默认为商户签约账号对应的支付宝用户ID
-     */
-//    @FieldMapping(name = "seller_id")
-//    private String sellerId;
-
-    /**
      * 订单标题
      */
     private String subject;

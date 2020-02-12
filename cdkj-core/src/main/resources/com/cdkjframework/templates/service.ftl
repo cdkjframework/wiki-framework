@@ -68,6 +68,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setAddTime(new Date());
         ${classLowName}Dto.setAddUserId(CurrentUser.getUserId());
         ${classLowName}Dto.setAddUserName(CurrentUser.getUserName());
+        ${classLowName}Dto.setDeleted(0);
         ${className}Entity entity = new ${className}Entity();
         CopyUtils.copyProperties(${classLowName}Dto, entity);
         ${classLowName}Mapper.insert(entity);

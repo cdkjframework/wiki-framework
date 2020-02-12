@@ -29,7 +29,7 @@ public class PayRequest {
     /**
      * 编码
      */
-    private String CHARSET_NAME = "UTF-8";
+    private final String CHARSET_NAME = "UTF-8";
 
     /**
      * 请求数据

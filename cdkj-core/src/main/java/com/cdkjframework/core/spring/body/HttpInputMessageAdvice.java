@@ -1,6 +1,9 @@
 package com.cdkjframework.core.spring.body;
 
+import com.cdkjframework.constant.EncodingConsts;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.encrypts.AesUtils;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 
@@ -8,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 
 /**
  * @ProjectName: common-core
@@ -19,6 +23,11 @@ import java.io.InputStream;
  */
 
 public class HttpInputMessageAdvice implements HttpInputMessage {
+
+    /**
+     * 日志
+     */
+    private final LogUtils LOG_UTILS = LogUtils.getLogger(HttpInputMessageAdvice.class);
 
     /**
      * 头部信息
@@ -64,13 +73,17 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
      */
     private InputStream getBody(InputStream stream) throws IOException {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
-        byte[] buff = new byte[1024];
-        int read = 0;
-        while ((read = stream.read(buff, 0, buff.length)) > 0) {
-            swapStream.write(buff, 0, read);
+        byte[] buff = new byte[IntegerConsts.BYTE_LENGTH];
+        int read;
+        while ((read = stream.read(buff, IntegerConsts.ZERO, buff.length)) > IntegerConsts.ZERO) {
+            swapStream.write(buff, IntegerConsts.ZERO, read);
         }
         byte[] bytes = swapStream.toByteArray();
+        LOG_UTILS.info(new String(bytes, EncodingConsts.UTF8));
         String context = AesUtils.base64Decrypt(bytes);
-        return new ByteArrayInputStream(context.getBytes());
+        LOG_UTILS.info(context);
+        context = URLDecoder.decode(context, EncodingConsts.UTF8);
+        LOG_UTILS.info(context);
+        return new ByteArrayInputStream(context.getBytes(EncodingConsts.UTF8));
     }
 }

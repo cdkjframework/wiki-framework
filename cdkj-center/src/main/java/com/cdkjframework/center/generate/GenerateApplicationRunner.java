@@ -123,8 +123,12 @@ public class GenerateApplicationRunner implements ApplicationRunner {
         final String defaultValue = "String";
         final int length = 4000;
         // 数据类型为字符串且长度大于4000则个性类型
-        if (defaultValue.equals(name) && column.length() > length) {
-            name = "text";
+        if (defaultValue.equals(name)) {
+            if (column.length() > length) {
+                name = "TEXT";
+            } else if (column.length() > length * 2) {
+                name = "MEDIUMTEXT";
+            }
         }
 
         DataTypeContrastEnums dataType = DataTypeContrastEnums.valueOf(name.toUpperCase());

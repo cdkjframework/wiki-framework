@@ -2,20 +2,13 @@ package com.cdkjframework.center.service.impl;
 
 import com.cdkjframework.center.service.GenerateService;
 import com.cdkjframework.center.service.UpdateDatabaseService;
-import com.cdkjframework.constant.Application;
 import com.cdkjframework.core.business.mapper.UpdateLibraryMapper;
-import com.cdkjframework.core.processor.AbstractCdkjProcessor;
-import com.cdkjframework.entity.center.CenterTableLayoutEntity;
 import com.cdkjframework.entity.center.library.ColumnLayoutEntity;
 import com.cdkjframework.entity.center.library.TableLayoutEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
-import com.cdkjframework.entity.generate.template.TreeEntity;
 import com.cdkjframework.util.tool.CopyUtils;
-import org.apache.poi.ss.formula.functions.T;
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -149,7 +142,7 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
         List<TableLayoutEntity> deleteEntities = new ArrayList<>();
         for (TableLayoutEntity layoutEntity :
                 updateTableList) {
-            TableLayoutEntity entity = ValidationTableFields(layoutEntity);
+            TableLayoutEntity entity = validationTableFields(layoutEntity);
             if (entity != null && !entity.getLayoutEntities().isEmpty()) {
                 deleteEntities.add(entity);
             }
@@ -187,7 +180,7 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
      * @param tableLayoutEntity 表信息
      * @return 返回要删了列
      */
-    private TableLayoutEntity ValidationTableFields(TableLayoutEntity tableLayoutEntity) {
+    private TableLayoutEntity validationTableFields(TableLayoutEntity tableLayoutEntity) {
         // 设置查询条件
         TableColumnEntity columnEntity = new TableColumnEntity();
         columnEntity.setTableName(tableLayoutEntity.getName());

@@ -74,39 +74,75 @@ public class WebChatQueryResultEntity {
      */
     @XStreamAlias("code_url")
     public String codeUrl;
-
-    public String out_trade_no;
-    public String trade_state;
-    public String trade_state_desc;
-    public String err_code;
-    public String err_code_des;
-    public String device_info;
+    @XStreamAlias("out_trade_no")
+    public String outTradeNo;
+    @XStreamAlias("trade_state")
+    public String tradeState;
+    @XStreamAlias("trade_state_desc")
+    public String tradeStateDesc;
+    @XStreamAlias("err_code")
+    public String errCode;
+    @XStreamAlias("err_code_des")
+    public String errCodeDes;
+    @XStreamAlias("device_info")
+    public String deviceInfo;
     public String openid;
-    public String is_subscribe;
-    public String trade_type;
-    public String bank_type;
-    public String total_fee;
-    public String settlement_total_fee;
-    public String fee_type;
-    public String cash_fee;
-    public String cash_fee_type;
-    public String coupon_fee;
-    public String coupon_count;
-    public String coupon_id_0;
-    public String coupon_id_1;
-    public String coupon_type_$0;
-    public String coupon_type_$1;
-    public String coupon_type_$2;
-    public String coupon_type_0;
-    public String coupon_type_1;
-    public String coupon_type_2;
-    public String coupon_fee_$0;
-    public String coupon_fee_$1;
-    public String coupon_fee_$2;
-    public String coupon_fee_0;
-    public String coupon_fee_1;
-    public String coupon_fee_2;
-    public String transaction_id;
+    @XStreamAlias("is_subscribe")
+    public String isSubscribe;
+
+    @XStreamAlias("bank_type")
+    public String bankType;
+    @XStreamAlias("total_fee")
+    public String totalFee;
+    @XStreamAlias("settlement_total_fee")
+    public String settlementTotalFee;
+    @XStreamAlias("fee_type")
+    public String feeType;
+    @XStreamAlias("cash_fee")
+    public String cashFee;
+    @XStreamAlias("cash_fee_type")
+    public String cashFeeType;
+    @XStreamAlias("coupon_fee")
+    public String couponFee;
+    @XStreamAlias("coupon_count")
+    public String couponCount;
+    @XStreamAlias("coupon_id_0")
+    public String couponId0;
+    @XStreamAlias("coupon_id_1")
+    public String couponId1;
+    @XStreamAlias("coupon_type_$0")
+    public String couponType$0;
+    @XStreamAlias("coupon_type_$1")
+    public String couponType$1;
+    @XStreamAlias("coupon_type_$2")
+    public String couponType$2;
+
+
+    @XStreamAlias("coupon_type_0")
+    public String couponType0;
+    @XStreamAlias("coupon_type_1")
+    public String couponType1;
+    @XStreamAlias("coupon_type_2")
+    public String couponType2;
+    @XStreamAlias("coupon_fee_$0")
+    public String couponFee$0;
+    @XStreamAlias("coupon_fee_$1")
+    public String couponFee$1;
+    @XStreamAlias("coupon_fee_$2")
+    public String couponFee$2;
+    @XStreamAlias("coupon_fee_0")
+    public String couponFee0;
+
+    @XStreamAlias("coupon_fee_1")
+    public String couponFee1;
+
+    @XStreamAlias("coupon_fee_2")
+    public String couponFee2;
+
+    @XStreamAlias("transaction_id")
+    public String transactionId;
+
     public String attach;
-    public String time_end;
+    @XStreamAlias("time_end")
+    public String timeEnd;
 }

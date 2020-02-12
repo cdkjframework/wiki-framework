@@ -185,8 +185,8 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
             //将返回结果解析为实体
             WebChatQueryResultEntity resultsEntity = XmlUtils.xmlToBean(WebChatQueryResultEntity.class, xml);
             //验证返回结果
-            if (!RESULTS_CODE.equals(resultsEntity.getTrade_state())) {
-                logUtils.info("ReturnMsg：" + resultsEntity.getTrade_state_desc());
+            if (!RESULTS_CODE.equals(resultsEntity.getTradeState())) {
+                logUtils.info("ReturnMsg：" + resultsEntity.getTradeStateDesc());
                 throw new GlobalException(resultsEntity.getReturnMsg());
             } else {
                 recordEntity.setPayStatus(1);

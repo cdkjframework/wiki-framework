@@ -3,6 +3,8 @@ package com.cdkjframework.pay;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.exceptions.GlobalException;
 
+import java.io.IOException;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.pay
@@ -19,6 +21,7 @@ public interface PaymentNotifyService {
      *
      * @param builder 返回结果
      * @param payType 支付类型
+     * @throws IOException
      */
     void payNotifyCallback(StringBuilder builder, String payType) throws Exception;
 
@@ -27,6 +30,7 @@ public interface PaymentNotifyService {
      *
      * @param configEntity 配置信息
      * @param builder      数据结果
+     * @throws IOException
      */
     void checkSignature(PayConfigEntity configEntity, StringBuilder builder) throws Exception;
 }

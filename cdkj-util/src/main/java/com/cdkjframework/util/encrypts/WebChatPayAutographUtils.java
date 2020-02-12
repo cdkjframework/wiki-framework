@@ -59,10 +59,10 @@ public class WebChatPayAutographUtils {
         String signString;
         switch (signType) {
             case HMACSHA256:
-                signString = HMACSHA256(builder.toString(), key);
+                signString = hmacSha256(builder.toString(), key);
                 break;
             case MD5:
-                signString = MD5(builder.toString()).toUpperCase();
+                signString = md5(builder.toString()).toUpperCase();
                 break;
             default:
                 throw new Exception(String.format("Invalid sign_type: %s", signType));
@@ -78,7 +78,7 @@ public class WebChatPayAutographUtils {
      * @param data 待处理数据
      * @return MD5结果
      */
-    public static String MD5(String data) throws Exception {
+    public static String md5(String data) throws Exception {
         java.security.MessageDigest md = MessageDigest.getInstance("MD5");
         byte[] array = md.digest(data.getBytes("UTF-8"));
         StringBuilder builder = new StringBuilder();
@@ -96,11 +96,11 @@ public class WebChatPayAutographUtils {
      * @return 加密结果
      * @throws Exception
      */
-    public static String HMACSHA256(String data, String key) throws Exception {
-        Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-        SecretKeySpec secret_key = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
-        sha256_HMAC.init(secret_key);
-        byte[] array = sha256_HMAC.doFinal(data.getBytes("UTF-8"));
+    public static String hmacSha256(String data, String key) throws Exception {
+        Mac sha256Hmac = Mac.getInstance("HmacSHA256");
+        SecretKeySpec secretKey = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+        sha256Hmac.init(secretKey);
+        byte[] array = sha256Hmac.doFinal(data.getBytes("UTF-8"));
         StringBuilder builder = new StringBuilder();
         for (byte item : array) {
             builder.append(Integer.toHexString((item & 0xFF) | 0x100).substring(1, 3));

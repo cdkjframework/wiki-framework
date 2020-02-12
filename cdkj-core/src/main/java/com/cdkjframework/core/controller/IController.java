@@ -152,9 +152,11 @@ public interface IController {
     void version(HttpServletRequest request);
 
     /**
+     *
      * 获取请求流
      *
      * @return 返回流
+     * @throws IOException
      */
     InputStream getRequestStream() throws IOException;
 

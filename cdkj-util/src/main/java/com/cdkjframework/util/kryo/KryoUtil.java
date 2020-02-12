@@ -68,8 +68,8 @@ public class KryoUtil {
 
     public static <T> T syncDeserialize(final byte[] buf, final Class<T> type)
             throws RuntimeException {
-        lockDser.lock();
         Input input = null;
+        lockDser.lock();
         try {
             ByteArrayInputStream bIn = new ByteArrayInputStream(buf);
             input = new Input(bIn, BUFFER_SIZE);
@@ -84,8 +84,8 @@ public class KryoUtil {
 
     public static Object syncDeserializeObject(final byte[] buf)
             throws RuntimeException {
-        lockDser.lock();
         Input input = null;
+        lockDser.lock();
         try {
             ByteArrayInputStream bIn = new ByteArrayInputStream(buf);
             input = new Input(bIn, BUFFER_SIZE);

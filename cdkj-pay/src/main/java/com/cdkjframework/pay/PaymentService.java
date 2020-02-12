@@ -24,7 +24,7 @@ public interface PaymentService<T> {
      *
      * @param businessNo 业务单号
      * @param request    请求信息
-     * @throws GlobalException 异常信息
+     * @throws Exception 异常信息
      */
     PaymentResultDto buildPayOrder(String businessNo, HttpServletRequest request) throws Exception;
 
