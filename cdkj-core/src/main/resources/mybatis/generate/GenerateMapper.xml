@@ -55,9 +55,9 @@
         FROM
         information_schema.tables
         <where>
-        <if test="tableSchema != null and tableSchema != ''">
-            table_schema = #{tableSchema}
-        </if>
+            <if test="tableSchema != null and tableSchema != ''">
+                table_schema = #{tableSchema}
+            </if>
         </where>
     </select>
     <select id="findDatabaseTableListByMsSql" resultMap="tableResultMap"
@@ -68,45 +68,49 @@
     <select id="findTableColumnList" resultMap="columnResultMap"
             parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
         SELECT
-            column_name,
-            column_comment,
-            column_key,
-            data_type,
-            character_maximum_length,
-            column_default,
-            is_nullable,
-            table_name,
-            table_schema
+        column_name,
+        column_comment,
+        column_key,
+        data_type,
+        character_maximum_length,
+        column_default,
+        is_nullable,
+        table_name,
+        table_schema
         FROM
-            information_schema.columns
+        information_schema.columns
         WHERE
-            table_name = #{tableName}
-        AND table_schema = #{tableSchema}
+        table_name = #{tableName}
+        <if test="tableSchema != null and tableSchema != ''">
+            AND table_schema = #{tableSchema}
+        </if>
     </select>
 
     <select id="findTableColumnListByMsSql" resultMap="columnResultMap"
             parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
         SELECT
-            t.name AS table_name,
-            c.name AS column_name,
-            p.value AS column_comment,
-            so.xtype AS column_key,
-            sc.is_nullable,
-            sc.table_catalog AS table_schema,
-            sc.data_type,
-            sc.character_maximum_length,
-            sc.column_default
+        t.name AS table_name,
+        c.name AS column_name,
+        p.value AS column_comment,
+        so.xtype AS column_key,
+        sc.is_nullable,
+        sc.table_catalog AS table_schema,
+        sc.data_type,
+        sc.character_maximum_length,
+        sc.column_default
         FROM
-            sys.tables t
-            INNER JOIN sys.columns c ON c.object_id = t.object_id
-            LEFT JOIN sys.extended_properties p ON p.major_id = c.object_id
-            AND p.minor_id = c.column_id
-            LEFT JOIN sysobjects so ON so.parent_obj = c.object_id
-            AND so.uid = c.column_id
-            LEFT JOIN information_schema.columns sc ON sc.Table_Name = t.name
-            AND sc.COLUMN_NAME = c.name
+        sys.tables t
+        INNER JOIN sys.columns c ON c.object_id = t.object_id
+        LEFT JOIN sys.extended_properties p ON p.major_id = c.object_id
+        AND p.minor_id = c.column_id
+        LEFT JOIN sysobjects so ON so.parent_obj = c.object_id
+        AND so.uid = c.column_id
+        LEFT JOIN information_schema.columns sc ON sc.Table_Name = t.name
+        AND sc.COLUMN_NAME = c.name
         WHERE
-            t.name = #{ tableName }
-            AND sc.table_catalog =  #{ tableSchema };
+        t.name = #{ tableName }
+        <if test="tableSchema != null and tableSchema != ''">
+            AND sc.table_catalog = #{ tableSchema };
+        </if>
     </select>
 </mapper>
