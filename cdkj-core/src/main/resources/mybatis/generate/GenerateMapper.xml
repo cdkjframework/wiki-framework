@@ -46,21 +46,27 @@
         SELECT NAME AS table_schema from sysdatabases
     </select>
 
-    <select id="findDatabaseTableList" resultMap="tableResultMap" parameterType="com.cdkjframework.entity.generate.template.TableEntity">
+    <select id="findDatabaseTableList" resultMap="tableResultMap"
+            parameterType="com.cdkjframework.entity.generate.template.TableEntity">
         SELECT
-            table_name,
-            table_comment,
-            table_schema
+        table_name,
+        table_comment,
+        table_schema
         FROM
-            information_schema.tables
-        WHERE
+        information_schema.tables
+        <where>
+        <if test="tableSchema != null and tableSchema != ''">
             table_schema = #{tableSchema}
+        </if>
+        </where>
     </select>
-    <select id="findDatabaseTableListByMsSql" resultMap="tableResultMap" parameterType="com.cdkjframework.entity.generate.template.TableEntity">
+    <select id="findDatabaseTableListByMsSql" resultMap="tableResultMap"
+            parameterType="com.cdkjframework.entity.generate.template.TableEntity">
         USE ${tableSchema};SELECT NAME AS tableName,'' AS tableComment, ${tableSchema} AS tableSchema FROM sysobjects WHERE xtype = 'u'
     </select>
 
-    <select id="findTableColumnList" resultMap="columnResultMap" parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
+    <select id="findTableColumnList" resultMap="columnResultMap"
+            parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
         SELECT
             column_name,
             column_comment,
@@ -78,7 +84,8 @@
         AND table_schema = #{tableSchema}
     </select>
 
-    <select id="findTableColumnListByMsSql" resultMap="columnResultMap" parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
+    <select id="findTableColumnListByMsSql" resultMap="columnResultMap"
+            parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
         SELECT
             t.name AS table_name,
             c.name AS column_name,

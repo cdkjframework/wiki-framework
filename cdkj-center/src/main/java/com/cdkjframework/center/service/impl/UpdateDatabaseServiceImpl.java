@@ -58,23 +58,6 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
         List<String> tableList = treeEntities.stream()
                 .map(TableEntity::getTableName)
                 .collect(Collectors.toList());
-        // 删除的表
-        List<TableLayoutEntity> deleteTableList = new ArrayList<>();
-        for (String table :
-                tableList) {
-            List listTable = layoutEntityList.stream()
-                    .filter(f -> table.equals(f.getName()))
-                    .collect(Collectors.toList());
-            if (!listTable.isEmpty()) {
-                continue;
-            }
-            TableLayoutEntity tableLayoutEntity = new TableLayoutEntity();
-            tableLayoutEntity.setName(table);
-            deleteTableList.add(tableLayoutEntity);
-        }
-        if (!deleteTableList.isEmpty()) {
-            updateLibraryMapper.deleteTable(deleteTableList);
-        }
 
         // 筛选修改表
         List<TableLayoutEntity> updateTableList = layoutEntityList.stream()
