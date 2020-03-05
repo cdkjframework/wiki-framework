@@ -16,14 +16,18 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-center</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+        </dependency>
     </dependencies>
 
 
     <distributionManagement>
         <repository>
-            <id>shanWeiYun Maven Repository</id>
+            <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>

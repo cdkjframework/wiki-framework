@@ -46,9 +46,9 @@
 
     <repositories>
         <repository>
-            <id>shanWeiYun Maven Repository</id>
-            <name>shanWeiYun Maven Repository</name>
-            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+            <id>lesmarthome Maven Respository</id>
+            <name>lesmarthome Maven Respository</name>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
 
         <repository>
@@ -56,7 +56,7 @@
             就会覆盖中央仓库的配置 -->
             <id>mvnRepository</id>
             <name>mvnRepository</name>
-            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/central/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/central/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
@@ -69,9 +69,9 @@
 
     <distributionManagement>
         <repository>
-            <id>shanWeiYun Maven Repository</id>
+            <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>

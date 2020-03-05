@@ -34,7 +34,8 @@ import java.io.IOException;
         "com.cdkjframework.constant",
         "com.cdkjframework.datasource.mybatis",
         "com.cdkjframework.datasource.mongodb",
-        "com.cdkjframework.core.base.swagger"
+        "com.cdkjframework.core.base.swagger",
+        "com.cdkjframework.redis"
 })
 //@EnableTransactionManagement
 @Configuration

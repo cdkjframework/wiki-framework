@@ -36,6 +36,10 @@
             <artifactId>itext</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
         </dependency>
@@ -319,9 +323,9 @@
 
     <distributionManagement>
         <repository>
-            <id>shanWeiYun Maven Repository</id>
+            <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://nexus.big.shanweiyun.cn/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>
