@@ -23,7 +23,7 @@ import java.math.BigDecimal;
 @Setter
 @ToString
 @Component
-@Table(name = "center_table_layout", schema = "configure")
+@Table(name = "center_table_layout", schema = "")
 public class CenterTableLayoutEntity extends BaseEntity {
 
     /**

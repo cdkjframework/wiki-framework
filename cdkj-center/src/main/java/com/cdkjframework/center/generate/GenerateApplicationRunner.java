@@ -1,5 +1,6 @@
 package com.cdkjframework.center.generate;
 
+import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.center.service.UpdateDatabaseService;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.center.library.ColumnLayoutEntity;
