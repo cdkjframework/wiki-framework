@@ -1,6 +1,6 @@
 package ${packageName}.dto;
 
-import com.cdkjframework.entity.base.BaseVo;
+import com.cdkjframework.entity.base.BaseDto;
 <#list leading as item>
 import ${item};
 </#list>
