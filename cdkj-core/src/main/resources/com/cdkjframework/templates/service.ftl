@@ -1,5 +1,6 @@
 package ${packageName}.service.impl;
 
+import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.util.log.LogUtils;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * @ProjectName: ${projectName}
