@@ -1,7 +1,7 @@
 package com.cdkjframework.center.service.impl;
 
-import com.cdkjframework.center.service.GenerateService;
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
+import com.cdkjframework.center.service.GenerateService;
 import com.cdkjframework.core.business.mapper.GenerateMapper;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.generate.template.*;
@@ -38,6 +38,11 @@ import java.util.stream.Collectors;
 
 @Service
 public class GenerateServiceImpl implements GenerateService {
+
+    /**
+     * 替换值
+     */
+    private final String REPLACEMENT = " ";
 
     /**
      * 日志
@@ -113,7 +118,11 @@ public class GenerateServiceImpl implements GenerateService {
                 TreeEntity treeColumn = new TreeEntity();
                 treeColumn.setId(column.getColumnName());
                 treeColumn.setLabel(column.getColumnName());
-                treeColumn.setExplain(column.getColumnComment());
+                treeColumn.setExplain(column.getColumnComment()
+                        .replace("\\n", REPLACEMENT)
+                        .replace("\\t", REPLACEMENT)
+                        .replace("\\s", REPLACEMENT)
+                        .replace("\\r", REPLACEMENT));
 
                 // 添加子节点
                 tree.getChildren().add(treeColumn);
@@ -174,7 +183,7 @@ public class GenerateServiceImpl implements GenerateService {
             }
             isGenerate = true;
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
 
         // 返回结果
@@ -222,11 +231,11 @@ public class GenerateServiceImpl implements GenerateService {
             xmlPath += "extend" + division;
             template(entity, "extendXml", xmlPath, "ExtendMapper.xml");
         } catch (IOException e) {
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         } catch (TemplateException e) {
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         } catch (GlobalException e) {
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         }
     }
 

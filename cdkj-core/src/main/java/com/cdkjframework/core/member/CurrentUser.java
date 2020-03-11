@@ -6,7 +6,6 @@ import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
-import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import io.jsonwebtoken.Claims;
 
@@ -75,6 +74,24 @@ public class CurrentUser {
     }
 
     /**
+     * 获取所在顶级机构ID
+     *
+     * @return 返回结果
+     */
+    public static String getTopOrganizationId() {
+        return getCurrentUser().getTopOrganizationId();
+    }
+
+    /**
+     * 获取所在顶级机构ID
+     *
+     * @return 返回结果
+     */
+    public static String getOrganizationId() {
+        return getCurrentUser().getOrganizationId();
+    }
+
+    /**
      * 获取抽象信息
      *
      * @return 返回用户抽象实体
@@ -84,7 +101,7 @@ public class CurrentUser {
         if (entity == null) {
             entity = new UserEntity();
             entity.setId("438a848a-60b6-4c00-b6fd-7dfc6dd94aac");
-            entity.setUserName("测试用记");
+            entity.setUserName("测试用户");
         }
 
         //返回结果

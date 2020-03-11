@@ -1,9 +1,11 @@
 package com.cdkjframework.core.spring.body;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.enums.ResponseBuilderEnum;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
@@ -26,6 +28,12 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalResponseHandler implements ResponseBodyAdvice {
+
+    /**
+     * 自定义配置
+     */
+    @Autowired
+    private CustomConfig customConfig;
 
     /**
      * 参数列表
@@ -52,12 +60,8 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
         String name = methodParameter.getMember().getDeclaringClass().getName();
-        if (name.contains(SWAGGER) ||
-                name.contains(ERROR)) {
-            return false;
-        }
-
-        return true;
+        return !name.contains(SWAGGER) &&
+                !name.contains(ERROR);
     }
 
     /**
@@ -104,6 +108,9 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      * @return 返回结果
      */
     private Object encryptHandle(String o) {
+        if (!customConfig.isEncryption()) {
+            return o;
+        }
         return AesUtils.base64Encode(o);
     }
 }

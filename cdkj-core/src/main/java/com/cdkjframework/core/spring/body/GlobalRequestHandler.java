@@ -1,5 +1,7 @@
 package com.cdkjframework.core.spring.body;
 
+import com.cdkjframework.config.CustomConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -20,6 +22,12 @@ import java.lang.reflect.Type;
 
 @ControllerAdvice
 public class GlobalRequestHandler implements RequestBodyAdvice {
+
+    /**
+     * 自定义配置
+     */
+    @Autowired
+    private CustomConfig customConfig;
 
     /**
      * 验证是否修改
@@ -48,7 +56,7 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
     public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage,
                                            MethodParameter methodParameter, Type type,
                                            Class<? extends HttpMessageConverter<?>> aClass) throws IOException {
-        return new HttpInputMessageAdvice(httpInputMessage);
+        return new HttpInputMessageAdvice(httpInputMessage, customConfig.isEncryption());
     }
 
     /**

@@ -146,7 +146,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "int";
+            return "Integer";
         }
 
         /**
@@ -156,7 +156,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "";
+            return "java.lang.Integer";
         }
     },
     SMALLINT {

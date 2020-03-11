@@ -2,6 +2,7 @@ package com.cdkjframework.web.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/test")
 @Api(tags = "测试")
+
 public class TestController {
 
     @RequestMapping("/getInteger")

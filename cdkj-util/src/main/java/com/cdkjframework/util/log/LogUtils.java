@@ -1,12 +1,10 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.constant.Application;
 import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -297,6 +295,9 @@ public class LogUtils implements BeanPostProcessor {
      * @return 返回结果
      */
     private void setLoggerLevel(Logger loggerLevel) {
+        if (customConfig == null) {
+            customConfig = new CustomConfig();
+        }
         int index = LEVEL.indexOf(customConfig.getLevel());
         switch (index) {
             case 0:

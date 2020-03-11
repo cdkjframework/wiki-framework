@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 /**
  * @ProjectName: common-core
@@ -40,11 +41,17 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
     private InputStream body;
 
     /**
+     * 是否加密
+     */
+    private boolean isEncryption;
+
+    /**
      * 构造函数
      *
      * @param httpInputMessage 消息
      */
-    public HttpInputMessageAdvice(HttpInputMessage httpInputMessage) throws IOException {
+    public HttpInputMessageAdvice(HttpInputMessage httpInputMessage, boolean encryption) throws IOException {
+        isEncryption = encryption;
         body = getBody(httpInputMessage.getBody());
         headers = httpInputMessage.getHeaders();
     }
@@ -78,12 +85,15 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
         while ((read = stream.read(buff, IntegerConsts.ZERO, buff.length)) > IntegerConsts.ZERO) {
             swapStream.write(buff, IntegerConsts.ZERO, read);
         }
+        if (!isEncryption) {
+            return new ByteArrayInputStream(swapStream.toByteArray());
+        }
         byte[] bytes = swapStream.toByteArray();
-        LOG_UTILS.info(new String(bytes, EncodingConsts.UTF8));
+        LOG_UTILS.info(new String(bytes, StandardCharsets.UTF_8));
         String context = AesUtils.base64Decrypt(bytes);
         LOG_UTILS.info(context);
         context = URLDecoder.decode(context, EncodingConsts.UTF8);
         LOG_UTILS.info(context);
-        return new ByteArrayInputStream(context.getBytes(EncodingConsts.UTF8));
+        return new ByteArrayInputStream(context.getBytes(StandardCharsets.UTF_8));
     }
 }
