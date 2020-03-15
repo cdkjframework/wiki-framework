@@ -5,7 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.Date;
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -27,101 +28,75 @@ public abstract class AbstractUserEntity extends BaseEntity {
     private static final long serialVersionUID = -3584307538789430288L;
 
     /**
-     * 用户账号
+     * 登录名称
      */
-    private String userName;
+    private String loginName;
     /**
-     * 用户编码
+     * 账户类型(1：老人；2：雇员；3、家属；4：志愿者)
      */
-    private String userCode;
+    private String userTypeId;
     /**
-     * 用户类型（默认为0）
+     * 账户类型(1：老人；2：雇员；3、家属；4：志愿者)
      */
-    private Integer userType;
+    private String userTypeName;
     /**
-     * 用户密码
+     * 姓名
+     */
+    private String displayName;
+    /**
+     * 密码
      */
     private String password;
     /**
-     * 昵称
+     * 手机
      */
-    private String nickName;
+    private String cellphone;
     /**
-     * 真实姓名
+     * 座机
      */
-    private String realName;
+    private String telephone;
     /**
-     * 生日
+     * 籍贯
      */
-    private String birthday;
+    private String nativePlace;
+    /**
+     * 民族
+     */
+    private String nation;
     /**
      * 头像
      */
-    private String portrait;
-    /**
-     * 性别（0：男，1：女）0为默认值
-     */
-    private Integer sex;
-    /**
-     * 电子邮箱
-     */
-    private String email;
-    /**
-     * 用户手机号
-     */
-    private String phone;
-    /**
-     * 用户坐机号
-     */
-    private String tell;
+    private String headPortrait;
     /**
      * 最后登录时间
      */
-    private Date lastLogonTime;
+    private Timestamp lastLoginTime;
     /**
-     * 登录次数
+     * 是否锁定
      */
-    private Integer loginTimes;
+    private Integer locked;
     /**
-     * 职位
+     * 性别(1 男,2 女)
      */
-    private String position;
+    private Integer sex;
     /**
-     * 用户状态（1：正常状态，0：禁用状态）默认为：1
+     * 生日
      */
-    private Integer status;
+    private Date birthday;
+    /**
+     * 居住详细地址
+     */
+    private String addressDetails;
+    /**
+     * 是否可用
+     */
+    private Integer enabled;
+    /**
+     * 当前所在组织ID
+     */
+    private String currentOrganizationId;
     /**
      * 备注
      */
-    private String remarks;
-
-    /**
-     * 组织Id
-     */
-    private String organizationId;
-
-    /**
-     * 组织名称
-     */
-    private String organizationName;
-
-    /**
-     * 组织编码
-     */
-    private String organizationCode;
-
-    /**
-     * 顶级组织Id
-     */
-    private String topOrganizationId;
-
-    /**
-     * 顶级组织名称
-     */
-    private String topOrganizationName;
-
-    /**
-     * 顶级组织编码
-     */
-    private String topOrganizationCode;
+    private String remark;
 }

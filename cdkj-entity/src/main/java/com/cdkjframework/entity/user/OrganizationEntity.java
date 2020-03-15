@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.user;
 
+import com.cdkjframework.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,66 +19,41 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class OrganizationEntity implements Serializable {
+public class OrganizationEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+
     /**
-     * 主键
+     * 编码
      */
-    private String id;
+    private String code;
     /**
-     * 组织名称
+     * 名称
      */
-    private String organizationName;
+    private String name;
     /**
-     * 组织编码
+     * 备注
      */
-    private String organizationCode;
+    private String remark;
     /**
-     * 简介
-     */
-    private String remarks;
-    /**
-     * 父级ID
+     * 机构_标识
      */
     private String parentId;
     /**
-     * 状态（1：正常状态，0：禁用状态）默认为：1
+     * 地址_ID
+     */
+    private String addressId;
+    /**
+     * 联系人
+     */
+    private String contact;
+    /**
+     * 联系电话
+     */
+    private String phone;
+    /**
+     * 机构状态 (0-启用,1-禁用)
      */
     private Integer status;
-    /**
-     * 添加时间
-     */
-    private Date addTime;
-    /**
-     * 添加用户ID
-     */
-    private String addUserId;
-    /**
-     * 添加用户名
-     */
-    private String addUserName;
-    /**
-     * 修改时间
-     */
-    private Date editTime;
-    /**
-     * 修改用户ID
-     */
-    private String editUserId;
-    /**
-     * 修改用户
-     */
-    private String editUserName;
-
-    /**
-     * 受权ID
-     */
-    private String appId;
-
-    /**
-     * 密钥
-     */
-    private String secret;
 }
