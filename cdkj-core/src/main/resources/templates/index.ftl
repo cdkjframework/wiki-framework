@@ -195,6 +195,7 @@
                 })
             },
             encrypt(word) {
+              return  word
                 var key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
                 var iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
                 // 偏移量
@@ -213,6 +214,7 @@
              *
              */
             decrypt(word) {
+              return  word
                 var key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
                 var iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
                 var base64 = CryptoJS.enc.Base64.parse(word);

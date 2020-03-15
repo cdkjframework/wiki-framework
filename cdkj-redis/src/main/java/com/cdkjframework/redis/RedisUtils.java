@@ -143,7 +143,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 值
      */
     public static String syncGet(String key) {
-        if (syncExists(key)) {
+        if (!syncExists(key)) {
             return null;
         }
         RedisFuture<String> redisFuture = redisAsyncCommands == null ? commands.get(key) :
