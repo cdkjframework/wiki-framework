@@ -4,21 +4,19 @@
     <resultMap id="baseExtendResultMap" type="${packageName}.entity.${className}Entity">
         <#list children as item>
             <#if (item.columnName=='id' && item.isExtension==0)>
-            <id column="${item.tableColumnName}" property="${item.columnName}" jdbcType="${item.columnType}"/>
+                <id column="${item.tableColumnName}" property="${item.columnName}" jdbcType="${item.columnType}"/>
             <#elseif item.isExtension==0>
-            <result column="${item.tableColumnName}" property="${item.columnName}" jdbcType="${item.columnType}"/>
+                <result column="${item.tableColumnName}" property="${item.columnName}" jdbcType="${item.columnType}"/>
             </#if>
         </#list>
     </resultMap>
 
 
     <sql id="base_Extend_Column_List">
-        (
         <#list children as item>
             <#if item.isExtension==0>
                 ${item.tableColumnName}<#if item_has_next >,</#if>
             </#if>
         </#list>
-        )
     </sql>
 </mapper>

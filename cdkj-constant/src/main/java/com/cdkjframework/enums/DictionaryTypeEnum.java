@@ -59,7 +59,12 @@ public enum DictionaryTypeEnum {
     /**
      * 餐饮
      */
-    FOOD_BEVERAGE("food_beverage", "餐饮");
+    FOOD_BEVERAGE("food_beverage", "餐饮"),
+
+    /**
+     * 餐饮
+     */
+    TASK_TYPE("task_type", "任务类型");
 
     /**
      * 值

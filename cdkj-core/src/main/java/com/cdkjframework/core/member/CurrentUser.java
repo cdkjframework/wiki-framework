@@ -52,7 +52,7 @@ public class CurrentUser {
      * @return 返回结果
      */
     public static String getRealName() {
-        return getCurrentUser().getRealName();
+        return getCurrentUser().getDisplayName();
     }
 
     /**
@@ -61,7 +61,7 @@ public class CurrentUser {
      * @return 返回结果
      */
     public static String getUserName() {
-        return getCurrentUser().getUserName();
+        return getCurrentUser().getLoginName();
     }
 
     /**
@@ -101,7 +101,7 @@ public class CurrentUser {
         if (entity == null) {
             entity = new UserEntity();
             entity.setId("438a848a-60b6-4c00-b6fd-7dfc6dd94aac");
-            entity.setUserName("测试用户");
+            entity.setLoginName("测试用户");
         }
 
         //返回结果
