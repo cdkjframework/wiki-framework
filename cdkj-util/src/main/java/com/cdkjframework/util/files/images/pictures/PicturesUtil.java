@@ -1,5 +1,6 @@
 package com.cdkjframework.util.files.images.pictures;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.file.ImageEntity;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.log.LogUtils;
@@ -121,7 +122,7 @@ public class PicturesUtil {
         Random random = new Random();
         // 设置线条的颜色
         g2.setColor(getRandColor(160, 200));
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < IntegerConsts.TWENTY; i++) {
             int x = random.nextInt(w - 1);
             int y = random.nextInt(h - 1);
             int xl = random.nextInt(6) + 1;
@@ -150,7 +151,7 @@ public class PicturesUtil {
             AffineTransform affine = new AffineTransform();
             affine.setToRotation(Math.PI / 4 * rand.nextDouble() * (rand.nextBoolean() ? 1 : -1), (w / verifySize) * i + fontSize / 2, h / 2);
             g2.setTransform(affine);
-            g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 10);
+            g2.drawChars(chars, i, 1, ((w - 10) / verifySize) * i + 5, h / 2 + fontSize / 2 - 5);
         }
 
         g2.dispose();

@@ -37,7 +37,7 @@ public class StringUtils {
             return true;
         }
         //验证是否为空
-        if (obj.toString().trim() == "") {
+        if ("".equals(obj.toString().trim())) {
             return true;
         }
         //返回结果
@@ -95,7 +95,7 @@ public class StringUtils {
                 value = Integer.valueOf(obj.toString());
             }
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -114,7 +114,7 @@ public class StringUtils {
                 value = Long.valueOf(obj.toString());
             }
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;
@@ -136,7 +136,7 @@ public class StringUtils {
                 value = Boolean.valueOf(obj.toString());
             }
         } catch (Exception ex) {
-            logUtil.error(ex.getCause(),ex.getMessage());
+            logUtil.error(ex.getCause(), ex.getMessage());
         }
         //返回结果
         return value;

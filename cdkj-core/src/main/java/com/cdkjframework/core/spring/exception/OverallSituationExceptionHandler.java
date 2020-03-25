@@ -1,9 +1,11 @@
 package com.cdkjframework.core.spring.exception;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import org.springframework.dao.DataAccessException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
+import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +51,7 @@ public class OverallSituationExceptionHandler {
     @ResponseBody
     public ResponseBuilder defultExcepitonHandler(Exception e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
-        Map<String, Object> params = new HashMap<>(10);
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
         builder.setData(params);
 
@@ -56,12 +60,18 @@ public class OverallSituationExceptionHandler {
         return builder;
     }
 
+    /**
+     * 公共异常
+     *
+     * @param e 公共异常数据
+     * @return 返回公共异常结果
+     */
     @ExceptionHandler(GlobalException.class)
     @ResponseBody
     public ResponseBuilder GlobalException(GlobalException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
         builder.setMessage(e.getMessage());
-        Map<String, Object> params = new HashMap<>(10);
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
         logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
@@ -70,6 +80,12 @@ public class OverallSituationExceptionHandler {
         return builder;
     }
 
+    /**
+     * 数据验证异常
+     *
+     * @param e 验证异常信息
+     * @return 返回数据验证异常
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
     public ResponseBuilder MethodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -91,6 +107,69 @@ public class OverallSituationExceptionHandler {
         logUtil.error(e.getCause(), String.join(";", errorList));
 
         builder.setData(errorList);
+        return builder;
+    }
+
+    /**
+     * 数据访问异常
+     *
+     * @param e 数据访问异常信息
+     * @return 返回数据访问异常
+     */
+    @ExceptionHandler(DataAccessException.class)
+    @ResponseBody
+    public ResponseBuilder MyBatisException(DataAccessException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
+
+    /**
+     * SQL语法错误异常
+     *
+     * @param e SQL语法错误异常异常信息
+     * @return 返回SQL语法错误异常
+     */
+    @ExceptionHandler(SQLSyntaxErrorException.class)
+    @ResponseBody
+    public ResponseBuilder MyBatisException(SQLSyntaxErrorException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
+
+    /**
+     * sql 异常捕获
+     *
+     * @param e SQL异常信息
+     * @return 返回封装结果
+     */
+    @ExceptionHandler(SQLException.class)
+    @ResponseBody
+    public ResponseBuilder MyBatisException(SQLException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
         return builder;
     }
 

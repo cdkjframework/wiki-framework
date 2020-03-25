@@ -61,7 +61,7 @@ public class BaseVo {
      * 是否删除
      */
     @ApiModelProperty("是否删除")
-    protected Integer isDeleted;
+    protected Integer deleted;
 
     /**
      * 添加时间

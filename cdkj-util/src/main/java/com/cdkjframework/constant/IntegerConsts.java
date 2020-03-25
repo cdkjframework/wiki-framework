@@ -42,6 +42,11 @@ public class IntegerConsts {
     public final static Integer SIX = 6;
 
     /**
+     * 二十
+     */
+    public final static Integer TWENTY = 20;
+
+    /**
      * 字节长度
      */
     public final static Integer BYTE_LENGTH = 1024;
