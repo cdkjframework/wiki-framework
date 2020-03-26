@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj.cloud
  * @Package: com.cdkjframework.core.config
@@ -45,4 +47,9 @@ public class CustomConfig {
      * 是否加密
      */
     private boolean encryption = false;
+
+    /**
+     * 过虑接口
+     */
+    private List<String> filters;
 }

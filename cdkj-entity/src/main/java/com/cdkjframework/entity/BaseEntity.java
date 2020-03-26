@@ -79,8 +79,32 @@ public class BaseEntity implements Serializable {
     protected String organizationId;
 
     /**
+     * 所在机构编码
+     */
+    @Column(name = "organization_code", columnDefinition = "所在机构编码", length = 100)
+    protected String organizationCode;
+
+    /**
+     * 所在机构名称
+     */
+    @Column(name = "organization_name", columnDefinition = "所在机构名称", length = 500)
+    protected String organizationName;
+
+    /**
      * 所在机构上级ID
      */
     @Column(name = "top_organization_id", columnDefinition = "所在机构上级ID", length = 36)
     protected String topOrganizationId;
+
+    /**
+     * 所在机构上级编码
+     */
+    @Column(name = "top_organization_code", columnDefinition = "所在机构上级编码", length = 100)
+    protected String topOrganizationCode;
+
+    /**
+     * 所在机构上级名称
+     */
+    @Column(name = "top_organization_name", columnDefinition = "所在机构上级名称", length = 500)
+    protected String topOrganizationName;
 }

@@ -22,6 +22,7 @@ public class LocalDateUtils {
      * 日期时间格式
      */
     public static final String DATE = "yyyy-MM-dd";
+    public static final String DATE_NOT_LINE = "yyyyMMdd";
     public static final String DATE_HH_MM = "yyyy-MM-dd HH:mm";
     public static final String DATE_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_HH_MM_SS_SSS = "yyyy-MM-dd HH:mm:ss.SSS";

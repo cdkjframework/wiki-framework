@@ -10,6 +10,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -39,8 +40,6 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      * 参数列表
      */
     private static List<String> parameterList;
-    private static String SWAGGER = "swagger";
-    private static String ERROR = "error";
 
     static {
         parameterList = new ArrayList<>();
@@ -60,8 +59,14 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
         String name = methodParameter.getMember().getDeclaringClass().getName();
-        return !name.contains(SWAGGER) &&
-                !name.contains(ERROR);
+        List<String> filter = customConfig.getFilters();
+        if (CollectionUtils.isEmpty(filter)) {
+            return true;
+        }
+        List<String> list = filter.stream()
+                .filter(f -> name.contains(f))
+                .collect(Collectors.toList());
+        return CollectionUtils.isEmpty(list);
     }
 
     /**

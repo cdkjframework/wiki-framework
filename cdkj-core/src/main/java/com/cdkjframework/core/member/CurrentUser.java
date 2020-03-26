@@ -87,8 +87,26 @@ public class CurrentUser {
      *
      * @return 返回结果
      */
+    public static String getTopOrganizationCode() {
+        return getCurrentUser().getTopOrganizationCode();
+    }
+
+    /**
+     * 获取所在机构ID
+     *
+     * @return 返回结果
+     */
     public static String getOrganizationId() {
         return getCurrentUser().getOrganizationId();
+    }
+
+    /**
+     * 获取所在顶级机构编码
+     *
+     * @return 返回结果
+     */
+    public static String getOrganizationCode() {
+        return getCurrentUser().getOrganizationCode();
     }
 
     /**
