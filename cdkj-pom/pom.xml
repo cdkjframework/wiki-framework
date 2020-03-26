@@ -90,6 +90,7 @@
         <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
         <lombok.version>1.18.8</lombok.version>
         <commons.io.version>2.6</commons.io.version>
+        <commons-lang.version>2.6</commons-lang.version>
 
         <java.jwt.version>3.8.1</java.jwt.version>
         <jjwt.version>0.9.1</jjwt.version>
@@ -467,6 +468,11 @@
                 <groupId>commons-io</groupId>
                 <artifactId>commons-io</artifactId>
                 <version>${commons.io.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>commons-lang</groupId>
+                <artifactId>commons-lang</artifactId>
+                <version>${commons-lang.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
