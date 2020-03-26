@@ -1,20 +1,18 @@
 package com.cdkjframework.web;
 
-import com.cdkjframework.center.annotation.EnableAutoGenerate;
-import com.cdkjframework.core.spring.CdkjApplication;
-import com.cdkjframework.util.files.images.code.BarCodeUtils;
-import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.entity.ComparisonEntity;
+import com.cdkjframework.entity.PageEntity;
+import com.cdkjframework.util.tool.CopyUtils;
+import com.cdkjframework.web.entity.ComparisonVo;
+import com.cdkjframework.web.entity.PageVo;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ProjectName: cdkj-framework
@@ -51,6 +49,19 @@ public class WebApplication {
      * @param args 参数
      */
     public static void main(String[] args) {
+
+        PageVo<ComparisonVo> pageVo = new PageVo<>();
+        List<ComparisonVo> voList = new ArrayList<>();
+        voList.add(new ComparisonVo());
+        voList.add(new ComparisonVo());
+        voList.add(new ComparisonVo());
+        pageVo.setData(voList);
+        pageVo.setCode(0);
+        pageVo.setPageIndex(1);
+        pageVo.setTotal(100);
+
+        PageEntity<ComparisonEntity> pageEntity = CopyUtils.copyNoNullProperties(pageVo, PageEntity.class);
+
         SpringApplication.run(WebApplication.class, args);
     }
 }

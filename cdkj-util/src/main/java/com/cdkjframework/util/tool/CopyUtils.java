@@ -8,6 +8,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.util.*;
 
 /**
@@ -25,6 +26,16 @@ public class CopyUtils {
      * 日志
      */
     private static LogUtils logUtil = LogUtils.getLogger(CopyUtils.class);
+
+    /**
+     * 数据类型
+     */
+    private static final String DATA_TYPE = "java.util.ArrayList";
+
+    /**
+     * 类的类型
+     */
+    private static final String CLASS_TYPE = "java";
 
     /**
      * 获取到空值列
@@ -58,11 +69,10 @@ public class CopyUtils {
      * @return 返回对象数据集
      */
     public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
-                    List<T> result = new ArrayList();
-                    if (list != null) {
-                        for (S o : list) {
-                            try {
-
+        List<T> result = new ArrayList();
+        if (list != null) {
+            for (S o : list) {
+                try {
                     T d = target.newInstance();
                     copyProperties(o, d, false);
                     result.add(d);
@@ -178,6 +188,10 @@ public class CopyUtils {
                 targetField.setAccessible(true);
                 // 读取值
                 Object value = ReflectionUtils.getFieldValue(targetField, target);
+                String typeName = value.getClass().getTypeName();
+                if (typeName.contains(DATA_TYPE)) {
+                    setArrayList((ArrayList) value, target, targetField);
+                }
                 if (value != "") {
                     continue;
                 }
@@ -202,5 +216,26 @@ public class CopyUtils {
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
         }
+    }
+
+    /**
+     * 设置列表
+     *
+     * @param arrayList   列表数据
+     * @param targetField 目标类
+     */
+    private static <T> void setArrayList(ArrayList arrayList, T target, Field targetField) throws IllegalAccessException, InstantiationException {
+        Class clazz = (Class) ((ParameterizedType) targetField.getGenericType()).getActualTypeArguments()[0];
+        if (clazz.getTypeName().contains(CLASS_TYPE)) {
+            return;
+        }
+        List list = new ArrayList();
+        for (Object obj :
+                arrayList) {
+            Object objClazz = clazz.newInstance();
+            copyProperties(obj, objClazz);
+            list.add(objClazz);
+        }
+        ReflectionUtils.setFieldValue(target, targetField, list);
     }
 }
