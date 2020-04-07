@@ -19,7 +19,7 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @ToString
 @Configuration
-@ConfigurationProperties(prefix = "spring.cdkj.datasource.jpa")
+@ConfigurationProperties(prefix = "spring.datasource.jpa")
 public class JpaConfig {
 
     /**

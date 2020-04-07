@@ -1,13 +1,13 @@
 package com.cdkjframework.redis.number;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.RedisUtils;
-import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -20,12 +20,6 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 public class RedisNumbersUtils {
-
-
-    /**
-     * 前缀常量
-     */
-    private static final String DATE_PATTERN = "yyMMdd";
 
     /**
      * 单号生成主键 KEY
@@ -50,7 +44,7 @@ public class RedisNumbersUtils {
         //客户代码：3位数字
         //采购订单：CG00117072500001
         //销售订单：XS00117072500001
-        return generate(prefix, length, 0, true);
+        return generate(prefix, length, IntegerConsts.ZERO, true);
     }
 
 
@@ -63,7 +57,7 @@ public class RedisNumbersUtils {
      * @throws GlobalException 异常信息
      */
     public static String generateNoDateNumber(String prefix, int length) throws GlobalException {
-        return generate(prefix, length, 0, false);
+        return generate(prefix, length, IntegerConsts.ZERO, false);
     }
 
 
@@ -78,7 +72,7 @@ public class RedisNumbersUtils {
      * @throws GlobalException 异常信息
      */
     private static String generate(String prefix, int length, int init, boolean isDate) throws GlobalException {
-        final int error = 5;
+        final int error = IntegerConsts.FIVE;
         //生成单号
         String number = autoRetryGenerate(prefix, length, init, error, isDate);
 
@@ -94,46 +88,47 @@ public class RedisNumbersUtils {
     /**
      * 自动生成并重试
      *
-     * @param prefix 前缀
-     * @param length 长度
-     * @param init   初始值
-     * @param err    最多生成次数
-     * @param isDate 是否加时间
+     * @param prefix   前缀
+     * @param length   长度
+     * @param init     初始值
+     * @param maxError 最大生成次数
+     * @param isDate   是否加时间
      * @return 返回结果
      */
-    private static String autoRetryGenerate(String prefix, int length, int init, int err, boolean isDate) {
+    private static synchronized String autoRetryGenerate(String prefix, int length, int init, int maxError, boolean isDate) {
         int error = 0;
-        while (error < err) {
+        while (error < maxError) {
             try {
                 // 生成前缀信息
                 StringBuffer buffer = new StringBuffer(prefix);
 
-                String date = DateUtils.format(new Date(), DATE_PATTERN);
+                String date = LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_NOT_LINE_SHORT_YEAR);
                 if (isDate) {
                     buffer.append(date);
                 }
                 String key = prefix + "-" + ODD_NUMBER_KEY + "-" + date;
                 //设置过期时间
-                RedisUtils.syncExpire(key, 1 * 24 * 60 * 60);
+                int time = IntegerConsts.ONE * IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
+                RedisUtils.syncExpire(key, time);
 
                 //获取单号记录
                 long target = RedisUtils.syncIncr(key, init);
-                if (target > 0) {
+                if (target > IntegerConsts.ZERO) {
                     // 生成单号
                     String number = String.valueOf(target);
                     if (length > number.length()) {
-                        for (int i = 0; i < (length - number.length()); i++) {
-                            buffer.append("0");
+                        for (int i = IntegerConsts.ZERO; i < (length - number.length()); i++) {
+                            buffer.append(IntegerConsts.ZERO);
                         }
                     }
                     return buffer.append(target).toString();
                 } else {
-                    TimeUnit.MILLISECONDS.sleep(200);
+                    TimeUnit.MILLISECONDS.sleep(IntegerConsts.ONE_HUNDRED);
                     throw new GlobalException("生成单号失败");
                 }
             } catch (Exception ex) {
                 error++;
-                String errorMessage = String.format("第%s次获取单号失败[%s]，%s", String.valueOf(error), prefix, ex.getMessage());
+                String errorMessage = String.format("第%s次获取单号失败[%s]，%s", error, prefix, ex.getMessage());
                 logUtils.error(errorMessage);
             }
         }

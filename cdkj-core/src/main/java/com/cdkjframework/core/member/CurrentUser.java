@@ -3,11 +3,14 @@ package com.cdkjframework.core.member;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.CacheConsts;
+import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import io.jsonwebtoken.Claims;
+
+import java.util.List;
 
 /**
  * @ProjectName: common-core
@@ -107,6 +110,16 @@ public class CurrentUser {
      */
     public static String getOrganizationCode() {
         return getCurrentUser().getOrganizationCode();
+    }
+
+
+    /**
+     * 获取所在顶级机构编码
+     *
+     * @return 返回结果
+     */
+    public static List<RoleEntity> getRoleList() {
+        return getCurrentUser().getRoleList();
     }
 
     /**

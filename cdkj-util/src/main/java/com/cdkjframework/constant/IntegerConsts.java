@@ -37,14 +37,54 @@ public class IntegerConsts {
     public final static Integer FOUR = 4;
 
     /**
+     * 五
+     */
+    public final static Integer FIVE = 5;
+
+    /**
      * 六
      */
     public final static Integer SIX = 6;
 
     /**
+     * 七
+     */
+    public final static Integer SEVEN = 7;
+
+    /**
+     * 八
+     */
+    public final static Integer EIGHT = 8;
+
+    /**
+     * 九
+     */
+    public final static Integer NINE = 9;
+
+    /**
+     * 十
+     */
+    public final static Integer TEN = 10;
+
+    /**
      * 二十
      */
     public final static Integer TWENTY = 20;
+
+    /**
+     * 二十四
+     */
+    public final static Integer TWENTY_FOUR = 24;
+
+    /**
+     * 六十
+     */
+    public final static Integer SIXTY = 60;
+
+    /**
+     * 一百
+     */
+    public final static Integer ONE_HUNDRED = 100;
 
     /**
      * 字节长度

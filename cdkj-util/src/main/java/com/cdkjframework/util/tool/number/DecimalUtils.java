@@ -82,7 +82,7 @@ public class DecimalUtils {
         }
 
         // 返回结果
-        return dividend.divide(divisor).setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return dividend.divide(divisor, scale, BigDecimal.ROUND_HALF_UP);
     }
 
     /**

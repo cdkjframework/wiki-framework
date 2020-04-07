@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 /**
  * @ProjectName: cdkj-framework
@@ -23,6 +24,7 @@ public class LocalDateUtils {
      */
     public static final String DATE = "yyyy-MM-dd";
     public static final String DATE_NOT_LINE = "yyyyMMdd";
+    public static final String DATE_NOT_LINE_SHORT_YEAR = "yyMMdd";
     public static final String DATE_HH_MM = "yyyy-MM-dd HH:mm";
     public static final String DATE_HH_MM_SS = "yyyy-MM-dd HH:mm:ss";
     public static final String DATE_HH_MM_SS_SSS = "yyyy-MM-dd HH:mm:ss.SSS";
@@ -108,6 +110,32 @@ public class LocalDateUtils {
      */
     public static LocalDate dateParse(int year, int month, int day) {
         return LocalDate.of(year, month, day);
+    }
+
+    /**
+     * 将指定时间转换为时间戳
+     *
+     * @param localDate 日期
+     * @return 返回结果
+     */
+    public static long localDateToTimestamp(LocalDate localDate) {
+        if (localDate == null) {
+            return 0;
+        }
+        return localDate.atStartOfDay(ZoneOffset.ofHours(8)).toInstant().toEpochMilli();
+    }
+
+    /**
+     * 将指定时间转换为时间戳
+     *
+     * @param localDateTime 日期时间
+     * @return 返回结果
+     */
+    public static long localDateTimeToTimestamp(LocalDateTime localDateTime) {
+        if (localDateTime == null) {
+            return 0;
+        }
+        return localDateTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
     }
 
     /**
@@ -314,7 +342,7 @@ public class LocalDateUtils {
     public static long designatedToDay(int month) {
         // 获取当前时间
         LocalDate localDate = getCurrentDate();
-        localDate = localDate.withMonth(month);
+        localDate = localDate.withMonth(month).with(TemporalAdjusters.lastDayOfMonth());
         return localDate.getDayOfMonth();
     }
 
@@ -328,7 +356,7 @@ public class LocalDateUtils {
     public static long designatedToDay(int year, int month) {
         // 获取当前时间
         LocalDate localDate = getCurrentDate();
-        localDate = localDate.withYear(year).withMonth(month);
+        localDate = localDate.withYear(year).withMonth(month).with(TemporalAdjusters.lastDayOfMonth());
         return localDate.getDayOfMonth();
     }
 
@@ -380,6 +408,7 @@ public class LocalDateUtils {
     public static boolean greater(LocalDate startDate, LocalDate endDate) {
         return startDate.isBefore(endDate);
     }
+
     /**
      * 时间比较 3
      *
