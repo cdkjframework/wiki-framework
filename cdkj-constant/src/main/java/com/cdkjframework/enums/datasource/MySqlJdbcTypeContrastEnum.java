@@ -327,6 +327,27 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
             return "VARCHAR";
         }
     },
+    MEDIUMTEXT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "mediumtext";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "VARCHAR";
+        }
+    },
     LONGTEXT {
         /**
          * 获取枚举值

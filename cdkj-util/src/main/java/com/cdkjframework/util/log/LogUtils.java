@@ -1,9 +1,11 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
@@ -109,9 +111,9 @@ public class LogUtils implements BeanPostProcessor {
      */
     public void debug(Throwable throwable, String msg) {
         if (throwable != null) {
-            log(Level.CONFIG, throwable, msg);
+            logThrowable(Level.CONFIG, throwable, msg);
         } else {
-            log(Level.CONFIG, msg);
+            logThrowable(Level.CONFIG, msg);
         }
     }
 
@@ -132,9 +134,9 @@ public class LogUtils implements BeanPostProcessor {
      */
     public void info(Throwable throwable, String msg) {
         if (throwable != null) {
-            log(Level.INFO, throwable, msg);
+            logThrowable(Level.INFO, throwable, msg);
         } else {
-            log(Level.INFO, msg);
+            logThrowable(Level.INFO, msg);
         }
     }
 
@@ -155,9 +157,9 @@ public class LogUtils implements BeanPostProcessor {
      */
     public void warn(Throwable throwable, String msg) {
         if (throwable != null) {
-            log(Level.INFO, throwable, msg);
+            logThrowable(Level.INFO, throwable, msg);
         } else {
-            log(Level.INFO, msg);
+            logThrowable(Level.INFO, msg);
         }
     }
 
@@ -167,7 +169,7 @@ public class LogUtils implements BeanPostProcessor {
      * @param msg 错误信息
      */
     public void error(String msg) {
-        error(null, msg);
+        error((Throwable) null, msg);
     }
 
     /**
@@ -178,9 +180,23 @@ public class LogUtils implements BeanPostProcessor {
      */
     public void error(Throwable throwable, String msg) {
         if (throwable == null) {
-            log(Level.SEVERE, msg);
+            logThrowable(Level.SEVERE, msg);
         } else {
-            log(Level.SEVERE, throwable, msg);
+            logThrowable(Level.SEVERE, throwable, msg);
+        }
+    }
+
+    /**
+     * 错误输出日志
+     *
+     * @param stackTraceElements 错误信息
+     * @param msg                错误信息
+     */
+    public void error(StackTraceElement[] stackTraceElements, String msg) {
+        if (stackTraceElements == null) {
+            logThrowable(Level.SEVERE, msg);
+        } else {
+            log(Level.SEVERE, stackTraceElements, msg);
         }
     }
 
@@ -190,7 +206,29 @@ public class LogUtils implements BeanPostProcessor {
      * @param ex 错误信息
      */
     public void error(Exception ex) {
-        log(Level.SEVERE, ex.getCause(), ex.getMessage());
+        log(Level.SEVERE, ex.getStackTrace(), ex.getMessage());
+    }
+
+    /**
+     * 写入日志
+     *
+     * @param level             等级
+     * @param stackTraceElement 错误信息
+     * @param msg               错误信息
+     */
+    private void log(Level level, StackTraceElement[] stackTraceElement, String msg) {
+        try {
+            if (stackTraceElement == null) {
+                logger.log(level, msg);
+            } else {
+                logger.log(level, msg, stackTraceElement);
+            }
+
+            //写入日志
+            writeLog(level, stackTraceElement, msg);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     /**
@@ -200,7 +238,7 @@ public class LogUtils implements BeanPostProcessor {
      * @param throwable 错误信息
      * @param msg       错误信息
      */
-    private void log(Level level, Throwable throwable, String msg) {
+    private void logThrowable(Level level, Throwable throwable, String msg) {
         try {
             if (throwable == null) {
                 logger.log(level, msg);
@@ -221,9 +259,9 @@ public class LogUtils implements BeanPostProcessor {
      * @param level 等级
      * @param msg   错误信息
      */
-    private void log(Level level, String msg) {
+    private void logThrowable(Level level, String msg) {
         try {
-            log(level, null, msg);
+            logThrowable(level, null, msg);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
@@ -238,55 +276,108 @@ public class LogUtils implements BeanPostProcessor {
      */
     private synchronized void writeLog(Level level, Throwable throwable, String msg) {
         try {
-            // 验证目录存不存在
-            String logPath = customConfig.getLogPath();
-            if (HostUtils.getOs().startsWith(OS)) {
-                logPath = "c:" + logPath;
-            }
-            File file = new File(logPath);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            if (!file.exists()) {
-                return;
-            }
             // 日志文件
             String logFileName = "log-" + level.getName().toLowerCase() +
                     "-" + DateUtils.format(new Date()) + ".log";
-
-            // 验证文件是否存在
-            file = new File(logPath + logFileName);
-            try {
-                if (!file.exists()) {
-                    file.createNewFile();
-                }
-            } catch (IOException e) {
-                System.out.println(e);
+            String logPath = existsCatalog(logFileName);
+            if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
                 return;
             }
-
             // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
             builder.append(String.format("%s:%s ", logger.getName(), msg));
             FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
             //  异常信息
-            if (throwable != null) {
+            if (throwable != null && throwable.getStackTrace() != null) {
                 StackTraceElement[] elements = throwable.getStackTrace();
-                for (StackTraceElement ele :
-                        elements) {
-                    builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
-                    builder.append(String.format("    【%s】    ", level.getName()));
-                    builder.append(String.format("%s.%s(%s:%d)", ele.getClassName(),
-                            ele.getMethodName(), ele.getFileName(), ele.getLineNumber()));
-
-                    // 保存文件
-                    FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
-                }
+                writeExceptionFile(level, elements, logPath, logFileName);
             }
         } catch (Exception ex) {
             System.out.println(ex);
         }
+    }
+
+    /**
+     * 写入日志至文件系统
+     *
+     * @param level
+     * @param elements 错误信息
+     * @param msg
+     */
+    private synchronized void writeLog(Level level, StackTraceElement[] elements, String msg) {
+        try {
+            // 日志文件
+            String logFileName = "log-" + level.getName().toLowerCase() + "-" + DateUtils.format(new Date()) + ".log";
+            String logPath = existsCatalog(logFileName);
+            if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
+                return;
+            }
+            // 日志时间
+            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
+            builder.append(String.format("    【%s】    ", level.getName()));
+            builder.append(String.format("%s:%s ", logger.getName(), msg));
+            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
+            //  异常信息
+            if (elements != null) {
+                writeExceptionFile(level, elements, logPath, logFileName);
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+    }
+
+    /**
+     * 异常写入文件
+     *
+     * @param level       等级
+     * @param elements    异常信息
+     * @param logPath     文件路径
+     * @param logFileName 文件名称
+     */
+    private void writeExceptionFile(Level level, StackTraceElement[] elements, String logPath, String logFileName) throws GlobalException {
+        for (StackTraceElement element :
+                elements) {
+            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
+            builder.append(String.format("    【%s】    ", level.getName()));
+            builder.append(String.format("%s.%s(%s:%d)", element.getClassName(),
+                    element.getMethodName(), element.getFileName(), element.getLineNumber()));
+
+            // 保存文件
+            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
+        }
+    }
+
+    /**
+     * 验证目录并返回 file
+     *
+     * @param logFileName 文件名称
+     */
+    private String existsCatalog(String logFileName) {
+        // 验证目录存不存在
+        String logPath = customConfig.getLogPath();
+        if (HostUtils.getOs().startsWith(OS)) {
+            logPath = "c:" + logPath;
+        }
+        File file = new File(logPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        if (!file.exists()) {
+            return "";
+        }
+
+        // 验证文件是否存在
+        file = new File(logPath + logFileName);
+        try {
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+        } catch (IOException e) {
+            System.out.println(e);
+            return "";
+        }
+        return logPath;
     }
 
     /**

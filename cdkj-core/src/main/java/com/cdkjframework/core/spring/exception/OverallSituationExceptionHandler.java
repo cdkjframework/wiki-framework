@@ -55,7 +55,7 @@ public class OverallSituationExceptionHandler {
         params.put("error", e.getMessage());
         builder.setData(params);
 
-        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
 
         return builder;
     }
@@ -74,7 +74,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -104,7 +104,7 @@ public class OverallSituationExceptionHandler {
             }
         }
 
-        logUtil.error(e.getCause(), String.join(";", errorList));
+        logUtil.error(e.getStackTrace(), String.join(";", errorList));
 
         builder.setData(errorList);
         return builder;
@@ -125,7 +125,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -146,7 +146,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -167,7 +167,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getCause(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -190,7 +190,7 @@ public class OverallSituationExceptionHandler {
         } else {
             message = message.substring(begin);
         }
-        logUtil.error(e.getCause(), message);
+        logUtil.error(e.getStackTrace(), message);
         return ResponseBuilder.failBuilder(message);
     }
 
@@ -206,7 +206,7 @@ public class OverallSituationExceptionHandler {
         Long size = Long.valueOf(1024);
         Long fileSizeM = size / (1024 * 1024L);
         String info = String.format("文件请勿超过%sM", fileSizeM);
-        logUtil.error(e.getCause(), info);
+        logUtil.error(e.getStackTrace(), info);
 
         return ResponseBuilder.failBuilder(info);
     }
