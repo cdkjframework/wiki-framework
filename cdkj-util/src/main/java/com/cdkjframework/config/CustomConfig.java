@@ -52,4 +52,14 @@ public class CustomConfig {
      * 过虑接口
      */
     private List<String> filters;
+
+    /**
+     * webSocket服务
+     */
+    private String webSocketClassName;
+
+    /**
+     * 调用方法
+     */
+    private String webSocketMethodName;
 }

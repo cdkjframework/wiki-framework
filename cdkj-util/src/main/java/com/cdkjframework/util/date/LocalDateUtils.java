@@ -1,5 +1,6 @@
 package com.cdkjframework.util.date;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.stereotype.Component;
 
@@ -418,5 +419,71 @@ public class LocalDateUtils {
      */
     public static boolean greater(LocalTime startTime, LocalTime endTime) {
         return startTime.isBefore(endTime);
+    }
+
+    /**
+     * 时间戳转换为时间
+     *
+     * @param timestamp 时间戳
+     * @return 返回时间
+     */
+    public static LocalDateTime timestampToLocalDateTime(long timestamp) {
+        return LocalDateTime.ofEpochSecond(timestamp, IntegerConsts.ZERO, ZoneOffset.ofHours(IntegerConsts.EIGHT));
+    }
+
+    /**
+     * 时间戳转换为时间字符
+     *
+     * @param timestamp 时间戳
+     * @return 返回时间字符
+     */
+    public static String timestampToDateTimeString(long timestamp) {
+        LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, IntegerConsts.ZERO, ZoneOffset.ofHours(IntegerConsts.EIGHT));
+        return dateTimeFormatter(localDateTime);
+    }
+
+    /**
+     * 时间戳转换为时间字符
+     *
+     * @param timestamp 时间戳
+     * @param pattern   时间格式
+     * @return 返回时间字符
+     */
+    public static String timestampToDateTimeString(long timestamp, String pattern) {
+        LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, IntegerConsts.ZERO, ZoneOffset.ofHours(IntegerConsts.EIGHT));
+        return dateTimeFormatter(localDateTime, pattern);
+    }
+
+    /**
+     * 时间戳转换为日期
+     *
+     * @param timestamp 时间戳
+     * @return 返回时间
+     */
+    public static LocalDate timestampToLocalDate(long timestamp) {
+        return LocalDateTime.ofEpochSecond(timestamp, IntegerConsts.ZERO, ZoneOffset.ofHours(IntegerConsts.EIGHT)).toLocalDate();
+    }
+
+    /**
+     * 时间戳转换为日期字符
+     *
+     * @param timestamp 时间戳
+     * @return 返回时间字符
+     */
+    public static String timestampToDateString(long timestamp) {
+        LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, IntegerConsts.ZERO, ZoneOffset.ofHours(IntegerConsts.EIGHT));
+        return dateTimeFormatter(localDateTime, DATE);
+    }
+
+    /**
+     * 时间戳转换为日期字符
+     *
+     * @param timestamp 时间戳
+     * @param pattern   时间格式
+     * @return 返回日期字符
+     */
+    public static String timestampToDateString(long timestamp, String pattern) {
+        LocalDateTime localDateTime = LocalDateTime.ofEpochSecond(timestamp, IntegerConsts.ZERO, ZoneOffset.ofHours(IntegerConsts.EIGHT));
+        return dateTimeFormatter(localDateTime, pattern);
     }
 }

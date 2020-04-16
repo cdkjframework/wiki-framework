@@ -1,11 +1,21 @@
 package com.cdkjframework.core.business.websocket;
 
+import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.Application;
+import com.cdkjframework.entity.socket.WebSocketEntity;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -19,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @ServerEndpoint(value = "/api/webSocket")
-public class WebSocketService {
+public class WebSocketService implements ApplicationRunner {
 
     /**
      * 日志
@@ -40,6 +50,27 @@ public class WebSocketService {
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
      */
     private Session session;
+
+    /**
+     * 方法
+     */
+    private static Method method;
+
+    /**
+     * bean
+     */
+    private static Object bean;
+
+    /**
+     * 自定义配置
+     */
+    @Autowired
+    private CustomConfig customConfig;
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        getBean();
+    }
 
     /**
      * 连接建立成功调用的方法
@@ -79,13 +110,25 @@ public class WebSocketService {
     @OnMessage
     public void onMessage(String message, Session session) {
         logUtil.info("来自客户端的消息:" + message);
-
-        //群发消息
-        for (WebSocketService item : webSocketSet) {
+        if (bean != null && method != null) {
             try {
-                item.sendMessage(message);
-            } catch (IOException e) {
-                logUtil.error(e.getCause(), e.getMessage());
+                WebSocketEntity entity = new WebSocketEntity();
+                entity.setMessage(message);
+                entity.setSession(session);
+                method.invoke(bean, entity);
+            } catch (IllegalAccessException e) {
+                logUtil.error(e);
+            } catch (InvocationTargetException e) {
+                logUtil.error(e);
+            }
+        } else {
+            //群发消息
+            for (WebSocketService item : webSocketSet) {
+                try {
+                    item.sendMessage(message);
+                } catch (IOException e) {
+                    logUtil.error(e.getCause(), e.getMessage());
+                }
             }
         }
     }
@@ -168,5 +211,35 @@ public class WebSocketService {
     public int hashCode() {
 
         return Objects.hash(logUtil, session);
+    }
+
+
+    /**
+     * 获取 bean
+     */
+    public void getBean() {
+        try {
+            // 使用spring content 获取类的实例 必须在 application 注册 applicationContext 变量
+            ApplicationContext context = Application.applicationContext;
+            if (context == null || StringUtils.isNullAndSpaceOrEmpty(customConfig.getWebSocketClassName()) ||
+                    StringUtils.isNullAndSpaceOrEmpty(customConfig.getWebSocketMethodName())) {
+                return;
+            }
+            Class targetClass = Class.forName(customConfig.getWebSocketClassName());
+            bean = context.getBean(targetClass);
+            /*
+             给实例化的类注入需要的bean (@Autowired)
+             如果不注入，被@Autowired注解的变量会报空指针
+              */
+            context.getAutowireCapableBeanFactory().autowireBean(bean);
+
+            method = targetClass.getDeclaredMethod(customConfig.getWebSocketMethodName(), WebSocketEntity.class);
+            // 设置访问权限
+            method.setAccessible(true);
+        } catch (ClassNotFoundException e) {
+            logUtil.error(e.getMessage());
+        } catch (NoSuchMethodException e) {
+            logUtil.error(e.getMessage());
+        }
     }
 }

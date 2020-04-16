@@ -90,10 +90,28 @@ public class RedisUtils implements ApplicationRunner {
                     redisAsyncCommands.expire(key, time);
             return redisFuture.get();
         } catch (Exception e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
         }
     }
+
+    /**
+     * sis成员是否存在
+     *
+     * @return 返回结果
+     */
+    public static boolean sisMember(String key, String value) {
+        try {
+            RedisFuture<Boolean> redisFuture = redisAsyncCommands == null ?
+                    commands.sismember(key, value) :
+                    redisAsyncCommands.sismember(key, value);
+            return redisFuture.get();
+        } catch (Exception e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+            return false;
+        }
+    }
+
 
     /**
      * 根据key 获取过期时间
@@ -110,9 +128,9 @@ public class RedisUtils implements ApplicationRunner {
                 return false;
             }
         } catch (InterruptedException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         }
 
         return false;
@@ -137,6 +155,73 @@ public class RedisUtils implements ApplicationRunner {
     // ============================String=============================
 
     /**
+     * 获取参数值
+     *
+     * @param key   键
+     * @param value 值
+     * @return 返回结果
+     */
+    public static String hGet(String key, String value) {
+        if (!syncExists(key)) {
+            return null;
+        }
+        RedisFuture<String> redisFuture = redisAsyncCommands == null ? commands.hget(key, value) :
+                redisAsyncCommands.hget(key, value);
+        try {
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * 追加数据
+     *
+     * @param key   主键
+     * @param value 值
+     */
+    public static Long syncAppend(String key, String value) {
+        if(!syncExists(key)){
+            return 0L;
+        }
+        RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.append(key, value) :
+                redisAsyncCommands.append(key, value);
+        try {
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return 0L;
+    }
+
+    /**
+     * 获取参数值
+     *
+     * @param key 键
+     * @return 返回结果
+     */
+    public static List<String> hvals(String key) {
+        if (!syncExists(key)) {
+            return null;
+        }
+        RedisFuture<List<String>> redisFuture = redisAsyncCommands == null ? commands.hvals(key) :
+                redisAsyncCommands.hvals(key);
+        try {
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return null;
+    }
+
+    /**
      * 普通缓存获取
      *
      * @param key 键
@@ -151,9 +236,9 @@ public class RedisUtils implements ApplicationRunner {
         try {
             return redisFuture.get();
         } catch (InterruptedException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         }
         return null;
     }
@@ -174,7 +259,7 @@ public class RedisUtils implements ApplicationRunner {
             }
             return true;
         } catch (Exception e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
         }
     }
@@ -200,7 +285,7 @@ public class RedisUtils implements ApplicationRunner {
             }
             return true;
         } catch (Exception e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
         }
     }
@@ -223,9 +308,9 @@ public class RedisUtils implements ApplicationRunner {
         try {
             return redisFuture.get();
         } catch (InterruptedException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         }
         return 0L;
     }
@@ -248,9 +333,9 @@ public class RedisUtils implements ApplicationRunner {
         try {
             return redisFuture.get();
         } catch (InterruptedException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         } catch (ExecutionException e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
         }
         return 0L;
     }
@@ -283,7 +368,7 @@ public class RedisUtils implements ApplicationRunner {
             syncSet(key, value);
             return true;
         } catch (Exception e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
         }
     }
@@ -305,7 +390,7 @@ public class RedisUtils implements ApplicationRunner {
             }
             return true;
         } catch (Exception e) {
-            logUtils.error(e.getCause(), e.getMessage());
+            logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
         }
     }

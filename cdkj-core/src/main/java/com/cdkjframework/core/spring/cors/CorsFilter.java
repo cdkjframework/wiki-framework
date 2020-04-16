@@ -1,4 +1,4 @@
-package com.cdkjframework.core.spring;
+package com.cdkjframework.core.spring.cors;
 
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
@@ -6,8 +6,6 @@ import org.springframework.stereotype.Component;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static org.apache.commons.jexl2.parser.ParserConstants.req;
 
 /**
  * @ProjectName: common-core
@@ -51,7 +49,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
-        response.setHeader("Access-Control-Allow-Headers", "x-requested-with");
+        response.setHeader("Access-Control-Allow-Headers", "*");
         logUtils.info("*********************************过滤器被使用**************************");
         filterChain.doFilter(servletRequest, servletResponse);
     }
