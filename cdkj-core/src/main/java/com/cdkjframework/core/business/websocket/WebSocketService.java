@@ -16,6 +16,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
 
@@ -28,7 +29,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * @Version: 1.0
  */
 @Component
-@ServerEndpoint(value = "/api/webSocket")
+@ServerEndpoint(value = "/socket/webSocket/{type}")
 public class WebSocketService implements ApplicationRunner {
 
     /**
@@ -115,6 +116,11 @@ public class WebSocketService implements ApplicationRunner {
                 WebSocketEntity entity = new WebSocketEntity();
                 entity.setMessage(message);
                 entity.setSession(session);
+                Map<String, String> stringMap = session.getPathParameters();
+                if (stringMap != null && stringMap.size() > 0) {
+                    entity.setType(session.getPathParameters().get("type"));
+                }
+                logUtil.info(entity.toString());
                 method.invoke(bean, entity);
             } catch (IllegalAccessException e) {
                 logUtil.error(e);

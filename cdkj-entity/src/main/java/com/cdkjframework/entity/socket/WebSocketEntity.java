@@ -26,4 +26,9 @@ public class WebSocketEntity {
      * 消息
      */
     private String message;
+
+    /**
+     * 消息类型
+     */
+    private String type;
 }
