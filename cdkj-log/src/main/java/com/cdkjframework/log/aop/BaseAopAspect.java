@@ -1,4 +1,4 @@
-package com.cdkjframework.core.spring.aop;
+package com.cdkjframework.log.aop;
 
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.core.spring.aop
+ * @Package: com.cdkjframework.log.aop
  * @ClassName: BaseAopAspect
  * @Description: aop 基础类
  * @Author: xiaLin

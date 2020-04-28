@@ -1,4 +1,4 @@
-package com.cdkjframework.core.spring.aop;
+package com.cdkjframework.log.aop;
 
 import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.core.spring.aop
+ * @Package: com.cdkjframework.log.aop
  * @ClassName: ControllerDebugAspect
  * @Description: 控制层调试方面
  * @Author: xiaLin
