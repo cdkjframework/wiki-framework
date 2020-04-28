@@ -62,4 +62,14 @@ public class CustomConfig {
      * 调用方法
      */
     private String webSocketMethodName;
+
+    /**
+     * 控制器 aop
+     */
+    private String aopController;
+
+    /**
+     * 映射器 aop
+     */
+    private String aopMapper;
 }

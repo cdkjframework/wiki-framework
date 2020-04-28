@@ -182,7 +182,7 @@ public class ExcelEasyPoiUtil<T> {
                 // title 的参数为 ExportParams 类型
                 dataMap.put("title", params);
                 // 模版导出对应得实体类型
-                dataMap.put("cdkj/framework/entity", clazz);
+                dataMap.put("entity", clazz);
                 // sheet 中要填充得数据
                 dataMap.put("data", list);
                 //添加工作薄
