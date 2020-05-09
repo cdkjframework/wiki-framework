@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-200420</version>
+    <version>1.0-200509</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -18,19 +18,19 @@
 
     <properties>
 
-        <cdkj-cloud.version>1.0-200420</cdkj-cloud.version>
-        <cdkj-util.version>1.0-200420</cdkj-util.version>
-        <cdkj-constant.version>1.0-200420</cdkj-constant.version>
-        <cdkj-core.version>1.0-200420</cdkj-core.version>
-        <cdkj-datasource.version>1.0-200420</cdkj-datasource.version>
-        <cdkj-message.version>1.0-200420</cdkj-message.version>
-        <cdkj-redis.version>1.0-200420</cdkj-redis.version>
-        <cdkj-pay.version>1.0-200420</cdkj-pay.version>
-        <cdkj-entity.version>1.0-200420</cdkj-entity.version>
-        <cdkj-center.version>1.0-200420</cdkj-center.version>
-        <cdkj-datasource-jpa.version>1.0-200420</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-200420</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-200420</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-200509</cdkj-cloud.version>
+        <cdkj-util.version>1.0-200509</cdkj-util.version>
+        <cdkj-constant.version>1.0-200509</cdkj-constant.version>
+        <cdkj-core.version>1.0-200509</cdkj-core.version>
+        <cdkj-datasource.version>1.0-200509</cdkj-datasource.version>
+        <cdkj-message.version>1.0-200509</cdkj-message.version>
+        <cdkj-redis.version>1.0-200509</cdkj-redis.version>
+        <cdkj-pay.version>1.0-200509</cdkj-pay.version>
+        <cdkj-entity.version>1.0-200509</cdkj-entity.version>
+        <cdkj-center.version>1.0-200509</cdkj-center.version>
+        <cdkj-datasource-jpa.version>1.0-200509</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-200509</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-200509</cdkj-datasource-elasticsearch.version>
 
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>

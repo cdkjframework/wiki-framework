@@ -3,6 +3,7 @@ package com.cdkjframework.core.member;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.CacheConsts;
+import com.cdkjframework.entity.user.ConfigureEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.redis.RedisUtils;
@@ -120,6 +121,15 @@ public class CurrentUser {
      */
     public static List<RoleEntity> getRoleList() {
         return getCurrentUser().getRoleList();
+    }
+
+    /**
+     * 获取用户配置信息
+     *
+     * @return 返回配置结果
+     */
+    public static List<ConfigureEntity> getConfigureList() {
+        return getCurrentUser().getConfigureList();
     }
 
     /**

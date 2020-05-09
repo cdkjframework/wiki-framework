@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-200420</version>
+    <version>1.0-200509</version>
     <modules>
         <module>cdkj-cloud</module>
         <module>cdkj-util</module>
@@ -38,7 +38,7 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-pom</artifactId>
-                <version>1.0-200420</version>
+                <version>1.0-200509</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

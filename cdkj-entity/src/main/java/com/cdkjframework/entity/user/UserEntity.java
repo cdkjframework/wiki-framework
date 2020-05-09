@@ -30,4 +30,9 @@ public class UserEntity extends AbstractUserEntity {
      * 用户所关联角色信息
      */
     public List<RoleEntity> roleList = new ArrayList<>();
+
+    /**
+     * 平台配置信息
+     */
+    private List<ConfigureEntity> configureList;
 }
