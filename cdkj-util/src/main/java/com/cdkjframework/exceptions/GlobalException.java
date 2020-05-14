@@ -4,18 +4,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Generated;
-import java.security.GeneralSecurityException;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
  * @Package: com.cdkjframework.core.exceptions
  * @ClassName: GlobalException
- * @Description: java类作用描述
+ * @Description: 公共异常处理类
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public class GlobalException extends GeneralSecurityException {
+public class GlobalException extends RuntimeException {
 
     @Generated("异常信息")
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalException.class);
