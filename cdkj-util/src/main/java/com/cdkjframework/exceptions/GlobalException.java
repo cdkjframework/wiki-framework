@@ -1,7 +1,6 @@
 package com.cdkjframework.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.cdkjframework.util.log.LogUtils;
 
 import javax.annotation.Generated;
 
@@ -17,7 +16,7 @@ import javax.annotation.Generated;
 public class GlobalException extends RuntimeException {
 
     @Generated("异常信息")
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalException.class);
+    private static final LogUtils LOGGER = LogUtils.getLogger(GlobalException.class);
     private static final long serialVersionUID = 1L;
 
     /**

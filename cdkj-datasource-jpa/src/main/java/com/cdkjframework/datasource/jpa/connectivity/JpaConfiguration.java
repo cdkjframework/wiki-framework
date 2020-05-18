@@ -50,7 +50,7 @@ public class JpaConfiguration {
      *
      * @return 返回实体管理工厂
      */
-    @Bean
+    @Bean(name = "jpaEntityManagerFactory")
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
@@ -82,10 +82,10 @@ public class JpaConfiguration {
      *
      * @return 返回事务接口
      */
-    @Bean
-    public PlatformTransactionManager transactionManager() {
+    @Bean(name = "jpaTransactionManager")
+    public PlatformTransactionManager transactionManager(@Qualifier("jpaEntityManagerFactory") EntityManagerFactory jpaEntityManagerFactory) {
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory());
+        txManager.setEntityManagerFactory(jpaEntityManagerFactory);
         return txManager;
     }
 }

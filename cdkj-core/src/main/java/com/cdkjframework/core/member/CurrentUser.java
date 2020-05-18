@@ -6,7 +6,7 @@ import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.entity.user.ConfigureEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
-import com.cdkjframework.enums.InterfaceTypeEnum;
+import com.cdkjframework.enums.InterfaceEnum;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
@@ -142,7 +142,7 @@ public class CurrentUser {
      * @param typeEnum 枚举信息
      * @return 返回配置结果
      */
-    public static ConfigureEntity getConfigure(InterfaceTypeEnum typeEnum) {
+    public static ConfigureEntity getConfigure(InterfaceEnum typeEnum) {
         List<ConfigureEntity> configureEntityList = getConfigureList();
         if (CollectionUtils.isEmpty(configureEntityList) || typeEnum == null ||
                 StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
@@ -164,7 +164,7 @@ public class CurrentUser {
      * @param typeEnum 枚举信息
      * @return 返回配置结果
      */
-    public static String getConfigureValue(InterfaceTypeEnum typeEnum) {
+    public static String getConfigureValue(InterfaceEnum typeEnum) {
         ConfigureEntity configureEntity = getConfigure(typeEnum);
         if (configureEntity == null) {
             return "";
