@@ -72,4 +72,14 @@ public class CustomConfig {
      * 映射器 aop
      */
     private String aopMapper;
+
+    /**
+     * Redis 渠道订阅
+     */
+    private List<String> channel;
+
+    /**
+     * Redis 模式订阅
+     */
+    private List<String> pattern;
 }

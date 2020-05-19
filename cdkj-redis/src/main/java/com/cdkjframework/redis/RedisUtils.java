@@ -1,11 +1,17 @@
 package com.cdkjframework.redis;
 
 import com.alibaba.fastjson.JSONArray;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisFuture;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
+import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
+import io.lettuce.core.cluster.pubsub.api.async.RedisClusterPubSubAsyncCommands;
+import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
+import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -44,6 +50,16 @@ public class RedisUtils implements ApplicationRunner {
     private static RedisAsyncCommands<String, String> redisAsyncCommands;
 
     /**
+     * 集群订阅
+     */
+    private static RedisClusterPubSubAsyncCommands<String, String> clusterPubSubCommands;
+
+    /**
+     * 订阅
+     */
+    private static RedisPubSubAsyncCommands<String, String> pubSubAsyncCommands;
+
+    /**
      * 异步 redis 访问
      */
     @Resource(name = "clusterAsyncCommands")
@@ -56,22 +72,16 @@ public class RedisUtils implements ApplicationRunner {
     private RedisAsyncCommands<String, String> asyncCommands;
 
     /**
-     * 初始化
-     *
-     * @param args 参数
-     * @throws Exception 异常信息
+     * 订阅
      */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        if (clusterAsyncCommands.getStatefulConnection() != null) {
-            commands = clusterAsyncCommands;
-        }
-        if (asyncCommands.getStatefulConnection() != null) {
-            redisAsyncCommands = asyncCommands;
-        }
-    }
+    @Resource(name = "redisPubSubConnection")
+    private StatefulRedisPubSubConnection<String, String> redisPubSubConnection;
 
-    // ============================= common ============================
+    /**
+     * 集群订阅
+     */
+    @Resource(name = "clusterPubSubConnection")
+    private StatefulRedisClusterPubSubConnection<String, String> redisClusterPubSubConnection;
 
     /**
      * 指定缓存失效时间
@@ -95,6 +105,34 @@ public class RedisUtils implements ApplicationRunner {
         }
     }
 
+    // ============================= common ============================
+
+
+    /**
+     * 发布订阅
+     *
+     * @param key     主键值
+     * @param message 消息
+     * @return 返回结果
+     */
+    public static Long publish(String key, String message) {
+        RedisFuture<Long> redisFuture;
+
+        try {
+            if (redisAsyncCommands != null) {
+                redisFuture = redisAsyncCommands.publish(key, message);
+            } else {
+                redisFuture = clusterPubSubCommands.publish(key, message);
+            }
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return Long.valueOf(IntegerConsts.ZERO);
+    }
+
     /**
      * sis成员是否存在
      *
@@ -112,6 +150,78 @@ public class RedisUtils implements ApplicationRunner {
         }
     }
 
+    /**
+     * 低压脉冲
+     *
+     * @param key     主键值
+     * @param message 消息
+     * @return 返回结果
+     */
+    public static Long lpush(String key, String message) {
+        RedisFuture<Long> redisFuture;
+
+        try {
+            if (redisAsyncCommands == null) {
+                redisFuture = commands.lpush(key, message);
+            } else {
+                redisFuture = redisAsyncCommands.lpush(key, message);
+            }
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return Long.valueOf(IntegerConsts.ZERO);
+    }
+
+    /**
+     * 订阅消息
+     *
+     * @param key 键
+     * @return 返回结果
+     */
+    public static String rpop(String key) {
+        RedisFuture<String> redisFuture;
+
+        try {
+            if (redisAsyncCommands == null) {
+                redisFuture = commands.rpop(key);
+            } else {
+                redisFuture = redisAsyncCommands.rpop(key);
+            }
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return "";
+    }
+
+    /**
+     * 订阅消息
+     *
+     * @param key 键
+     * @return 返回结果
+     */
+    public static KeyValue<String, String> brpop(String key) {
+        RedisFuture<KeyValue<String, String>> redisFuture;
+
+        try {
+            if (redisAsyncCommands == null) {
+                redisFuture = commands.brpop(IntegerConsts.ZERO, key);
+            } else {
+                redisFuture = redisAsyncCommands.brpop(IntegerConsts.ZERO, key);
+            }
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return null;
+    }
 
     /**
      * 根据key 获取过期时间
@@ -122,11 +232,7 @@ public class RedisUtils implements ApplicationRunner {
         RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.exists(key) :
                 redisAsyncCommands.exists(key);
         try {
-            if (redisFuture.get() == key.length) {
-                return true;
-            } else {
-                return false;
-            }
+            return redisFuture.get() == key.length;
         } catch (InterruptedException e) {
             logUtils.error(e.getStackTrace(), e.getMessage());
         } catch (ExecutionException e) {
@@ -135,7 +241,6 @@ public class RedisUtils implements ApplicationRunner {
 
         return false;
     }
-
 
     /**
      * 删除缓存
@@ -151,8 +256,6 @@ public class RedisUtils implements ApplicationRunner {
             redisAsyncCommands.del(key);
         }
     }
-
-    // ============================String=============================
 
     /**
      * 获取参数值
@@ -177,6 +280,8 @@ public class RedisUtils implements ApplicationRunner {
         return null;
     }
 
+    // ============================String=============================
+
     /**
      * 追加数据
      *
@@ -184,7 +289,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param value 值
      */
     public static Long syncAppend(String key, String value) {
-        if(!syncExists(key)){
+        if (!syncExists(key)) {
             return 0L;
         }
         RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.append(key, value) :
@@ -340,8 +445,6 @@ public class RedisUtils implements ApplicationRunner {
         return 0L;
     }
 
-    // ================================ Map =================================
-
     /**
      * 获取hashKey对应的所有键值
      *
@@ -353,6 +456,8 @@ public class RedisUtils implements ApplicationRunner {
         String value = syncGet(key);
         return JsonUtils.jsonStringToMap(value);
     }
+
+    // ================================ Map =================================
 
     /**
      * HashSet
@@ -395,9 +500,6 @@ public class RedisUtils implements ApplicationRunner {
         }
     }
 
-
-    // ================================ Entity =================================
-
     /**
      * 获取实体
      *
@@ -410,6 +512,9 @@ public class RedisUtils implements ApplicationRunner {
         String value = syncGet(key);
         return JsonUtils.jsonStringToBean(value, clazz);
     }
+
+
+    // ================================ Entity =================================
 
     /**
      * 实体写入缓存
@@ -437,8 +542,6 @@ public class RedisUtils implements ApplicationRunner {
         return syncSet(key, value, time);
     }
 
-    // ================================ List =================================
-
     /**
      * 获取实体
      *
@@ -451,6 +554,8 @@ public class RedisUtils implements ApplicationRunner {
         String value = syncGet(key);
         return JsonUtils.jsonStringToList(value, clazz);
     }
+
+    // ================================ List =================================
 
     /**
      * 实体写入缓存
@@ -482,5 +587,27 @@ public class RedisUtils implements ApplicationRunner {
             return false;
         }
         return syncSet(key, value.toJSONString(), time);
+    }
+
+    /**
+     * 初始化
+     *
+     * @param args 参数
+     * @throws Exception 异常信息
+     */
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        if (clusterAsyncCommands.getStatefulConnection() != null) {
+            commands = clusterAsyncCommands;
+        }
+        if (asyncCommands.getStatefulConnection() != null) {
+            redisAsyncCommands = asyncCommands;
+        }
+
+        pubSubAsyncCommands = redisPubSubConnection.async();
+        if (pubSubAsyncCommands.getStatefulConnection() != null) {
+            pubSubAsyncCommands = null;
+            clusterPubSubCommands = redisClusterPubSubConnection.async();
+        }
     }
 }
