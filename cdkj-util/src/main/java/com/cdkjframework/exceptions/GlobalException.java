@@ -3,6 +3,7 @@ package com.cdkjframework.exceptions;
 import com.cdkjframework.util.log.LogUtils;
 
 import javax.annotation.Generated;
+import java.security.GeneralSecurityException;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -13,7 +14,7 @@ import javax.annotation.Generated;
  * @Version: 1.0
  */
 
-public class GlobalException extends RuntimeException {
+public class GlobalException extends GeneralSecurityException {
 
     @Generated("异常信息")
     private static final LogUtils LOGGER = LogUtils.getLogger(GlobalException.class);
