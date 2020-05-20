@@ -24,6 +24,7 @@
 /cdkj-datasource/*.iml
 /cdkj-core/*.iml
 /cdkj-cloud/*.iml
+/cdkj-log/*.iml
 /*.iml
 /cdkj-pom/*.iml
 /cdkj-entity/*.iml
