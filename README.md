@@ -17,7 +17,9 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
 
 1. deploy 上传至 maven 仓
 2. 使用引用
+
 在项目最外层POM文件引入：
+
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-pom</artifactId>
