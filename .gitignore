@@ -5,6 +5,16 @@
 /cdkj-datasource/target
 /cdkj-util/target
 /cdkj-entity/target
+/cdkj-cloud/target
+/cdkj-datasource-elasticsearch/target
+/cdkj-datasource-jpa/target
+/cdkj-datasource-mongodb/target
+/cdkj-log/target
+/cdkj-pay/target
+/cdkj-redis/target
+/cdkj-pom/target
+/cdkj-message/target
+/cdkj-center/target
 /.idea/libraries/*.xml
 /cdkj-constant/*.iml
 /cdkj-web/*.iml
