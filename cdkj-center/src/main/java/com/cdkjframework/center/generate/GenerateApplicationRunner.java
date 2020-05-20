@@ -1,31 +1,23 @@
 package com.cdkjframework.center.generate;
 
-import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.center.service.UpdateDatabaseService;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.center.library.ColumnLayoutEntity;
 import com.cdkjframework.entity.center.library.TableLayoutEntity;
 import com.cdkjframework.enums.datasource.DataTypeContrastEnums;
 import com.cdkjframework.util.tool.StringUtils;
-import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
-import org.apache.poi.ss.formula.functions.T;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.cache.interceptor.CacheableOperation;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @ProjectName: common-core
@@ -53,6 +45,9 @@ public class GenerateApplicationRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        if (true) {
+            return;
+        }
         // 获取需要更新表实体
         Map<String, Object> map = Application.applicationContext.getBeansWithAnnotation(Table.class);
         // 获取表

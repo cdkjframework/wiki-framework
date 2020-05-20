@@ -1,16 +1,13 @@
 package com.cdkjframework.redis.connectivity;
 
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.AssertUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
-import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.async.AsyncNodeSelection;
@@ -46,12 +43,12 @@ import java.util.function.Predicate;
  */
 @Configuration
 @Component
-public class RedisConfiguration extends AbstractRedisConfiguration {
+public class RedisClusterConfiguration extends AbstractRedisConfiguration {
 
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(RedisConfiguration.class);
+    private LogUtils logUtils = LogUtils.getLogger(RedisClusterConfiguration.class);
 
     /**
      * 配置
@@ -60,18 +57,18 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
     private RedisConfig redisConfig;
 
     /**
-     * Redis高级集群命令
+     * Redis高级集群异步命令
      *
      * @return 返回结果
      */
-    @Bean(name = "redisAsyncCommands")
-    public RedisAsyncCommands<String, String> redisAsyncCommands() throws GlobalException {
+    @Bean(name = "clusterAsyncCommands")
+    public RedisAdvancedClusterAsyncCommands<String, String> redisAdvancedClusterAsyncCommands() throws GlobalException {
         int port = redisConfig.getPort();
-        RedisAsyncCommands<String, String> commands = null;
-        if (redisClusterCommands()) {
-            commands = redisClient();
+        RedisAdvancedClusterAsyncCommands<String, String> commands = null;
+        if (!redisClusterCommands()) {
+            commands = redisClusterClient();
         } else {
-            commands = redisClient(port);
+            commands = redisClusterClient(port);
         }
         logUtils.info("Redis 配置结束" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
 
@@ -80,29 +77,169 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
     }
 
     /**
-     * 连接 默认配置
+     * 集群默认信息
      *
      * @return
      */
-    private RedisAsyncCommands<String, String> redisClient() {
-        return new RedisAsyncCommands<String, String>() {
+    private RedisAdvancedClusterAsyncCommands<String, String> redisClusterClient() {
+        return new RedisAdvancedClusterAsyncCommands<String, String>() {
             @Override
-            public String auth(String password) {
+            public RedisClusterAsyncCommands<String, String> getConnection(String nodeId) {
                 return null;
             }
 
             @Override
-            public String select(int db) {
+            public RedisClusterAsyncCommands<String, String> getConnection(String host, int port) {
                 return null;
             }
 
             @Override
-            public RedisFuture<String> swapdb(int db1, int db2) {
+            public StatefulRedisClusterConnection<String, String> getStatefulConnection() {
                 return null;
             }
 
             @Override
-            public StatefulRedisConnection<String, String> getStatefulConnection() {
+            public AsyncNodeSelection<String, String> readonly(Predicate<RedisClusterNode> predicate) {
+                return null;
+            }
+
+            @Override
+            public AsyncNodeSelection<String, String> nodes(Predicate<RedisClusterNode> predicate) {
+                return null;
+            }
+
+            @Override
+            public AsyncNodeSelection<String, String> nodes(Predicate<RedisClusterNode> predicate, boolean dynamic) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> del(String... keys) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> unlink(String... keys) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> exists(String... keys) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<KeyValue<String, String>>> mget(String... keys) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> mset(Map<String, String> map) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Boolean> msetnx(Map<String, String> map) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> clientSetname(String name) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> flushall() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> flushdb() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> dbsize() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<String>> keys(String pattern) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> keys(KeyStreamingChannel<String> channel, String pattern) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> randomkey() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> scriptFlush() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> scriptKill() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<String> scriptLoad(String script) {
+                return null;
+            }
+
+            @Override
+            public void shutdown(boolean save) {
+
+            }
+
+            @Override
+            public RedisFuture<KeyScanCursor<String>> scan() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<KeyScanCursor<String>> scan(ScanArgs scanArgs) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<KeyScanCursor<String>> scan(ScanCursor scanCursor, ScanArgs scanArgs) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<KeyScanCursor<String>> scan(ScanCursor scanCursor) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanArgs scanArgs) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanCursor scanCursor, ScanArgs scanArgs) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanCursor scanCursor) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> touch(String... keys) {
                 return null;
             }
 
@@ -114,6 +251,11 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             @Override
             public void setTimeout(long timeout, TimeUnit unit) {
 
+            }
+
+            @Override
+            public String auth(String password) {
+                return null;
             }
 
             @Override
@@ -242,22 +384,12 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<Long> del(String... keys) {
+            public RedisFuture<String> readOnly() {
                 return null;
             }
 
             @Override
-            public RedisFuture<List<KeyValue<String, String>>> mget(String... keys) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> mset(Map<String, String> map) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<Boolean> msetnx(Map<String, String> map) {
+            public RedisFuture<String> readWrite() {
                 return null;
             }
 
@@ -298,16 +430,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
 
             @Override
             public RedisFuture<String> ping() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> readOnly() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> readWrite() {
                 return null;
             }
 
@@ -552,17 +674,7 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<Long> unlink(String... keys) {
-                return null;
-            }
-
-            @Override
             public RedisFuture<byte[]> dump(String key) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<Long> exists(String... keys) {
                 return null;
             }
 
@@ -578,16 +690,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
 
             @Override
             public RedisFuture<Boolean> expireat(String key, long timestamp) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<List<String>> keys(String pattern) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<Long> keys(KeyStreamingChannel<String> channel, String pattern) {
                 return null;
             }
 
@@ -647,11 +749,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<String> randomkey() {
-                return null;
-            }
-
-            @Override
             public RedisFuture<String> rename(String key, String newKey) {
                 return null;
             }
@@ -697,57 +794,12 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<Long> touch(String... keys) {
-                return null;
-            }
-
-            @Override
             public RedisFuture<Long> ttl(String key) {
                 return null;
             }
 
             @Override
             public RedisFuture<String> type(String key) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<KeyScanCursor<String>> scan() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<KeyScanCursor<String>> scan(ScanArgs scanArgs) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<KeyScanCursor<String>> scan(ScanCursor scanCursor, ScanArgs scanArgs) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<KeyScanCursor<String>> scan(ScanCursor scanCursor) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanArgs scanArgs) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanCursor scanCursor, ScanArgs scanArgs) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanCursor scanCursor) {
                 return null;
             }
 
@@ -867,21 +919,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<String> scriptFlush() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> scriptKill() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> scriptLoad(String script) {
-                return null;
-            }
-
-            @Override
             public String digest(String script) {
                 return null;
             }
@@ -898,11 +935,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
 
             @Override
             public RedisFuture<String> clientGetname() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> clientSetname(String name) {
                 return null;
             }
 
@@ -972,11 +1004,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<Long> dbsize() {
-                return null;
-            }
-
-            @Override
             public RedisFuture<String> debugCrashAndRecover(Long delay) {
                 return null;
             }
@@ -1017,17 +1044,7 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             }
 
             @Override
-            public RedisFuture<String> flushall() {
-                return null;
-            }
-
-            @Override
             public RedisFuture<String> flushallAsync() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> flushdb() {
                 return null;
             }
 
@@ -1054,11 +1071,6 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             @Override
             public RedisFuture<String> save() {
                 return null;
-            }
-
-            @Override
-            public void shutdown(boolean save) {
-
             }
 
             @Override
@@ -2040,57 +2052,40 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             public RedisFuture<Long> strlen(String key) {
                 return null;
             }
-
-            @Override
-            public RedisFuture<String> discard() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<TransactionResult> exec() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> multi() {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> watch(String... keys) {
-                return null;
-            }
-
-            @Override
-            public RedisFuture<String> unwatch() {
-                return null;
-            }
         };
     }
 
     /**
-     * redis 连接
+     * redis 集群连接
      */
-    private RedisAsyncCommands<String, String> redisClient(int port) {
-        String url = redisConfig.getHost().get(0);
-        // 创建地址
-        RedisClient redisClient = RedisClient.create(createRedisUrl(url, port));
-        redisClient.setOptions(clientOptions());
-        redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
-        GenericObjectPool<StatefulRedisConnection<String, String>> pool;
-        GenericObjectPoolConfig<StatefulRedisConnection<String, String>> poolConfig =
+    private RedisAdvancedClusterAsyncCommands<String, String> redisClusterClient(int port) {
+        List<RedisURI> redisUrlList = new ArrayList<>();
+
+        for (String key :
+                redisConfig.getHost()) {
+            redisUrlList.add(createRedisUrl(key, port));
+        }
+
+        // redis 集群
+        RedisClusterClient clusterClient = RedisClusterClient.create(redisUrlList);
+        clusterClient.setOptions(clusterClientOptions());
+        clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
+
+        // 配置
+        GenericObjectPool<StatefulRedisClusterConnection<String, String>> pool;
+        GenericObjectPoolConfig<StatefulRedisClusterConnection<String, String>> poolConfig =
                 genericObjectPoolConfig();
 
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
-            logUtils.info("Requesting new StatefulRedisConnection " + System.currentTimeMillis());
-            return redisClient.connect();
+            logUtils.info("Requesting new StatefulRedisClusterConnection " + System.currentTimeMillis());
+            return clusterClient.connect();
         }, poolConfig);
 
-        StatefulRedisConnection<String, String> connection = null;
+        StatefulRedisClusterConnection<String, String> connection = null;
         try {
             connection = pool.borrowObject();
-            connection.setAutoFlushCommands(true);
+            connection.setReadFrom(ReadFrom.MASTER_PREFERRED);
 
             return connection.async();
         } catch (Exception ex) {

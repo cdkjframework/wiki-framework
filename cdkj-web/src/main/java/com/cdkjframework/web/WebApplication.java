@@ -1,18 +1,14 @@
 package com.cdkjframework.web;
 
-import com.cdkjframework.entity.ComparisonEntity;
-import com.cdkjframework.entity.PageEntity;
-import com.cdkjframework.util.tool.CopyUtils;
-import com.cdkjframework.web.entity.ComparisonVo;
-import com.cdkjframework.web.entity.PageVo;
+import com.cdkjframework.redis.RedisUtils;
+import com.cdkjframework.redis.subscribe.SubscribeConsumer;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @ProjectName: cdkj-framework
@@ -34,7 +30,8 @@ import java.util.List;
         "com.cdkjframework.datasource.mongodb",
         "com.cdkjframework.core.base.swagger",
         "com.cdkjframework.redis"
-})
+}, exclude = {DataSourceAutoConfiguration.class,
+        DataSourceAutoConfiguration.class,})
 //@EnableTransactionManagement
 @Configuration
 @EnableSwagger2
@@ -43,25 +40,15 @@ import java.util.List;
 //@EnableApolloConfig
 public class WebApplication {
 
+    @Autowired
+    private SubscribeMessage subscribeMessage;
+
     /**
      * 启动方法
      *
      * @param args 参数
      */
     public static void main(String[] args) {
-
-        PageVo<ComparisonVo> pageVo = new PageVo<>();
-        List<ComparisonVo> voList = new ArrayList<>();
-        voList.add(new ComparisonVo());
-        voList.add(new ComparisonVo());
-        voList.add(new ComparisonVo());
-        pageVo.setData(voList);
-        pageVo.setCode(0);
-        pageVo.setPageIndex(1);
-        pageVo.setTotal(100);
-
-        PageEntity<ComparisonEntity> pageEntity = CopyUtils.copyNoNullProperties(pageVo, PageEntity.class);
-
         SpringApplication.run(WebApplication.class, args);
     }
 }

@@ -5,6 +5,16 @@
 /cdkj-datasource/target
 /cdkj-util/target
 /cdkj-entity/target
+/cdkj-cloud/target
+/cdkj-datasource-elasticsearch/target
+/cdkj-datasource-jpa/target
+/cdkj-datasource-mongodb/target
+/cdkj-log/target
+/cdkj-pay/target
+/cdkj-redis/target
+/cdkj-pom/target
+/cdkj-message/target
+/cdkj-center/target
 /.idea/libraries/*.xml
 /cdkj-constant/*.iml
 /cdkj-web/*.iml
@@ -14,6 +24,7 @@
 /cdkj-datasource/*.iml
 /cdkj-core/*.iml
 /cdkj-cloud/*.iml
+/cdkj-log/*.iml
 /*.iml
 /cdkj-pom/*.iml
 /cdkj-entity/*.iml
@@ -22,7 +33,3 @@
 /cdkj-redis/*.iml
 /cdkj-datasource-mongodb/*.iml
 /cdkj-datasource-elasticsearch/*.iml
-/cdkj-redis/*
-/cdkj-pay/*
-/cdkj-message/*
-/cdkj-cloud/*
