@@ -1,4 +1,4 @@
-package com.lesmarthome.wms.util.enums;
+package com.cdkjframework.enums;
 
 /**
  * @ProjectName: com.lesmarthome.pms
