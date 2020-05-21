@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -81,9 +82,9 @@ public class MybatisConfiguration {
             //Mapper xml 路径
             MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
             sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
-
             //分页
             sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
+
         } catch (Exception ex) {
             logUtil.error(ex.getMessage());
         }
@@ -96,7 +97,8 @@ public class MybatisConfiguration {
      * @return 返回结果
      * @throws SQLException 异常信息
      */
-    @Bean
+    @Bean(name = "mybatisTransactionManager")
+    @Primary
     public PlatformTransactionManager transactionManager() throws SQLException {
         return new DataSourceTransactionManager(mybatisDataSource);
     }
