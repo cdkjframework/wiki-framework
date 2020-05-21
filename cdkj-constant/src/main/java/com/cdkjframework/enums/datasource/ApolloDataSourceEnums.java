@@ -1,17 +1,20 @@
-package com.cdkjframework.enums;
+package com.cdkjframework.enums.datasource;
+
+import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: HT-OMS-Project-WEB
- * @Package: com.cdkjframework.core.enums
- * @ClassName: AliCloudRocketMqErrorEnum
+ * @ProjectName: cdkjframework.core
+ * @Package: com.cdkjframework.core.enums.datasource
+ * @ClassName: ApolloDataSourceEnum
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum AliCloudRocketMqErrorEnum {
+public enum ApolloDataSourceEnums implements BasicsEnum {
 
-    ONS_SYSTEM_ERROR {
+
+    type {
         /**
          * 获取枚举值
          *
@@ -19,7 +22,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "ONS_SYSTEM_ERROR";
+            return "spring.datasource.type";
         }
 
         /**
@@ -28,11 +31,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "MQ 后端异常";
+        public String getCode() {
+            return "type";
         }
     },
-    ONS_SERVICE_UNSUPPORTED {
+    url {
         /**
          * 获取枚举值
          *
@@ -40,7 +43,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "ONS_SERVICE_UNSUPPORTED";
+            return "spring.datasource.mybatis.url";
         }
 
         /**
@@ -49,11 +52,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "当前调用在对应的 Region 区域不支持";
+        public String getCode() {
+            return "url";
         }
     },
-    ONS_INVOKE_ERROR {
+    password {
         /**
          * 获取枚举值
          *
@@ -61,7 +64,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "ONS_INVOKE_ERROR";
+            return "spring.datasource.mybatis.password";
         }
 
         /**
@@ -70,11 +73,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "Open API 接口调用失败";
+        public String getCode() {
+            return "password";
         }
     },
-    BIZ_FIELD_CHECK_INVALID {
+    username {
         /**
          * 获取枚举值
          *
@@ -82,7 +85,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_FIELD_CHECK_INVALID";
+            return "spring.datasource.mybatis.username";
         }
 
         /**
@@ -91,11 +94,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "参数检验失败";
+        public String getCode() {
+            return "username";
         }
     },
-    BIZ_TOPIC_NOT_FOUND {
+    driverClassName {
         /**
          * 获取枚举值
          *
@@ -103,7 +106,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_TOPIC_NOT_FOUND";
+            return "spring.datasource.mybatis.driverClassName";
         }
 
         /**
@@ -112,11 +115,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "Topic 没有找到";
+        public String getCode() {
+            return "driverClassName";
         }
     },
-    BIZ_SUBSCRIPTION_NOT_FOUND {
+    mybatisMapper {
         /**
          * 获取枚举值
          *
@@ -124,7 +127,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_SUBSCRIPTION_NOT_FOUND";
+            return "spring.datasource.mybatis.mybatisMapper";
         }
 
         /**
@@ -133,11 +136,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "目标订阅关系 CID 找不到";
+        public String getCode() {
+            return "mybatisMapper";
         }
     },
-    BIZ_PUBLISHER_EXISTED {
+    mybatisMapperXml {
         /**
          * 获取枚举值
          *
@@ -145,7 +148,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_PUBLISHER_EXISTED";
+            return "spring.datasource.mybatis.mybatisMapperXml";
         }
 
         /**
@@ -154,11 +157,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "指定 PID 已经存在";
+        public String getCode() {
+            return "mybatisMapperXml";
         }
     },
-    BIZ_SUBSCRIPTION_EXISTED {
+    connectionProperties {
         /**
          * 获取枚举值
          *
@@ -166,7 +169,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_SUBSCRIPTION_EXISTED";
+            return "spring.datasource.connectionProperties";
         }
 
         /**
@@ -175,11 +178,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "指定 CID 已经存在";
+        public String getCode() {
+            return "connectionProperties";
         }
     },
-    BIZ_CONSUMER_NOT_ONLINE {
+    filters {
         /**
          * 获取枚举值
          *
@@ -187,7 +190,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_CONSUMER_NOT_ONLINE";
+            return "spring.datasource.filters";
         }
 
         /**
@@ -196,11 +199,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "指定 CID 的客户端不在线";
+        public String getCode() {
+            return "filters";
         }
     },
-    BIZ_NO_MESSAGE {
+    validationQuery {
         /**
          * 获取枚举值
          *
@@ -208,7 +211,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_NO_MESSAGE";
+            return "spring.datasource.validationQuery";
         }
 
         /**
@@ -217,11 +220,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "当前查询条件没有匹配消息";
+        public String getCode() {
+            return "validationQuery";
         }
     },
-    BIZ_REGION_NOT_FOUND {
+    testOnReturn {
         /**
          * 获取枚举值
          *
@@ -229,7 +232,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_REGION_NOT_FOUND";
+            return "spring.datasource.testOnReturn";
         }
 
         /**
@@ -238,11 +241,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "请求的 Region 找不到";
+        public String getCode() {
+            return "testOnReturn";
         }
     },
-    BIZ_TOPIC_EXISTED {
+    initialSize {
         /**
          * 获取枚举值
          *
@@ -250,7 +253,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_TOPIC_EXISTED";
+            return "spring.datasource.initialSize";
         }
 
         /**
@@ -259,11 +262,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "指定 Topic 已经存在";
+        public String getCode() {
+            return "initialSize";
         }
     },
-    BIZ_PRODUCER_ID_BELONG_TO_OTHER_USER {
+    maxActive {
         /**
          * 获取枚举值
          *
@@ -271,7 +274,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_PRODUCER_ID_BELONG_TO_OTHER_USER";
+            return "spring.datasource.maxActive";
         }
 
         /**
@@ -280,11 +283,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "当前 PID 已经被其他用户占用";
+        public String getCode() {
+            return "maxActive";
         }
     },
-    BIZ_CONSUMER_ID_BELONG_TO_OTHER_USER {
+    maxWait {
         /**
          * 获取枚举值
          *
@@ -292,7 +295,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_CONSUMER_ID_BELONG_TO_OTHER_USER";
+            return "spring.datasource.maxWait";
         }
 
         /**
@@ -301,11 +304,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "当前 CID 已经被其他用户占用";
+        public String getCode() {
+            return "";
         }
     },
-    BIZ_PUBLISH_INFO_NOT_FOUND {
+    timeBetweenEvictionRunsMillis {
         /**
          * 获取枚举值
          *
@@ -313,7 +316,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "BIZ_PUBLISH_INFO_NOT_FOUND";
+            return "spring.datasource.timeBetweenEvictionRunsMillis";
         }
 
         /**
@@ -322,11 +325,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "请求的 PID 没有找到";
+        public String getCode() {
+            return "timeBetweenEvictionRunsMillis";
         }
     },
-    EMPOWER_EXIST_ERROR {
+    minEvictableIdleTimeMillis {
         /**
          * 获取枚举值
          *
@@ -334,7 +337,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "EMPOWER_EXIST_ERROR";
+            return "spring.datasource.minEvictableIdleTimeMillis";
         }
 
         /**
@@ -343,11 +346,11 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "当前授权关系已经存在";
+        public String getCode() {
+            return "minEvictableIdleTimeMillis";
         }
     },
-    EMPOWER_OWNER_CHECK_ERROR {
+    testWhileIdle {
         /**
          * 获取枚举值
          *
@@ -355,7 +358,7 @@ public enum AliCloudRocketMqErrorEnum {
          */
         @Override
         public String getValue() {
-            return "EMPOWER_OWNER_CHECK_ERROR";
+            return "spring.datasource.testWhileIdle";
         }
 
         /**
@@ -364,22 +367,92 @@ public enum AliCloudRocketMqErrorEnum {
          * @return 返回结果
          */
         @Override
-        public String getName() {
-            return "当前用户不是授权 Topic 的 Owner";
+        public String getCode() {
+            return "testWhileIdle";
+        }
+    },
+    testOnBorrow {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.testOnBorrow";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "testOnBorrow";
+        }
+    },
+    validationQueryTimeout {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.validationQueryTimeout";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "validationQueryTimeout";
+        }
+    },
+    poolPreparedStatements {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.poolPreparedStatements";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "poolPreparedStatements";
+        }
+    },
+    maxPoolPreparedStatementPerConnectionSize {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.maxPoolPreparedStatementPerConnectionSize";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "maxPoolPreparedStatementPerConnectionSize";
         }
     };
-
-    /**
-     * 获取枚举值
-     *
-     * @return 返回结果
-     */
-    public abstract String getValue();
-
-    /**
-     * 获取枚举名称
-     *
-     * @return 返回结果
-     */
-    public abstract String getName();
 }

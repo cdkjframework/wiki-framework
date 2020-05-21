@@ -1,6 +1,6 @@
 package com.cdkjframework.core.annotation;
 
-import com.cdkjframework.enums.ERegexType;
+import com.cdkjframework.enums.ERegexTypeEnums;
 
 import java.lang.annotation.*;
 
@@ -43,7 +43,7 @@ public @interface Validate {
      *
      * @return
      */
-    ERegexType regexType() default ERegexType.NONE;
+    ERegexTypeEnums regexType() default ERegexTypeEnums.NONE;
 
     /**
      * 自定义正则验证

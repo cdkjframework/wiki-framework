@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class WebChatPayNotifyServiceImpl extends AbstractPaymentNotifyServiceImp
                 recordEntity.setPayStatus(2);
             }
             //支付时间
-            recordEntity.setPayTime(new Timestamp(System.currentTimeMillis()));
+            recordEntity.setPayTime(LocalDateTime.now());
             recordEntity.setRemarks(recordEntity.getRemarks() + entity.getTimeEnd());
 
             //修改支付记录

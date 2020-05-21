@@ -1,6 +1,6 @@
 package com.cdkjframework.core.annotation;
 
-import com.cdkjframework.enums.AnnotationEnum;
+import com.cdkjframework.enums.AnnotationEnums;
 
 import java.lang.annotation.*;
 
@@ -37,7 +37,7 @@ public @interface EntityValidate {
      *
      * @return 返回结果
      */
-    AnnotationEnum dataType() default AnnotationEnum.String;
+    AnnotationEnums dataType() default AnnotationEnums.String;
 
     /**
      * 提示消息

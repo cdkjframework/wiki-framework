@@ -1,7 +1,7 @@
 package com.cdkjframework.builder;
 
 
-import com.cdkjframework.enums.ResponseBuilderEnum;
+import com.cdkjframework.enums.ResponseBuilderEnums;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -56,8 +56,8 @@ public class ResponseBuilder implements Serializable {
      * 构造函数
      */
     public ResponseBuilder() {
-        this.code = ResponseBuilderEnum.Success.getValue();
-        this.message = ResponseBuilderEnum.Success.getName();
+        this.code = ResponseBuilderEnums.Success.getValue();
+        this.message = ResponseBuilderEnums.Success.getName();
     }
 
     /**
@@ -67,8 +67,8 @@ public class ResponseBuilder implements Serializable {
      */
     public ResponseBuilder(Object data) {
         this.data = data;
-        this.code = ResponseBuilderEnum.Success.getValue();
-        this.message = ResponseBuilderEnum.Success.getName();
+        this.code = ResponseBuilderEnums.Success.getValue();
+        this.message = ResponseBuilderEnums.Success.getName();
     }
 
     /**
@@ -78,16 +78,16 @@ public class ResponseBuilder implements Serializable {
      */
     public ResponseBuilder(int code) {
         this.code = code;
-        ResponseBuilderEnum builderEnum = ResponseBuilderEnum.valueOf(String.valueOf(code));
+        ResponseBuilderEnums builderEnum = ResponseBuilderEnums.valueOf(String.valueOf(code));
         switch (builderEnum) {
             default:
-                this.message = ResponseBuilderEnum.Error.getName();
+                this.message = ResponseBuilderEnums.Error.getName();
                 break;
             case Success:
-                this.message = ResponseBuilderEnum.Success.getName();
+                this.message = ResponseBuilderEnums.Success.getName();
                 break;
             case Abnormal:
-                this.message = ResponseBuilderEnum.Abnormal.getName();
+                this.message = ResponseBuilderEnums.Abnormal.getName();
                 break;
         }
     }
@@ -132,7 +132,7 @@ public class ResponseBuilder implements Serializable {
      * @param data    数据
      */
     public void success(String message, Object data) {
-        this.code = ResponseBuilderEnum.Success.getValue();
+        this.code = ResponseBuilderEnums.Success.getValue();
         this.message = message;
         this.data = data;
     }
@@ -205,7 +205,7 @@ public class ResponseBuilder implements Serializable {
      * @param data    数据
      */
     public void fail(String message, Object data) {
-        this.code = ResponseBuilderEnum.Error.getValue();
+        this.code = ResponseBuilderEnums.Error.getValue();
         this.message = message;
         this.data = data;
     }

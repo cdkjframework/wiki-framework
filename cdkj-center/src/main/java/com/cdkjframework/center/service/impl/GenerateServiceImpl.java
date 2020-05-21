@@ -6,8 +6,8 @@ import com.cdkjframework.core.business.mapper.GenerateMapper;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.generate.template.*;
 import com.cdkjframework.entity.generate.template.children.ChildrenEntity;
-import com.cdkjframework.enums.datasource.MySqlDataTypeContrastEnum;
-import com.cdkjframework.enums.datasource.MySqlJdbcTypeContrastEnum;
+import com.cdkjframework.enums.datasource.MySqlDataTypeContrastEnums;
+import com.cdkjframework.enums.datasource.MySqlJdbcTypeContrastEnums;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.files.freemarker.FreemarkerUtil;
@@ -327,11 +327,11 @@ public class GenerateServiceImpl implements GenerateService {
             // 验证是否为空
             if (!StringUtils.isNullAndSpaceOrEmpty(dataType)) {
                 // MyBatis类型
-                MySqlJdbcTypeContrastEnum jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnum.valueOf(dataType.toUpperCase());
+                MySqlJdbcTypeContrastEnums jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums.valueOf(dataType.toUpperCase());
                 childrenEntity.setColumnType(jdbcTypeContrastEnum.getCode());
 
                 // Java 数据类型
-                MySqlDataTypeContrastEnum contrastEnum = MySqlDataTypeContrastEnum.valueOf(dataType.toUpperCase());
+                MySqlDataTypeContrastEnums contrastEnum = MySqlDataTypeContrastEnums.valueOf(dataType.toUpperCase());
                 childrenEntity.setDataType(contrastEnum.getValue());
                 String code = contrastEnum.getCode();
                 if (!entity.getLeading().contains(code) && StringUtils.isNotNullAndEmpty(code)) {
@@ -339,9 +339,9 @@ public class GenerateServiceImpl implements GenerateService {
                 }
 
                 // 记录是否为生成扩展字段
-                if (MySqlDataTypeContrastEnum.DATE.equals(contrastEnum) ||
-                        MySqlDataTypeContrastEnum.TIMESTAMP.equals(contrastEnum) ||
-                        MySqlDataTypeContrastEnum.DATETIME.equals(contrastEnum)) {
+                if (MySqlDataTypeContrastEnums.DATE.equals(contrastEnum) ||
+                        MySqlDataTypeContrastEnums.TIMESTAMP.equals(contrastEnum) ||
+                        MySqlDataTypeContrastEnums.DATETIME.equals(contrastEnum)) {
                     columnExtension(childrenEntityList, column, contrastEnum);
                 }
             }
@@ -364,7 +364,7 @@ public class GenerateServiceImpl implements GenerateService {
      * @param contrastEnum       数据类型
      */
     private void columnExtension(List<ChildrenEntity> childrenEntityList, TableColumnEntity column,
-                                 MySqlDataTypeContrastEnum contrastEnum) {
+                                 MySqlDataTypeContrastEnums contrastEnum) {
         // 扩展字段开始
         ChildrenEntity childrenEntity = new ChildrenEntity();
         childrenEntity.setIsExtension(1);

@@ -1,7 +1,7 @@
 package com.cdkjframework.util.tool.validate;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.enums.ResponseBuilderEnum;
+import com.cdkjframework.enums.ResponseBuilderEnums;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 
@@ -50,7 +50,7 @@ public class ValidateUtils {
      */
     public static ResponseBuilder getIllegalMessage(BindingResult result) {
         String errorMessage = judgeValidate(result);
-        return new ResponseBuilder(ResponseBuilderEnum.Error.getValue(), errorMessage);
+        return new ResponseBuilder(ResponseBuilderEnums.Error.getValue(), errorMessage);
     }
 
 }

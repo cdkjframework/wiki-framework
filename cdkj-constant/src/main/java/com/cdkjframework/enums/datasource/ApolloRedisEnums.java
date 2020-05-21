@@ -1,18 +1,20 @@
 package com.cdkjframework.enums.datasource;
 
+
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkjframework.core
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.datasource
- * @ClassName: ApolloMongoEnum
- * @Description: java类作用描述
+ * @ClassName: ApolloRedisEnum
+ * @Description: redis
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum ApolloMongoEnum implements BasicsEnum {
-    uri {
+public enum ApolloRedisEnums implements BasicsEnum {
+
+    database {
         /**
          * 获取枚举值
          *
@@ -20,7 +22,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.uri";
+            return "spring.data.redis.database";
         }
 
         /**
@@ -30,7 +32,28 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "uri";
+            return "database";
+        }
+    },
+    host {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.data.redis.host";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "host";
         }
     },
     port {
@@ -41,7 +64,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.port";
+            return "spring.data.redis.port";
         }
 
         /**
@@ -54,27 +77,6 @@ public enum ApolloMongoEnum implements BasicsEnum {
             return "port";
         }
     },
-    userName {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.datasource.mongodb.userName";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "userName";
-        }
-    },
     password {
         /**
          * 获取枚举值
@@ -83,7 +85,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.password";
+            return "spring.data.redis.password";
         }
 
         /**
@@ -96,7 +98,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
             return "password";
         }
     },
-    dataSource {
+    maxActive {
         /**
          * 获取枚举值
          *
@@ -104,7 +106,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.dataSource";
+            return "spring.data.redis.maxActive";
         }
 
         /**
@@ -114,10 +116,10 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "dataSource";
+            return "maxActive";
         }
     },
-    maxWaitTime {
+    timeOut {
         /**
          * 获取枚举值
          *
@@ -125,7 +127,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.maxWaitTime";
+            return "spring.data.redis.timeOut";
         }
 
         /**
@@ -135,10 +137,10 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "maxWaitTime";
+            return "port";
         }
     },
-    connectTimeout {
+    maxIdle {
         /**
          * 获取枚举值
          *
@@ -146,7 +148,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mongodb.connectTimeout";
+            return "spring.data.redis.maxIdle";
         }
 
         /**
@@ -156,49 +158,7 @@ public enum ApolloMongoEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "connectTimeout";
-        }
-    },
-    minConnectionsPerHost {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.datasource.mongodb.minConnectionsPerHost";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "minConnectionsPerHost";
-        }
-    },
-    maxConnectionsPerHost {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.datasource.mongodb.maxConnectionsPerHost";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "maxConnectionsPerHost";
+            return "maxIdle";
         }
     };
 }

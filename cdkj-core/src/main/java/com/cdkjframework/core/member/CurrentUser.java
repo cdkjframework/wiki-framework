@@ -6,12 +6,16 @@ import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.entity.user.ConfigureEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
+import com.cdkjframework.enums.InterfaceEnum;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ProjectName: common-core
@@ -130,6 +134,43 @@ public class CurrentUser {
      */
     public static List<ConfigureEntity> getConfigureList() {
         return getCurrentUser().getConfigureList();
+    }
+
+    /**
+     * 获取用户配置信息
+     *
+     * @param typeEnum 枚举信息
+     * @return 返回配置结果
+     */
+    public static ConfigureEntity getConfigure(InterfaceEnum typeEnum) {
+        List<ConfigureEntity> configureEntityList = getConfigureList();
+        if (CollectionUtils.isEmpty(configureEntityList) || typeEnum == null ||
+                StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
+            return null;
+        }
+        Optional<ConfigureEntity> optional = configureEntityList.stream()
+                .filter(f -> f.getConfigKey().equals(typeEnum.getValue()))
+                .findFirst();
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 获取用户配置信息
+     *
+     * @param typeEnum 枚举信息
+     * @return 返回配置结果
+     */
+    public static String getConfigureValue(InterfaceEnum typeEnum) {
+        ConfigureEntity configureEntity = getConfigure(typeEnum);
+        if (configureEntity == null) {
+            return "";
+        } else {
+            return configureEntity.getConfigValue();
+        }
     }
 
     /**

@@ -3,18 +3,16 @@ package com.cdkjframework.enums.datasource;
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkjframework.core
+ * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.datasource
- * @ClassName: ApolloDataSourceEnum
- * @Description: java类作用描述
+ * @ClassName: MySqlDataTypeContrastEnum
+ * @Description: mysql 数据类型对照
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum ApolloDataSourceEnum implements BasicsEnum {
-
-
-    type {
+public enum MySqlDataTypeContrastEnums implements BasicsEnum {
+    VARCHAR {
         /**
          * 获取枚举值
          *
@@ -22,7 +20,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.type";
+            return "String";
         }
 
         /**
@@ -32,10 +30,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "type";
+            return "java.lang.String";
         }
     },
-    url {
+    CHAR {
         /**
          * 获取枚举值
          *
@@ -43,7 +41,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mybatis.url";
+            return "String";
         }
 
         /**
@@ -53,10 +51,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "url";
+            return "java.lang.String";
         }
     },
-    password {
+    BLOB {
         /**
          * 获取枚举值
          *
@@ -64,7 +62,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mybatis.password";
+            return "byte[]";
         }
 
         /**
@@ -74,10 +72,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "password";
+            return "java.lang.byte";
         }
     },
-    username {
+    TEXT {
         /**
          * 获取枚举值
          *
@@ -85,7 +83,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mybatis.username";
+            return "String";
         }
 
         /**
@@ -95,10 +93,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "username";
+            return "java.lang.String";
         }
     },
-    driverClassName {
+    MEDIUMTEXT {
         /**
          * 获取枚举值
          *
@@ -106,7 +104,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mybatis.driverClassName";
+            return "String";
         }
 
         /**
@@ -116,10 +114,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "driverClassName";
+            return "java.lang.String";
         }
     },
-    mybatisMapper {
+    INTEGER {
         /**
          * 获取枚举值
          *
@@ -127,7 +125,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mybatis.mybatisMapper";
+            return "Long";
         }
 
         /**
@@ -137,10 +135,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "mybatisMapper";
+            return "java.lang.Long";
         }
     },
-    mybatisMapperXml {
+    TINYINT {
         /**
          * 获取枚举值
          *
@@ -148,7 +146,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.mybatis.mybatisMapperXml";
+            return "Integer";
         }
 
         /**
@@ -158,10 +156,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "mybatisMapperXml";
+            return "java.lang.Integer";
         }
     },
-    connectionProperties {
+    INT {
         /**
          * 获取枚举值
          *
@@ -169,7 +167,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.connectionProperties";
+            return "Integer";
         }
 
         /**
@@ -179,10 +177,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "connectionProperties";
+            return "java.lang.Integer";
         }
     },
-    filters {
+    SMALLINT {
         /**
          * 获取枚举值
          *
@@ -190,7 +188,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.filters";
+            return "Integer";
         }
 
         /**
@@ -200,10 +198,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "filters";
+            return "java.lang.Integer";
         }
     },
-    validationQuery {
+    MEDIUMINT {
         /**
          * 获取枚举值
          *
@@ -211,7 +209,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.validationQuery";
+            return "Integer";
         }
 
         /**
@@ -221,10 +219,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "validationQuery";
+            return "java.lang.Integer";
         }
     },
-    testOnReturn {
+    BIT {
         /**
          * 获取枚举值
          *
@@ -232,7 +230,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.testOnReturn";
+            return "Boolean";
         }
 
         /**
@@ -242,10 +240,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "testOnReturn";
+            return "java.lang.Boolean";
         }
     },
-    initialSize {
+    BIGINT {
         /**
          * 获取枚举值
          *
@@ -253,7 +251,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.initialSize";
+            return "BigInteger";
         }
 
         /**
@@ -263,10 +261,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "initialSize";
+            return "java.math.BigInteger";
         }
     },
-    maxActive {
+    FLOAT {
         /**
          * 获取枚举值
          *
@@ -274,7 +272,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.maxActive";
+            return "Float";
         }
 
         /**
@@ -284,10 +282,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "maxActive";
+            return "java.lang.Float";
         }
     },
-    maxWait {
+    DOUBLE {
         /**
          * 获取枚举值
          *
@@ -295,7 +293,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.maxWait";
+            return "Double";
         }
 
         /**
@@ -305,10 +303,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "";
+            return "java.lang.Double";
         }
     },
-    timeBetweenEvictionRunsMillis {
+    DECIMAL {
         /**
          * 获取枚举值
          *
@@ -316,7 +314,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.timeBetweenEvictionRunsMillis";
+            return "BigDecimal";
         }
 
         /**
@@ -326,10 +324,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "timeBetweenEvictionRunsMillis";
+            return "java.math.BigDecimal";
         }
     },
-    minEvictableIdleTimeMillis {
+    BOOLEAN {
         /**
          * 获取枚举值
          *
@@ -337,7 +335,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.minEvictableIdleTimeMillis";
+            return "Integer";
         }
 
         /**
@@ -347,10 +345,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "minEvictableIdleTimeMillis";
+            return "java.lang.Integer";
         }
     },
-    testWhileIdle {
+    ID {
         /**
          * 获取枚举值
          *
@@ -358,7 +356,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.testWhileIdle";
+            return "Long";
         }
 
         /**
@@ -368,10 +366,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "testWhileIdle";
+            return "java.lang.Long";
         }
     },
-    testOnBorrow {
+    DATE {
         /**
          * 获取枚举值
          *
@@ -379,7 +377,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.testOnBorrow";
+            return "LocalDate";
         }
 
         /**
@@ -389,10 +387,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "testOnBorrow";
+            return "java.time.LocalDate";
         }
     },
-    validationQueryTimeout {
+    TIME {
         /**
          * 获取枚举值
          *
@@ -400,7 +398,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.validationQueryTimeout";
+            return "LocalTime";
         }
 
         /**
@@ -410,18 +408,17 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "validationQueryTimeout";
+            return "java.time.LocalTime";
         }
     },
-    poolPreparedStatements {
-        /**
-         * 获取枚举值
+    DATETIME {
+        /**f
          *
          * @return 返回结果
          */
         @Override
         public String getValue() {
-            return "spring.datasource.poolPreparedStatements";
+            return "LocalDateTime";
         }
 
         /**
@@ -431,10 +428,10 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "poolPreparedStatements";
+            return "java.time.LocalDateTime";
         }
     },
-    maxPoolPreparedStatementPerConnectionSize {
+    TIMESTAMP {
         /**
          * 获取枚举值
          *
@@ -442,7 +439,7 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.datasource.maxPoolPreparedStatementPerConnectionSize";
+            return "Instant";
         }
 
         /**
@@ -452,7 +449,28 @@ public enum ApolloDataSourceEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "maxPoolPreparedStatementPerConnectionSize";
+            return "java.time.Instant";
+        }
+    },
+    YEAR {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "Date";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.sql.Date";
         }
     };
 }

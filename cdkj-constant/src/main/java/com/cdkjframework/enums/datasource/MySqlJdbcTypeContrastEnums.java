@@ -5,13 +5,13 @@ import com.cdkjframework.enums.basics.BasicsEnum;
 /**
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.core.enums.datasource
- * @ClassName: MySqlDataTypeContrastEnum
- * @Description: mysql 数据类型对照
+ * @ClassName: MySQLMyBatisContrastEnum
+ * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum MySqlDataTypeContrastEnum implements BasicsEnum {
+public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
     VARCHAR {
         /**
          * 获取枚举值
@@ -20,7 +20,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "String";
+            return "varchar";
         }
 
         /**
@@ -30,280 +30,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    CHAR {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    BLOB {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "byte[]";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.byte";
-        }
-    },
-    TEXT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    MEDIUMTEXT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    INTEGER {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Long";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Long";
-        }
-    },
-    TINYINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    INT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    SMALLINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    MEDIUMINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    BIT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Boolean";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Boolean";
-        }
-    },
-    BIGINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "BigInteger";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.math.BigInteger";
-        }
-    },
-    FLOAT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Float";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Float";
-        }
-    },
-    DOUBLE {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Double";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Double";
+            return "VARCHAR";
         }
     },
     DECIMAL {
@@ -314,7 +41,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "BigDecimal";
+            return "decimal";
         }
 
         /**
@@ -324,10 +51,10 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.math.BigDecimal";
+            return "DECIMAL";
         }
     },
-    BOOLEAN {
+    CHAR {
         /**
          * 获取枚举值
          *
@@ -335,7 +62,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Integer";
+            return "char";
         }
 
         /**
@@ -345,10 +72,10 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.lang.Integer";
+            return "CHAR";
         }
     },
-    ID {
+    TINYINT {
         /**
          * 获取枚举值
          *
@@ -356,7 +83,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Long";
+            return "tinyint";
         }
 
         /**
@@ -366,7 +93,133 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.lang.Long";
+            return "TINYINT";
+        }
+    },
+    SMALLINT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "smallint";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "SMALLINT";
+        }
+    },
+    INT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "int";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "INTEGER";
+        }
+    },
+    FLOAT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "float";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "FLOAT";
+        }
+    },
+    BIGINT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "bigint";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "BIGINT";
+        }
+    },
+    DOUBLE {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "double";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "DOUBLE";
+        }
+    },
+    BIT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "bit";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "BOOLEAN";
         }
     },
     DATE {
@@ -377,7 +230,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Date";
+            return "LocalDate";
         }
 
         /**
@@ -387,7 +240,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.sql.Date";
+            return "DATE";
         }
     },
     TIME {
@@ -398,7 +251,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Time";
+            return "LocalTime";
         }
 
         /**
@@ -408,9 +261,10 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.sql.Time";
+            return "TIME";
         }
     },
+
     DATETIME {
         /**f
          *
@@ -418,7 +272,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Timestamp";
+            return "LocalDateTime";
         }
 
         /**
@@ -428,7 +282,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.sql.Timestamp";
+            return "TIMESTAMP";
         }
     },
     TIMESTAMP {
@@ -439,7 +293,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Timestamp";
+            return "Instant";
         }
 
         /**
@@ -449,10 +303,10 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.sql.Timestamp";
+            return "TIMESTAMP";
         }
     },
-    YEAR {
+    TEXT {
         /**
          * 获取枚举值
          *
@@ -460,7 +314,7 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Date";
+            return "text";
         }
 
         /**
@@ -470,7 +324,49 @@ public enum MySqlDataTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.sql.Date";
+            return "VARCHAR";
+        }
+    },
+    MEDIUMTEXT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "mediumtext";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "VARCHAR";
+        }
+    },
+    LONGTEXT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "longtext";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "LONGTEXT";
         }
     };
 }

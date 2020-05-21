@@ -1,5 +1,6 @@
 package com.cdkjframework.pay.impl;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.constant.PayTypeConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
@@ -20,7 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * @ProjectName: cdkj-framework
@@ -193,21 +194,21 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
     public void buildPayOrderRecord(PayConfigEntity configEntity, PayRecordEntity recordEntity) throws GlobalException {
         recordEntity.setId(GeneratedValueUtils.getUuidString());
         recordEntity.setNonceStr(GeneratedValueUtils.getUuidNotTransverseLine());
-        recordEntity.setOrderNo(RedisNumbersUtils.generateDocumentNumber(configEntity.getOrderPrefix(), 5));
-        recordEntity.setAddTime(new Date());
-        recordEntity.setPayStatus(0);
-        recordEntity.setDeleted(0);
-        recordEntity.setAddTime(new Date());
+        recordEntity.setOrderNo(RedisNumbersUtils.generateDocumentNumber(configEntity.getOrderPrefix(), IntegerConsts.FIVE));
+        recordEntity.setAddTime(LocalDateTime.now());
+        recordEntity.setPayStatus(IntegerConsts.ZERO);
+        recordEntity.setDeleted(IntegerConsts.ZERO);
+        recordEntity.setAddTime(LocalDateTime.now());
         switch (configEntity.getPayType()) {
             case PayTypeConsts
                     .ALI_PAY:
-                recordEntity.setPayMethod(1);
+                recordEntity.setPayMethod(IntegerConsts.ONE);
                 break;
             case PayTypeConsts.BBC:
-                recordEntity.setPayMethod(2);
+                recordEntity.setPayMethod(IntegerConsts.TWO);
                 break;
             default:
-                recordEntity.setPayMethod(0);
+                recordEntity.setPayMethod(IntegerConsts.ZERO);
                 break;
         }
     }

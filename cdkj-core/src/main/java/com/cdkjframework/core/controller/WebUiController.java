@@ -4,7 +4,7 @@ import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.entity.user.UserEntity;
-import com.cdkjframework.enums.ResponseBuilderEnum;
+import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import io.jsonwebtoken.Claims;
@@ -42,8 +42,8 @@ public class WebUiController extends AbstractController {
         } catch (Exception ex) {
             ex.printStackTrace();
 
-            builder.setCode(ResponseBuilderEnum.Error.getValue());
-            builder.setMessage(ResponseBuilderEnum.Error.getName());
+            builder.setCode(ResponseBuilderEnums.Error.getValue());
+            builder.setMessage(ResponseBuilderEnums.Error.getName());
         }
 
         //返回结果

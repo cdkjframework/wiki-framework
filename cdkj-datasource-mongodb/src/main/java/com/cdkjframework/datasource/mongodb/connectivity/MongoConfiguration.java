@@ -1,7 +1,7 @@
 package com.cdkjframework.datasource.mongodb.connectivity;
 
 import com.cdkjframework.datasource.mongodb.config.MongoConfig;
-import com.cdkjframework.enums.datasource.ApolloMongoEnum;
+import com.cdkjframework.enums.datasource.ApolloMongoEnums;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.mapper.MapperUtils;
@@ -86,7 +86,7 @@ public class MongoConfiguration {
      */
     private void setConfiguration() {
         try {
-            mongodbConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloMongoEnum.values(), MongoConfig.class);
+            mongodbConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloMongoEnums.values(), MongoConfig.class);
         } catch (IllegalAccessException ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
         } catch (InstantiationException ex) {

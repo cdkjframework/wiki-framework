@@ -3,7 +3,7 @@ package com.cdkjframework.message.queue.eclipse.client;
 import com.cdkjframework.config.MqttConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.message.baidu.MqttCallbackEntity;
-import com.cdkjframework.enums.QueueMessageTypeEnum;
+import com.cdkjframework.enums.QueueMessageTypeEnums;
 import com.cdkjframework.util.log.LogUtils;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -125,7 +125,7 @@ public class CdkjMqttCallback implements MqttCallback {
             callbackEntity.setQos(message.getQos());
             callbackEntity.setTopic(String.join(",", token.getTopics()));
             callbackEntity.setQueueId(message.getId());
-            callbackEntity.setMessageType(QueueMessageTypeEnum.MESSAGE);
+            callbackEntity.setMessageType(QueueMessageTypeEnums.MESSAGE);
             callbackEntity.setComplete(token.isComplete());
 
             //回调数据
@@ -151,7 +151,7 @@ public class CdkjMqttCallback implements MqttCallback {
         callbackEntity.setQos(message.getQos());
         callbackEntity.setTopic(topic);
         callbackEntity.setQueueId(message.getId());
-        callbackEntity.setMessageType(QueueMessageTypeEnum.MESSAGE);
+        callbackEntity.setMessageType(QueueMessageTypeEnums.MESSAGE);
 
         //回调数据
         invokeMethod(callbackEntity);

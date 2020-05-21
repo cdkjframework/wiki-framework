@@ -1,7 +1,7 @@
 package com.cdkjframework.entity.message.baidu;
 
 
-import com.cdkjframework.enums.QueueMessageTypeEnum;
+import com.cdkjframework.enums.QueueMessageTypeEnums;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -48,5 +48,5 @@ public class MqttCallbackEntity {
     /**
      * 消息类型
      */
-    private QueueMessageTypeEnum messageType;
+    private QueueMessageTypeEnums messageType;
 }

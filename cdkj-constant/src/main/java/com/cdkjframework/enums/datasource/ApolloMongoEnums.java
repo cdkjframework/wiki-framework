@@ -1,19 +1,18 @@
-package com.cdkjframework.enums.config;
+package com.cdkjframework.enums.datasource;
 
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
- * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.core.enums.config
- * @ClassName: XxlJobEnum
- * @Description: XxlJob
+ * @ProjectName: cdkjframework.core
+ * @Package: com.cdkjframework.core.enums.datasource
+ * @ClassName: ApolloMongoEnum
+ * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum XxlJobEnum implements BasicsEnum {
-
-    adminAddresses {
+public enum ApolloMongoEnums implements BasicsEnum {
+    uri {
         /**
          * 获取枚举值
          *
@@ -21,7 +20,7 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.xxl.job.adminAddresses";
+            return "spring.datasource.mongodb.uri";
         }
 
         /**
@@ -31,49 +30,7 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "adminAddresses";
-        }
-    },
-    appName {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.xxl.job.appName";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "appName";
-        }
-    },
-    ip {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.xxl.job.ip";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "ip";
+            return "uri";
         }
     },
     port {
@@ -84,7 +41,7 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.xxl.job.port";
+            return "spring.datasource.mongodb.port";
         }
 
         /**
@@ -97,7 +54,7 @@ public enum XxlJobEnum implements BasicsEnum {
             return "port";
         }
     },
-    accessToken {
+    userName {
         /**
          * 获取枚举值
          *
@@ -105,7 +62,7 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.xxl.job.accessToken";
+            return "spring.datasource.mongodb.userName";
         }
 
         /**
@@ -115,10 +72,10 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "accessToken";
+            return "userName";
         }
     },
-    logPath {
+    password {
         /**
          * 获取枚举值
          *
@@ -126,7 +83,7 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.xxl.job.logPath";
+            return "spring.datasource.mongodb.password";
         }
 
         /**
@@ -136,10 +93,10 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "logPath";
+            return "password";
         }
     },
-    logRetentionDays {
+    dataSource {
         /**
          * 获取枚举值
          *
@@ -147,7 +104,7 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.xxl.job.logRetentionDays";
+            return "spring.datasource.mongodb.dataSource";
         }
 
         /**
@@ -157,7 +114,91 @@ public enum XxlJobEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "logRetentionDays";
+            return "dataSource";
+        }
+    },
+    maxWaitTime {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.mongodb.maxWaitTime";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "maxWaitTime";
+        }
+    },
+    connectTimeout {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.mongodb.connectTimeout";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "connectTimeout";
+        }
+    },
+    minConnectionsPerHost {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.mongodb.minConnectionsPerHost";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "minConnectionsPerHost";
+        }
+    },
+    maxConnectionsPerHost {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.datasource.mongodb.maxConnectionsPerHost";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "maxConnectionsPerHost";
         }
     };
 }
