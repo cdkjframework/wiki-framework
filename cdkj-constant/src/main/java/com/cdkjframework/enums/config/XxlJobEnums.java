@@ -1,20 +1,19 @@
-package com.cdkjframework.enums.datasource;
-
+package com.cdkjframework.enums.config;
 
 import com.cdkjframework.enums.basics.BasicsEnum;
 
 /**
  * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.core.enums.datasource
- * @ClassName: ApolloRedisEnum
- * @Description: redis
+ * @Package: com.cdkjframework.core.enums.config
+ * @ClassName: XxlJobEnum
+ * @Description: XxlJob
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum ApolloRedisEnum implements BasicsEnum {
+public enum XxlJobEnums implements BasicsEnum {
 
-    database {
+    adminAddresses {
         /**
          * 获取枚举值
          *
@@ -22,7 +21,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.data.redis.database";
+            return "spring.xxl.job.adminAddresses";
         }
 
         /**
@@ -32,10 +31,10 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "database";
+            return "adminAddresses";
         }
     },
-    host {
+    appName {
         /**
          * 获取枚举值
          *
@@ -43,7 +42,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.data.redis.host";
+            return "spring.xxl.job.appName";
         }
 
         /**
@@ -53,7 +52,28 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "host";
+            return "appName";
+        }
+    },
+    ip {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "spring.xxl.job.ip";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "ip";
         }
     },
     port {
@@ -64,7 +84,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.data.redis.port";
+            return "spring.xxl.job.port";
         }
 
         /**
@@ -77,7 +97,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
             return "port";
         }
     },
-    password {
+    accessToken {
         /**
          * 获取枚举值
          *
@@ -85,7 +105,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.data.redis.password";
+            return "spring.xxl.job.accessToken";
         }
 
         /**
@@ -95,10 +115,10 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "password";
+            return "accessToken";
         }
     },
-    maxActive {
+    logPath {
         /**
          * 获取枚举值
          *
@@ -106,7 +126,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.data.redis.maxActive";
+            return "spring.xxl.job.logPath";
         }
 
         /**
@@ -116,10 +136,10 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "maxActive";
+            return "logPath";
         }
     },
-    timeOut {
+    logRetentionDays {
         /**
          * 获取枚举值
          *
@@ -127,7 +147,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "spring.data.redis.timeOut";
+            return "spring.xxl.job.logRetentionDays";
         }
 
         /**
@@ -137,28 +157,7 @@ public enum ApolloRedisEnum implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "port";
-        }
-    },
-    maxIdle {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.maxIdle";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "maxIdle";
+            return "logRetentionDays";
         }
     };
 }

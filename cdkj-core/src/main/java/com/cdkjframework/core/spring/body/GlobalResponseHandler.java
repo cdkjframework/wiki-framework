@@ -2,7 +2,7 @@ package com.cdkjframework.core.spring.body;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.enums.ResponseBuilderEnum;
+import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -98,8 +98,8 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
         //封装对象
         ResponseBuilder builder = new ResponseBuilder();
         builder.setRequestTime(serverHttpRequest.getHeaders().getDate());
-        builder.setCode(ResponseBuilderEnum.Success.getValue());
-        builder.setMessage(ResponseBuilderEnum.Success.getName());
+        builder.setCode(ResponseBuilderEnums.Success.getValue());
+        builder.setMessage(ResponseBuilderEnums.Success.getName());
         builder.setData(o);
 
         //返回结果

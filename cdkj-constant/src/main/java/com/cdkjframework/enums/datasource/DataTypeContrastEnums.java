@@ -56,17 +56,21 @@ public enum DataTypeContrastEnums {
      */
     BIGDECIMAL("java.math.BigDecimal", "DECIMAL"),
     /**
+     * 日期时间
+     */
+    LOCALDATETIME("java.time.LocalDateTime", "DATETIME"),
+    /**
      * 日期
      */
-    DATE("java.sql.Date", "DATETIME"),
+    LOCALDATE("java.time.LocalDate", "DATETIME"),
     /**
      * 时间
      */
-    TIME("java.sql.Time", "TIME"),
+    LOCALTIME("java.time.LocalTime", "TIME"),
     /**
      * 时间戳
      */
-    TIMESTAMP("java.sql.Timestamp", "TIMESTAMP");
+    INSTANT("java.time.Instant", "TIMESTAMP");
 
     /**
      * JAVA 类型

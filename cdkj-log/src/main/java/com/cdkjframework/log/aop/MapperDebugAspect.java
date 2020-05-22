@@ -3,6 +3,10 @@ package com.cdkjframework.log.aop;
 import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+<<<<<<< HEAD
+=======
+import org.aspectj.lang.annotation.Around;
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -30,7 +34,11 @@ public class MapperDebugAspect extends BaseAopAspect {
      * 切入点
      */
     @Pointcut(value = executionMapperPoint)
+<<<<<<< HEAD
     public void PointcutMapper() {
+=======
+    public void doPointcutMapper() {
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
     }
 
     /**
@@ -40,7 +48,11 @@ public class MapperDebugAspect extends BaseAopAspect {
      * @return 返回结果
      * @throws Throwable 异常信息
      */
+<<<<<<< HEAD
     @Before("PointcutMapper()")
+=======
+    @Before("doPointcutMapper()")
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
     public Object Before(JoinPoint joinPoint) throws Throwable {
         StringBuilder sb = new StringBuilder();
         Object object = process(joinPoint, sb);

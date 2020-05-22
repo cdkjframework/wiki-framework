@@ -8,7 +8,7 @@ package com.cdkjframework.enums;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public enum ERegexType {
+public enum ERegexTypeEnums {
     NONE,
     SPECIAL_CHAR,
     CHINESE,

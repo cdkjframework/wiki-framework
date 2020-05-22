@@ -1,42 +1,55 @@
 package com.cdkjframework.enums;
 
 /**
- * @ProjectName: ec-icm
+ * @ProjectName: hongtu.slps.bms
  * @Package: com.cdkjframework.core.enums
- * @ClassName: QueueMessageTypeEnum
+ * @ClassName: InterfaceTypeEnum
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum QueueMessageTypeEnum {
-
-    /**
-     * 消息回执
-     */
-    RECEIPT {
+public enum InterfaceTypeEnums {
+    ERP {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
         @Override
         public String getValue() {
-            return "Receipt";
+            return "ERP";
         }
 
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
         @Override
         public String getName() {
-            return "消息回执";
+            return "ERP 接口返回";
         }
     },
-    /**
-     * 消息
-     */
-    MESSAGE {
+    LHB {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
         @Override
         public String getValue() {
-            return "Message";
+            return "LHB";
         }
 
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
         @Override
         public String getName() {
-            return "消息";
+            return "LHB 接口返回";
         }
     };
 

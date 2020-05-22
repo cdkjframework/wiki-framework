@@ -1,55 +1,42 @@
 package com.cdkjframework.enums;
 
 /**
- * @ProjectName: HT-OMS-Project-OMS
+ * @ProjectName: ec-icm
  * @Package: com.cdkjframework.core.enums
- * @ClassName: HttpMethodEnum
+ * @ClassName: QueueMessageTypeEnum
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum HttpMethodEnum {
-    GET {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
+public enum QueueMessageTypeEnums {
+
+    /**
+     * 消息回执
+     */
+    RECEIPT {
         @Override
         public String getValue() {
-            return "GET";
+            return "Receipt";
         }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
         @Override
         public String getName() {
-            return "GET请求";
+            return "消息回执";
         }
     },
-    POST {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
+    /**
+     * 消息
+     */
+    MESSAGE {
         @Override
         public String getValue() {
-            return "POST";
+            return "Message";
         }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
         @Override
         public String getName() {
-            return "POST请求";
+            return "消息";
         }
     };
 

@@ -1,18 +1,17 @@
-package com.cdkjframework.enums.datasource;
-
-import com.cdkjframework.enums.basics.BasicsEnum;
+package com.cdkjframework.enums;
 
 /**
- * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.core.enums.datasource
- * @ClassName: MySQLMyBatisContrastEnum
+ * @ProjectName: HT-OMS-Project-WEB
+ * @Package: com.cdkjframework.core.enums
+ * @ClassName: AliCloudRocketMqErrorEnum
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
-    VARCHAR {
+public enum AliCloudRocketMqErrorEnums {
+
+    ONS_SYSTEM_ERROR {
         /**
          * 获取枚举值
          *
@@ -20,7 +19,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "varchar";
+            return "ONS_SYSTEM_ERROR";
         }
 
         /**
@@ -29,11 +28,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "VARCHAR";
+        public String getName() {
+            return "MQ 后端异常";
         }
     },
-    DECIMAL {
+    ONS_SERVICE_UNSUPPORTED {
         /**
          * 获取枚举值
          *
@@ -41,7 +40,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "decimal";
+            return "ONS_SERVICE_UNSUPPORTED";
         }
 
         /**
@@ -50,11 +49,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "DECIMAL";
+        public String getName() {
+            return "当前调用在对应的 Region 区域不支持";
         }
     },
-    CHAR {
+    ONS_INVOKE_ERROR {
         /**
          * 获取枚举值
          *
@@ -62,7 +61,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "char";
+            return "ONS_INVOKE_ERROR";
         }
 
         /**
@@ -71,11 +70,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "CHAR";
+        public String getName() {
+            return "Open API 接口调用失败";
         }
     },
-    TINYINT {
+    BIZ_FIELD_CHECK_INVALID {
         /**
          * 获取枚举值
          *
@@ -83,7 +82,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "tinyint";
+            return "BIZ_FIELD_CHECK_INVALID";
         }
 
         /**
@@ -92,11 +91,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "TINYINT";
+        public String getName() {
+            return "参数检验失败";
         }
     },
-    SMALLINT {
+    BIZ_TOPIC_NOT_FOUND {
         /**
          * 获取枚举值
          *
@@ -104,7 +103,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "smallint";
+            return "BIZ_TOPIC_NOT_FOUND";
         }
 
         /**
@@ -113,11 +112,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "SMALLINT";
+        public String getName() {
+            return "Topic 没有找到";
         }
     },
-    INT {
+    BIZ_SUBSCRIPTION_NOT_FOUND {
         /**
          * 获取枚举值
          *
@@ -125,7 +124,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "int";
+            return "BIZ_SUBSCRIPTION_NOT_FOUND";
         }
 
         /**
@@ -134,11 +133,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "INTEGER";
+        public String getName() {
+            return "目标订阅关系 CID 找不到";
         }
     },
-    FLOAT {
+    BIZ_PUBLISHER_EXISTED {
         /**
          * 获取枚举值
          *
@@ -146,7 +145,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "float";
+            return "BIZ_PUBLISHER_EXISTED";
         }
 
         /**
@@ -155,11 +154,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "FLOAT";
+        public String getName() {
+            return "指定 PID 已经存在";
         }
     },
-    BIGINT {
+    BIZ_SUBSCRIPTION_EXISTED {
         /**
          * 获取枚举值
          *
@@ -167,7 +166,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "bigint";
+            return "BIZ_SUBSCRIPTION_EXISTED";
         }
 
         /**
@@ -176,11 +175,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "BIGINT";
+        public String getName() {
+            return "指定 CID 已经存在";
         }
     },
-    DOUBLE {
+    BIZ_CONSUMER_NOT_ONLINE {
         /**
          * 获取枚举值
          *
@@ -188,7 +187,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "double";
+            return "BIZ_CONSUMER_NOT_ONLINE";
         }
 
         /**
@@ -197,11 +196,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "DOUBLE";
+        public String getName() {
+            return "指定 CID 的客户端不在线";
         }
     },
-    BIT {
+    BIZ_NO_MESSAGE {
         /**
          * 获取枚举值
          *
@@ -209,7 +208,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "bit";
+            return "BIZ_NO_MESSAGE";
         }
 
         /**
@@ -218,11 +217,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "BOOLEAN";
+        public String getName() {
+            return "当前查询条件没有匹配消息";
         }
     },
-    DATE {
+    BIZ_REGION_NOT_FOUND {
         /**
          * 获取枚举值
          *
@@ -230,7 +229,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "date";
+            return "BIZ_REGION_NOT_FOUND";
         }
 
         /**
@@ -239,11 +238,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "DATE";
+        public String getName() {
+            return "请求的 Region 找不到";
         }
     },
-    TIME {
+    BIZ_TOPIC_EXISTED {
         /**
          * 获取枚举值
          *
@@ -251,7 +250,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "time";
+            return "BIZ_TOPIC_EXISTED";
         }
 
         /**
@@ -260,32 +259,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "TIME";
+        public String getName() {
+            return "指定 Topic 已经存在";
         }
     },
-
-    DATETIME {
-        /**f
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Timestamp";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "TIMESTAMP";
-        }
-    },
-    TIMESTAMP {
+    BIZ_PRODUCER_ID_BELONG_TO_OTHER_USER {
         /**
          * 获取枚举值
          *
@@ -293,7 +271,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "timestamp";
+            return "BIZ_PRODUCER_ID_BELONG_TO_OTHER_USER";
         }
 
         /**
@@ -302,11 +280,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "TIMESTAMP";
+        public String getName() {
+            return "当前 PID 已经被其他用户占用";
         }
     },
-    TEXT {
+    BIZ_CONSUMER_ID_BELONG_TO_OTHER_USER {
         /**
          * 获取枚举值
          *
@@ -314,7 +292,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "text";
+            return "BIZ_CONSUMER_ID_BELONG_TO_OTHER_USER";
         }
 
         /**
@@ -323,11 +301,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "VARCHAR";
+        public String getName() {
+            return "当前 CID 已经被其他用户占用";
         }
     },
-    MEDIUMTEXT {
+    BIZ_PUBLISH_INFO_NOT_FOUND {
         /**
          * 获取枚举值
          *
@@ -335,7 +313,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "mediumtext";
+            return "BIZ_PUBLISH_INFO_NOT_FOUND";
         }
 
         /**
@@ -344,11 +322,11 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "VARCHAR";
+        public String getName() {
+            return "请求的 PID 没有找到";
         }
     },
-    LONGTEXT {
+    EMPOWER_EXIST_ERROR {
         /**
          * 获取枚举值
          *
@@ -356,7 +334,7 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "longtext";
+            return "EMPOWER_EXIST_ERROR";
         }
 
         /**
@@ -365,8 +343,43 @@ public enum MySqlJdbcTypeContrastEnum implements BasicsEnum {
          * @return 返回结果
          */
         @Override
-        public String getCode() {
-            return "LONGTEXT";
+        public String getName() {
+            return "当前授权关系已经存在";
+        }
+    },
+    EMPOWER_OWNER_CHECK_ERROR {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "EMPOWER_OWNER_CHECK_ERROR";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getName() {
+            return "当前用户不是授权 Topic 的 Owner";
         }
     };
+
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    public abstract String getValue();
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    public abstract String getName();
 }

@@ -1,16 +1,16 @@
 package com.cdkjframework.enums;
 
 /**
- * @ProjectName: hongtu.slps.bms
+ * @ProjectName: HT-OMS-Project-OMS
  * @Package: com.cdkjframework.core.enums
- * @ClassName: InterfaceTypeEnum
+ * @ClassName: HttpMethodEnum
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
 
-public enum InterfaceTypeEnum {
-    ERP {
+public enum HttpMethodEnums {
+    GET {
         /**
          * 获取枚举值
          *
@@ -18,7 +18,7 @@ public enum InterfaceTypeEnum {
          */
         @Override
         public String getValue() {
-            return "ERP";
+            return "GET";
         }
 
         /**
@@ -28,10 +28,10 @@ public enum InterfaceTypeEnum {
          */
         @Override
         public String getName() {
-            return "ERP 接口返回";
+            return "GET请求";
         }
     },
-    LHB {
+    POST {
         /**
          * 获取枚举值
          *
@@ -39,7 +39,7 @@ public enum InterfaceTypeEnum {
          */
         @Override
         public String getValue() {
-            return "LHB";
+            return "POST";
         }
 
         /**
@@ -49,7 +49,7 @@ public enum InterfaceTypeEnum {
          */
         @Override
         public String getName() {
-            return "LHB 接口返回";
+            return "POST请求";
         }
     };
 

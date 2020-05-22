@@ -1,7 +1,7 @@
 package com.cdkjframework.entity.http;
 
 
-import com.cdkjframework.enums.HttpMethodEnum;
+import com.cdkjframework.enums.HttpMethodEnums;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -68,5 +68,5 @@ public class HttpRequestEntity {
     /**
      * 请求类型
      */
-    private HttpMethodEnum method = HttpMethodEnum.POST;
+    private HttpMethodEnums method = HttpMethodEnums.POST;
 }

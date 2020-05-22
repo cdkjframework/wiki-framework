@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInterceptor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.*;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -71,10 +74,14 @@ public class MybatisConfiguration {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
         try {
+            // 设置类型
+            List<TypeHandler> typeHandlerList = new ArrayList<>();
+            buildTypeHandler(typeHandlerList);
+            sqlSessionFactoryBean.setTypeHandlers(typeHandlerList.toArray(new TypeHandler[typeHandlerList.size()]));
+            // 数据源
             sqlSessionFactoryBean.setDataSource(mybatisDataSource);
-            //配置信息
-            sqlSessionFactoryBean.setConfiguration(myBatisConfiguration());
-
+            // 配置信息
+            sqlSessionFactoryBean.setConfiguration(buildMyBatisConfiguration());
             sqlSessionFactoryBean.setTypeAliases(new Class[]{LogbackImpl.class});
 
             PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
@@ -83,7 +90,11 @@ public class MybatisConfiguration {
             MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
             sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
             //分页
+<<<<<<< HEAD
             sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
+=======
+            sqlSessionFactoryBean.setPlugins(new Interceptor[]{buildPageHelper()});
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
 
         } catch (Exception ex) {
             logUtil.error(ex.getMessage());
@@ -120,7 +131,7 @@ public class MybatisConfiguration {
      *
      * @return 返回配置结果
      */
-    private org.apache.ibatis.session.Configuration myBatisConfiguration() {
+    private org.apache.ibatis.session.Configuration buildMyBatisConfiguration() {
         //配置
         org.apache.ibatis.session.Configuration configuration =
                 new org.apache.ibatis.session.Configuration();
@@ -144,7 +155,6 @@ public class MybatisConfiguration {
         configuration.setDefaultStatementTimeout(25000);
         // 设置字段和类是否支持驼峰命名的属性。 系统默认值是false
         configuration.setMapUnderscoreToCamelCase(true);
-
         //  添加日志输出
         configuration.setLogImpl(LogbackImpl.class);
 
@@ -153,9 +163,50 @@ public class MybatisConfiguration {
     }
 
     /**
+     * 构建类型处理程序列表
+     *
+     * @param typeHandlerList 处理列表
+     */
+    private void buildTypeHandler(List<TypeHandler> typeHandlerList) {
+        // 日期
+        TypeHandler typeHandler = new LocalDateTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 日期时间
+        typeHandler = new LocalDateTimeTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 时间
+        typeHandler = new LocalTimeTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 日间戳
+        typeHandler = new InstantTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 偏移日期时间
+        typeHandler = new OffsetDateTimeTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 偏移时间
+        typeHandler = new OffsetTimeTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 分区日期时间
+        typeHandler = new ZonedDateTimeTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 年
+        typeHandler = new YearTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 月
+        typeHandler = new MonthTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 年月
+        typeHandler = new YearMonthTypeHandler();
+        typeHandlerList.add(typeHandler);
+        // 日本日期
+        typeHandler = new JapaneseDateTypeHandler();
+        typeHandlerList.add(typeHandler);
+    }
+
+    /**
      * 分页设置
      */
-    private PageInterceptor pageHelper() {
+    private PageInterceptor buildPageHelper() {
         // 分页控件
         PageInterceptor pageHelper = new PageInterceptor();
         Properties prop = new Properties();

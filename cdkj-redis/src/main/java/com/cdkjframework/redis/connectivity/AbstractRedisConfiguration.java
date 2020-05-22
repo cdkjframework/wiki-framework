@@ -1,5 +1,6 @@
 package com.cdkjframework.redis.connectivity;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.config.RedisConfig;
@@ -100,7 +101,7 @@ public class AbstractRedisConfiguration {
      * @return 返回结果
      */
     protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(1).build();
+        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
     }
 
     /**

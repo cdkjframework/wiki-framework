@@ -17,7 +17,9 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
 
 1. deploy 上传至 maven 仓
 2. 使用引用
+
 在项目最外层POM文件引入：
+
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-pom</artifactId>
@@ -30,5 +32,7 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
 
 #### 使用公司
 注：排名根据登记序列
+
 1、宏图物流股份有限公司
+
 2、成都乐享智家科技责任有限公司

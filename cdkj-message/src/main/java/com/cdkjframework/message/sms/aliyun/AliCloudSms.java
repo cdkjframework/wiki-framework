@@ -10,7 +10,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.aliyuncs.profile.IClientProfile;
 import com.cdkjframework.config.SmsConfig;
-import com.cdkjframework.enums.AliCloudSmsEnum;
+import com.cdkjframework.enums.AliCloudSmsEnums;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,7 +83,7 @@ public class AliCloudSms {
             //hint 此处可能会抛出异常，注意catch
             SendSmsResponse sendSmsResponse = acsClient.getAcsResponse(request);
             //获取返回结果枚举
-            AliCloudSmsEnum smsEnum = AliCloudSmsEnum.valueOf(sendSmsResponse.getCode().replace("isv.", ""));
+            AliCloudSmsEnums smsEnum = AliCloudSmsEnums.valueOf(sendSmsResponse.getCode().replace("isv.", ""));
             final String code = "OK";
             if (code.equals(smsEnum.getValue())) {
                 isSuccess = sendSmsResponse.getBizId();

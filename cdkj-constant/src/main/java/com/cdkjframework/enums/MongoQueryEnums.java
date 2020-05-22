@@ -9,7 +9,7 @@ package com.cdkjframework.enums;
  * @Version: 1.0
  */
 
-public enum MongoQueryEnum {
+public enum MongoQueryEnums {
 
     /**
      * 或者

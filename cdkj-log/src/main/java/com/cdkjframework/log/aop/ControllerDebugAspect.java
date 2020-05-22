@@ -1,11 +1,10 @@
 package com.cdkjframework.log.aop;
 
+import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 
 /**
@@ -30,7 +29,11 @@ public class ControllerDebugAspect extends BaseAopAspect {
      * 切入点
      */
     @Pointcut(value = executionControllerPoint)
+<<<<<<< HEAD
     public void PointcutController() {
+=======
+    public void doPointcutController() {
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
     }
 
     /**
@@ -40,11 +43,50 @@ public class ControllerDebugAspect extends BaseAopAspect {
      * @return 返回结果
      * @throws Throwable 异常信息
      */
+<<<<<<< HEAD
     @Before("PointcutController()")
     public Object Before(JoinPoint joinPoint) throws Throwable {
+=======
+    @Around("doPointcutController()")
+    public Object Around(ProceedingJoinPoint joinPoint) throws Throwable {
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
         StringBuilder sb = new StringBuilder();
-        Object object = process(joinPoint, sb);
+        Object object = aroundProcess(joinPoint, sb);
         logUtils.debug(sb.toString());
         return object;
+    }
+
+    /**
+     * 开始之前
+     *
+     * @param joinPoint 连接点
+     * @throws Throwable 异常信息
+     */
+    @Before("doPointcutController()")
+    public void Before(JoinPoint joinPoint) throws Throwable {
+        StringBuilder sb = new StringBuilder();
+        logUtils.debug(sb.toString());
+    }
+
+    /**
+     * 异常通知 可获取异常e
+     *
+     * @param joinPoint 连接点
+     * @param e         异常信息
+     */
+    @AfterThrowing(value = "doPointcutController()", throwing = "e")
+    public void afterThrowing(JoinPoint joinPoint, Exception e) {
+        String name = joinPoint.getSignature().getName();
+        System.out.println(name + "方法抛异常了，异常是：" + e.getMessage());
+    }
+
+    /**
+     * 完成返回结果
+     *
+     * @param object 内容
+     */
+    @AfterReturning(returning = "object", pointcut = "doPointcutController()")
+    public void doAfterReturning(Object object) {
+        ResponseBuilder builder = (ResponseBuilder) object;
     }
 }

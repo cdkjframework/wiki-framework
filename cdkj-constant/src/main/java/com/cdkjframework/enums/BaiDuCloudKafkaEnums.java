@@ -9,5 +9,5 @@ package com.cdkjframework.enums;
  * @Version: 1.0
  */
 
-public enum BaiDuCloudKafkaEnum {
+public enum BaiDuCloudKafkaEnums {
 }

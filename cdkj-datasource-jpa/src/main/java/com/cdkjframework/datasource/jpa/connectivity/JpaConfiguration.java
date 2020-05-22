@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -28,6 +29,7 @@ import java.util.Map;
  * @Author: xiaLin
  * @Version: 1.0
  */
+
 @Component
 @EnableTransactionManagement
 public class JpaConfiguration {
@@ -50,7 +52,10 @@ public class JpaConfiguration {
      *
      * @return 返回实体管理工厂
      */
+<<<<<<< HEAD
     @Bean(name = "jpaEntityManagerFactory")
+=======
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
     public EntityManagerFactory entityManagerFactory() {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
@@ -83,7 +88,11 @@ public class JpaConfiguration {
      * @return 返回事务接口
      */
     @Bean(name = "jpaTransactionManager")
+<<<<<<< HEAD
     public PlatformTransactionManager transactionManager(@Qualifier("jpaEntityManagerFactory") EntityManagerFactory jpaEntityManagerFactory) {
+=======
+    public PlatformTransactionManager transactionManager() {
+>>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(jpaEntityManagerFactory);
         return txManager;

@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -38,7 +39,7 @@ public class BaseEntity implements Serializable {
      * 添加时间
      */
     @Column(name = "add_time", columnDefinition = "添加时间", nullable = false)
-    protected Date addTime;
+    protected LocalDateTime addTime;
 
     /**
      * 添加用户ID
@@ -56,7 +57,7 @@ public class BaseEntity implements Serializable {
      * 修改时间
      */
     @Column(name = "edit_time", columnDefinition = "修改时间")
-    protected Date editTime;
+    protected LocalDateTime editTime;
 
     /**
      * 修改用户ID

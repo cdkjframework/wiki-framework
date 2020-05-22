@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 /**
@@ -66,7 +67,7 @@ public class PayConfigEntity extends BaseEntity {
     /**
      * 添加时间
      */
-    private Timestamp addTime;
+    private LocalDateTime addTime;
 
     /**
      * 备注

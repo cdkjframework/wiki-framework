@@ -1,5 +1,6 @@
 package com.cdkjframework.pay.qrcode.webchat;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.entity.pay.webchat.WebChatPayConfigEntity;
@@ -8,6 +9,7 @@ import com.cdkjframework.entity.pay.webchat.query.WebChatQueryEntity;
 import com.cdkjframework.entity.pay.webchat.query.WebChatQueryResultEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.pay.impl.AbstractPaymentServiceImpl;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.encrypts.WebChatPayAutographUtils;
 import com.cdkjframework.util.files.XmlUtils;
 import com.cdkjframework.util.log.LogUtils;
@@ -18,9 +20,8 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,7 +62,6 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
      */
     @Override
     public void buildPaymentData(WebChatPayConfigEntity webChatEntity, PayConfigEntity configEntity, PayRecordEntity recordEntity, HttpServletRequest request) throws Exception {
-        DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
         //配置
         webChatEntity.setMchId(configEntity.getMchId());
         webChatEntity.setAppId(configEntity.getAppId());
@@ -70,17 +70,17 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
         webChatEntity.setOutTradeNo(recordEntity.getOrderNo());
 
         //获取价格值
-        BigDecimal price = DecimalUtils.multiply(recordEntity.getPrice(), BigDecimal.valueOf(100));
+        BigDecimal price = DecimalUtils.multiply(recordEntity.getPrice(), BigDecimal.valueOf(IntegerConsts.ONE_HUNDRED));
         webChatEntity.setTotalFee(price.intValue());
-        webChatEntity.setTimeStart(df.format(recordEntity.getAddTime()));
+        webChatEntity.setTimeStart(LocalDateUtils.dateTimeFormatter(recordEntity.getAddTime(), LocalDateUtils.DATE_HHMMSS));
         //支付失效时间
         int failureTime = configEntity.getFailureTime();
-        long time = 300000;
+        long time = 300;
         if (failureTime >= 0) {
             time = Long.valueOf(failureTime);
         }
-        Date afterDate = new Date(recordEntity.getAddTime().getTime() + time);
-        webChatEntity.setTimeExpire(df.format(afterDate));
+        LocalDateTime dateTime = recordEntity.getAddTime().plus(time, ChronoUnit.SECONDS);
+        webChatEntity.setTimeExpire(LocalDateUtils.dateTimeFormatter(dateTime, LocalDateUtils.DATE_HHMMSS));
         //其它信息
         webChatEntity.setNotifyUrl(configEntity.getNotifyUrl() + webChatEntity.getNotifyUrl());
         webChatEntity.setTradeType("NATIVE");
@@ -189,7 +189,7 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
                 logUtils.info("ReturnMsg：" + resultsEntity.getTradeStateDesc());
                 throw new GlobalException(resultsEntity.getReturnMsg());
             } else {
-                recordEntity.setPayStatus(1);
+                recordEntity.setPayStatus(IntegerConsts.ONE);
                 //支付金额
                 recordEntity.setPayAmount(recordEntity.getPrice());
             }

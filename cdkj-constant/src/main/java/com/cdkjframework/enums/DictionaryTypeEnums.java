@@ -9,7 +9,7 @@ package com.cdkjframework.enums;
  * @Version: 1.0
  */
 
-public enum DictionaryTypeEnum {
+public enum DictionaryTypeEnums {
 
     /**
      * 职称信息
@@ -82,7 +82,7 @@ public enum DictionaryTypeEnum {
      * @param value 值
      * @param text  名称
      */
-    DictionaryTypeEnum(String value, String text) {
+    DictionaryTypeEnums(String value, String text) {
         this.value = value;
         this.text = text;
     }
