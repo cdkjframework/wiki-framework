@@ -22,8 +22,12 @@ public class MongoServiceImpl implements MongoService {
     /**
      * mongo 数据库配置
      */
+    private final IMongoRepository mongoDbRepository;
+
     @Autowired
-    private IMongoRepository mongoDbRepository;
+    public MongoServiceImpl(IMongoRepository mongoDbRepository) {
+        this.mongoDbRepository = mongoDbRepository;
+    }
 
     /**
      * 保存日志

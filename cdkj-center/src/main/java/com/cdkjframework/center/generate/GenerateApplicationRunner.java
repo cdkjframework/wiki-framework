@@ -34,8 +34,12 @@ public class GenerateApplicationRunner implements ApplicationRunner {
     /**
      * 个性数据服务
      */
+    private final UpdateDatabaseService updateDatabaseServiceImpl;
+
     @Autowired
-    private UpdateDatabaseService updateDatabaseServiceImpl;
+    public GenerateApplicationRunner(UpdateDatabaseService updateDatabaseServiceImpl) {
+        this.updateDatabaseServiceImpl = updateDatabaseServiceImpl;
+    }
 
     /**
      * 执行

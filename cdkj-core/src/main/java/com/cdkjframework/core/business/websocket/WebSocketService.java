@@ -65,8 +65,11 @@ public class WebSocketService implements ApplicationRunner {
     /**
      * 自定义配置
      */
+    private final CustomConfig customConfig;
     @Autowired
-    private CustomConfig customConfig;
+    public WebSocketService(CustomConfig customConfig) {
+        this.customConfig = customConfig;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
