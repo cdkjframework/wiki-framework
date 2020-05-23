@@ -1811,6 +1811,7 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
                 return null;
             }
 
+
             @Override
             public RedisFuture<Boolean> xgroupDelconsumer(String key, Consumer<String> consumer) {
                 return null;
