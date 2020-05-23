@@ -17,7 +17,6 @@
     </parent>
 
     <properties>
-
         <cdkj-cloud.version>1.0-200522</cdkj-cloud.version>
         <cdkj-util.version>1.0-200522</cdkj-util.version>
         <cdkj-constant.version>1.0-200522</cdkj-constant.version>
@@ -31,7 +30,6 @@
         <cdkj-datasource-jpa.version>1.0-200522</cdkj-datasource-jpa.version>
         <cdkj-datasource-mongodb.version>1.0-200522</cdkj-datasource-mongodb.version>
         <cdkj-datasource-elasticsearch.version>1.0-200522</cdkj-datasource-elasticsearch.version>
-
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
@@ -51,7 +49,7 @@
         <elasticsearch.version>7.2.1</elasticsearch.version>
         <!--alibaba -->
         <druid.version>1.1.22</druid.version>
-        <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.58</alibaba.fastjson.version>
         <ons.client.version>1.8.2.Final</ons.client.version>
         <sms.alicloud.version>4.4.2</sms.alicloud.version>
         <sms.alicloud.dysmsapi.version>1.1.0</sms.alicloud.dysmsapi.version>
