@@ -181,6 +181,7 @@ public class CopyUtils {
                 BeanUtils.copyProperties(source, target);
             }
             // 验证是否有实体信息
+
             Field[] targetFields = target.getClass().getDeclaredFields();
             Field[] fields = source.getClass().getDeclaredFields();
             for (Field targetField :
