@@ -182,8 +182,8 @@ public class CopyUtils {
             }
             // 验证是否有实体信息
 
-            Field[] targetFields = target.getClass().getDeclaredFields();
-            Field[] fields = source.getClass().getDeclaredFields();
+            List<Field> targetFields = ReflectionUtils.getDeclaredFields(target.getClass());
+            List<Field>  fields = ReflectionUtils.getDeclaredFields(source.getClass());
             for (Field targetField :
                     targetFields) {
                 targetField.setAccessible(true);
@@ -197,7 +197,7 @@ public class CopyUtils {
                     continue;
                 }
                 // 验证是否有相同字段
-                Optional<Field> optionalField = Arrays.stream(fields)
+                Optional<Field> optionalField = fields.stream()
                         .filter(f -> f.getName().equals(targetField.getName()))
                         .findFirst();
                 if (!optionalField.isPresent()) {
