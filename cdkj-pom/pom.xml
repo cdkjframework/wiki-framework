@@ -27,9 +27,14 @@
         <cdkj-pay.version>1.0-200522</cdkj-pay.version>
         <cdkj-entity.version>1.0-200522</cdkj-entity.version>
         <cdkj-center.version>1.0-200522</cdkj-center.version>
+        <cdkj-center.version>1.0-200522</cdkj-center.version>
+        <cdkj-security.version>1.0-200522</cdkj-security.version>
+        <cdkj-security-server.version>1.0-200522</cdkj-security-server.version>
         <cdkj-datasource-jpa.version>1.0-200522</cdkj-datasource-jpa.version>
         <cdkj-datasource-mongodb.version>1.0-200522</cdkj-datasource-mongodb.version>
         <cdkj-datasource-elasticsearch.version>1.0-200522</cdkj-datasource-elasticsearch.version>
+
+
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>6.0.6</mysql-connector-java.version>
@@ -128,6 +133,16 @@
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource</artifactId>
                 <version>${cdkj-datasource.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-security-server</artifactId>
+                <version>${cdkj-security-server.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-security</artifactId>
+                <version>${cdkj-security.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
