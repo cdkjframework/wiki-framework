@@ -1,5 +1,6 @@
 package com.cdkjframework.util.encrypts;
 
+import com.cdkjframework.util.tool.JsonUtils;
 import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -7,6 +8,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,19 @@ import java.util.Map;
  */
 @Component
 public class JwtUtils {
+
+    /**
+     * 签名算法
+     */
+    private static final SignatureAlgorithm signatureAlgorithm;
+
+    /**
+     * 静态默认值
+     */
+    static {
+        signatureAlgorithm = SignatureAlgorithm.HS512;
+    }
+
     /**
      * 解密
      *
@@ -47,10 +62,28 @@ public class JwtUtils {
      * @return 返回结果
      */
     public static String createJwt(Map<String, Object> map, String base64Security) {
-        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         //添加构成JWT的参数
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
                 .setPayload(new Gson().toJson(map))
+                //估计是第三段密钥
+                .signWith(signatureAlgorithm, base64Security.getBytes());
+        //生成JWT
+        return builder.compact();
+    }
+
+    /**
+     * 前三个参数为自己用户token的一些信息比如id，权限，名称等。不要将隐私信息放入（大家都可以获取到）
+     *
+     * @param map            参数
+     * @param base64Security 密钥
+     * @param expiration     过期时间
+     * @return 返回结果
+     */
+    public static String createJwt(Map<String, Object> map, String base64Security, long expiration) {
+        //添加构成JWT的参数
+        JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
+                .setPayload(JsonUtils.objectToJsonString(map))
+                .setExpiration(new Date(expiration))
                 //估计是第三段密钥
                 .signWith(signatureAlgorithm, base64Security.getBytes());
         //生成JWT
