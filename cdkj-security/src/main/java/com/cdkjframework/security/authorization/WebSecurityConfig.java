@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.security.authorization
@@ -26,6 +28,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
+     * 配置
+     */
+    @Autowired
+    private CustomConfig customConfig;
+
+    /**
      * Http安全性配置
      *
      * @param http Http安全性
@@ -33,7 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.antMatcher("/**").authorizeRequests()
+        http
+                //允许不登陆就可以访问的方法，多个用逗号分隔
+                .authorizeRequests()
+                //其他的需要授权后访问
                 .anyRequest().authenticated();
     }
 }

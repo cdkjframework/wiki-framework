@@ -82,4 +82,9 @@ public class CustomConfig {
      * Redis 模式订阅
      */
     private List<String> pattern;
+
+    /**
+     * 匹配器
+     */
+    private List<String> matchers;
 }
