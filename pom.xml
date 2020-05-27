@@ -25,6 +25,8 @@
         <module>cdkj-datasource-mongodb</module>
         <module>cdkj-datasource-elasticsearch</module>
         <module>cdkj-log</module>
+        <module>cdkj-security-server</module>
+        <module>cdkj-security</module>
     </modules>
 
     <parent>
