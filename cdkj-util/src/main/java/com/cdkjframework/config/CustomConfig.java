@@ -86,5 +86,10 @@ public class CustomConfig {
     /**
      * 匹配器
      */
-    private List<String> matchers;
+    private List<String> ignoreUrls;
+
+    /**
+     * 是否开启 organization id 过虑
+     */
+    private boolean authority = false;
 }

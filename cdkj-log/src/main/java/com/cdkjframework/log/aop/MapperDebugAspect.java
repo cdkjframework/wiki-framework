@@ -23,11 +23,6 @@ import org.springframework.stereotype.Component;
 public class MapperDebugAspect extends BaseAopAspect {
 
     /**
-     * 日志
-     */
-    private LogUtils logUtils = LogUtils.getLogger(MapperDebugAspect.class);
-
-    /**
      * 切入点
      */
     @Pointcut(value = executionMapperPoint)
@@ -41,11 +36,8 @@ public class MapperDebugAspect extends BaseAopAspect {
      * @return 返回结果
      * @throws Throwable 异常信息
      */
-    @Before("doPointcutMapper()")
-    public Object Before(JoinPoint joinPoint) throws Throwable {
-        StringBuilder sb = new StringBuilder();
-        Object object = process(joinPoint, sb);
-        logUtils.debug(sb.toString());
-        return object;
+    @Around("doPointcutMapper()")
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        return process(joinPoint);
     }
 }

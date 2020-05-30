@@ -38,14 +38,14 @@
         INSERT INTO ${table}
         (<include refid="base_Column_List"></include>)
         VALUES
-        <foreach collection="list" item="item" index="index" separator="," open="(" close=")">
-        <#list children as item>
+        <foreach collection="list" item="item" index="index" separator=",">
+        (<#list children as item>
             <#if item.isExtension==0>
                 <#if !item.columnKey>
                     [begin]item.${item.columnName},jdbcType=${item.columnType}[end]<#if item_has_next >,</#if>
                 </#if>
             </#if>
-        </#list>
+        </#list>)
         </foreach>
     </insert>
 

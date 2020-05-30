@@ -90,4 +90,9 @@ public class IntegerConsts {
      * 字节长度
      */
     public final static Integer BYTE_LENGTH = 1024;
+
+    /**
+     * 999
+     */
+    public final static Integer NINE_HUNDRED_NINETY_NINE = 999;
 }

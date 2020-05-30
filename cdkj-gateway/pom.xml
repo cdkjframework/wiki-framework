@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <artifactId>cdkj-framework</artifactId>
@@ -9,16 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-web</artifactId>
+    <description>cdkjFw 路由</description>
+    <artifactId>cdkj-gateway</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-center</artifactId>
+            <artifactId>cdkj-core</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>org.springframework.boot</artifactId>
+                    <groupId>spring-boot-starter-web</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-redis</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-gateway</artifactId>
         </dependency>
     </dependencies>
 
@@ -53,4 +60,5 @@
             <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
+
 </project>

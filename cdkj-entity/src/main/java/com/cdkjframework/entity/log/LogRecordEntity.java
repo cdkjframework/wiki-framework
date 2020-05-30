@@ -34,6 +34,16 @@ public class LogRecordEntity {
     private String modular;
 
     /**
+     * 执行类
+     */
+    private String executionClass;
+
+    /**
+     * 方法
+     */
+    private String method;
+
+    /**
      * 访问 地址
      */
     private String servletPath;
@@ -67,6 +77,11 @@ public class LogRecordEntity {
      * 返回结果
      */
     private String result;
+
+    /**
+     * 返回错误信息
+     */
+    private String resultErrorMessage;
 
     /**
      * 状态

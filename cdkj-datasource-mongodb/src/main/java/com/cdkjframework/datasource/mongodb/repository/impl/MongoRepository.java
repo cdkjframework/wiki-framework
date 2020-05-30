@@ -2,6 +2,7 @@ package com.cdkjframework.datasource.mongodb.repository.impl;
 
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.mongodb.MongoClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,15 +30,8 @@ public class MongoRepository implements IMongoRepository {
     /**
      * mongodb连接
      */
+    @Resource(name = "mongoTemplate")
     private MongoTemplate mongoTemplate;
-
-    /**
-     * 构造函数
-     */
-    public MongoRepository() {
-        MongoClient mongoClient = new MongoClient();
-        this.mongoTemplate = new MongoTemplate(mongoClient, "admin");
-    }
 
     /**
      * 保存数据

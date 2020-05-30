@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-200527</version>
+    <version>1.0-200530</version>
     <modules>
         <module>cdkj-cloud</module>
         <module>cdkj-util</module>
@@ -25,8 +25,8 @@
         <module>cdkj-datasource-mongodb</module>
         <module>cdkj-datasource-elasticsearch</module>
         <module>cdkj-log</module>
-        <module>cdkj-security-server</module>
         <module>cdkj-security</module>
+        <module>cdkj-gateway</module>
     </modules>
 
     <parent>
@@ -40,7 +40,7 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-pom</artifactId>
-                <version>1.0-200527</version>
+                <version>1.0-200530</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

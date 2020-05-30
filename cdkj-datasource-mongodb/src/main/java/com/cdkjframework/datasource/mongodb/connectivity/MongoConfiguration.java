@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 
 /**
@@ -29,7 +30,7 @@ public class MongoConfiguration {
     /**
      * 日志
      */
-    private LogUtils logUtil = LogUtils.getLogger(Configuration.class);
+    private LogUtils logUtil = LogUtils.getLogger(MongoConfiguration.class);
 
     /**
      * 读取配置文件配置
@@ -44,6 +45,16 @@ public class MongoConfiguration {
     private Config apolloConfig;
 
     /**
+     * mongo模板
+     *
+     * @return 返回结果
+     */
+    @Bean(name = "mongoTemplate")
+    public MongoTemplate mongoTemplate() {
+        return new MongoTemplate(mongoDbFactory());
+    }
+
+    /**
      * 覆盖默认的MongoDbFactory
      *
      * @return 返回结果
@@ -54,7 +65,7 @@ public class MongoConfiguration {
         Boolean isConfig = apolloConfig == null || apolloConfig.getPropertyNames().size() == 0;
         MongoClientOptions.Builder mongoBuilder = new MongoClientOptions.Builder();
         if (isConfig && StringUtils.isNullAndSpaceOrEmpty(mongodbConfig.getUri())) {
-            return new SimpleMongoDbFactory(new MongoClientURI("mongodb://127.0.0.1:27017/admin",mongoBuilder));
+            return new SimpleMongoDbFactory(new MongoClientURI("mongodb://127.0.0.1:27017/admin", mongoBuilder));
         }
         if (apolloConfig != null && StringUtils.isNullAndSpaceOrEmpty(mongodbConfig.getUri())) {
             setConfiguration();

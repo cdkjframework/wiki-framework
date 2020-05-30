@@ -1,7 +1,9 @@
 package com.cdkjframework.log.aop;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -40,44 +42,8 @@ public class ControllerDebugAspect extends BaseAopAspect {
      * @throws Throwable 异常信息
      */
     @Around("doPointcutController()")
-    public Object Around(ProceedingJoinPoint joinPoint) throws Throwable {
-        StringBuilder sb = new StringBuilder();
-        Object object = aroundProcess(joinPoint, sb);
-        logUtils.debug(sb.toString());
-        return object;
-    }
-
-    /**
-     * 开始之前
-     *
-     * @param joinPoint 连接点
-     * @throws Throwable 异常信息
-     */
-    @Before("doPointcutController()")
-    public void Before(JoinPoint joinPoint) throws Throwable {
-        StringBuilder sb = new StringBuilder();
-        logUtils.debug(sb.toString());
-    }
-
-    /**
-     * 异常通知 可获取异常e
-     *
-     * @param joinPoint 连接点
-     * @param e         异常信息
-     */
-    @AfterThrowing(value = "doPointcutController()", throwing = "e")
-    public void afterThrowing(JoinPoint joinPoint, Exception e) {
-        String name = joinPoint.getSignature().getName();
-        System.out.println(name + "方法抛异常了，异常是：" + e.getMessage());
-    }
-
-    /**
-     * 完成返回结果
-     *
-     * @param object 内容
-     */
-    @AfterReturning(returning = "object", pointcut = "doPointcutController()")
-    public void doAfterReturning(Object object) {
-        ResponseBuilder builder = (ResponseBuilder) object;
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        LogRecordEntity logRecordEntity = new LogRecordEntity();
+        return aroundProcess(joinPoint, logRecordEntity);
     }
 }
