@@ -134,8 +134,10 @@ public class BaseAopAspect {
         Object[] args = joinPoint.getArgs();
 
         final String DEFAULT_VALUE = "-1";
+        final String FILTER_CLASS_ENT_NAME = "Entity";
+        String className = args[0].getClass().getName();
         Class targetClass;
-        if (args.length > 0) {
+        if (args.length > 0 && className.endsWith(FILTER_CLASS_ENT_NAME)) {
             try {
                 targetClass = Class.forName(args[0].getClass().getName());
                 JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);

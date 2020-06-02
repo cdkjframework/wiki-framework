@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 /**
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.entity
@@ -109,8 +111,20 @@ public class LogRecordVo {
     /**
      * 操作时间
      */
-    @ApiModelProperty("操作时间")
+    @ApiModelProperty("请求时间")
     private Long addTime;
+
+    /**
+     * 请求开始时间
+     */
+    @ApiModelProperty("请求开始时间")
+    private LocalDateTime addTimeStart;
+
+    /**
+     * 请求结束时间
+     */
+    @ApiModelProperty("请求结束时间")
+    private LocalDateTime addTimeEnd;
 
     /**
      * 返回结果时间

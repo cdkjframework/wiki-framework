@@ -94,18 +94,17 @@ public class LogServiceImpl implements LogService {
         if (logRecordDto.getAddTimeStart() != null && logRecordDto.getAddTimeEnd() != null) {
             long startTimestamp = LocalDateUtils.localDateTimeToTimestamp(logRecordDto.getAddTimeStart());
             long endTimestamp = LocalDateUtils.localDateTimeToTimestamp(logRecordDto.getAddTimeEnd());
-            criteria.and("addTime").gte(startTimestamp)
-                    .and("addTime").lte(endTimestamp);
+            criteria.and("addTime").gte(startTimestamp).lte(endTimestamp);
         } else if (logRecordDto.getAddTimeStart() != null) {
             long startTimestamp = LocalDateUtils.localDateTimeToTimestamp(logRecordDto.getAddTimeStart());
-            criteria = Criteria.where("addTime").gte(startTimestamp);
+            criteria.and("addTime").gte(startTimestamp);
         } else if (logRecordDto.getAddTimeEnd() != null) {
             long endTimestamp = LocalDateUtils.localDateTimeToTimestamp(logRecordDto.getAddTimeEnd());
-            criteria = Criteria.where("addTime").lte(endTimestamp);
+            criteria.and("addTime").lte(endTimestamp);
         }
         // 查询序号
         if (StringUtils.isNotNullAndEmpty(logRecordDto.getSerialNumber())) {
-            criteria.and("serialNumber").in(logRecordDto.getSerialNumber());
+            criteria.and("serialNumber").regex(logRecordDto.getSerialNumber());
         }
 
         query.addCriteria(criteria);

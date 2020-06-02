@@ -4,15 +4,18 @@ import com.cdkjframework.center.service.LogService;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.util.log.LogUtils;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.*;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @ProjectName: cdkj-framework
@@ -25,7 +28,7 @@ import java.util.concurrent.*;
 
 @Aspect
 @Component
-public class ControllerDebugAspect extends BaseAopAspect {
+public class ControllerDebugAspect extends BaseAopAspect implements ApplicationRunner {
 
     /**
      * 日志
@@ -38,11 +41,8 @@ public class ControllerDebugAspect extends BaseAopAspect {
     @Autowired
     private LogService logServiceImpl;
 
-    /**
-     * 切入点
-     */
-    @Pointcut(value = executionControllerPoint)
-    public void doPointcutController() {
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
         // 创建线程
         try {
             ScheduledExecutorService executorService = Executors.newScheduledThreadPool(IntegerConsts.ONE);
@@ -63,6 +63,13 @@ public class ControllerDebugAspect extends BaseAopAspect {
         } catch (Exception ex) {
             logUtils.error(ex.getStackTrace(), ex.getMessage());
         }
+    }
+
+    /**
+     * 切入点
+     */
+    @Pointcut(value = executionControllerPoint)
+    public void doPointcutController() {
     }
 
     /**
