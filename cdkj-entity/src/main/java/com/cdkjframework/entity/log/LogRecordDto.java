@@ -1,12 +1,12 @@
 package com.cdkjframework.entity.log;
 
-import com.cdkjframework.entity.BaseEntity;
-import com.cdkjframework.entity.PageEntity;
+import com.cdkjframework.entity.base.BaseDto;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Column;
+import java.time.LocalDateTime;
 
 /**
  * @ProjectName: cdkjframework
@@ -20,7 +20,7 @@ import javax.persistence.Column;
 @Getter
 @Setter
 @ToString
-public class LogRecordEntity {
+public class LogRecordDto {
 
     /**
      * 日志ID
@@ -98,9 +98,39 @@ public class LogRecordEntity {
     private Long addTime;
 
     /**
+     * 请求开始搜索时间
+     */
+    private LocalDateTime addTimeStart;
+
+    /**
+     * 请求结束搜索时间
+     */
+    private LocalDateTime addTimeEnd;
+
+    /**
      * 返回结果时间
      */
     private long resultTime;
+
+    /**
+     * 计算后的页码大小
+     */
+    private int pageSize = 10;
+
+    /**
+     * 当前页索引
+     */
+    private int pageIndex = 1;
+
+    /**
+     * 排序字段
+     */
+    private String sortField;
+
+    /**
+     * 排序类型
+     */
+    private String sortType = "descending";
 
     /**
      * 所在机构ID

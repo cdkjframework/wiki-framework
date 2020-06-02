@@ -89,6 +89,11 @@ public class CustomConfig {
     private List<String> ignoreUrls;
 
     /**
+     * AOP 过滤地址
+     */
+    private List<String> ignoreAopUrls;
+
+    /**
      * 是否开启 organization id 过虑
      */
     private boolean authority = false;

@@ -1,12 +1,12 @@
 package com.cdkjframework.log.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkjframework.center.service.MongoService;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.PageEntity;
-import com.cdkjframework.entity.log.LogRecordEntity;
+import com.cdkjframework.entity.log.LogRecordDto;
+import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
@@ -15,6 +15,12 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.stream.Collectors;
 
 /**
  * @ProjectName: cdkj-framework
@@ -28,6 +34,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseAopAspect {
 
     private LogUtils logUtils = LogUtils.getLogger(BaseAopAspect.class);
+
+    /**
+     * 日志队列
+     */
+    protected Queue<LogRecordDto> logRecordDtoQueue = new LinkedBlockingDeque<>();
 
     /**
      * 服务执行切入点值
@@ -51,67 +62,60 @@ public class BaseAopAspect {
     private CustomConfig customConfig;
 
     /**
-     * 日志服务
-     */
-    @Autowired
-    private MongoService mongoServiceImpl;
-
-    /**
      * 进程解析
      *
-     * @param joinPoint       进程连接点
-     * @param logRecordEntity 日志记录
+     * @param joinPoint 进程连接点
      * @return 返回结果
      * @throws Throwable 异常信息
      */
-    protected Object aroundProcess(ProceedingJoinPoint joinPoint, LogRecordEntity logRecordEntity) throws Throwable {
+    protected Object aroundProcess(ProceedingJoinPoint joinPoint) throws Throwable {
         // 获取连接点参数
         Object[] args = joinPoint.getArgs();
-        String organizationCode = "-" + CurrentUser.getOrganizationCode();
-        final String LOG_PREFIX = "LOG" + organizationCode;
-        logRecordEntity.setId(GeneratedValueUtils.getUuidString());
-        logRecordEntity.setAddTime(System.currentTimeMillis());
-        logRecordEntity.setOperatorName(CurrentUser.getRealName());
-        logRecordEntity.setUserName(CurrentUser.getUserName());
-        logRecordEntity.setClientIp(HttpServletUtils.getRequest().getLocalAddr());
-        String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
-        logRecordEntity.setSerialNumber(number.replace(organizationCode, ""));
-        logRecordEntity.setServletPath(HttpServletUtils.getRequest().getServletPath());
         //获取连接点签名的方法名
         String methodName = joinPoint.getSignature().getName();
-        logRecordEntity.setMethod(methodName);
+        LogRecordDto logRecordDto = new LogRecordDto();
+        logRecordDto.setMethod(methodName);
         //获取连接点目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
-        logRecordEntity.setExecutionClass(targetName);
-        if (args.length > 0) {
+        logRecordDto.setExecutionClass(targetName);
+        boolean isLog = buildLogRecord(logRecordDto);
+        if (args.length > 0 && isLog) {
             JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
-            logRecordEntity.setParameter(jsonObject.toJSONString());
+            logRecordDto.setParameter(jsonObject.toJSONString());
         }
 
         Object result;
         try {
             result = joinPoint.proceed(args);
+            if (!isLog) {
+                return result;
+            }
             if (result == null) {
-                logRecordEntity.setExecutionState(IntegerConsts.ZERO);
+                logRecordDto.setExecutionState(IntegerConsts.ZERO);
             } else {
                 String resultJson;
                 resultJson = JsonUtils.objectToJsonString(result);
-                if (result.getClass().getName().equals("PageEntity")) {
+                final String NAME = "PageEntity";
+                if (result.getClass().getName().contains(NAME)) {
                     PageEntity builder = JsonUtils.jsonStringToBean(resultJson, PageEntity.class);
-                    logRecordEntity.setExecutionState(builder.getCode());
+                    logRecordDto.setExecutionState(builder.getCode());
                 } else {
-                    logRecordEntity.setExecutionState(IntegerConsts.ZERO);
+                    logRecordDto.setExecutionState(IntegerConsts.ZERO);
                 }
-                logRecordEntity.setResult(resultJson);
+                logRecordDto.setResult(resultJson);
             }
         } catch (Exception ex) {
             logUtils.info(ex.getMessage());
-            logRecordEntity.setExecutionState(IntegerConsts.NINE_HUNDRED_NINETY_NINE);
-            logRecordEntity.setResultErrorMessage(ex.getMessage());
+            if (isLog) {
+                logRecordDto.setExecutionState(IntegerConsts.NINE_HUNDRED_NINETY_NINE);
+                logRecordDto.setResultErrorMessage(ex.getMessage());
+            }
             result = null;
         } finally {
-            logRecordEntity.setResultTime(System.currentTimeMillis());
-            mongoServiceImpl.saveLog(logRecordEntity);
+            if (isLog) {
+                logRecordDto.setResultTime(System.currentTimeMillis());
+                logRecordDtoQueue.add(logRecordDto);
+            }
         }
         return result;
     }
@@ -165,5 +169,40 @@ public class BaseAopAspect {
             object = null;
         }
         return object;
+    }
+
+    /**
+     * 构造日志记录
+     *
+     * @param logRecordDto 日志信息
+     */
+    private boolean buildLogRecord(LogRecordDto logRecordDto) throws GlobalException {
+        final String servletPath = HttpServletUtils.getRequest().getServletPath();
+        logRecordDto.setServletPath(servletPath);
+        if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
+            List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
+                    .filter(f -> servletPath.contains(f))
+                    .collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(aopUrls)) {
+                logRecordDto = null;
+            }
+        }
+        if (logRecordDto == null) {
+            return false;
+        }
+        String organizationCode = "-" + CurrentUser.getOrganizationCode();
+        final String LOG_PREFIX = "LOG" + organizationCode;
+        logRecordDto.setId(GeneratedValueUtils.getUuidString());
+        logRecordDto.setAddTime(System.currentTimeMillis());
+        logRecordDto.setOperatorName(CurrentUser.getRealName());
+        logRecordDto.setUserName(CurrentUser.getUserName());
+        logRecordDto.setClientIp(HttpServletUtils.getRequest().getLocalAddr());
+        String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
+        logRecordDto.setSerialNumber(number.replace(organizationCode, ""));
+        logRecordDto.setTopOrganizationId(CurrentUser.getTopOrganizationId());
+        logRecordDto.setTopOrganizationCode(CurrentUser.getTopOrganizationCode());
+        logRecordDto.setOrganizationCode(CurrentUser.getOrganizationCode());
+        // 返回不需要记录日志
+        return true;
     }
 }

@@ -1,13 +1,18 @@
 package com.cdkjframework.log.aop;
 
-import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.entity.log.LogRecordEntity;
+import com.cdkjframework.center.service.LogService;
+import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.tool.JsonUtils;
-import org.aspectj.lang.JoinPoint;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.*;
 
 /**
  * @ProjectName: cdkj-framework
@@ -28,10 +33,36 @@ public class ControllerDebugAspect extends BaseAopAspect {
     private LogUtils logUtils = LogUtils.getLogger(ControllerDebugAspect.class);
 
     /**
+     * 日志服务
+     */
+    @Autowired
+    private LogService logServiceImpl;
+
+    /**
      * 切入点
      */
     @Pointcut(value = executionControllerPoint)
     public void doPointcutController() {
+        // 创建线程
+        try {
+            ScheduledExecutorService executorService = Executors.newScheduledThreadPool(IntegerConsts.ONE);
+            executorService.scheduleWithFixedDelay(new Runnable() {
+                @Override
+                public void run() {
+                    LogRecordDto logRecordDto = logRecordDtoQueue.poll();
+                    if (logRecordDto != null) {
+                        try {
+                            logServiceImpl.insertLog(logRecordDto);
+                        } catch (Exception ex) {
+                            logUtils.error("写入日志出错：");
+                            logUtils.error(ex.getStackTrace(), ex.getMessage());
+                        }
+                    }
+                }
+            }, IntegerConsts.ZERO, IntegerConsts.ONE_HUNDRED, TimeUnit.MILLISECONDS);
+        } catch (Exception ex) {
+            logUtils.error(ex.getStackTrace(), ex.getMessage());
+        }
     }
 
     /**
@@ -43,7 +74,6 @@ public class ControllerDebugAspect extends BaseAopAspect {
      */
     @Around("doPointcutController()")
     public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        LogRecordEntity logRecordEntity = new LogRecordEntity();
-        return aroundProcess(joinPoint, logRecordEntity);
+        return aroundProcess(joinPoint);
     }
 }
