@@ -1,12 +1,14 @@
 package com.cdkjframework.log.aop;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
@@ -17,6 +19,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -66,9 +69,9 @@ public class BaseAopAspect {
      *
      * @param joinPoint 进程连接点
      * @return 返回结果
-     * @throws Throwable 异常信息
+     * @throws GlobalRuntimeException 异常信息
      */
-    protected Object aroundProcess(ProceedingJoinPoint joinPoint) throws Throwable {
+    protected Object aroundProcess(ProceedingJoinPoint joinPoint) throws GlobalRuntimeException {
         // 获取连接点参数
         Object[] args = joinPoint.getArgs();
         //获取连接点签名的方法名
@@ -84,7 +87,7 @@ public class BaseAopAspect {
             logRecordDto.setParameter(jsonObject.toJSONString());
         }
 
-        Object result;
+        Object result = null;
         try {
             result = joinPoint.proceed(args);
             if (!isLog) {
@@ -104,20 +107,28 @@ public class BaseAopAspect {
                 }
                 logRecordDto.setResult(resultJson);
             }
+        } catch (GlobalException ex) {
+            logUtils.info(ex.getMessage());
+            if (isLog) {
+                logRecordDto.setExecutionState(IntegerConsts.NINE_HUNDRED_NINETY_NINE);
+                logRecordDto.setResultErrorMessage(ex.getMessage());
+            }
+            result = ResponseBuilder.failBuilder(ex.getMessage());
+            throw new GlobalRuntimeException(ex.getMessage());
         } catch (Exception ex) {
             logUtils.info(ex.getMessage());
             if (isLog) {
                 logRecordDto.setExecutionState(IntegerConsts.NINE_HUNDRED_NINETY_NINE);
                 logRecordDto.setResultErrorMessage(ex.getMessage());
             }
-            result = null;
+            result = ResponseBuilder.failBuilder();
         } finally {
             if (isLog) {
                 logRecordDto.setResultTime(System.currentTimeMillis());
                 logRecordDtoQueue.add(logRecordDto);
             }
+            return result;
         }
-        return result;
     }
 
     /**
@@ -178,7 +189,7 @@ public class BaseAopAspect {
      *
      * @param logRecordDto 日志信息
      */
-    private boolean buildLogRecord(LogRecordDto logRecordDto) throws GlobalException {
+    private boolean buildLogRecord(LogRecordDto logRecordDto) {
         final String servletPath = HttpServletUtils.getRequest().getServletPath();
         logRecordDto.setServletPath(servletPath);
         if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
@@ -199,8 +210,12 @@ public class BaseAopAspect {
         logRecordDto.setOperatorName(CurrentUser.getRealName());
         logRecordDto.setUserName(CurrentUser.getUserName());
         logRecordDto.setClientIp(HttpServletUtils.getRequest().getLocalAddr());
-        String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
-        logRecordDto.setSerialNumber(number.replace(organizationCode, ""));
+        try {
+            String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
+            logRecordDto.setSerialNumber(number.replace(organizationCode, ""));
+        } catch (GlobalException ex) {
+            logUtils.error(ex.getMessage());
+        }
         logRecordDto.setTopOrganizationId(CurrentUser.getTopOrganizationId());
         logRecordDto.setTopOrganizationCode(CurrentUser.getTopOrganizationCode());
         logRecordDto.setOrganizationCode(CurrentUser.getOrganizationCode());

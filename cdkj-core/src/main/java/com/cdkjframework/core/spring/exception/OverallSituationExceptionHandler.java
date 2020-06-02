@@ -3,6 +3,7 @@ package com.cdkjframework.core.spring.exception;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import org.springframework.dao.DataAccessException;
@@ -13,9 +14,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.validation.ConstraintViolationException;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
@@ -34,12 +37,33 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 @ControllerAdvice
+@RestControllerAdvice
 public class OverallSituationExceptionHandler {
 
     /**
      * 日志
      */
     private static LogUtils logUtil = LogUtils.getLogger(OverallSituationExceptionHandler.class);
+
+    /**
+     * 公共异常
+     *
+     * @param e 公共异常数据
+     * @return 返回公共异常结果
+     */
+    @ExceptionHandler(GlobalException.class)
+    @ResponseBody
+    public ResponseBuilder GlobalException(GlobalException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
 
     /**
      * 声明要捕获的异常
@@ -59,24 +83,41 @@ public class OverallSituationExceptionHandler {
 
         return builder;
     }
-
     /**
-     * 公共异常
+     * 声明要捕获的异常
      *
-     * @param e 公共异常数据
-     * @return 返回公共异常结果
+     * @param e
+     * @return
      */
-    @ExceptionHandler(GlobalException.class)
+    @ExceptionHandler(GlobalRuntimeException.class)
     @ResponseBody
-    public ResponseBuilder GlobalException(GlobalException e) {
+    public ResponseBuilder defultExcepitonHandler(GlobalRuntimeException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
-        builder.setMessage(e.getMessage());
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
+        builder.setData(params);
 
         logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
 
+        return builder;
+    }
+
+    /**
+     * 声明要捕获的异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(Throwable.class)
+    @ResponseBody
+    public ResponseBuilder defultExcepitonHandler(Throwable e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
         builder.setData(params);
+
+        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+
         return builder;
     }
 

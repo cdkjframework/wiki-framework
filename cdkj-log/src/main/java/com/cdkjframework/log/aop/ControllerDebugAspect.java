@@ -3,6 +3,8 @@ package com.cdkjframework.log.aop;
 import com.cdkjframework.center.service.LogService;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.log.LogRecordDto;
+import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -13,6 +15,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -77,10 +80,10 @@ public class ControllerDebugAspect extends BaseAopAspect implements ApplicationR
      *
      * @param joinPoint 进程连接点
      * @return 返回结果
-     * @throws Throwable 异常信息
+     * @throws GlobalRuntimeException 异常信息
      */
     @Around("doPointcutController()")
-    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+    public Object doAround(ProceedingJoinPoint joinPoint) throws GlobalRuntimeException {
         return aroundProcess(joinPoint);
     }
 }

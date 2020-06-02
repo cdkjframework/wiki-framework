@@ -1,5 +1,6 @@
 package com.cdkjframework.log.aop;
 
+import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
