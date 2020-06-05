@@ -1,12 +1,11 @@
 package com.cdkjframework.core.authority;
 
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
@@ -18,59 +17,27 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-//@Configuration
-public class WebConfigurer extends WebMvcConfigurationSupport {
+@Configuration
+@EnableWebMvc
+public class WebConfigurer implements WebMvcConfigurer {
 
     /**
-     * 添加拦截器
+     * 字符串Http消息转换器
      *
-     * @param registry
+     * @return 返回结果
      */
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        super.addInterceptors(registry);
-    }
-
-    /**
-     * 添加资源处理程序
-     *
-     * @param registry 注册
-     */
-    @Override
-    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-
-        registry.addResourceHandler("/**")
-                .addResourceLocations("classpath:/");
-
-        registry.addResourceHandler("swagger-ui.html")
-                .addResourceLocations("classpath:/META-INF/resources/");
-
-        registry.addResourceHandler("/webjars/**")
-                .addResourceLocations("classpath:/META-INF/resources/webjars/");
-
-        super.addResourceHandlers(registry);
+    @Bean
+    public StringHttpMessageConverter stringHttpMessageConverter() {
+        return new StringHttpMessageConverter();
     }
 
     /**
      * 配置消息转换器
      *
-     * @param converters 参数
+     * @param converters 转换器
      */
     @Override
-    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        super.configureMessageConverters(converters);
-    }
-
-    /**
-     * 验证过虑
-     *
-     * @return 返回结果
-     */
-    @Bean
-    public FilterRegistrationBean requestValidateFilter() {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.addUrlPatterns("/*");
-        registration.setOrder(1);
-        return registration;
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        converters.add(stringHttpMessageConverter());
     }
 }

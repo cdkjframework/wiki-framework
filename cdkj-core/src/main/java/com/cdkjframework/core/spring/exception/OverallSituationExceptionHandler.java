@@ -37,7 +37,7 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 @ControllerAdvice
-@RestControllerAdvice
+@ResponseBody
 public class OverallSituationExceptionHandler {
 
     /**
@@ -52,14 +52,12 @@ public class OverallSituationExceptionHandler {
      * @return 返回公共异常结果
      */
     @ExceptionHandler(GlobalException.class)
-    @ResponseBody
     public ResponseBuilder GlobalException(GlobalException e) {
-        ResponseBuilder builder = ResponseBuilder.failBuilder();
-        builder.setMessage(e.getMessage());
+        ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -72,14 +70,13 @@ public class OverallSituationExceptionHandler {
      * @return
      */
     @ExceptionHandler(Exception.class)
-    @ResponseBody
     public ResponseBuilder defultExcepitonHandler(Exception e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
         builder.setData(params);
 
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
 
         return builder;
     }
@@ -90,15 +87,14 @@ public class OverallSituationExceptionHandler {
      * @return
      */
     @ExceptionHandler(GlobalRuntimeException.class)
-    @ResponseBody
     public ResponseBuilder defultExcepitonHandler(GlobalRuntimeException e) {
-        ResponseBuilder builder = ResponseBuilder.failBuilder();
+        ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
+
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
+
         builder.setData(params);
-
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
-
         return builder;
     }
 
@@ -109,14 +105,13 @@ public class OverallSituationExceptionHandler {
      * @return
      */
     @ExceptionHandler(Throwable.class)
-    @ResponseBody
     public ResponseBuilder defultExcepitonHandler(Throwable e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
         builder.setData(params);
 
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
 
         return builder;
     }
@@ -128,7 +123,6 @@ public class OverallSituationExceptionHandler {
      * @return 返回数据验证异常
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     public ResponseBuilder MethodArgumentNotValidException(MethodArgumentNotValidException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
 
@@ -145,7 +139,7 @@ public class OverallSituationExceptionHandler {
             }
         }
 
-        logUtil.error(e.getStackTrace(), String.join(";", errorList));
+        logUtil.error(e, String.join(";", errorList));
 
         builder.setData(errorList);
         return builder;
@@ -158,7 +152,6 @@ public class OverallSituationExceptionHandler {
      * @return 返回数据访问异常
      */
     @ExceptionHandler(DataAccessException.class)
-    @ResponseBody
     public ResponseBuilder MyBatisException(DataAccessException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
 
@@ -166,7 +159,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -179,7 +172,6 @@ public class OverallSituationExceptionHandler {
      * @return 返回SQL语法错误异常
      */
     @ExceptionHandler(SQLSyntaxErrorException.class)
-    @ResponseBody
     public ResponseBuilder MyBatisException(SQLSyntaxErrorException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
 
@@ -187,7 +179,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -200,7 +192,6 @@ public class OverallSituationExceptionHandler {
      * @return 返回封装结果
      */
     @ExceptionHandler(SQLException.class)
-    @ResponseBody
     public ResponseBuilder MyBatisException(SQLException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
 
@@ -208,7 +199,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e.getStackTrace(), JsonUtils.objectToJsonString(params));
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
 
         builder.setData(params);
         return builder;
@@ -221,7 +212,6 @@ public class OverallSituationExceptionHandler {
      * @return
      */
     @ExceptionHandler(ConstraintViolationException.class)
-    @ResponseBody
     public ResponseBuilder constraintViolationExceptionHandler(ConstraintViolationException e) {
         String message = e.getMessage();
         Integer begin = message.indexOf(":") + 1;
@@ -231,7 +221,7 @@ public class OverallSituationExceptionHandler {
         } else {
             message = message.substring(begin);
         }
-        logUtil.error(e.getStackTrace(), message);
+        logUtil.error(e, message);
         return ResponseBuilder.failBuilder(message);
     }
 
@@ -242,12 +232,11 @@ public class OverallSituationExceptionHandler {
      * @return
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
-    @ResponseBody
     public ResponseBuilder sizeLimitExceededExceptionExceptionHandler(MaxUploadSizeExceededException e) {
         Long size = Long.valueOf(1024);
         Long fileSizeM = size / (1024 * 1024L);
         String info = String.format("文件请勿超过%sM", fileSizeM);
-        logUtil.error(e.getStackTrace(), info);
+        logUtil.error(e, info);
 
         return ResponseBuilder.failBuilder(info);
     }

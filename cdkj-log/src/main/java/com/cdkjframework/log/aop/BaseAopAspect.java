@@ -19,7 +19,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
-import java.lang.reflect.UndeclaredThrowableException;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -71,7 +70,7 @@ public class BaseAopAspect {
      * @return 返回结果
      * @throws GlobalRuntimeException 异常信息
      */
-    protected Object aroundProcess(ProceedingJoinPoint joinPoint) throws GlobalRuntimeException {
+    protected Object aroundProcess(ProceedingJoinPoint joinPoint) {
         // 获取连接点参数
         Object[] args = joinPoint.getArgs();
         //获取连接点签名的方法名
@@ -107,28 +106,26 @@ public class BaseAopAspect {
                 }
                 logRecordDto.setResult(resultJson);
             }
-        } catch (GlobalException ex) {
-            logUtils.info(ex.getMessage());
+        } catch (Throwable ex) {
             if (isLog) {
-                logRecordDto.setExecutionState(IntegerConsts.NINE_HUNDRED_NINETY_NINE);
+                logRecordDto.setExecutionState(IntegerConsts.TWENTY);
                 logRecordDto.setResultErrorMessage(ex.getMessage());
             }
-            result = ResponseBuilder.failBuilder(ex.getMessage());
-            throw new GlobalRuntimeException(ex.getMessage());
-        } catch (Exception ex) {
-            logUtils.info(ex.getMessage());
-            if (isLog) {
-                logRecordDto.setExecutionState(IntegerConsts.NINE_HUNDRED_NINETY_NINE);
-                logRecordDto.setResultErrorMessage(ex.getMessage());
+            if (ex instanceof GlobalException || ex instanceof GlobalRuntimeException) {
+                if (isLog) {
+                    logRecordDto.setResultTime(System.currentTimeMillis());
+                    logRecordDtoQueue.add(logRecordDto);
+                }
+                throw new GlobalRuntimeException(ex.getMessage());
+            } else {
+                result = ResponseBuilder.failBuilder();
             }
-            result = ResponseBuilder.failBuilder();
-        } finally {
-            if (isLog) {
-                logRecordDto.setResultTime(System.currentTimeMillis());
-                logRecordDtoQueue.add(logRecordDto);
-            }
-            return result;
         }
+        if (isLog) {
+            logRecordDto.setResultTime(System.currentTimeMillis());
+            logRecordDtoQueue.add(logRecordDto);
+        }
+        return result;
     }
 
     /**
