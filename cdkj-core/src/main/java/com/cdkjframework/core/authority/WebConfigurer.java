@@ -38,6 +38,6 @@ public class WebConfigurer implements WebMvcConfigurer {
      */
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(stringHttpMessageConverter());
+//        converters.add(stringHttpMessageConverter());
     }
 }

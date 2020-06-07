@@ -1,14 +1,10 @@
 package com.cdkjframework.web.socket;
 
-import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.socket.WebSocketEntity;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -28,7 +24,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @ServerEndpoint(value = "/socket/webSocket/{type}")
-public class WebSocketService {
+public class WebSocketService implements ApplicationRunner {
 
     /**
      * 日志
@@ -54,7 +50,19 @@ public class WebSocketService {
      * 接口
      */
     @Autowired
-    private IWebSocket webSocketImpl;
+    private WebSocket webSocketImpl;
+    private static WebSocket webSocket = null;
+
+    /**
+     * 执行
+     *
+     * @param args
+     * @throws Exception
+     */
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        webSocket = webSocketImpl;
+    }
 
     /**
      * 连接建立成功调用的方法
@@ -94,7 +102,7 @@ public class WebSocketService {
     @OnMessage
     public void onMessage(String message, Session session) {
         logUtil.info("来自客户端的消息:" + message);
-        if (webSocketImpl != null) {
+        if (webSocket != null) {
             WebSocketEntity entity = new WebSocketEntity();
             entity.setMessage(message);
             entity.setSession(session);
@@ -103,7 +111,7 @@ public class WebSocketService {
                 entity.setType(session.getPathParameters().get("type"));
             }
             logUtil.info(entity.toString());
-            webSocketImpl.onMessage(entity);
+            webSocket.onMessage(entity);
         } else {
             //群发消息
             for (WebSocketService item : webSocketSet) {

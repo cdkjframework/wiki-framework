@@ -11,7 +11,7 @@ import com.cdkjframework.entity.socket.WebSocketEntity;
  * @Version: 1.0
  */
 
-public interface IWebSocket {
+public interface WebSocket {
 
     /**
      * 消息信息
