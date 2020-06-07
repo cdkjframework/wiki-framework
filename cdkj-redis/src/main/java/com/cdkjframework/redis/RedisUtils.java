@@ -605,7 +605,7 @@ public class RedisUtils implements ApplicationRunner {
         }
 
         pubSubAsyncCommands = redisPubSubConnection.async();
-        if (pubSubAsyncCommands.getStatefulConnection() != null) {
+        if (pubSubAsyncCommands == null || pubSubAsyncCommands.getStatefulConnection() != null) {
             pubSubAsyncCommands = null;
             clusterPubSubCommands = redisClusterPubSubConnection.async();
         }

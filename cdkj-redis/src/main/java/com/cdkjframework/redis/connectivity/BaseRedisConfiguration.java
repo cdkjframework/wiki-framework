@@ -1,10 +1,9 @@
 package com.cdkjframework.redis.connectivity;
 
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.config.RedisConfig;
-import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.AssertUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -13,8 +12,6 @@ import io.lettuce.core.RedisURI;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Date;
 
 /**
  * @ProjectName: cdkj-framework
@@ -49,10 +46,10 @@ public class BaseRedisConfiguration {
         // redis 集群连接
         boolean redisCluster = false;
         if (redisConfig.getHost().size() > 1) {
-            logUtils.info("Redis 集群配置开始：" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
+            logUtils.info("Redis 集群配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
             redisCluster = true;
         } else {
-            logUtils.info("Redis 配置开始：" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
+            logUtils.info("Redis 配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
         return redisCluster;
     }
@@ -102,7 +99,7 @@ public class BaseRedisConfiguration {
      * @return 返回结果
      */
     protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
+        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(1).build();
     }
 
     /**

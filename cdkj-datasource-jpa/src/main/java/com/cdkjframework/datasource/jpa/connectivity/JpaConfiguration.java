@@ -83,7 +83,7 @@ public class JpaConfiguration {
      *
      * @return 返回事务接口
      */
-    @Bean(name = "jpaTransactionManager")
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager() {
         JpaTransactionManager txManager = new JpaTransactionManager();
         txManager.setEntityManagerFactory(entityManagerFactory());

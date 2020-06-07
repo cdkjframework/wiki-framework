@@ -2,7 +2,6 @@ package com.cdkjframework.redis.connectivity;
 
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
-import com.cdkjframework.util.date.DateUtils;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import io.lettuce.core.*;
