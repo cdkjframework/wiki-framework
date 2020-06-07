@@ -1,7 +1,9 @@
 package com.cdkjframework.redis.subscribe;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ProjectName: common-core
@@ -32,6 +36,12 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
      */
     @Autowired
     private CustomConfig customConfig;
+
+    /**
+     * 配置
+     */
+    @Autowired
+    private RedisConfig redisConfig;
 
     /**
      * 订阅
@@ -145,14 +155,41 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
 
         // 渠道
         if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
-            pubSubCommands.subscribe(customConfig.getChannel()
-                    .toArray(new String[customConfig.getChannel().size()]));
+            List<String> channelList = new ArrayList<>();
+            for (String key :
+                    customConfig.getChannel()) {
+                channelList.add(getNamespaces(key));
+            }
+            pubSubCommands.subscribe(channelList
+                    .toArray(new String[channelList.size()]));
         }
 
         // 模式
         if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
-            pubSubCommands.psubscribe(customConfig.getPattern()
-                    .toArray(new String[customConfig.getPattern().size()]));
+            List<String> patternList = new ArrayList<>();
+            for (String key :
+                    customConfig.getPattern()) {
+                patternList.add(getNamespaces(key));
+            }
+            pubSubCommands.psubscribe(patternList
+                    .toArray(new String[patternList.size()]));
         }
+    }
+
+    /**
+     * 获取 命名空间
+     *
+     * @return 返回结果
+     */
+    private String getNamespaces(String key) {
+        String namespaces = ";";
+        if (StringUtils.isNotNullAndEmpty(redisConfig.getNamespaces()) && !key.contains(namespaces)) {
+            namespaces = redisConfig.getNamespaces() + ":" + key;
+        } else {
+            namespaces = key;
+        }
+
+        // 返回结果
+        return namespaces;
     }
 }
