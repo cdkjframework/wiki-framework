@@ -2,8 +2,10 @@ package com.cdkjframework.redis;
 
 import com.alibaba.fastjson.JSONArray;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisFuture;
 import io.lettuce.core.api.async.RedisAsyncCommands;
@@ -12,6 +14,7 @@ import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.cluster.pubsub.api.async.RedisClusterPubSubAsyncCommands;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -84,6 +87,13 @@ public class RedisUtils implements ApplicationRunner {
     private StatefulRedisClusterPubSubConnection<String, String> redisClusterPubSubConnection;
 
     /**
+     * 读取配置
+     */
+    @Autowired
+    private RedisConfig redisConfig;
+    private static RedisConfig config;
+
+    /**
      * 指定缓存失效时间
      *
      * @param key  键
@@ -91,6 +101,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 0
      */
     public static boolean syncExpire(String key, long time) {
+        key = getNamespaces(key);
         try {
             if (time < 0) {
                 time = 30 * 60;
@@ -116,6 +127,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static Long publish(String key, String message) {
+        key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
 
         try {
@@ -139,6 +151,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static boolean sisMember(String key, String value) {
+        key = getNamespaces(key);
         try {
             RedisFuture<Boolean> redisFuture = redisAsyncCommands == null ?
                     commands.sismember(key, value) :
@@ -158,8 +171,8 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static Long lpush(String key, String message) {
+        key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
-
         try {
             if (redisAsyncCommands == null) {
                 redisFuture = commands.lpush(key, message);
@@ -182,8 +195,8 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static String rpop(String key) {
+        key = getNamespaces(key);
         RedisFuture<String> redisFuture;
-
         try {
             if (redisAsyncCommands == null) {
                 redisFuture = commands.rpop(key);
@@ -206,8 +219,8 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static KeyValue<String, String> brpop(String key) {
+        key = getNamespaces(key);
         RedisFuture<KeyValue<String, String>> redisFuture;
-
         try {
             if (redisAsyncCommands == null) {
                 redisFuture = commands.brpop(IntegerConsts.ZERO, key);
@@ -226,13 +239,18 @@ public class RedisUtils implements ApplicationRunner {
     /**
      * 根据key 获取过期时间
      *
-     * @param key 键 不能为nullogUtils* @return 时间(秒) 返回0代表为永久有效
+     * @param keys 键 不能为nullogUtils* @return 时间(秒) 返回0代表为永久有效
      */
-    public static boolean syncExists(String... key) {
-        RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.exists(key) :
-                redisAsyncCommands.exists(key);
+    public static boolean syncExists(String... keys) {
+        String[] keyList = new String[keys.length];
+        for (int i = 0; i < keys.length; i++) {
+            String key = getNamespaces(keys[i]);
+            keyList[i] = key;
+        }
+        RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.exists(keyList) :
+                redisAsyncCommands.exists(keyList);
         try {
-            return redisFuture.get() == key.length;
+            return redisFuture.get() == keyList.length;
         } catch (InterruptedException e) {
             logUtils.error(e.getStackTrace(), e.getMessage());
         } catch (ExecutionException e) {
@@ -245,15 +263,20 @@ public class RedisUtils implements ApplicationRunner {
     /**
      * 删除缓存
      *
-     * @param key 可以传一个值 或多个
+     * @param keys 可以传一个值 或多个
      */
 
     @SuppressWarnings("unchecked")
-    public static void syncDel(String... key) {
+    public static void syncDel(String... keys) {
+        String[] keyList = new String[keys.length];
+        for (int i = 0; i < keys.length; i++) {
+            String key = getNamespaces(keys[i]);
+            keyList[i] = key;
+        }
         if (redisAsyncCommands == null) {
-            commands.del(key);
+            commands.del(keyList);
         } else {
-            redisAsyncCommands.del(key);
+            redisAsyncCommands.del(keyList);
         }
     }
 
@@ -265,6 +288,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static String hGet(String key, String value) {
+        key = getNamespaces(key);
         if (!syncExists(key)) {
             return null;
         }
@@ -289,6 +313,7 @@ public class RedisUtils implements ApplicationRunner {
      * @param value 值
      */
     public static Long syncAppend(String key, String value) {
+        key = getNamespaces(key);
         if (!syncExists(key)) {
             return 0L;
         }
@@ -311,6 +336,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回结果
      */
     public static List<String> hvals(String key) {
+        key = getNamespaces(key);
         if (!syncExists(key)) {
             return null;
         }
@@ -333,6 +359,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 值
      */
     public static String syncGet(String key) {
+        key = getNamespaces(key);
         if (!syncExists(key)) {
             return null;
         }
@@ -356,6 +383,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return true成功 false失败
      */
     public static boolean syncSet(String key, String value) {
+        key = getNamespaces(key);
         try {
             if (redisAsyncCommands == null) {
                 commands.set(key, value);
@@ -378,6 +406,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return true成功 false 失败
      */
     public static boolean syncSet(String key, String value, long time) {
+        key = getNamespaces(key);
         try {
             if (time > 0) {
                 if (redisAsyncCommands == null) {
@@ -403,6 +432,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return 返回增加值
      */
     public static long syncIncr(String key, long delta) {
+        key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
         if (delta <= 0) {
             redisFuture = redisAsyncCommands == null ? commands.incr(key) : redisAsyncCommands.incr(key);
@@ -428,6 +458,7 @@ public class RedisUtils implements ApplicationRunner {
      * @return
      */
     public static long syncDecr(String key, long delta) {
+        key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
         if (delta <= 0) {
             redisFuture = redisAsyncCommands == null ? commands.decr(key) : redisAsyncCommands.decr(key);
@@ -597,6 +628,7 @@ public class RedisUtils implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        config = redisConfig;
         if (clusterAsyncCommands.getStatefulConnection() != null) {
             commands = clusterAsyncCommands;
         }
@@ -609,5 +641,22 @@ public class RedisUtils implements ApplicationRunner {
             pubSubAsyncCommands = null;
             clusterPubSubCommands = redisClusterPubSubConnection.async();
         }
+    }
+
+    /**
+     * 获取 命名空间
+     *
+     * @return 返回结果
+     */
+    private static String getNamespaces(String key) {
+        String namespaces = ";";
+        if (StringUtils.isNotNullAndEmpty(config.getNamespaces()) && !key.contains(namespaces)) {
+            namespaces = config.getNamespaces() + ":" + key;
+        } else {
+            namespaces = key;
+        }
+
+        // 返回结果
+        return namespaces;
     }
 }

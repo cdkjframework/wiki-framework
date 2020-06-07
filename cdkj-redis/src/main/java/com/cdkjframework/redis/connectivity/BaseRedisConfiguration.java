@@ -90,6 +90,7 @@ public class BaseRedisConfiguration {
         poolConfig.setMinEvictableIdleTimeMillis(redisConfig.getMinEvictableIdleTimeMillis());
         poolConfig.setSoftMinEvictableIdleTimeMillis(redisConfig.getSoftMinEvictableIdleTimeMillis());
 
+
         return poolConfig;
     }
 
