@@ -3,6 +3,7 @@ package com.cdkjframework.redis.connectivity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import io.lettuce.core.*;
 import io.lettuce.core.cluster.RedisClusterClient;
@@ -38,7 +39,7 @@ import java.util.function.Predicate;
  */
 @Configuration
 @Component
-public class RedisClusterConfiguration extends AbstractRedisConfiguration {
+public class RedisClusterConfiguration extends BaseRedisConfiguration {
 
     /**
      * 日志
@@ -64,8 +65,8 @@ public class RedisClusterConfiguration extends AbstractRedisConfiguration {
             commands = redisClusterClient();
         } else {
             commands = redisClusterClient(port);
+            logUtils.info("Redis 集群配置结束：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
-        logUtils.info("Redis 配置结束" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
 
         // 返回结果
         return commands;

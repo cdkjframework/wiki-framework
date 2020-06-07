@@ -94,7 +94,7 @@ public class CustomConfig {
     private List<String> ignoreAopUrls;
 
     /**
-     * 是否开启 organization id 过虑
+     * 许可
      */
-    private boolean authority = false;
+    private String permission;
 }

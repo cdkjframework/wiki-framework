@@ -1,5 +1,6 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,26 @@ public class StringUtils {
     private static LogUtils logUtil = LogUtils.getLogger(StringUtils.class);
 
     /**
+     * 空值变量
+     */
+    public final static String Empty = "";
+
+    /**
+     * 0 值变量
+     */
+    public final static String ZERO = "0";
+
+    /**
+     * 逗号 值变量
+     */
+    public final static String COMMA = ",";
+
+    /**
+     * 分号 值变量
+     */
+    public final static String SEMICOLON = ";";
+
+    /**
      * 验证是否为空
      *
      * @param obj 数据
@@ -37,7 +58,7 @@ public class StringUtils {
             return true;
         }
         //验证是否为空
-        if ("".equals(obj.toString().trim())) {
+        if (Empty.equals(obj.toString().trim())) {
             return true;
         }
         //返回结果
@@ -65,7 +86,7 @@ public class StringUtils {
         if (isNullAndSpaceOrEmpty(str)) {
             return false;
         }
-        return str.toString().indexOf(searchChar) >= 0;
+        return str.toString().indexOf(searchChar) >= IntegerConsts.ZERO;
     }
 
     /**
@@ -79,7 +100,7 @@ public class StringUtils {
         if (isNullAndSpaceOrEmpty(str) || isNullAndSpaceOrEmpty(searchStr)) {
             return false;
         }
-        return str.toString().indexOf(searchStr) >= 0;
+        return str.toString().indexOf(searchStr) >= IntegerConsts.ZERO;
     }
 
     /**
@@ -89,7 +110,7 @@ public class StringUtils {
      * @return 返回结果
      */
     public static int convertInt(Object obj) {
-        int value = 0;
+        int value = IntegerConsts.ZERO;
         try {
             if (!isNullAndSpaceOrEmpty(obj)) {
                 value = Integer.valueOf(obj.toString());
@@ -130,7 +151,7 @@ public class StringUtils {
         Boolean value = false;
         try {
             int intValue = convertInt(obj);
-            if (intValue > 0) {
+            if (intValue > IntegerConsts.ZERO) {
                 value = true;
             } else if (!isNullAndSpaceOrEmpty(obj)) {
                 value = Boolean.valueOf(obj.toString());
@@ -155,7 +176,7 @@ public class StringUtils {
         StringBuilder builder = new StringBuilder();
         for (String name :
                 clazzList) {
-            builder.append(Character.toUpperCase(name.charAt(0))).append(name.substring(1));
+            builder.append(Character.toUpperCase(name.charAt(IntegerConsts.ZERO))).append(name.substring(IntegerConsts.ONE));
         }
 
         //返回结果
@@ -173,13 +194,13 @@ public class StringUtils {
         String[] clazzList = attributeName.split("_");
 
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < clazzList.length; i++) {
+        for (int i = IntegerConsts.ZERO; i < clazzList.length; i++) {
             String name = clazzList[i];
-            if (i == 0) {
-                builder.append(Character.toLowerCase(name.charAt(0))).append(name.substring(1));
+            if (IntegerConsts.ZERO.equals(i)) {
+                builder.append(Character.toLowerCase(name.charAt(IntegerConsts.ZERO))).append(name.substring(IntegerConsts.ONE));
                 continue;
             }
-            builder.append(Character.toUpperCase(name.charAt(0))).append(name.substring(1));
+            builder.append(Character.toUpperCase(name.charAt(IntegerConsts.ZERO))).append(name.substring(IntegerConsts.ONE));
         }
 
         //返回结果
@@ -199,7 +220,7 @@ public class StringUtils {
             return null;
         }
         int pads = size - str.length();
-        if (pads <= 0) {
+        if (pads <= IntegerConsts.ZERO) {
             return str;
         }
         if (pads > PAD_LIMIT) {
@@ -217,11 +238,11 @@ public class StringUtils {
      * @throws IndexOutOfBoundsException 异常信息
      */
     private static String padding(int repeat, char padChar) throws IndexOutOfBoundsException {
-        if (repeat < 0) {
+        if (repeat < IntegerConsts.ZERO) {
             throw new IndexOutOfBoundsException("Cannot pad a negative amount: " + repeat);
         }
         final char[] buf = new char[repeat];
-        for (int i = 0; i < buf.length; i++) {
+        for (int i = IntegerConsts.ZERO; i < buf.length; i++) {
             buf[i] = padChar;
         }
         return new String(buf);
@@ -245,21 +266,21 @@ public class StringUtils {
         int padLen = padStr.length();
         int strLen = str.length();
         int pads = size - strLen;
-        if (pads <= 0) {
+        if (pads <= IntegerConsts.ZERO) {
             return str;
         }
         if (padLen == 1 && pads <= PAD_LIMIT) {
-            return leftPad(str, size, padStr.charAt(0));
+            return leftPad(str, size, padStr.charAt(IntegerConsts.ZERO));
         }
 
         if (pads == padLen) {
             return padStr.concat(str);
         } else if (pads < padLen) {
-            return padStr.substring(0, pads).concat(str);
+            return padStr.substring(IntegerConsts.ZERO, pads).concat(str);
         } else {
             char[] padding = new char[pads];
             char[] padChars = padStr.toCharArray();
-            for (int i = 0; i < pads; i++) {
+            for (int i = IntegerConsts.ZERO; i < pads; i++) {
                 padding[i] = padChars[i % padLen];
             }
             return new String(padding).concat(str);

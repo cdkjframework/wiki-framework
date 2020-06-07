@@ -2,7 +2,7 @@ package com.cdkjframework.redis.connectivity;
 
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
-import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
@@ -29,7 +29,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
@@ -44,7 +43,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @Component
-public class RedisPubSubConfiguration extends AbstractRedisConfiguration {
+public class RedisPubSubConfiguration extends BaseRedisConfiguration {
 
     /**
      * 日志
@@ -66,12 +65,12 @@ public class RedisPubSubConfiguration extends AbstractRedisConfiguration {
     public StatefulRedisClusterPubSubConnection<String, String> clusterPubSubConnection() throws GlobalException {
         int port = redisConfig.getPort();
         StatefulRedisClusterPubSubConnection<String, String> connection = null;
-        if (!redisClusterCommands()) {
+        if (!redisConfig.isSubscribe() || !redisClusterCommands()) {
             connection = redisClusterClient();
         } else {
             connection = redisClusterClient(port);
+            logUtils.info("Redis 集群订阅配置结束：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
-        logUtils.info("Redis 配置结束" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
 
         // 返回结果
         return connection;
@@ -86,12 +85,12 @@ public class RedisPubSubConfiguration extends AbstractRedisConfiguration {
     public StatefulRedisPubSubConnection<String, String> redisPubSubConnection() throws GlobalException {
         int port = redisConfig.getPort();
         StatefulRedisPubSubConnection<String, String> commands = null;
-        if (redisClusterCommands()) {
+        if (!redisConfig.isSubscribe() || redisClusterCommands()) {
             commands = redisClient();
         } else {
             commands = redisClient(port);
+            logUtils.info("Redis 订阅配置结束：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
-        logUtils.info("Redis 配置结束" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
 
         // 返回结果
         return commands;
@@ -142,7 +141,9 @@ public class RedisPubSubConfiguration extends AbstractRedisConfiguration {
             @Override
             public Duration getTimeout() {
                 return null;
-            }            @Override
+            }
+
+            @Override
             public void setTimeout(Duration timeout) {
 
             }
@@ -307,7 +308,9 @@ public class RedisPubSubConfiguration extends AbstractRedisConfiguration {
             @Override
             public Collection<RedisCommand<String, String, ?>> dispatch(Collection<? extends RedisCommand<String, String, ?>> redisCommands) {
                 return null;
-            }            @Override
+            }
+
+            @Override
             public void setTimeout(Duration timeout) {
             }
 
@@ -346,8 +349,6 @@ public class RedisPubSubConfiguration extends AbstractRedisConfiguration {
             @Override
             public void flushCommands() {
             }
-
-
 
 
         };

@@ -2,6 +2,7 @@ package com.cdkjframework.util.tool;
 
 import com.cdkjframework.exceptions.GlobalException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class AssertUtils {
             message = IS_EMPTY_MESSAGE;
         }
 
-        if (list == null || list.size() == 0) {
+        if (CollectionUtils.isEmpty(list)) {
             throw new GlobalException(message);
         }
     }

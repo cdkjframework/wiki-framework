@@ -1,4 +1,4 @@
-package com.cdkjframework.core.business.websocket;
+package com.cdkjframework.web.socket;
 
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import javax.websocket.*;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -30,7 +28,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  */
 @Component
 @ServerEndpoint(value = "/socket/webSocket/{type}")
-public class WebSocketService implements ApplicationRunner {
+public class WebSocketService {
 
     /**
      * 日志
@@ -53,28 +51,10 @@ public class WebSocketService implements ApplicationRunner {
     private Session session;
 
     /**
-     * 方法
+     * 接口
      */
-    private static Method method;
-
-    /**
-     * bean
-     */
-    private static Object bean;
-
-    /**
-     * 自定义配置
-     */
-    private final CustomConfig customConfig;
     @Autowired
-    public WebSocketService(CustomConfig customConfig) {
-        this.customConfig = customConfig;
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        getBean();
-    }
+    private IWebSocket webSocketImpl;
 
     /**
      * 连接建立成功调用的方法
@@ -103,7 +83,7 @@ public class WebSocketService implements ApplicationRunner {
         webSocketSet.remove(this);
         //在线数减1
         subOnlineCount();
-        logUtil.info("有一连接关闭！当前在线人数为" + getOnlineCount());
+        logUtil.info("有一连接关闭！当前在线人数为：" + getOnlineCount());
     }
 
     /**
@@ -114,22 +94,16 @@ public class WebSocketService implements ApplicationRunner {
     @OnMessage
     public void onMessage(String message, Session session) {
         logUtil.info("来自客户端的消息:" + message);
-        if (bean != null && method != null) {
-            try {
-                WebSocketEntity entity = new WebSocketEntity();
-                entity.setMessage(message);
-                entity.setSession(session);
-                Map<String, String> stringMap = session.getPathParameters();
-                if (stringMap != null && stringMap.size() > 0) {
-                    entity.setType(session.getPathParameters().get("type"));
-                }
-                logUtil.info(entity.toString());
-                method.invoke(bean, entity);
-            } catch (IllegalAccessException e) {
-                logUtil.error(e);
-            } catch (InvocationTargetException e) {
-                logUtil.error(e);
+        if (webSocketImpl != null) {
+            WebSocketEntity entity = new WebSocketEntity();
+            entity.setMessage(message);
+            entity.setSession(session);
+            Map<String, String> stringMap = session.getPathParameters();
+            if (stringMap != null && stringMap.size() > 0) {
+                entity.setType(session.getPathParameters().get("type"));
             }
+            logUtil.info(entity.toString());
+            webSocketImpl.onMessage(entity);
         } else {
             //群发消息
             for (WebSocketService item : webSocketSet) {
@@ -220,35 +194,5 @@ public class WebSocketService implements ApplicationRunner {
     public int hashCode() {
 
         return Objects.hash(logUtil, session);
-    }
-
-
-    /**
-     * 获取 bean
-     */
-    public void getBean() {
-        try {
-            // 使用spring content 获取类的实例 必须在 application 注册 applicationContext 变量
-            ApplicationContext context = Application.applicationContext;
-            if (context == null || StringUtils.isNullAndSpaceOrEmpty(customConfig.getWebSocketClassName()) ||
-                    StringUtils.isNullAndSpaceOrEmpty(customConfig.getWebSocketMethodName())) {
-                return;
-            }
-            Class targetClass = Class.forName(customConfig.getWebSocketClassName());
-            bean = context.getBean(targetClass);
-            /*
-             给实例化的类注入需要的bean (@Autowired)
-             如果不注入，被@Autowired注解的变量会报空指针
-              */
-            context.getAutowireCapableBeanFactory().autowireBean(bean);
-
-            method = targetClass.getDeclaredMethod(customConfig.getWebSocketMethodName(), WebSocketEntity.class);
-            // 设置访问权限
-            method.setAccessible(true);
-        } catch (ClassNotFoundException e) {
-            logUtil.error(e.getMessage());
-        } catch (NoSuchMethodException e) {
-            logUtil.error(e.getMessage());
-        }
     }
 }

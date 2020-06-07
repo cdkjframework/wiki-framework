@@ -24,7 +24,30 @@ import java.util.List;
 @ApiModel("分页数据")
 public class PageEntity<T> implements Serializable {
 
+    /**
+     * 串行版本UID
+     */
     private static final long serialVersionUID = -766231940524932922L;
+
+    /**
+     * 构造实体
+     *
+     * @return 返回实体
+     */
+    public static <T> PageEntity<T> build() {
+        return new PageEntity<>();
+    }
+
+    /**
+     * 带参数构造函数
+     *
+     * @param index 当面页码
+     * @param total 总条数
+     * @param data  数据集 list
+     */
+    public static <T> PageEntity build(long index, long total, List<T> data) {
+        return new PageEntity<>(index, total, data);
+    }
 
     /**
      * 构造函数

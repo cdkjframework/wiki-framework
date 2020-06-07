@@ -1,5 +1,6 @@
 package com.cdkjframework.redis.config;
 
+import com.cdkjframework.constant.IntegerConsts;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,9 +26,19 @@ import java.util.List;
 public class RedisConfig {
 
     /**
+     * 命名空间
+     */
+    private String namespaces;
+
+    /**
+     * 是否订阅
+     */
+    private boolean subscribe = false;
+
+    /**
      * Redis数据库索引（默认为0）
      */
-    private Integer database = 0;
+    private Integer database = IntegerConsts.ZERO;
 
     /**
      * Redis服务器地址
@@ -46,18 +57,18 @@ public class RedisConfig {
     /**
      * 连接池最大连接数（使用负值表示没有限制）
      */
-    private Integer maxActive = 200;
+    private Integer maxActive = IntegerConsts.ONE_HUNDRED * 2;
 
     /**
      * 连接池最大阻塞等待时间（使用负值表示没有限制）
      */
-    private Integer maxWaitMillis = 0;
+    private Integer maxWaitMillis = IntegerConsts.ZERO;
 
 
     /**
      * 连接池中的最大空闲连接
      */
-    private Integer maxIdle = 10;
+    private Integer maxIdle = IntegerConsts.TEN;
 
     /**
      * 最小可检测时间毫秒
@@ -77,10 +88,10 @@ public class RedisConfig {
     /**
      * 连接池中的最小空闲连接
      */
-    private Integer minIdle = 0;
+    private Integer minIdle = IntegerConsts.ZERO;
 
     /**
      * 连接超时时间（毫秒）
      */
-    private Integer timeout = 1000;
+    private Integer timeout = IntegerConsts.ONE_HUNDRED * IntegerConsts.TEN;
 }

@@ -7,66 +7,24 @@
         <groupId>com.cdkjframework</groupId>
         <version>1.0-200603</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-core</artifactId>
+    <artifactId>cdkj-web-socket</artifactId>
 
     <dependencies>
+        <!-- 加载 webSocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-constant</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-entity</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-datasource</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-integration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-test</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
-
-        <!-- begin swagger2 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-        <!-- end swagger2 -->
     </dependencies>
 
     <build>

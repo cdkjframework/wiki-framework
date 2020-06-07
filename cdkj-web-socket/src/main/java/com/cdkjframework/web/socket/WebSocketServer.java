@@ -1,4 +1,4 @@
-package com.cdkjframework.core.business.websocket;
+package com.cdkjframework.web.socket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

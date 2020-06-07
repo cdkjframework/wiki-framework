@@ -7,6 +7,7 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordDto;
+import com.cdkjframework.entity.log.PermissionDto;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
@@ -20,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.stream.Collectors;
@@ -136,8 +138,6 @@ public class BaseAopAspect {
      * @throws Throwable 异常信息
      */
     protected Object process(ProceedingJoinPoint joinPoint) throws Throwable {
-        //获取连接点签名的方法名
-        String methodName = joinPoint.getSignature().getName();
         //获取连接点参数
         Object[] args = joinPoint.getArgs();
 
@@ -149,23 +149,37 @@ public class BaseAopAspect {
             try {
                 targetClass = Class.forName(args[0].getClass().getName());
                 JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
+                PermissionDto permissionDto = null;
+                if (StringUtils.isNotNullAndEmpty(customConfig.getPermission())) {
+                    List<PermissionDto> permissionDtoList = JsonUtils.jsonStringToList(customConfig.getPermission(), PermissionDto.class);
+                    Optional<PermissionDto> optional = permissionDtoList.stream()
+                            .filter(f -> f.getOrganization().equals(CurrentUser.getOrganizationCode()))
+                            .findFirst();
+                    if (optional.isPresent()) {
+                        permissionDto = optional.get();
+                    }
+                }
+
                 // 顶级机构
-                Object topOrganizationId = jsonObject.get("topOrganizationId");
-                if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
-                    jsonObject.put("topOrganizationId", CurrentUser.getTopOrganizationId());
-                } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && DEFAULT_VALUE.equals(topOrganizationId.toString())) {
-                    jsonObject.put("topOrganizationId", "");
+                if (permissionDto == null || permissionDto.isSuperior()) {
+                    Object topOrganizationId = jsonObject.get("topOrganizationId");
+                    if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
+                        jsonObject.put("topOrganizationId", CurrentUser.getTopOrganizationId());
+                    } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && DEFAULT_VALUE.equals(topOrganizationId.toString())) {
+                        jsonObject.put("topOrganizationId", StringUtils.Empty);
+                    }
                 }
 
                 // 下级机构
-                Object organizationId = jsonObject.get("organizationId");
-                if (StringUtils.isNullAndSpaceOrEmpty(organizationId) && customConfig.isAuthority()) {
-                    jsonObject.put("organizationId", CurrentUser.getTopOrganizationId());
-                } else if (StringUtils.isNotNullAndEmpty(organizationId) && DEFAULT_VALUE.equals(organizationId.toString())) {
-                    jsonObject.put("organizationId", "");
+                if (permissionDto != null && permissionDto.isCurrent()) {
+                    Object organizationId = jsonObject.get("organizationId");
+                    if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
+                        jsonObject.put("organizationId", CurrentUser.getTopOrganizationId());
+                    } else if (StringUtils.isNotNullAndEmpty(organizationId) && DEFAULT_VALUE.equals(organizationId.toString())) {
+                        jsonObject.put("organizationId", StringUtils.Empty);
+                    }
                 }
                 args[0] = JsonUtils.jsonObjectToBean(jsonObject, targetClass);
-
             } catch (Exception ex) {
                 logUtils.error(ex.getMessage());
             }

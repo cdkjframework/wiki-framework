@@ -25,13 +25,14 @@ import java.util.Date;
  * @Version: 1.0
  */
 
-public class AbstractRedisConfiguration {
+public class BaseRedisConfiguration {
 
     /**
      * 配置
      */
     @Autowired
     protected RedisConfig redisConfig;
+
     /**
      * 日志
      */

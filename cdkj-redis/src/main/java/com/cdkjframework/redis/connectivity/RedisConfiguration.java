@@ -1,28 +1,17 @@
 package com.cdkjframework.redis.connectivity;
 
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.tool.AssertUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
-import io.lettuce.core.cluster.ClusterClientOptions;
-import io.lettuce.core.cluster.RedisClusterClient;
-import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
-import io.lettuce.core.cluster.api.async.AsyncNodeSelection;
-import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
-import io.lettuce.core.cluster.api.async.RedisClusterAsyncCommands;
-import io.lettuce.core.cluster.models.partitions.RedisClusterNode;
-import io.lettuce.core.cluster.pubsub.api.async.RedisClusterPubSubAsyncCommands;
 import io.lettuce.core.output.*;
 import io.lettuce.core.protocol.CommandArgs;
 import io.lettuce.core.protocol.CommandType;
 import io.lettuce.core.protocol.ProtocolKeyword;
-import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -34,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.function.Predicate;
 
 /**
  * @ProjectName: cdkj-framework
@@ -46,7 +34,7 @@ import java.util.function.Predicate;
  */
 @Configuration
 @Component
-public class RedisConfiguration extends AbstractRedisConfiguration {
+public class RedisConfiguration extends BaseRedisConfiguration {
 
     /**
      * 日志
@@ -72,8 +60,8 @@ public class RedisConfiguration extends AbstractRedisConfiguration {
             commands = redisClient();
         } else {
             commands = redisClient(port);
+            logUtils.info("Redis 配置结束：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
-        logUtils.info("Redis 配置结束" + DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS));
 
         // 返回结果
         return commands;
