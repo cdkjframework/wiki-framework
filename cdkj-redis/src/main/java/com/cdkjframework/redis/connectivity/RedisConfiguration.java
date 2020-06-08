@@ -2069,7 +2069,6 @@ public class RedisConfiguration extends BaseRedisConfiguration {
         GenericObjectPool<StatefulRedisConnection<String, String>> pool;
         GenericObjectPoolConfig<StatefulRedisConnection<String, String>> poolConfig =
                 genericObjectPoolConfig();
-
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
             logUtils.info("Requesting new StatefulRedisConnection " + System.currentTimeMillis());
