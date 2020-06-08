@@ -2,30 +2,54 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <artifactId>cdkj-framework</artifactId>
-        <groupId>com.cdkjframework</groupId>
-        <version>1.0-200607</version>
-    </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <description>cdkjFw 路由</description>
+    <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-gateway</artifactId>
+
+    <parent>
+        <groupId>com.cdkjframework</groupId>
+        <artifactId>cdkj-pom</artifactId>
+        <version>1.0-200607</version>
+    </parent>
 
     <dependencies>
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-core</artifactId>
+            <artifactId>cdkj-redis</artifactId>
             <exclusions>
                 <exclusion>
-                    <artifactId>org.springframework.boot</artifactId>
-                    <groupId>spring-boot-starter-web</groupId>
+                    <groupId>com.cdkjframework</groupId>
+                    <artifactId>cdkj-util</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-util</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-webmvc</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-web</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-gateway</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
     </dependencies>
 

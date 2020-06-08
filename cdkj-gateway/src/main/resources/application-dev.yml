@@ -1,0 +1,9 @@
+
+spring:
+  cdkj:
+    redis:
+      port: 6379
+      database: 1
+      host[0]: 192.168.1.95
+      password:
+      namespaces: lesmarthome-pms

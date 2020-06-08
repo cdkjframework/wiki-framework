@@ -91,7 +91,7 @@
         <kryo.erializers.version>0.42</kryo.erializers.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <tomcat.version>9.0.22</tomcat.version>
-        <jackson.annotations.version>2.9.9</jackson.annotations.version>
+        <jackson.annotations.version>2.11.0</jackson.annotations.version>
         <jackson-datatype-jsr310.version>2.11.0</jackson-datatype-jsr310.version>
         <xstream.version>1.4.11</xstream.version>
         <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
@@ -451,11 +451,11 @@
                 <artifactId>jackson-annotations</artifactId>
                 <version>${jackson.annotations.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.datatype</groupId>
-                <artifactId>jackson-datatype-jsr310</artifactId>
-                <version>${jackson-datatype-jsr310.version}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>com.fasterxml.jackson.datatype</groupId>-->
+<!--                <artifactId>jackson-datatype-jsr310</artifactId>-->
+<!--                <version>${jackson-datatype-jsr310.version}</version>-->
+<!--            </dependency>-->
 
             <!-- 条形码 -->
             <dependency>

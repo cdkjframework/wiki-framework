@@ -1,8 +1,9 @@
 package com.cdkjframework.gateway;
 
-import com.cdkjframework.core.spring.CdkjApplication;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
 
 /**
  * @ProjectName: cdkj-framework
@@ -12,9 +13,13 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@SpringBootApplication(exclude = {
+@SpringBootApplication(scanBasePackages = {
+        "com.cdkjframework",
+        "com.cdkjframework.redis",
+},exclude = {
         DataSourceAutoConfiguration.class,
 })
+@Configuration
 public class GatewayApplication {
 
     /**
@@ -22,6 +27,6 @@ public class GatewayApplication {
      * @param args
      */
     public static void main(String[] args){
-        CdkjApplication.run(GatewayApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 }

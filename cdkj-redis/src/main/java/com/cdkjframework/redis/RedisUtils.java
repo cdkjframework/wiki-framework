@@ -15,8 +15,6 @@ import io.lettuce.core.cluster.pubsub.api.async.RedisClusterPubSubAsyncCommands;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +33,7 @@ import java.util.concurrent.ExecutionException;
  */
 @Component
 @Order(Integer.MIN_VALUE + 1)
-public class RedisUtils implements ApplicationRunner {
+public class RedisUtils {
 
     /**
      * 日志
@@ -63,28 +61,34 @@ public class RedisUtils implements ApplicationRunner {
     private static RedisPubSubAsyncCommands<String, String> pubSubAsyncCommands;
 
     /**
-     * 异步 redis 访问
+     * 构造函数
+     *
+     * @param clusterAsyncCommands         集群模式
+     * @param asyncCommands                单点模式
+     * @param redisPubSubConnection        单点订阅
+     * @param redisClusterPubSubConnection 集群订阅
+     * @param redisConfig                  配置
      */
-    @Resource(name = "clusterAsyncCommands")
-    private RedisAdvancedClusterAsyncCommands<String, String> clusterAsyncCommands;
+    @Autowired
+    public RedisUtils(RedisAdvancedClusterAsyncCommands<String, String> clusterAsyncCommands,
+                      RedisAsyncCommands<String, String> asyncCommands,
+                      StatefulRedisPubSubConnection<String, String> redisPubSubConnection,
+                      StatefulRedisClusterPubSubConnection<String, String> redisClusterPubSubConnection,
+                      RedisConfig redisConfig) {
+        config = redisConfig;
+        if (clusterAsyncCommands.getStatefulConnection() != null) {
+            commands = clusterAsyncCommands;
+        }
+        if (asyncCommands.getStatefulConnection() != null) {
+            redisAsyncCommands = asyncCommands;
+        }
 
-    /**
-     * 单
-     */
-    @Resource(name = "redisAsyncCommands")
-    private RedisAsyncCommands<String, String> asyncCommands;
-
-    /**
-     * 订阅
-     */
-    @Resource(name = "redisPubSubConnection")
-    private StatefulRedisPubSubConnection<String, String> redisPubSubConnection;
-
-    /**
-     * 集群订阅
-     */
-    @Resource(name = "clusterPubSubConnection")
-    private StatefulRedisClusterPubSubConnection<String, String> redisClusterPubSubConnection;
+        pubSubAsyncCommands = redisPubSubConnection.async();
+        if (pubSubAsyncCommands == null || pubSubAsyncCommands.getStatefulConnection() != null) {
+            pubSubAsyncCommands = null;
+            clusterPubSubCommands = redisClusterPubSubConnection.async();
+        }
+    }
 
     /**
      * 读取配置
@@ -621,36 +625,13 @@ public class RedisUtils implements ApplicationRunner {
     }
 
     /**
-     * 初始化
-     *
-     * @param args 参数
-     * @throws Exception 异常信息
-     */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        config = redisConfig;
-        if (clusterAsyncCommands.getStatefulConnection() != null) {
-            commands = clusterAsyncCommands;
-        }
-        if (asyncCommands.getStatefulConnection() != null) {
-            redisAsyncCommands = asyncCommands;
-        }
-
-        pubSubAsyncCommands = redisPubSubConnection.async();
-        if (pubSubAsyncCommands == null || pubSubAsyncCommands.getStatefulConnection() != null) {
-            pubSubAsyncCommands = null;
-            clusterPubSubCommands = redisClusterPubSubConnection.async();
-        }
-    }
-
-    /**
      * 获取 命名空间
      *
      * @return 返回结果
      */
     private static String getNamespaces(String key) {
         String namespaces = ";";
-        if (StringUtils.isNotNullAndEmpty(config.getNamespaces()) && !key.contains(namespaces)) {
+        if (config != null && StringUtils.isNotNullAndEmpty(config.getNamespaces()) && !key.contains(namespaces)) {
             namespaces = config.getNamespaces() + ":" + key;
         } else {
             namespaces = key;

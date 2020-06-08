@@ -1,0 +1,75 @@
+server:
+  port: 2020
+#spring cloud
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://172.24.52.83:10900/eureka/
+  instance:
+    ip-address: 172.24.52.82
+    prefer-ip-address: true
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+# hystrix 信号量隔离，1.5秒后自动超时
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 30000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+spring:
+  application:
+    name: com.lesmarthome.gateway
+  cdkj:
+    redis:
+      port: 6377
+      database: 1
+      host[0]: 172.24.52.83
+      password: lesmarthome.com
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true # gateway可以通过开启以下配置来打开根据服务的serviceId来匹配路由,默认是大写
+      routes:
+        - id: bms
+          uri: lb://com.lesmarthome.bms
+          predicates:
+            - Path=/bms/**
+            - Path=/rms/**
+            - Path=/security/**
+          # 熔断配置
+          filters:
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: forward:/gateway/fallback # 只有该id下的服务会降级
+        - id: pms
+          uri: lb://com.lesmarthome.pms
+          predicates:
+            - Path=/pms/**
+          filters:
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: forward:/gateway/fallback # 只有该id下的服务会降级
+        - id: wms
+          uri: lb://com.lesmarthome.wms
+          predicates:
+            - Path=/wms/**
+          filters:
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: forward:/gateway/fallback # 只有该id下的服务会降级
+  profiles:
+    active: dev
