@@ -10,7 +10,7 @@ eureka:
     prefer-ip-address: true
     preferIpAddress: true
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
-# hystrix ÐÅºÅÁ¿¸ôÀë£¬1.5Ãëºó×Ô¶¯³¬Ê±
+# hystrix ï¿½Åºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë£¬1.5ï¿½ï¿½ï¿½ï¿½Ô¶ï¿½ï¿½ï¿½Ê±
 hystrix:
   command:
     default:
@@ -29,6 +29,9 @@ management:
 spring:
   application:
     name: com.lesmarthome.gateway
+  swagger:
+    basePackage: "[{\"beanName\":\"gateway-api\",\"groupName\":\"gateway-api-V-1.0\",\"basePackage\":\"com.cdkjframework.gateway.controller\"}]"
+    headers: " [{\"headerName\":\"token\",\"description\":\"token\",\"headerType\":\"string\"}]"
   cdkj:
     redis:
       port: 6377
@@ -36,10 +39,12 @@ spring:
       host[0]: 172.24.52.83
       password: lesmarthome.com
   cloud:
+    client:
+      ipAddress: 192.168.1.22
     gateway:
       discovery:
         locator:
-          enabled: true # gateway¿ÉÒÔÍ¨¹ý¿ªÆôÒÔÏÂÅäÖÃÀ´´ò¿ª¸ù¾Ý·þÎñµÄserviceIdÀ´Æ¥ÅäÂ·ÓÉ,Ä¬ÈÏÊÇ´óÐ´
+          enabled: true # gatewayï¿½ï¿½ï¿½ï¿½Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ò¿ª¸ï¿½ï¿½Ý·ï¿½ï¿½ï¿½ï¿½serviceIdï¿½ï¿½Æ¥ï¿½ï¿½Â·ï¿½ï¿½,Ä¬ï¿½ï¿½ï¿½Ç´ï¿½Ð´
       routes:
         - id: bms
           uri: lb://com.lesmarthome.bms
@@ -47,12 +52,12 @@ spring:
             - Path=/bms/**
             - Path=/rms/**
             - Path=/security/**
-          # ÈÛ¶ÏÅäÖÃ
+          # ï¿½Û¶ï¿½ï¿½ï¿½ï¿½ï¿½
           filters:
             - name: Hystrix
               args:
                 name: default
-                fallbackUri: forward:/gateway/fallback # Ö»ÓÐ¸ÃidÏÂµÄ·þÎñ»á½µ¼¶
+                fallbackUri: forward:/gateway/fallback # Ö»ï¿½Ð¸ï¿½idï¿½ÂµÄ·ï¿½ï¿½ï¿½á½µï¿½ï¿½
         - id: pms
           uri: lb://com.lesmarthome.pms
           predicates:
@@ -61,7 +66,7 @@ spring:
             - name: Hystrix
               args:
                 name: default
-                fallbackUri: forward:/gateway/fallback # Ö»ÓÐ¸ÃidÏÂµÄ·þÎñ»á½µ¼¶
+                fallbackUri: forward:/gateway/fallback # Ö»ï¿½Ð¸ï¿½idï¿½ÂµÄ·ï¿½ï¿½ï¿½á½µï¿½ï¿½
         - id: wms
           uri: lb://com.lesmarthome.wms
           predicates:
@@ -70,6 +75,6 @@ spring:
             - name: Hystrix
               args:
                 name: default
-                fallbackUri: forward:/gateway/fallback # Ö»ÓÐ¸ÃidÏÂµÄ·þÎñ»á½µ¼¶
+                fallbackUri: forward:/gateway/fallback # Ö»ï¿½Ð¸ï¿½idï¿½ÂµÄ·ï¿½ï¿½ï¿½á½µï¿½ï¿½
   profiles:
     active: dev

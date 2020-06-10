@@ -1,4 +1,15 @@
 
+#spring cloud
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://192.168.1.94:10700/eureka/
+  instance:
+    ip-address: 192.168.1.22
+    prefer-ip-address: true
+    preferIpAddress: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+
 spring:
   cdkj:
     redis:

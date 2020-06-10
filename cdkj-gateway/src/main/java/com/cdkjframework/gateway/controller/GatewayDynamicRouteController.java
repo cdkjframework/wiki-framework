@@ -1,6 +1,8 @@
 package com.cdkjframework.gateway.controller;
 
 import com.cdkjframework.gateway.service.GatewayDynamicRouteService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.gateway.route.RouteDefinition;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
  */
 @RestController
 @RequestMapping("/gateway")
+@Api("路由配置信息")
 public class GatewayDynamicRouteController {
 
 
@@ -35,6 +38,7 @@ public class GatewayDynamicRouteController {
      * @return 返回结果
      */
     @PostMapping("/add")
+    @ApiOperation("新增路由配置信息")
     public String create(@RequestBody RouteDefinition entity) {
         int result = gatewayDynamicRouteService.add(entity);
         return String.valueOf(result);
@@ -47,6 +51,7 @@ public class GatewayDynamicRouteController {
      * @return 返回结果
      */
     @PostMapping("/update")
+    @ApiOperation("修改路由配置信息")
     public String update(@RequestBody RouteDefinition entity) {
         int result = gatewayDynamicRouteService.update(entity);
         return String.valueOf(result);
@@ -59,6 +64,7 @@ public class GatewayDynamicRouteController {
      * @return 返回执行结果
      */
     @DeleteMapping("/delete/{id}")
+    @ApiOperation("删除路由配置信息")
     public Mono<ResponseEntity<Object>> delete(@PathVariable String id) {
         return gatewayDynamicRouteService.delete(id);
     }

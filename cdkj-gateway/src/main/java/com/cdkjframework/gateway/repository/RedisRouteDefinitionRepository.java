@@ -50,6 +50,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
     @Override
     public Mono<Void> save(Mono<RouteDefinition> route) {
         List<RouteDefinition> routeDefinitions = getRoute();
+
         Mono<Void> mono = route.flatMap(routeDefinition -> {
             routeDefinitions.add(routeDefinition);
             return Mono.empty();

@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -630,7 +629,8 @@ public class RedisUtils {
      * @return 返回结果
      */
     private static String getNamespaces(String key) {
-        String namespaces = ";";
+        String namespaces = ":";
+        key = key.replace("：", ":");
         if (config != null && StringUtils.isNotNullAndEmpty(config.getNamespaces()) && !key.contains(namespaces)) {
             namespaces = config.getNamespaces() + ":" + key;
         } else {
