@@ -220,7 +220,7 @@ public class BaseAopAspect {
         logRecordDto.setAddTime(System.currentTimeMillis());
         logRecordDto.setOperatorName(CurrentUser.getRealName());
         logRecordDto.setUserName(CurrentUser.getUserName());
-        logRecordDto.setClientIp(HttpServletUtils.getRequest().getLocalAddr());
+        logRecordDto.setClientIp(HttpServletUtils.getLocalAddr());
         try {
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
             logRecordDto.setSerialNumber(number.replace(organizationCode, ""));
