@@ -20,7 +20,7 @@ public class WebSocketEntity {
     /**
      * 会话进程
      */
-    private Object session;
+    private String clientId;
 
     /**
      * 消息

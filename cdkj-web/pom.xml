@@ -20,6 +20,10 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-redis</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-web-socket</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
