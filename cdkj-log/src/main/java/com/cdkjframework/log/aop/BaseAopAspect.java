@@ -229,6 +229,7 @@ public class BaseAopAspect {
         }
         logRecordDto.setTopOrganizationId(CurrentUser.getTopOrganizationId());
         logRecordDto.setTopOrganizationCode(CurrentUser.getTopOrganizationCode());
+        logRecordDto.setOrganizationId(CurrentUser.getOrganizationId());
         logRecordDto.setOrganizationCode(CurrentUser.getOrganizationCode());
         // 返回不需要记录日志
         return true;
