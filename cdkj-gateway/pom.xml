@@ -11,7 +11,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-pom</artifactId>
-        <version>1.0-200610</version>
+        <version>1.0-200615</version>
     </parent>
 
     <dependencies>
