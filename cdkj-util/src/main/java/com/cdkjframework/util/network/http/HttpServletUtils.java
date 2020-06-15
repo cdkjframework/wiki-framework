@@ -22,7 +22,7 @@ public class HttpServletUtils {
     /**
      * IP头部变量
      */
-    private final String HEADER_IP = "X-Real-IP";
+    private static final String HEADER_IP = "X-Real-IP";
 
     /**
      * HttpServletRequest
@@ -51,7 +51,7 @@ public class HttpServletUtils {
      */
     public static String getLocalAddr() {
         //
-        String localAddr = getRequest().getHeader("HEADER_IP");
+        String localAddr = getRequest().getHeader(HEADER_IP);
         if (StringUtils.isNullAndSpaceOrEmpty(localAddr)) {
             localAddr = getRequest().getLocalAddr();
         }
