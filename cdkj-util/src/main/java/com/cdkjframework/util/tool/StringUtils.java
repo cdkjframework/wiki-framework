@@ -47,6 +47,18 @@ public class StringUtils {
     public final static String SEMICOLON = ";";
 
     /**
+     * 补0
+     *
+     * @param length 长度
+     * @param value  值
+     * @return 返回结果
+     */
+    public static String format(int length, long value) {
+        final String FORMAT = "%" + ZERO + length + "d";
+        return String.format(FORMAT, value);
+    }
+
+    /**
      * 验证是否为空
      *
      * @param obj 数据

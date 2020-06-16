@@ -4,6 +4,7 @@ import com.cdkjframework.center.service.OrderNumberService;
 import com.cdkjframework.core.business.mapper.OrderNumberMapper;
 import com.cdkjframework.entity.generate.OrderNumberEntity;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -148,9 +149,9 @@ public class OrderNumberServiceImpl implements OrderNumberService {
             try {
                 //生成前缀信息
                 StringBuffer buffer = new StringBuffer(prefix);
+                String date = LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_NOT_LINE_SHORT_YEAR);
                 if (isDate) {
-                    SimpleDateFormat sdf = new SimpleDateFormat(DATE_PATTERN);
-                    buffer.append(sdf.format(new Date()));
+                    buffer.append(date);
                 }
 
                 //获取单号记录

@@ -223,7 +223,7 @@ public class BaseAopAspect {
         logRecordDto.setClientIp(HttpServletUtils.getLocalAddr());
         try {
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
-            logRecordDto.setSerialNumber(number.replace(organizationCode, ""));
+            logRecordDto.setSerialNumber(number.replace(organizationCode, StringUtils.Empty));
         } catch (GlobalException ex) {
             logUtils.error(ex.getMessage());
         }

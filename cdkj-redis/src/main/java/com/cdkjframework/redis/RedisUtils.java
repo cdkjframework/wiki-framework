@@ -630,7 +630,7 @@ public class RedisUtils {
      */
     private static String getNamespaces(String key) {
         String namespaces = ":";
-        key = key.replace("：", ":");
+        key = key.replace("：", namespaces);
         if (config != null && StringUtils.isNotNullAndEmpty(config.getNamespaces()) && !key.contains(namespaces)) {
             namespaces = config.getNamespaces() + ":" + key;
         } else {

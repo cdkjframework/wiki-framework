@@ -115,13 +115,8 @@ public class RedisNumbersUtils {
                 long target = RedisUtils.syncIncr(key, init);
                 if (target > IntegerConsts.ZERO) {
                     // 生成单号
-                    String number = String.valueOf(target);
-                    if (length > number.length()) {
-                        for (int i = IntegerConsts.ZERO; i < (length - number.length()); i++) {
-                            buffer.append(IntegerConsts.ZERO);
-                        }
-                    }
-                    return buffer.append(target).toString();
+                    String number = StringUtils.format(length, target);
+                    return buffer.append(number).toString();
                 } else {
                     TimeUnit.MILLISECONDS.sleep(IntegerConsts.ONE_HUNDRED);
                     throw new GlobalException("生成单号失败");
