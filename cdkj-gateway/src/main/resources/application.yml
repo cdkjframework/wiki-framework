@@ -12,14 +12,13 @@ eureka:
     instance-id: ${spring.cloud.client.ipAddress}:${server.port}
 # hystrix �ź������룬1.5����Զ���ʱ
 hystrix:
-  command:
-    default:
-      execution:
-        timeout:
-          enabled: false
-        isolation:
-          thread:
-            timeoutInMilliseconds: 30000
+  command:
+    fallbackcmd:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 50000 #超时时间，若不设置超时时间则有可能无法触发熔断
+
 management:
   endpoints:
     web:
@@ -36,8 +35,10 @@ spring:
     redis:
       port: 6377
       database: 1
-      host[0]: 172.24.52.83
+      host:
+        - 172.24.52.83
       password: lesmarthome.com
+      namespaces: ${spring.application.name}
   cloud:
     client:
       ipAddress: 192.168.1.22
@@ -45,36 +46,36 @@ spring:
       discovery:
         locator:
           enabled: true # gateway����ͨ�����������������򿪸��ݷ����serviceId��ƥ��·��,Ĭ���Ǵ�д
-      routes:
-        - id: bms
-          uri: lb://com.lesmarthome.bms
-          predicates:
-            - Path=/bms/**
-            - Path=/rms/**
-            - Path=/security/**
-          # �۶�����
-          filters:
-            - name: Hystrix
-              args:
-                name: default
-                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
-        - id: pms
-          uri: lb://com.lesmarthome.pms
-          predicates:
-            - Path=/pms/**
-          filters:
-            - name: Hystrix
-              args:
-                name: default
-                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
-        - id: wms
-          uri: lb://com.lesmarthome.wms
-          predicates:
-            - Path=/wms/**
-          filters:
-            - name: Hystrix
-              args:
-                name: default
-                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
+#      routes:
+#        - id: bms
+#          uri: lb://com.lesmarthome.bms
+#          predicates:
+#            - Path=/bms/**
+#            - Path=/rms/**
+#            - Path=/security/**
+#          # �۶�����
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: default
+#                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
+#        - id: pms
+#          uri: lb://com.lesmarthome.pms
+#          predicates:
+#            - Path=/pms/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: default
+#                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
+#        - id: wms
+#          uri: lb://com.lesmarthome.wms
+#          predicates:
+#            - Path=/wms/**
+#          filters:
+#            - name: Hystrix
+#              args:
+#                name: default
+#                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
   profiles:
     active: dev

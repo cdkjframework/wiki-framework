@@ -6,6 +6,9 @@ import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import org.apache.ibatis.exceptions.PersistenceException;
+import org.apache.ibatis.exceptions.TooManyResultsException;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -153,6 +156,66 @@ public class OverallSituationExceptionHandler {
      */
     @ExceptionHandler(DataAccessException.class)
     public ResponseBuilder MyBatisException(DataAccessException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
+
+    /**
+     * 数据访问异常
+     *
+     * @param e 数据访问异常信息
+     * @return 返回数据访问异常
+     */
+    @ExceptionHandler(MyBatisSystemException.class)
+    public ResponseBuilder MyBatisException(MyBatisSystemException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
+
+    /**
+     * 数据访问异常
+     *
+     * @param e 数据访问异常信息
+     * @return 返回数据访问异常
+     */
+    @ExceptionHandler(TooManyResultsException.class)
+    public ResponseBuilder MyBatisException(TooManyResultsException e) {
+        ResponseBuilder builder = ResponseBuilder.failBuilder();
+
+        builder.setMessage(e.getMessage());
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", e.getMessage());
+
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
+
+    /**
+     * 数据访问异常
+     *
+     * @param e 数据访问异常信息
+     * @return 返回数据访问异常
+     */
+    @ExceptionHandler(PersistenceException.class)
+    public ResponseBuilder MyBatisException(PersistenceException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
 
         builder.setMessage(e.getMessage());

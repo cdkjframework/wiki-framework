@@ -55,7 +55,7 @@ public class RedisRouteDefinitionRepository implements RouteDefinitionRepository
             routeDefinitions.add(routeDefinition);
             return Mono.empty();
         });
-
+        mono.block();
         String routes = JsonUtils.objectToJsonString(routeDefinitions);
         RedisUtils.syncSet(GATEWAY_ROUTES, routes);
 

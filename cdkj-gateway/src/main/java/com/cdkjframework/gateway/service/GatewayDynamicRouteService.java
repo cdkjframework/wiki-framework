@@ -54,8 +54,8 @@ public class GatewayDynamicRouteService implements ApplicationEventPublisherAwar
      * @return
      */
     public int update(RouteDefinition routeDefinition) {
-        redisRouteDefinitionRepository.delete(Mono.just(routeDefinition.getId()));
-        redisRouteDefinitionRepository.save(Mono.just(routeDefinition)).subscribe();
+        delete(routeDefinition.getId());
+        add(routeDefinition);
         applicationEventPublisher.publishEvent(new RefreshRoutesEvent(this));
         return 1;
     }
