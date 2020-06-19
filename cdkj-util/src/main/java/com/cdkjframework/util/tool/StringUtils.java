@@ -37,6 +37,11 @@ public class StringUtils {
     public final static String ZERO = "0";
 
     /**
+     * -1 值变量
+     */
+    public final static String NEGATIVE_ONE = "-1";
+
+    /**
      * 逗号 值变量
      */
     public final static String COMMA = ",";

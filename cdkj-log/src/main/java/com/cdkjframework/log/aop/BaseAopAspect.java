@@ -17,6 +17,7 @@ import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
@@ -37,7 +38,20 @@ import java.util.stream.Collectors;
 
 public class BaseAopAspect {
 
+    /**
+     * 日志
+     */
     private LogUtils logUtils = LogUtils.getLogger(BaseAopAspect.class);
+
+    /**
+     * 当前机构ID
+     */
+    private String ORGANIZATION_ID = "organizationId";
+
+    /**
+     * 顶级机构ID
+     */
+    private String TOP_ORGANIZATION_ID = "topOrganizationId";
 
     /**
      * 日志队列
@@ -57,7 +71,7 @@ public class BaseAopAspect {
     /**
      * 映射器执行切入点值
      */
-    protected final String executionMapperPoint = "execution(public * com.*.*.*.mapper.*.*(..))";
+    protected final String executionMapperPoint = "execution(public * com.*.*.mapper.*.*(..))";
 
     /**
      * 自定义配置
@@ -140,51 +154,38 @@ public class BaseAopAspect {
     protected Object process(ProceedingJoinPoint joinPoint) throws Throwable {
         //获取连接点参数
         Object[] args = joinPoint.getArgs();
-
-        final String DEFAULT_VALUE = "-1";
-        final String FILTER_CLASS_ENT_NAME = "Entity";
-        String className = args[0].getClass().getName();
-        Class targetClass;
-        if (args.length > 0 && className.endsWith(FILTER_CLASS_ENT_NAME)) {
-            try {
-                targetClass = Class.forName(args[0].getClass().getName());
-                JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
-                PermissionDto permissionDto = null;
-                if (StringUtils.isNotNullAndEmpty(customConfig.getPermission())) {
-                    List<PermissionDto> permissionDtoList = JsonUtils.jsonStringToList(customConfig.getPermission(), PermissionDto.class);
-                    Optional<PermissionDto> optional = permissionDtoList.stream()
-                            .filter(f -> f.getOrganization().equals(CurrentUser.getOrganizationCode()))
-                            .findFirst();
-                    if (optional.isPresent()) {
-                        permissionDto = optional.get();
-                    }
-                }
-
-                // 顶级机构
-                if (permissionDto == null || permissionDto.isSuperior()) {
-                    Object topOrganizationId = jsonObject.get("topOrganizationId");
-                    if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
-                        jsonObject.put("topOrganizationId", CurrentUser.getTopOrganizationId());
-                    } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && DEFAULT_VALUE.equals(topOrganizationId.toString())) {
-                        jsonObject.put("topOrganizationId", StringUtils.Empty);
-                    }
-                }
-
-                // 下级机构
-                if (permissionDto != null && permissionDto.isCurrent()) {
-                    Object organizationId = jsonObject.get("organizationId");
-                    if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
-                        jsonObject.put("organizationId", CurrentUser.getTopOrganizationId());
-                    } else if (StringUtils.isNotNullAndEmpty(organizationId) && DEFAULT_VALUE.equals(organizationId.toString())) {
-                        jsonObject.put("organizationId", StringUtils.Empty);
-                    }
-                }
-                args[0] = JsonUtils.jsonObjectToBean(jsonObject, targetClass);
-            } catch (Exception ex) {
-                logUtils.error(ex.getMessage());
+        PermissionDto permissionDto = null;
+        if (StringUtils.isNotNullAndEmpty(customConfig.getPermission())) {
+            List<PermissionDto> permissionDtoList = JsonUtils.jsonStringToList(customConfig.getPermission(), PermissionDto.class);
+            Optional<PermissionDto> optional = permissionDtoList.stream()
+                    .filter(f -> f.getOrganization().equals(CurrentUser.getOrganizationCode()))
+                    .findFirst();
+            if (optional.isPresent()) {
+                permissionDto = optional.get();
             }
         }
+        String[] parameterNames = new String[args.length];
+        if (args.length > 0) {
+            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
+            parameterNames = methodSignature.getParameterNames();
+        }
 
+        for (int i = 0; i < args.length; i++) {
+            Object parameter = args[i];
+            final String FILTER_CLASS_ENT_NAME = "Entity";
+            String className = parameter.getClass().getName();
+            Class targetClass = Class.forName(className);
+            // 实体数据封装
+            if (className.endsWith(FILTER_CLASS_ENT_NAME)) {
+                JSONObject jsonObject = buildEntityData(parameter, permissionDto);
+                args[i] = JsonUtils.jsonObjectToBean(jsonObject, targetClass);
+            } else {
+                String arg = buildParameterData(parameterNames[i], parameter, permissionDto);
+                if (arg != null) {
+                    args[i] = arg;
+                }
+            }
+        }
         Object object;
         try {
             object = joinPoint.proceed(args);
@@ -193,6 +194,78 @@ public class BaseAopAspect {
             object = null;
         }
         return object;
+    }
+
+    /**
+     * 构造参数数据
+     *
+     * @param parameterName 参数名称
+     * @param arg           参数
+     * @param permissionDto 权限信息
+     * @return 返回结果
+     */
+    private String buildParameterData(String parameterName, Object arg, PermissionDto permissionDto) {
+        String parameter = null;
+        // 上级ID
+        boolean isSuperior = permissionDto == null || permissionDto.isSuperior();
+        if (TOP_ORGANIZATION_ID.equals(parameterName) && isSuperior) {
+            if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
+                parameter = "";
+            } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
+                parameter = CurrentUser.getTopOrganizationId();
+            }
+        }
+        // 当前ID
+        boolean isCurrent = permissionDto != null && permissionDto.isCurrent();
+        if (ORGANIZATION_ID.equals(parameterName) && isCurrent) {
+            if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
+                parameter = "";
+            } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
+                parameter = CurrentUser.getTopOrganizationId();
+            }
+        }
+
+        // 返回结果
+        return parameter;
+    }
+
+    /**
+     * 构造实体数据
+     *
+     * @param parameter     参数
+     * @param permissionDto 权限
+     * @return 返回 JSON 对象
+     */
+    private JSONObject buildEntityData(Object parameter, PermissionDto permissionDto) {
+        JSONObject jsonObject = JsonUtils.beanToJsonObject(parameter);
+        try {
+            // 顶级机构
+            if (permissionDto == null || permissionDto.isSuperior()) {
+                Object topOrganizationId = jsonObject.get(TOP_ORGANIZATION_ID);
+                if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
+                    jsonObject.put(TOP_ORGANIZATION_ID, CurrentUser.getTopOrganizationId());
+                } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && StringUtils.NEGATIVE_ONE.equals(topOrganizationId.toString())) {
+                    jsonObject.put(TOP_ORGANIZATION_ID, StringUtils.Empty);
+                }
+            }
+
+            // 当前机构
+            if (permissionDto != null && permissionDto.isCurrent()) {
+                Object organizationId = jsonObject.get(ORGANIZATION_ID);
+                if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
+                    jsonObject.put(ORGANIZATION_ID, CurrentUser.getOrganizationId());
+                } else if (StringUtils.isNotNullAndEmpty(organizationId) && StringUtils.NEGATIVE_ONE.equals(organizationId.toString())) {
+                    jsonObject.put(ORGANIZATION_ID, StringUtils.Empty);
+                }
+            } else {
+                jsonObject.put(ORGANIZATION_ID, StringUtils.Empty);
+            }
+        } catch (Exception ex) {
+            logUtils.error(ex.getMessage());
+        }
+
+        // 返回结果
+        return jsonObject;
     }
 
     /**

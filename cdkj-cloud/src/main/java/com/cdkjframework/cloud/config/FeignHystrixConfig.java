@@ -1,12 +1,17 @@
 package com.cdkjframework.cloud.config;
 
+import com.cdkjframework.util.network.http.HttpServletUtils;
 import feign.Request;
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
 import feign.Retryer;
 import feign.hystrix.HystrixFeign;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -19,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Configuration
-public class FeignHystrixConfig {
+public class FeignHystrixConfig implements RequestInterceptor {
 
     /**
      * feign Retryer
@@ -51,5 +56,23 @@ public class FeignHystrixConfig {
     @Scope("prototype")
     public HystrixFeign.Builder feignBuilder() {
         return HystrixFeign.builder();
+    }
+
+    /**
+     * 应用
+     *
+     * @param template 请求模板
+     */
+    @Override
+    public void apply(RequestTemplate template) {
+        HttpServletRequest request = HttpServletUtils.getRequest();
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String name = headerNames.nextElement();
+                String values = request.getHeader(name);
+                template.header(name, values);
+            }
+        }
     }
 }
