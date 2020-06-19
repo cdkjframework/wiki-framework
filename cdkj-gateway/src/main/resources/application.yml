@@ -48,7 +48,7 @@ spring:
           enabled: true # gateway����ͨ�����������������򿪸��ݷ����serviceId��ƥ��·��,Ĭ���Ǵ�д
 #      routes:
 #        - id: bms
-#          uri: lb://com.lesmarthome.bms
+#          uri: lb:ws://com.lesmarthome.bms # webSocket
 #          predicates:
 #            - Path=/bms/**
 #            - Path=/rms/**
