@@ -40,6 +40,12 @@ spring:
       password: lesmarthome.com
       namespaces: ${spring.application.name}
   cloud:
+    config:
+      label: master #GIT 配置文件分支
+      profile: prod
+      discovery:
+        enabled: true
+        service-id: ccdkjframework-config-server
     client:
       ipAddress: 192.168.1.22
     gateway:
@@ -79,3 +85,4 @@ spring:
 #                fallbackUri: forward:/gateway/fallback # ֻ�и�id�µķ���ή��
   profiles:
     active: dev
+
