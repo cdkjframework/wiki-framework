@@ -27,7 +27,6 @@
         <module>cdkj-log</module>
         <module>cdkj-security</module>
         <module>cdkj-web-socket</module>
-        <module>cdkj-config</module>
     </modules>
 
     <parent>

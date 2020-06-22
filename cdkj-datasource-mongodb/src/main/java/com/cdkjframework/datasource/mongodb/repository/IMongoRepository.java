@@ -1,8 +1,10 @@
 package com.cdkjframework.datasource.mongodb.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -19,16 +21,30 @@ public interface IMongoRepository {
     /**
      * 保存数据
      *
-     * @param obj 数据源
+     * @param t 数据源
      */
-    void save(Object obj);
+    <T> void save(T t);
+
+    /**
+     * 删除数据 by Id
+     *
+     * @param id 主键
+     */
+    void delete(String id);
+
+    /**
+     * 批量删除
+     *
+     * @param idList 主键信息
+     */
+    void batchDelete(Collection<String> idList);
 
     /**
      * 批量添加
      *
      * @param entityList 数据集
      */
-    void saveList(List entityList);
+    <T> void saveList(List<T> entityList);
 
     /**
      * 修改数据
@@ -52,29 +68,39 @@ public interface IMongoRepository {
      * 查询一条数据
      *
      * @param query 查询条件
-     * @param clasz 实体类型
+     * @param clazz 实体类型
      * @param <T>   返回实体
      * @return 返回结果
      */
-    <T> T findEntity(Query query, Class<T> clasz);
+    <T> T findEntity(Query query, Class<T> clazz);
 
     /**
      * 查询分页数据
      *
      * @param <T>   返回实体
      * @param query 查询条件
-     * @param clasz 实体类型
+     * @param clazz 实体类型
      * @return 返回结果
      */
-    <T> List findPageEntityList(Query query, Class<T> clasz);
+    <T> List findPageEntityList(Query query, Class<T> clazz);
+
+    /**
+     * 查询分页数据
+     *
+     * @param <T>   返回实体
+     * @param query 查询条件
+     * @param clazz 实体类型
+     * @return 返回结果
+     */
+    <T> Page listEntityPage(Query query, Class<T> clazz);
 
     /**
      * 查询数据
      *
      * @param <T>   返回实体
      * @param query 查询条件
-     * @param clasz 实体类型
+     * @param clazz 实体类型
      * @return 返回结果
      */
-    <T> List findEntityList(Query query, Class<T> clasz);
+    <T> List findEntityList(Query query, Class<T> clazz);
 }

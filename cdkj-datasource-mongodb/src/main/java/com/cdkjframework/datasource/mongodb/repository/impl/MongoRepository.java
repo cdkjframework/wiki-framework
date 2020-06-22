@@ -1,12 +1,11 @@
 package com.cdkjframework.datasource.mongodb.repository.impl;
 
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
-import com.mongodb.MongoClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.data.repository.support.PageableExecutionUtils;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -36,11 +36,35 @@ public class MongoRepository implements IMongoRepository {
     /**
      * 保存数据
      *
-     * @param obj 数据源
+     * @param t 数据源
      */
     @Override
-    public void save(Object obj) {
-        mongoTemplate.save(obj);
+    public <T> void save(T t) {
+        mongoTemplate.save(t);
+    }
+
+    /**
+     * 删除数据 by Id
+     *
+     * @param id 主键
+     */
+    @Override
+    public void delete(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        mongoTemplate.remove(query);
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param idList 主键信息
+     */
+    @Override
+    public void batchDelete(Collection<String> idList) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").in(idList));
+        mongoTemplate.remove(query);
     }
 
     /**
@@ -49,10 +73,10 @@ public class MongoRepository implements IMongoRepository {
      * @param entityList 数据集
      */
     @Override
-    public void saveList(List entityList) {
-        for (Object obj :
+    public <T> void saveList(List<T> entityList) {
+        for (T t :
                 entityList) {
-            save(obj);
+            save(t);
         }
     }
 
@@ -117,6 +141,26 @@ public class MongoRepository implements IMongoRepository {
         mapList.add(count);
         //返回结果
         return mapList;
+    }
+
+    /**
+     * 查询分页数据
+     *
+     * @param query 查询条件
+     * @param clazz 实体类型
+     * @return 返回结果
+     */
+    @Override
+    public <T> Page listEntityPage(Query query, Class<T> clazz) {
+        Pageable pageable = PageRequest.of((int) query.getSkip(), query.getLimit());
+
+        // 查询总数
+        long count = mongoTemplate.count(query, clazz);
+        //查询数据
+        List<T> list = mongoTemplate.find(query, clazz);
+
+        //返结果
+        return PageableExecutionUtils.getPage(list, pageable, () -> count);
     }
 
     /**
