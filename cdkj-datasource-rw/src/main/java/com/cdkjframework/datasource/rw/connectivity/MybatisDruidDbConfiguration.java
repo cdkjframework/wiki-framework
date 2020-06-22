@@ -78,7 +78,7 @@ public class MybatisDruidDbConfiguration {
      *
      * @return 返回动态数据源
      */
-    @Bean(name = "mybatisDataSource")
+    @Bean(name = "mybatisDataSource", destroyMethod = "")
     @Qualifier("mybatisDataSource")
     public DynamicDataSource getDynamicDataSource() {
         DynamicDataSource dynamicDataSource = new DynamicDataSource();

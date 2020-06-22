@@ -2,6 +2,7 @@ package com.cdkjframework.datasource.rw.connectivity;
 
 import com.cdkjframework.datasource.rw.LogbackImpl;
 import com.cdkjframework.datasource.rw.config.MybatisConfig;
+import com.cdkjframework.datasource.rw.source.DynamicDataSource;
 import com.cdkjframework.datasource.rw.transaction.DynamicDataSourceTransactionManager;
 import com.cdkjframework.util.log.LogUtils;
 import com.github.pagehelper.PageInterceptor;
@@ -56,7 +57,7 @@ public class MybatisConfiguration {
      */
     @Resource(name = "mybatisDataSource")
     @Qualifier("mybatisDataSource")
-    private DataSource mybatisDataSource;
+    private DynamicDataSource mybatisDataSource;
 
     /**
      * mapper路径
