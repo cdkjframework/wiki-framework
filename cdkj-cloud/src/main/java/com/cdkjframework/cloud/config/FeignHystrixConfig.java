@@ -1,6 +1,8 @@
 package com.cdkjframework.cloud.config;
 
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import feign.Request;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
@@ -25,6 +27,11 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 public class FeignHystrixConfig implements RequestInterceptor {
+
+    /**
+     * 日志
+     */
+    private LogUtils logUtils = LogUtils.getLogger(FeignHystrixConfig.class);
 
     /**
      * feign Retryer
@@ -58,21 +65,31 @@ public class FeignHystrixConfig implements RequestInterceptor {
         return HystrixFeign.builder();
     }
 
-    /**
-     * 应用
-     *
-     * @param template 请求模板
-     */
     @Override
-    public void apply(RequestTemplate template) {
-        HttpServletRequest request = HttpServletUtils.getRequest();
-        Enumeration<String> headerNames = request.getHeaderNames();
-        if (headerNames != null) {
-            while (headerNames.hasMoreElements()) {
-                String name = headerNames.nextElement();
-                String values = request.getHeader(name);
-                template.header(name, values);
+    public void apply(RequestTemplate requestTemplate) {
+        try {
+            HttpServletRequest request = HttpServletUtils.getRequest();
+            if (request == null) {
+                logUtils.error("request is null");
+                return;
             }
+            Enumeration<String> headerNames = request.getHeaderNames();
+            if (headerNames != null) {
+                while (headerNames.hasMoreElements()) {
+                    String name = headerNames.nextElement();
+                    logUtils.info("name：" + name);
+                    if (StringUtils.isNullAndSpaceOrEmpty(name)) {
+                        continue;
+                    }
+                    String values = request.getHeader(name);
+                    logUtils.info("values：" + values);
+                    requestTemplate.header(name, values);
+                }
+            } else {
+                logUtils.error("headerNames is null");
+            }
+        } catch (Exception e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
         }
     }
 }
