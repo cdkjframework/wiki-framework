@@ -1,6 +1,7 @@
 package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -28,6 +29,11 @@ public class OrganizationEntity extends BaseEntity implements Serializable {
      * 编码
      */
     private String code;
+
+    /**
+     * 机构类型0：普通，1：评估细分
+     */
+    private Integer organizationType;
     /**
      * 名称
      */

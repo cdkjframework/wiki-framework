@@ -29,18 +29,23 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
         try {
             HttpServletRequest request = HttpServletUtils.getRequest();
             if (request == null) {
+                logUtils.error("request is null");
                 return;
             }
             Enumeration<String> headerNames = request.getHeaderNames();
             if (headerNames != null) {
                 while (headerNames.hasMoreElements()) {
                     String name = headerNames.nextElement();
+                    logUtils.info("name：" + name);
                     if (StringUtils.isNullAndSpaceOrEmpty(name)) {
                         continue;
                     }
                     String values = request.getHeader(name);
+                    logUtils.info("values：" + values);
                     requestTemplate.header(name, values);
                 }
+            } else {
+                logUtils.error("headerNames is null");
             }
         } catch (Exception e) {
             logUtils.error(e.getStackTrace(), e.getMessage());

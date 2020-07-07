@@ -31,7 +31,7 @@ public class CurrentUser {
     /**
      * 用户登录 token 缓存主键
      */
-    private static String USER_LOGIN_TOKEN_KEY = "token";
+    public static String USER_LOGIN_TOKEN_KEY = "token";
 
     /**
      * 配置信息

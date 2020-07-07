@@ -191,7 +191,7 @@ public class BaseAopAspect {
             object = joinPoint.proceed(args);
         } catch (Exception ex) {
             logUtils.error(ex.getMessage());
-            object = null;
+            throw new GlobalRuntimeException(ex.getMessage());
         }
         return object;
     }
@@ -262,6 +262,7 @@ public class BaseAopAspect {
             }
         } catch (Exception ex) {
             logUtils.error(ex.getMessage());
+            throw new GlobalRuntimeException(ex.getMessage());
         }
 
         // 返回结果
