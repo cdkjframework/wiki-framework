@@ -141,7 +141,7 @@
         <include refid="base_Column_List"></include>
         FROM ${table}
         WHERE id IN
-        <foreach collection="col" item="item" index="index" open="(" close=")" separator=",">
+        <foreach collection="coll" item="item" index="index" open="(" close=")" separator=",">
             [begin]item[end]
         </foreach>
     </select>

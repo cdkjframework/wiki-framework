@@ -95,6 +95,11 @@ public abstract class AbstractUserEntity extends BaseEntity {
      * 当前所在组织ID
      */
     private String currentOrganizationId;
+
+    /**
+     * 机构类型0：普通，1：评估细分
+     */
+    private Integer organizationType;
     /**
      * 备注
      */

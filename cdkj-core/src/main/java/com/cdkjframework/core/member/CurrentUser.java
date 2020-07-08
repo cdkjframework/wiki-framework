@@ -100,6 +100,15 @@ public class CurrentUser {
     }
 
     /**
+     * 获取机构类型
+     *
+     * @return 返回结果
+     */
+    public static Integer getOrganizationType() {
+        return getCurrentUser().getOrganizationType();
+    }
+
+    /**
      * 获取所在机构ID
      *
      * @return 返回结果
