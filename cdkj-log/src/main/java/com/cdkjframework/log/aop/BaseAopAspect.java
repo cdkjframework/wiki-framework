@@ -127,15 +127,11 @@ public class BaseAopAspect {
                 logRecordDto.setExecutionState(IntegerConsts.TWENTY);
                 logRecordDto.setResultErrorMessage(ex.getMessage());
             }
-            if (ex instanceof GlobalException || ex instanceof GlobalRuntimeException) {
-                if (isLog) {
-                    logRecordDto.setResultTime(System.currentTimeMillis());
-                    logRecordDtoQueue.add(logRecordDto);
-                }
-                throw new GlobalRuntimeException(ex.getMessage());
-            } else {
-                result = ResponseBuilder.failBuilder();
+            if (isLog) {
+                logRecordDto.setResultTime(System.currentTimeMillis());
+                logRecordDtoQueue.add(logRecordDto);
             }
+            throw new GlobalRuntimeException(ex.getMessage());
         }
         if (isLog) {
             logRecordDto.setResultTime(System.currentTimeMillis());
