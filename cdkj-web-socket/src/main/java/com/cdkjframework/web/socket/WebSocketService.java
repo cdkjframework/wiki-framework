@@ -142,7 +142,7 @@ public class WebSocketService {
      * @param message 消息数据
      * @throws IOException 异常信息
      */
-    public static void sendMessage(String to, String message) throws IOException {
+    public synchronized static void sendMessage(String to, String message) throws IOException {
         if (CollectionUtils.isEmpty(webSocketSet.values())) {
             return;
         }
