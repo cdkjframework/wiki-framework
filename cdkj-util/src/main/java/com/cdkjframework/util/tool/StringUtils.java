@@ -32,6 +32,11 @@ public class StringUtils {
     public final static String Empty = "";
 
     /**
+     * 空对像
+     */
+    public final static String NullObject = null;
+
+    /**
      * 0 值变量
      */
     public final static String ZERO = "0";

@@ -80,7 +80,7 @@ public class BaseAopAspect {
     private CustomConfig customConfig;
 
     /**
-     * 进程解析
+     * Controller 进程解析
      *
      * @param joinPoint 进程连接点
      * @return 返回结果
@@ -206,7 +206,7 @@ public class BaseAopAspect {
         boolean isSuperior = permissionDto == null || permissionDto.isSuperior();
         if (TOP_ORGANIZATION_ID.equals(parameterName) && isSuperior) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
-                parameter = "";
+                parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
                 parameter = CurrentUser.getTopOrganizationId();
             }
@@ -215,7 +215,7 @@ public class BaseAopAspect {
         boolean isCurrent = permissionDto != null && permissionDto.isCurrent();
         if (ORGANIZATION_ID.equals(parameterName) && isCurrent) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
-                parameter = "";
+                parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
                 parameter = CurrentUser.getTopOrganizationId();
             }
@@ -241,7 +241,7 @@ public class BaseAopAspect {
                 if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
                     jsonObject.put(TOP_ORGANIZATION_ID, CurrentUser.getTopOrganizationId());
                 } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && StringUtils.NEGATIVE_ONE.equals(topOrganizationId.toString())) {
-                    jsonObject.put(TOP_ORGANIZATION_ID, StringUtils.Empty);
+                    jsonObject.put(TOP_ORGANIZATION_ID, StringUtils.NullObject);
                 }
             }
 
@@ -251,10 +251,10 @@ public class BaseAopAspect {
                 if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
                     jsonObject.put(ORGANIZATION_ID, CurrentUser.getOrganizationId());
                 } else if (StringUtils.isNotNullAndEmpty(organizationId) && StringUtils.NEGATIVE_ONE.equals(organizationId.toString())) {
-                    jsonObject.put(ORGANIZATION_ID, StringUtils.Empty);
+                    jsonObject.put(ORGANIZATION_ID, StringUtils.NullObject);
                 }
             } else {
-                jsonObject.put(ORGANIZATION_ID, StringUtils.Empty);
+                jsonObject.put(ORGANIZATION_ID, StringUtils.NullObject);
             }
         } catch (Exception ex) {
             logUtils.error(ex.getMessage());
