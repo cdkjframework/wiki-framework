@@ -151,7 +151,7 @@ public class WebSocketService {
                 .findFirst();
         if (optional.isPresent()) {
             WebSocketService item = optional.get();
-            item.session.getAsyncRemote().sendText(message);
+            item.session.getBasicRemote().sendText(message);
         }
     }
 
