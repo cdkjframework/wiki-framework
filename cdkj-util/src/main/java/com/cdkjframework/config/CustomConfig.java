@@ -94,6 +94,11 @@ public class CustomConfig {
     private List<String> ignoreAopUrls;
 
     /**
+     * 缩略图
+     */
+    private List<String> thumbnail;
+
+    /**
      * 许可
      */
     private String permission;
