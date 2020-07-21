@@ -107,6 +107,14 @@ public class LogServiceImpl implements LogService {
             criteria.and("serialNumber").regex(logRecordDto.getSerialNumber());
         }
 
+        // 机构查询
+        if (StringUtils.isNotNullAndEmpty(logRecordDto.getTopOrganizationId())) {
+            criteria.and("topOrganizationId").regex(logRecordDto.getTopOrganizationId());
+        }
+        if (StringUtils.isNotNullAndEmpty(logRecordDto.getOrganizationId())) {
+            criteria.and("organizationId").regex(logRecordDto.getOrganizationId());
+        }
+
         query.addCriteria(criteria);
         query.with(Sort.by(Sort.Direction.DESC, "addTime"));
         query.skip((logRecordDto.getPageIndex() - IntegerConsts.ONE) * logRecordDto.getPageSize()).limit(logRecordDto.getPageSize());
