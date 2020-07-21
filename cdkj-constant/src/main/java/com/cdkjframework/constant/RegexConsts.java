@@ -12,9 +12,9 @@ package com.cdkjframework.constant;
 public class RegexConsts {
 
     /**
-     * 验证数字
+     * 验证正数字
      */
-    public static final String REGEX_NUMBER = "^[0-9]*$";
+    public static final String REGEX_NUMBER = "^[+-]?[0-9]*$";
 
     /**
      * 匹配浮点数

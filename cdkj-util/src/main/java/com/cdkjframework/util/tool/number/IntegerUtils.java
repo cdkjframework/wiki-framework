@@ -17,7 +17,7 @@ public class IntegerUtils {
     /**
      * Integer数据相加
      *
-     * @param IntegerList 数据列表
+     * @param integerList 数据列表
      * @return 返回相加结果
      */
     public static Integer addition(Integer... integerList) {
