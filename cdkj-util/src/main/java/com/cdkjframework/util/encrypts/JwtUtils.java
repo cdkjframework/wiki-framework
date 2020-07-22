@@ -1,5 +1,6 @@
 package com.cdkjframework.util.encrypts;
 
+import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
@@ -117,7 +118,7 @@ public class JwtUtils {
 
             // 验证 token 签名
             String loginName = String.valueOf(claims.get("loginName"));
-            String userAgent = HttpServletUtils.getRequest().getHeader(com.cdkjframework.consts.HttpHeaderConsts.USER_AGENT);
+            String userAgent = HttpServletUtils.getRequest().getHeader(HttpHeaderConsts.USER_AGENT);
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("loginName=%s&effective=%s&time=%s&userAgent=%s", loginName, effective, time, userAgent));
             token = String.valueOf(claims.get("token"));

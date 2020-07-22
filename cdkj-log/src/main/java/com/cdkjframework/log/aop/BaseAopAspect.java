@@ -14,6 +14,7 @@ import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.AnalysisUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -273,6 +274,7 @@ public class BaseAopAspect {
     private boolean buildLogRecord(LogRecordDto logRecordDto) {
         final String servletPath = HttpServletUtils.getRequest().getServletPath();
         logRecordDto.setServletPath(servletPath);
+        AnalysisUtils.requestHandle(logRecordDto);
         if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
             List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
                     .filter(f -> servletPath.contains(f))

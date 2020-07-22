@@ -1,7 +1,5 @@
 package com.cdkjframework.entity.log;
 
-import com.cdkjframework.entity.base.BaseDto;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -38,6 +36,26 @@ public class LogRecordDto {
     private String modular;
 
     /**
+     * 操作系统
+     */
+    private String os;
+
+    /**
+     * 浏览器
+     */
+    private String browser;
+
+    /**
+     * 浏览器版本
+     */
+    private String browseVersion;
+
+    /**
+     * 访问地址
+     */
+    private String servletUri;
+
+    /**
      * 执行类
      */
     private String executionClass;
@@ -48,7 +66,7 @@ public class LogRecordDto {
     private String method;
 
     /**
-     * 访问 地址
+     * 访问路径
      */
     private String servletPath;
 

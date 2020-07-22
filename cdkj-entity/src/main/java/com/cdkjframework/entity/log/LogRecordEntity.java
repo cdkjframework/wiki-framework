@@ -1,12 +1,8 @@
 package com.cdkjframework.entity.log;
 
-import com.cdkjframework.entity.BaseEntity;
-import com.cdkjframework.entity.PageEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-
-import javax.persistence.Column;
 
 /**
  * @ProjectName: cdkjframework
@@ -36,6 +32,26 @@ public class LogRecordEntity {
      * 模块
      */
     private String modular;
+
+    /**
+     * 操作系统
+     */
+    private String os;
+
+    /**
+     * 浏览器
+     */
+    private String browser;
+
+    /**
+     * 浏览器版本
+     */
+    private String browseVersion;
+
+    /**
+     * 访问地址
+     */
+    private String servletUri;
 
     /**
      * 执行类

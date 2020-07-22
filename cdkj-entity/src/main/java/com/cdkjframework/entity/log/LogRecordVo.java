@@ -43,6 +43,30 @@ public class LogRecordVo {
     private String modular;
 
     /**
+     * 操作系统
+     */
+    @ApiModelProperty("操作系统")
+    private String os;
+
+    /**
+     * 浏览器
+     */
+    @ApiModelProperty("浏览器")
+    private String browser;
+
+    /**
+     * 浏览器版本
+     */
+    @ApiModelProperty("浏览器版本")
+    private String browseVersion;
+
+    /**
+     * 访问地址
+     */
+    @ApiModelProperty("访问地址")
+    private String servletUri;
+
+    /**
      * 执行类
      */
     @ApiModelProperty("执行类")

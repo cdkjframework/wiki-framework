@@ -131,4 +131,39 @@ public class RegexConsts {
      * 验证身份证号（15位或18位数字）
      */
     public static final String REGEX_ID_NUMBER_CHARACTER = "^\\d{15}|\\d{18}$";
+
+    /**
+     * IE
+     */
+    public static final String IE = "msie ([\\d.]+)";
+
+    /**
+     * edge ie
+     */
+    public static final String IE_EDGE = "edge ([\\d.]+)";
+
+    /**
+     * Microsoft Edge
+     */
+    public static final String MICROSOFT_EDGE = "edg/([\\d.]+)";
+
+    /**
+     * firefox
+     */
+    public static final String FIREFOX = "firefox/([\\d.]+)";
+
+    /**
+     * chrome
+     */
+    public static final String CHROME = "chrome/([\\d.]+)";
+
+    /**
+     * opera
+     */
+    public static final String OPERA = "opr/([\\d.]+)";
+
+    /**
+     * safari
+     */
+    public static final String SAFARI = "version/([\\d.]+).*safari";
 }

@@ -45,5 +45,4 @@ public class AssertUtils {
             throw new GlobalException(message);
         }
     }
-
 }

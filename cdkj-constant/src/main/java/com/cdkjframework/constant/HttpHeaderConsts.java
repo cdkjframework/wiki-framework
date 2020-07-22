@@ -1,8 +1,8 @@
-package com.cdkjframework.consts;
+package com.cdkjframework.constant;
 
 /**
  * @ProjectName: HT-OMS-Project-OMS
- * @Package: com.cdkjframework.core.consts
+ * @Package: com.cdkjframework.core.constant
  * @ClassName: HttpHeaderConstant
  * @Description: java类作用描述
  * @Author: xiaLin
