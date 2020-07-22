@@ -276,7 +276,7 @@ public class BaseAopAspect {
         final String servletPath = request.getServletPath();
         logRecordDto.setServletPath(servletPath);
         AnalysisUtils.requestHandle(logRecordDto);
-        logRecordDto.setServerHost(request.getRemoteHost());
+        logRecordDto.setServerHost(request.getScheme() + "://" + request.getServerName());
         if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
             List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
                     .filter(f -> servletPath.contains(f))
