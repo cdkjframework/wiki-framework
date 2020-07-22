@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Configuration
-public class FeignHystrixConfig {
+public class FeignHystrixConfig extends FeignBasicAuthRequestInterceptor {
 
     /**
      * feign Retryer
