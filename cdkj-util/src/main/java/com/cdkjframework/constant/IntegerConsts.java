@@ -12,6 +12,11 @@ package com.cdkjframework.constant;
 public class IntegerConsts {
 
     /**
+     * 负一
+     */
+    public final static Integer MINUS_ONE = -1;
+
+    /**
      * 零
      */
     public final static Integer ZERO = 0;
