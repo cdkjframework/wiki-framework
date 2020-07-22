@@ -55,6 +55,7 @@ public class AnalysisUtils {
         if (StringUtils.isNullAndSpaceOrEmpty(userAgent)) {
             userAgent = HttpServletUtils.getRequest().getHeader(HttpHeaderConsts.USER_AGENT);
         }
+        userAgent = userAgent.toLowerCase();
         logRecordDto.setOs(findOsInfo(userAgent));
         findBrowser(logRecordDto, userAgent);
     }
@@ -94,7 +95,8 @@ public class AnalysisUtils {
                         logRecordDto.setBrowser("Safari");
                         break;
                 }
-                logRecordDto.setBrowseVersion(matcher.group());
+                logRecordDto.setBrowserVersion(matcher.group());
+                break;
             }
         }
     }
@@ -114,7 +116,7 @@ public class AnalysisUtils {
                 name = "Windows 8";
             } else if (userAgent.indexOf("windows nt 6.3") > -1) {
                 name = "Windows 8.1";
-            } else if (userAgent.indexOf("windows nt 6.2") > -1 || userAgent.indexOf("windows nt 10.0") > -1) {
+            } else if (userAgent.indexOf("windows nt 10.0") > -1 || userAgent.indexOf("windows nt 10.0") > -1) {
                 name = "Windows 10";
             } else {
                 name = "未知系统";

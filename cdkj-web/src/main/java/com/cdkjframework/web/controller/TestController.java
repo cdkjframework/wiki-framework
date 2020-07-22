@@ -28,8 +28,6 @@ public class TestController {
     @ApiOperation("获取值")
     @ResponseBody
     public Integer getInteger(@RequestBody String id) {
-        LogRecordEntity logRecordEntity = new LogRecordEntity();
-        AnalysisUtils.findBrowser(logRecordEntity, null);
         RedisUtils.publish("test", id);
         return Integer.valueOf(id);
     }

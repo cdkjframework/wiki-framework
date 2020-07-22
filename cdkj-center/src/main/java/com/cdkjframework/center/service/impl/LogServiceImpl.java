@@ -109,10 +109,10 @@ public class LogServiceImpl implements LogService {
 
         // 机构查询
         if (StringUtils.isNotNullAndEmpty(logRecordDto.getTopOrganizationId())) {
-            criteria.and("topOrganizationId").regex(logRecordDto.getTopOrganizationId());
+            criteria.and("topOrganizationId").is(logRecordDto.getTopOrganizationId());
         }
         if (StringUtils.isNotNullAndEmpty(logRecordDto.getOrganizationId())) {
-            criteria.and("organizationId").regex(logRecordDto.getOrganizationId());
+            criteria.and("organizationId").is(logRecordDto.getOrganizationId());
         }
 
         query.addCriteria(criteria);

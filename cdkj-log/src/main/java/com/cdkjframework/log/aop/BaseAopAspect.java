@@ -1,7 +1,6 @@
 package com.cdkjframework.log.aop;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
@@ -22,6 +21,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 import java.util.Queue;
@@ -272,9 +272,11 @@ public class BaseAopAspect {
      * @param logRecordDto 日志信息
      */
     private boolean buildLogRecord(LogRecordDto logRecordDto) {
-        final String servletPath = HttpServletUtils.getRequest().getServletPath();
+        HttpServletRequest request = HttpServletUtils.getRequest();
+        final String servletPath = request.getServletPath();
         logRecordDto.setServletPath(servletPath);
         AnalysisUtils.requestHandle(logRecordDto);
+        logRecordDto.setServerHost(request.getRemoteHost());
         if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
             List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
                     .filter(f -> servletPath.contains(f))

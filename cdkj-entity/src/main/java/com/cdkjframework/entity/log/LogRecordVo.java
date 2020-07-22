@@ -58,13 +58,13 @@ public class LogRecordVo {
      * 浏览器版本
      */
     @ApiModelProperty("浏览器版本")
-    private String browseVersion;
+    private String browserVersion;
 
     /**
      * 访问地址
      */
     @ApiModelProperty("访问地址")
-    private String servletUri;
+    private String serverHost;
 
     /**
      * 执行类

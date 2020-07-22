@@ -1,5 +1,6 @@
 package com.cdkjframework.util.network.http;
 
+import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
@@ -218,7 +219,7 @@ public class HttpRequestUtils {
 
         //验证是否开启数据压缩
         if (httpRequestEntity.isCompress()) {
-            connection.setRequestProperty(com.cdkjframework.consts.HttpHeaderConsts.CONTENT_ENCODING, "gzip");
+            connection.setRequestProperty(HttpHeaderConsts.CONTENT_ENCODING, "gzip");
         }
     }
 }

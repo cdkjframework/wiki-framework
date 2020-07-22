@@ -46,12 +46,12 @@ public class LogRecordEntity {
     /**
      * 浏览器版本
      */
-    private String browseVersion;
+    private String browserVersion;
 
     /**
      * 访问地址
      */
-    private String servletUri;
+    private String serverHost;
 
     /**
      * 执行类
