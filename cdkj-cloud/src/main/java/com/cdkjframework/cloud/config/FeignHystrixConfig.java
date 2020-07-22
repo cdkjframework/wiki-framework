@@ -1,19 +1,13 @@
 package com.cdkjframework.cloud.config;
 
-import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.network.http.HttpServletUtils;
-import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.constant.IntegerConsts;
 import feign.Request;
-import feign.RequestInterceptor;
-import feign.RequestTemplate;
 import feign.Retryer;
 import feign.hystrix.HystrixFeign;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Enumeration;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,7 +29,7 @@ public class FeignHystrixConfig extends FeignBasicAuthRequestInterceptor {
      */
     @Bean
     public Retryer feignRetryer() {
-        return new Retryer.Default(100, TimeUnit.SECONDS.toMillis(10), 3);
+        return new Retryer.Default(IntegerConsts.ONE_HUNDRED, TimeUnit.SECONDS.toMillis(IntegerConsts.TEN), IntegerConsts.THREE);
     }
 
     /**
@@ -45,7 +39,8 @@ public class FeignHystrixConfig extends FeignBasicAuthRequestInterceptor {
      */
     @Bean
     public Request.Options feignOption() {
-        Request.Options option = new Request.Options(70000, 70000);
+        int timeoutMillis = IntegerConsts.ONE_HUNDRED * IntegerConsts.ONE_HUNDRED * IntegerConsts.SEVEN;
+        Request.Options option = new Request.Options(timeoutMillis, timeoutMillis);
         return option;
     }
 
