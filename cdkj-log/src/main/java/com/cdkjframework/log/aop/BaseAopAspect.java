@@ -247,14 +247,14 @@ public class BaseAopAspect {
             }
 
             // 当前机构
+            Object organizationId = jsonObject.get(ORGANIZATION_ID);
             if (permissionDto != null && permissionDto.isCurrent()) {
-                Object organizationId = jsonObject.get(ORGANIZATION_ID);
                 if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
                     jsonObject.put(ORGANIZATION_ID, CurrentUser.getOrganizationId());
                 } else if (StringUtils.isNotNullAndEmpty(organizationId) && StringUtils.NEGATIVE_ONE.equals(organizationId.toString())) {
                     jsonObject.put(ORGANIZATION_ID, StringUtils.NullObject);
                 }
-            } else {
+            } else if (StringUtils.isNotNullAndEmpty(organizationId) && StringUtils.NEGATIVE_ONE.equals(organizationId.toString())) {
                 jsonObject.put(ORGANIZATION_ID, StringUtils.NullObject);
             }
         } catch (Exception ex) {
