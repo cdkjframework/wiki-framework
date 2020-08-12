@@ -1,7 +1,5 @@
 package com.cdkjframework.core.controller;
 
-import cn.afterturn.easypoi.excel.ExcelImportUtil;
-import cn.afterturn.easypoi.excel.entity.ImportParams;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.VersionConfig;
 import com.cdkjframework.entity.file.FileEntity;
@@ -9,6 +7,7 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.files.ZipUtils;
+import com.cdkjframework.util.files.excel.EasyExcelUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
@@ -274,13 +273,11 @@ public abstract class AbstractController implements IController {
      * @return 返回结果
      */
     @Override
-    public List importExcelToList(InputStream inputStream, Class clazz) {
+    public <T> List<T> importExcelToList(InputStream inputStream, Class<T> clazz) {
         List list = new ArrayList();
-        //设置导入参数
-        ImportParams params = new ImportParams();
 
         try {
-            list = ExcelImportUtil.importExcel(inputStream, clazz, params);
+            return EasyExcelUtils.readExcelToList(inputStream, "", clazz);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }

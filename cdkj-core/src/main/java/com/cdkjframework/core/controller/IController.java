@@ -134,7 +134,7 @@ public interface IController {
      * @param clazz       要转换的类
      * @return 返回结果
      */
-    List importExcelToList(InputStream inputStream, Class clazz);
+    <T> List<T> importExcelToList(InputStream inputStream, Class<T> clazz);
 
     /**
      * response 输出内容

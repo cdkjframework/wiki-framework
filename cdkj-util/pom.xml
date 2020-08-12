@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-framework</artifactId>
-        <version>1.0-200721</version>
+        <version>1.0-200812</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -112,30 +112,6 @@
             <artifactId>apollo-client</artifactId>
         </dependency>
 
-        <!-- easyPoi导入导出excel -->
-        <dependency>
-            <groupId>cn.afterturn</groupId>
-            <artifactId>easypoi-base</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>javax.validation</groupId>
-                    <artifactId>validation-api</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>cn.afterturn</groupId>
-            <artifactId>easypoi-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>cn.afterturn</groupId>
-            <artifactId>easypoi-annotation</artifactId>
-        </dependency>
-
         <!-- 加载 freemarker -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -144,28 +120,8 @@
 
         <!--begin Excel-->
         <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-reader</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-jexcel</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jxls</groupId>
-            <artifactId>jxls-poi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-core</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
         </dependency>
         <!--end Excel-->
 

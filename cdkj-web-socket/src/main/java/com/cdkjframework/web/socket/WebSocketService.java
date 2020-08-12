@@ -1,5 +1,6 @@
 package com.cdkjframework.web.socket;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.socket.WebSocketEntity;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,12 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @ProjectName: cdkjframework
@@ -30,7 +33,7 @@ public class WebSocketService {
     /**
      * 日志
      */
-    private LogUtils logUtil = LogUtils.getLogger(WebSocketService.class);
+    private static LogUtils logUtil = LogUtils.getLogger(WebSocketService.class);
 
     /**
      * 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -143,15 +146,32 @@ public class WebSocketService {
      * @throws IOException 异常信息
      */
     public synchronized static void sendMessage(String to, String message) throws IOException {
+        WebSocketService item = getClient(to);
+        if (item != null) {
+            sendMessage(item, message);
+        }
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param toList  类型
+     * @param message 消息数据
+     * @throws IOException 异常信息
+     */
+    public synchronized static void sendMessage(List<String> toList, String message) throws IOException {
         if (CollectionUtils.isEmpty(webSocketSet.values())) {
             return;
         }
-        Optional<WebSocketService> optional = webSocketSet.values().stream()
-                .filter(f -> f.clientId.equals(to))
-                .findFirst();
-        if (optional.isPresent()) {
-            WebSocketService item = optional.get();
-            item.session.getBasicRemote().sendText(message);
+        List<WebSocketService> socketServices = webSocketSet.values().stream()
+                .filter(f -> toList.contains(f.clientId))
+                .collect(Collectors.toList());
+        if (CollectionUtils.isEmpty(socketServices)) {
+            return;
+        }
+        for (WebSocketService service :
+                socketServices) {
+            sendMessage(service, message);
         }
     }
 
@@ -196,6 +216,9 @@ public class WebSocketService {
      * @return 返回结果
      */
     public static WebSocketService getClient(String clientId) {
+        if (CollectionUtils.isEmpty(webSocketSet.values())) {
+            return null;
+        }
         Optional<WebSocketService> optional = webSocketSet.values().stream()
                 .filter(f -> f.clientId.equals(clientId))
                 .findFirst();
@@ -238,13 +261,26 @@ public class WebSocketService {
             return false;
         }
         WebSocketService that = (WebSocketService) o;
-        return Objects.equals(logUtil, that.logUtil) &&
-                Objects.equals(session, that.session);
+        return Objects.equals(session, that.session);
     }
 
     @Override
     public int hashCode() {
-
         return Objects.hash(logUtil, session);
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param service 服务
+     * @param message 消息
+     */
+    private static void sendMessage(WebSocketService service, String message) throws IOException {
+        service.session.getAsyncRemote().sendText(message);
+        try {
+            Thread.sleep(IntegerConsts.SIXTY);
+        } catch (InterruptedException e) {
+            logUtil.error(e);
+        }
     }
 }
