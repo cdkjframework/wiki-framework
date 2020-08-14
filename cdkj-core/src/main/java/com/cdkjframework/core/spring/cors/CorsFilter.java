@@ -51,7 +51,7 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
         logUtils.info("*********************************过滤器被使用**************************");
-        logUtils.info("请求地址：" + servletRequest.getRemoteAddr());
+        logUtils.info("请求地址：" + servletRequest.getRemoteHost());
         filterChain.doFilter(servletRequest, servletResponse);
     }
 }

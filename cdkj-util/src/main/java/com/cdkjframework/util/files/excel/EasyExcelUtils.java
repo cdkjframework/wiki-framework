@@ -85,6 +85,22 @@ public class EasyExcelUtils {
     /**
      * 将 list 转换为 OutputStream
      *
+     * @param data  数据集
+     * @param clazz 类
+     * @param <T>
+     * @return 返回 OutputStream
+     * @throws GlobalException 异常信息
+     */
+    public static <T> void listExportOutputStream(OutputStream outputStream, List<T> data, Class<T> clazz) throws IOException {
+        // 返回数据
+        Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
+        ByteArrayOutputStream output = (ByteArrayOutputStream) listExportOutputStream(data, columnWidth, clazz);
+        outputStream.write(output.toByteArray());
+    }
+
+    /**
+     * 将 list 转换为 OutputStream
+     *
      * @param data        数据集
      * @param columnWidth 列宽度
      * @param clazz       类

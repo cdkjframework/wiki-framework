@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 
 /**
  * @ProjectName: cdkj-framework
@@ -56,6 +57,17 @@ public class LocalDateUtils {
      */
     public static LocalDateTime dateTimeParse(String dateTime) {
         return LocalDateTime.parse(dateTime);
+    }
+
+    /**
+     * date 日期转换
+     *
+     * @param dateTime 时间
+     * @return 返回结果
+     */
+    public static LocalDateTime parseDateTime(String dateTime) {
+        long time = Date.parse(dateTime);
+        return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     /**
