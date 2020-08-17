@@ -8,6 +8,8 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.util.files.excel.converter.LocalDateConverter;
+import com.cdkjframework.util.files.excel.converter.LocalDateTimeConverter;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
@@ -57,7 +59,9 @@ public class EasyExcelUtils {
     public static <T> List<T> readExcelToList(InputStream inputStream, String fileName, Class<T> clazz) {
         // 解析每行结果在listener中处理
         ExcelListener listener = new ExcelListener();
-        ExcelReaderBuilder excelReader = EasyExcel.read(inputStream, clazz, listener);
+        ExcelReaderBuilder excelReader = EasyExcel.read(inputStream, clazz, listener)
+                .registerConverter(new LocalDateTimeConverter())
+                .registerConverter(new LocalDateConverter());
         if (StringUtils.isNotNullAndEmpty(fileName) && fileName.toLowerCase().endsWith(excelSuffix)) {
             excelReader.excelType(ExcelTypeEnum.XLSX);
         } else {
@@ -111,7 +115,9 @@ public class EasyExcelUtils {
     public static <T> OutputStream listExportOutputStream(List<T> data, Map<Integer, Integer> columnWidth, Class<T> clazz) {
         //创建 OutputStream 流
         OutputStream outputStream = new ByteArrayOutputStream();
-        ExcelWriterBuilder writerBuilder = EasyExcel.write(outputStream, clazz);
+        ExcelWriterBuilder writerBuilder = EasyExcel.write(outputStream, clazz)
+                .registerConverter(new LocalDateTimeConverter())
+                .registerConverter(new LocalDateConverter());
         writerBuilder.excelType(ExcelTypeEnum.XLSX);
         ExcelWriter excelWriter = writerBuilder.build();
 
