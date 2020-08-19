@@ -17,24 +17,24 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-200812</cdkj-cloud.version>
-        <cdkj-util.version>1.0-200812</cdkj-util.version>
-        <cdkj-constant.version>1.0-200812</cdkj-constant.version>
-        <cdkj-core.version>1.0-200812</cdkj-core.version>
-        <cdkj-datasource.version>1.0-200812</cdkj-datasource.version>
-        <cdkj-message.version>1.0-200812</cdkj-message.version>
-        <cdkj-redis.version>1.0-200812</cdkj-redis.version>
-        <cdkj-pay.version>1.0-200812</cdkj-pay.version>
-        <cdkj-entity.version>1.0-200812</cdkj-entity.version>
-        <cdkj-center.version>1.0-200812</cdkj-center.version>
-        <cdkj-center.version>1.0-200812</cdkj-center.version>
-        <cdkj-log.version>1.0-200812</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-200812</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-200812</cdkj-security.version>
-        <cdkj-security-server.version>1.0-200812</cdkj-security-server.version>
-        <cdkj-datasource-jpa.version>1.0-200812</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-200812</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-200812</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-200817</cdkj-cloud.version>
+        <cdkj-util.version>1.0-200817</cdkj-util.version>
+        <cdkj-constant.version>1.0-200817</cdkj-constant.version>
+        <cdkj-core.version>1.0-200817</cdkj-core.version>
+        <cdkj-datasource.version>1.0-200817</cdkj-datasource.version>
+        <cdkj-message.version>1.0-200817</cdkj-message.version>
+        <cdkj-redis.version>1.0-200817</cdkj-redis.version>
+        <cdkj-pay.version>1.0-200817</cdkj-pay.version>
+        <cdkj-entity.version>1.0-200817</cdkj-entity.version>
+        <cdkj-center.version>1.0-200817</cdkj-center.version>
+        <cdkj-center.version>1.0-200817</cdkj-center.version>
+        <cdkj-log.version>1.0-200817</cdkj-log.version>
+        <cdkj-web-socket.version>1.0-200817</cdkj-web-socket.version>
+        <cdkj-security.version>1.0-200817</cdkj-security.version>
+        <cdkj-security-server.version>1.0-200817</cdkj-security-server.version>
+        <cdkj-datasource-jpa.version>1.0-200817</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-200817</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-200817</cdkj-datasource-elasticsearch.version>
 
 
         <java.version>1.8</java.version>

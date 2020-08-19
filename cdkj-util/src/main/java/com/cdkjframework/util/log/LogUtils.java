@@ -3,11 +3,13 @@ package com.cdkjframework.util.log;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
@@ -47,6 +49,9 @@ public class LogUtils implements BeanPostProcessor {
      * 操作系统
      */
     private final String OS = "win";
+
+    @Value("${spring.application.name}")
+    private String application;
 
     /**
      * 日志级别
@@ -272,27 +277,17 @@ public class LogUtils implements BeanPostProcessor {
      *
      * @param level
      * @param throwable 错误信息
-     * @param msg
+     * @param message
      */
-    private synchronized void writeLog(Level level, Throwable throwable, String msg) {
+    private synchronized void writeLog(Level level, Throwable throwable, String message) {
         try {
-            // 日志文件
-            String logFileName = "log-" + level.getName().toLowerCase() +
-                    "-" + DateUtils.format(new Date()) + ".log";
-            String logPath = existsCatalog(logFileName);
-            if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
-                return;
-            }
-            // 日志时间
-            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
-            builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s:%s ", logger.getName(), msg));
-            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
             //  异常信息
+            StackTraceElement[] elements = null;
             if (throwable != null && throwable.getStackTrace() != null) {
-                StackTraceElement[] elements = throwable.getStackTrace();
-                writeExceptionFile(level, elements, logPath, logFileName);
+                elements = throwable.getStackTrace();
             }
+
+            writeLog(level, elements, message);
         } catch (Exception ex) {
             System.out.println(ex);
         }
@@ -303,12 +298,13 @@ public class LogUtils implements BeanPostProcessor {
      *
      * @param level
      * @param elements 错误信息
-     * @param msg
+     * @param message
      */
-    private synchronized void writeLog(Level level, StackTraceElement[] elements, String msg) {
+    private synchronized void writeLog(Level level, StackTraceElement[] elements, String message) {
         try {
             // 日志文件
-            String logFileName = "log-" + level.getName().toLowerCase() + "-" + DateUtils.format(new Date()) + ".log";
+            String logFileName = "log-" + application + "-" + level.getName().toLowerCase() + "-" +
+                    LocalDateUtils.dateTimeCurrentFormatter() + ".log";
             String logPath = existsCatalog(logFileName);
             if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
                 return;
@@ -316,8 +312,8 @@ public class LogUtils implements BeanPostProcessor {
             // 日志时间
             StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s:%s ", logger.getName(), msg));
-            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
+            builder.append(String.format("%s:%s ", logger.getName(), message));
+            FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
             //  异常信息
             if (elements != null) {
                 writeExceptionFile(level, elements, logPath, logFileName);
@@ -336,16 +332,17 @@ public class LogUtils implements BeanPostProcessor {
      * @param logFileName 文件名称
      */
     private void writeExceptionFile(Level level, StackTraceElement[] elements, String logPath, String logFileName) throws GlobalException {
+        StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
         for (StackTraceElement element :
                 elements) {
-            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
             builder.append(String.format("%s.%s(%s:%d)", element.getClassName(),
                     element.getMethodName(), element.getFileName(), element.getLineNumber()));
-
-            // 保存文件
-            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
+            builder.append(System.lineSeparator());
         }
+
+        // 保存文件
+        FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
     }
 
     /**
@@ -368,13 +365,13 @@ public class LogUtils implements BeanPostProcessor {
         }
 
         // 验证文件是否存在
-        file = new File(logPath + logFileName);
+        String pathName = logPath + logFileName;
+        file = new File(pathName);
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
         } catch (IOException e) {
-            System.out.println(e);
             return "";
         }
         return logPath;
