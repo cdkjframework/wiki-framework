@@ -3,6 +3,7 @@ package com.cdkjframework.config;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -102,4 +103,7 @@ public class CustomConfig {
      * 许可
      */
     private String permission;
+
+    @Value("${spring.application.name}")
+    private String application;
 }

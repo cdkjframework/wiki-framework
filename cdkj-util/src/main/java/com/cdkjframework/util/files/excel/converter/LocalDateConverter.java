@@ -51,7 +51,7 @@ public class LocalDateConverter implements Converter<LocalDate> {
     @Override
     public LocalDate convertToJavaData(CellData cellData, ExcelContentProperty contentProperty,
                                        GlobalConfiguration globalConfiguration) {
-        return LocalDate.parse(cellData.getStringValue(), DateTimeFormatter.ofPattern(LocalDateUtils.DATE_DAY));
+        return LocalDate.parse(cellData.getStringValue(), DateTimeFormatter.ofPattern(LocalDateUtils.DATE));
     }
 
     /**
@@ -65,6 +65,6 @@ public class LocalDateConverter implements Converter<LocalDate> {
     @Override
     public CellData<String> convertToExcelData(LocalDate value, ExcelContentProperty contentProperty,
                                                GlobalConfiguration globalConfiguration) {
-        return new CellData<>(value.format(DateTimeFormatter.ofPattern(LocalDateUtils.DATE_DAY)));
+        return new CellData<>(value.format(DateTimeFormatter.ofPattern(LocalDateUtils.DATE)));
     }
 }

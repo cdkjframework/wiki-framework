@@ -38,7 +38,6 @@ public class LocalDateUtils {
     public static final String DATE_HHMMSS = "yyyyMMddHHmmss";
     public static final String DATE_YEAR = "yyyy";
     public static final String DATE_MONTH = "yyyy-MM";
-    public static final String DATE_DAY = "yyyy-MM-dd";
 
     /**
      * 获取到当前时间 yyyy-MM-dd HH:mm:ss
