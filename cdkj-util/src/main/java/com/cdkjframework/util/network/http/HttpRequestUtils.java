@@ -1,16 +1,22 @@
 package com.cdkjframework.util.network.http;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.constant.HttpHeaderConsts;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -102,13 +108,28 @@ public class HttpRequestUtils {
             printWriter = connection.getOutputStream();
 
             //将参数转换为 json 对象
-            String param;
+            String param = StringUtils.Empty;
             if (httpRequestEntity.getObjectList().size() > 0) {
                 param = JSONArray.toJSONString(httpRequestEntity.getObjectList());
             } else if (httpRequestEntity.getData() != null) {
                 param = JSONObject.toJSONString(httpRequestEntity.getData());
             } else {
-                param = JSONObject.toJSONString(httpRequestEntity.getParamsMap());
+                Map<String, Object> params = httpRequestEntity.getParamsMap();
+                if (params == null) {
+                    params = new HashMap<>(IntegerConsts.ONE);
+                }
+                if (httpRequestEntity.isJson()) {
+                    param = JSONObject.toJSONString(params);
+                } else {
+                    Set<Map.Entry<String, Object>> entrySet = params.entrySet();
+                    for (Map.Entry entry :
+                            entrySet) {
+                        if (StringUtils.isNotNullAndEmpty(param)) {
+                            param += "&";
+                        }
+                        param += String.format("%s=%s", entry.getKey(), entry.getValue());
+                    }
+                }
             }
 
             //是否 gzip 加密

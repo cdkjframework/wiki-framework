@@ -3,11 +3,14 @@ package com.cdkjframework.util.network.https;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.constant.HttpHeaderConsts;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.apache.http.*;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
@@ -18,10 +21,7 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @ProjectName: HT-OMS-Project-OMS
@@ -56,17 +56,34 @@ public class HttpsClientUtils {
             //设置 http 请头
             Header[] headers = setHeader(requestEntity);
             httpPost.setHeaders(headers);
+
+            String basicHeader = requestEntity.getHeaderMap().get(HttpHeaderConsts.CONTENT_TYPE);
+            final String contentType = "application/json";
+            if (StringUtils.isNullAndSpaceOrEmpty(basicHeader)) {
+                basicHeader = contentType;
+            }
+
             //将参数转换为 json 对象
-            String param;
+            String param = StringUtils.Empty;
             if (requestEntity.getObjectList().size() > 0) {
                 param = JSONArray.toJSONString(requestEntity.getObjectList());
             } else {
-                param = JSONObject.toJSONString(requestEntity.getParamsMap());
-            }
-
-            String basicHeader = requestEntity.getHeaderMap().get(HttpHeaderConsts.CONTENT_TYPE);
-            if (StringUtils.isNullAndSpaceOrEmpty(basicHeader)) {
-                basicHeader = "application/json";
+                Map<String, Object> paramsMap = requestEntity.getParamsMap();
+                if (paramsMap == null) {
+                    paramsMap = new HashMap<>(IntegerConsts.ONE);
+                }
+                if (contentType.equals(basicHeader)) {
+                    param = JSONObject.toJSONString(requestEntity.getParamsMap());
+                } else {
+                    Set<Map.Entry<String, Object>> entrySet = paramsMap.entrySet();
+                    for (Map.Entry entry :
+                            entrySet) {
+                        if (StringUtils.isNotNullAndEmpty(param)) {
+                            param += "&";
+                        }
+                        param += String.format("%s=%s", entry.getKey(), entry.getValue());
+                    }
+                }
             }
             StringEntity stringEntity;
             //是否启用 gzip 加密
@@ -75,7 +92,7 @@ public class HttpsClientUtils {
                 String gzipParams = GzipUtils.gZip(param, requestEntity.getCharset());
                 stringEntity = new StringEntity(gzipParams);
             } else {
-                stringEntity = new StringEntity(param);
+                stringEntity = new StringEntity(param, requestEntity.getCharset());
             }
 
             //设置请求类型

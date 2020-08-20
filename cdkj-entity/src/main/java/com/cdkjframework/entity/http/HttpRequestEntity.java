@@ -46,6 +46,11 @@ public class HttpRequestEntity {
     private String contentType = "application/json; charset=utf-8";
 
     /**
+     * 是否为 JSON 对象
+     */
+    private boolean json = true;
+
+    /**
      * 参数 POST 或者 GET 用
      */
     private Object data = null;

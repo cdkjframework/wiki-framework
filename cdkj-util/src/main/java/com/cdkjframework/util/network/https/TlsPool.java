@@ -3,18 +3,14 @@ package com.cdkjframework.util.network.https;
 import com.cdkjframework.config.TlsConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.apache.http.HttpHost;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.routing.HttpRoute;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
+import org.apache.http.client.HttpClient;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.conn.ssl.TrustStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.ssl.SSLContexts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
@@ -24,6 +20,8 @@ import org.springframework.stereotype.Component;
 
 import javax.net.ssl.SSLContext;
 import java.io.File;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 
 /**
  * @ProjectName: HT-OMS-Project-OMS
@@ -80,35 +78,18 @@ public class TlsPool extends HttpClientBuilder implements ApplicationRunner {
                                 new TrustSelfSignedStrategy())
                         .build();
             } else {
-                ctx = SSLContext.getInstance("TLSv1.2");
+                ctx = new SSLContextBuilder()
+                        .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+                        .build();
             }
         } catch (Exception e) {
-            // TODO Auto-generated catch block
-            logUtils.error(e.getCause(),e.getMessage());
+            logUtils.error(e.getCause(), e.getMessage());
         }
-        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx,
-                new String[]{"TLSv1", "TLSv2", "TLSv3"}, null,
-                SSLConnectionSocketFactory.getDefaultHostnameVerifier());
-        // Create a registry of custom CONNECTION socket factories for supported
-        // protocol schemes.
-        Registry<ConnectionSocketFactory> socketFactoryRegistry = RegistryBuilder
-                .<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.INSTANCE)
-                .register("https", socketFactory)
-                .build();
-        PoolingHttpClientConnectionManager connManager = new PoolingHttpClientConnectionManager(
-                socketFactoryRegistry);
-        // Configure total max or per route limits for persistent connections
-        // that can be kept in the pool or leased by the CONNECTION manager.
-        connManager.setMaxTotal(100);
-        connManager.setDefaultMaxPerRoute(10);
-        // 个性化设置某个url的连接
-        connManager.setMaxPerRoute(new HttpRoute(new HttpHost("www.chengdukeji.com",
-                80)), 20);
-        CloseableHttpClient httpclient = HttpClients.custom().setConnectionManager(connManager)
-                .build();
+        SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx);
 
-        //返回结果
-        return httpclient;
+        // 返回构建结果
+        return HttpClients.custom()
+                .setSSLSocketFactory(socketFactory)
+                .build();
     }
 }
