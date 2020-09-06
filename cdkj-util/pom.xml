@@ -30,11 +30,6 @@
             <groupId>javax.mail</groupId>
             <artifactId>javax.mail-api</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>com.lowagie</groupId>
-            <artifactId>itext</artifactId>
-        </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>itextpdf</artifactId>
@@ -286,7 +281,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>
