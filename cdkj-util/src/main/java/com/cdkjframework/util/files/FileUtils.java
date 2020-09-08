@@ -2,6 +2,7 @@ package com.cdkjframework.util.files;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -94,23 +97,23 @@ public class FileUtils {
             File file = new File(directoryPath);
             if (!file.exists()) {
                 file.mkdirs();
+                fileUnModified(file);
             }
 
             // 1K的数据缓冲
-            byte[] bs = new byte[1024];
+            byte[] bytes = new byte[IntegerConsts.BYTE_LENGTH];
             // 读取到的数据长度
             int len;
 
-            outputStream = new FileOutputStream(file.getPath() + File.separator + fileName, true);
+            String name = file.getPath() + File.separator + fileName;
+            outputStream = new FileOutputStream(name, true);
             // 开始读取
-            while ((len = inputStream.read(bs)) != -1) {
-                outputStream.write(bs, 0, len);
+            while ((len = inputStream.read(bytes)) != IntegerConsts.MINUS_ONE) {
+                outputStream.write(bytes, IntegerConsts.ZERO, len);
             }
-            String newline = System.lineSeparator();
-            //写入换行  
-            outputStream.write(newline.getBytes());
             return true;
         } catch (Exception ex) {
+            logUtil.error(ex);
             throw new GlobalException(ex.getMessage());
         } finally {
             // 完毕，关闭所有链接
@@ -118,7 +121,8 @@ public class FileUtils {
                 outputStream.close();
                 inputStream.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                logUtil.error(e);
+                throw new GlobalException(e.getMessage());
             }
         }
     }
@@ -166,8 +170,8 @@ public class FileUtils {
      * @param catalog 目录
      * @return
      */
-    public static void beforeDeleteSpecifiedTimeFile(Date date, String catalog) throws GlobalException {
-        beforeDeleteSpecifiedTimeFile(date, catalog, "", null);
+    public static void beforeDeleteSpecifiedTimeFile(LocalDateTime date, String catalog) throws GlobalException {
+        beforeDeleteSpecifiedTimeFile(date, catalog, StringUtils.Empty, null);
     }
 
     /**
@@ -179,7 +183,7 @@ public class FileUtils {
      * @param excludeFiles  不删除文件集合（可为空）
      * @return
      */
-    public static void beforeDeleteSpecifiedTimeFile(Date date, String catalog, String directoryPath, List<String> excludeFiles) throws GlobalException {
+    public static void beforeDeleteSpecifiedTimeFile(LocalDateTime date, String catalog, String directoryPath, List<String> excludeFiles) throws GlobalException {
         try {
             //获取完整路径
             String tempFolder = splicingPath(directoryPath, catalog);
@@ -194,13 +198,13 @@ public class FileUtils {
                     continue;
                 }
                 //判断文件是否在指定日间之前生成
-                if (new Date(file.lastModified()).before(date)) {
+                LocalDateTime dateTime = LocalDateUtils.timestampToLocalDateTime(file.lastModified());
+                if (LocalDateUtils.greater(dateTime, date)) {
                     file.delete();
                 }
             }
         } catch (Exception ex) {
-            ex.printStackTrace();
-            throw new GlobalException(ex.getMessage());
+            logUtil.error(ex);
         }
     }
 
@@ -211,12 +215,12 @@ public class FileUtils {
      * @return 返回结果
      */
     public static String getFileSuffix(String fileName) {
-        String suffix = "";
+        String suffix = StringUtils.Empty;
         if (StringUtils.isNullAndSpaceOrEmpty(fileName)) {
             return suffix;
         }
         //获取后缀
-        suffix = fileName.substring(fileName.lastIndexOf("."));
+        suffix = fileName.substring(fileName.lastIndexOf(StringUtils.POINT));
         //返回结果
         return suffix;
     }
@@ -228,17 +232,17 @@ public class FileUtils {
      * @return 返回结果
      */
     public static String getFileName(String filePath) {
-        String fileName = "";
+        String fileName = StringUtils.Empty;
         if (StringUtils.isNullAndSpaceOrEmpty(filePath)) {
             return fileName;
         }
         //网络地址
         final String splitValue = "/";
         if (filePath.contains(splitValue)) {
-            fileName = filePath.substring(filePath.lastIndexOf(splitValue) + 1);
+            fileName = filePath.substring(filePath.lastIndexOf(splitValue) + IntegerConsts.ONE);
         } else {
             //目录地址
-            fileName = filePath.substring(filePath.lastIndexOf("\\") + 1);
+            fileName = filePath.substring(filePath.lastIndexOf("\\") + IntegerConsts.ONE);
         }
         //返回结果
         return fileName;
@@ -298,59 +302,158 @@ public class FileUtils {
     }
 
     /**
-     * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
+     * 文件不能修改，执行、只读取
      *
-     * @param inputStream 文件流
-     * @param fileName    文件名
-     * @return 返回多部分文件
+     * @param file 文件
      */
-    public static MultipartFile buildMultipartFile(InputStream inputStream, String fileName) {
-        FileItem fileItem = createFileItem(inputStream, fileName);
-        //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
-        MultipartFile mfile = new CommonsMultipartFile(fileItem);
-        return mfile;
-    }
-
-    /**
-     * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
-     *
-     * @param outputStream 文件流
-     * @param fileName     文件名
-     * @return 返回多部分文件
-     */
-    public static MultipartFile buildMultipartFile(OutputStream outputStream, String fileName) {
-        ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
-        final ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        FileItem fileItem = createFileItem(inputStream, fileName);
-        //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
-        return new CommonsMultipartFile(fileItem);
-    }
-
-    /**
-     * FileItem类对象创建
-     *
-     * @param inputStream 文件流
-     * @param fileName    文件名称
-     * @return
-     */
-    private static FileItem createFileItem(InputStream inputStream, String fileName) {
-        FileItemFactory factory = new DiskFileItemFactory(IntegerConsts.SIX, null);
-        String textFieldName = "file";
-        FileItem item = factory.createItem(textFieldName, "multipart/form-data", true, fileName);
-        int bytesRead;
-        final int bufferLength = 8192;
-        byte[] buffer = new byte[bufferLength];
-        //使用输出流输出输入流的字节
-        try {
-            OutputStream os = item.getOutputStream();
-            while ((bytesRead = inputStream.read(buffer, IntegerConsts.ZERO, bufferLength)) != IntegerConsts.MINUS_ONE) {
-                os.write(buffer, IntegerConsts.ZERO, bytesRead);
-            }
-            os.close();
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    public static void fileUnModified(File file) {
+        if (file != null) {
+            file.setWritable(false);
+            file.setExecutable(false);
+            file.setReadOnly();
         }
-        return item;
+    }
+
+
+    /**
+     * 获取文件大小
+     *
+     * @param file 文件
+     * @return 返回大小
+     */
+    public static long getFileSize(File file) {
+        long size = IntegerConsts.ZERO;
+        if (file.exists()) {
+            if (!file.isDirectory()) {
+                size = file.length();
+            } else {
+                size += getDirSize(file);
+            }
+        }
+        return size;
+    }
+
+    /**
+     * 多聚目录大小
+     *
+     * @param file 文件
+     * @return 返回大小
+     */
+    public static long getDirSize(File file) {
+        long dirSize = IntegerConsts.ZERO;
+        if (file != null) {
+            if (file.exists()) {
+                if (file.isDirectory()) {
+                    File[] files = file.listFiles();
+                    for (File fl : files) {
+                        if (fl.isDirectory()) {
+                            dirSize += getDirSize(fl);
+                        } else {
+                            dirSize += fl.length();
+                        }
+                    }
+                }
+            }
+        }
+        return dirSize;
+    }
+
+    /**
+     * byte字节转换为字符串
+     *
+     * @param fileBytes 文件 byte
+     * @return 返回字符编码
+     */
+    public static String byteToString(long fileBytes) {
+        StringBuffer byteStr = new StringBuffer();
+        BigDecimal fullSize = new BigDecimal(fileBytes);
+        //mb
+        BigDecimal mbSize = new BigDecimal(MB_SIZE);
+        float gbSize = fullSize.divide(new BigDecimal(GB_SIZE), IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue();
+        if (gbSize > IntegerConsts.ONE) {
+            byteStr.append(gbSize).append("GB");
+        } else {
+            float dvSize = fullSize.divide(mbSize, IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue();
+            if (dvSize > IntegerConsts.ONE) {
+                byteStr.append(dvSize).append("MB");
+            } else {
+                //kb显示
+                BigDecimal kbSize = new BigDecimal(KB_SIZE);
+                byteStr.append(fullSize.divide(kbSize, IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue()).append("KB");
+            }
+        }
+        return byteStr.toString();
+    }
+
+    /**
+     * 加密文件
+     *
+     * @param sourceFile  源文件
+     * @param encryptFile 加密后文件
+     * @throws Exception 异常
+     */
+    public static void encrypt(File sourceFile, File encryptFile) throws Exception {
+        if (!sourceFile.exists()) {
+            return;
+        }
+
+        InputStream inputStream = new FileInputStream(sourceFile);
+        encrypt(inputStream, encryptFile);
+    }
+
+    /**
+     * 文件加密
+     *
+     * @param inputStream 文件流
+     * @param encryptFile 加密后文件
+     * @throws Exception 异常信息
+     */
+    public static void encrypt(InputStream inputStream, File encryptFile) throws Exception {
+        if (!encryptFile.exists()) {
+            encryptFile.createNewFile();
+        }
+        OutputStream outputStream = new FileOutputStream(encryptFile);
+        while ((dataOfFile = inputStream.read()) > IntegerConsts.MINUS_ONE) {
+            outputStream.write(dataOfFile ^ encAndDecKey);
+        }
+        inputStream.close();
+        outputStream.flush();
+        outputStream.close();
+    }
+
+    /**
+     * 解密文件
+     *
+     * @param sourceFile  源文件
+     * @param decryptFile 解密文件
+     * @throws Exception 异常信息
+     */
+    public static void decrypt(File sourceFile, File decryptFile) throws Exception {
+        if (!sourceFile.exists()) {
+            return;
+        }
+        if (!decryptFile.exists()) {
+            decryptFile.createNewFile();
+        }
+        OutputStream outputStream = new FileOutputStream(decryptFile);
+        decrypt(sourceFile, outputStream);
+    }
+
+    /**
+     * 解密文件
+     *
+     * @param sourceFile   源文件
+     * @param outputStream 解密文件流
+     * @throws Exception 异常信息
+     */
+    private static void decrypt(File sourceFile, OutputStream outputStream) throws Exception {
+        InputStream inputStream = new FileInputStream(sourceFile);
+
+        while ((dataOfFile = inputStream.read()) > IntegerConsts.MINUS_ONE) {
+            outputStream.write(dataOfFile ^ encAndDecKey);
+        }
+        inputStream.close();
+        outputStream.flush();
+        outputStream.close();
     }
 }

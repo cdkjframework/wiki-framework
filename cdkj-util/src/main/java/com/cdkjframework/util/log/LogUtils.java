@@ -226,7 +226,7 @@ public class LogUtils implements BeanPostProcessor {
             //写入日志
             writeLog(level, stackTraceElement, msg);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -248,7 +248,7 @@ public class LogUtils implements BeanPostProcessor {
             //写入日志
             writeLog(level, throwable, msg);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -262,7 +262,7 @@ public class LogUtils implements BeanPostProcessor {
         try {
             logThrowable(level, null, msg);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -283,7 +283,7 @@ public class LogUtils implements BeanPostProcessor {
 
             writeLog(level, elements, message);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -319,7 +319,7 @@ public class LogUtils implements BeanPostProcessor {
                 writeExceptionFile(builder, level, elements, logPath, logFileName);
             }
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 

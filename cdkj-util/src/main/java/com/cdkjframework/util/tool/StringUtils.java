@@ -17,44 +17,41 @@ import org.springframework.stereotype.Component;
 public class StringUtils {
 
     /**
-     * <p>The maximum size to which the padding constant(s) can expand.</p>
-     */
-    private static final int PAD_LIMIT = 8192;
-
-    /**
-     * 日志
-     */
-    private static LogUtils logUtil = LogUtils.getLogger(StringUtils.class);
-
-    /**
      * 空值变量
      */
     public final static String Empty = "";
-
     /**
      * 空对像
      */
     public final static String NullObject = null;
-
     /**
      * 0 值变量
      */
     public final static String ZERO = "0";
-
     /**
      * -1 值变量
      */
     public final static String NEGATIVE_ONE = "-1";
-
     /**
      * 逗号 值变量
      */
     public final static String COMMA = ",";
-
     /**
      * 分号 值变量
      */
     public final static String SEMICOLON = ";";
+    /**
+     * 点号 值变量
+     */
+    public final static String POINT = ".";
+    /**
+     * <p>The maximum size to which the padding constant(s) can expand.</p>
+     */
+    private static final int PAD_LIMIT = 8192;
+    /**
+     * 日志
+     */
+    private static LogUtils logUtil = LogUtils.getLogger(StringUtils.class);
 
     /**
      * 补0
@@ -80,11 +77,8 @@ public class StringUtils {
             return true;
         }
         //验证是否为空
-        if (Empty.equals(obj.toString().trim())) {
-            return true;
-        }
+        return Empty.equals(obj.toString().trim());
         //返回结果
-        return false;
     }
 
     /**
