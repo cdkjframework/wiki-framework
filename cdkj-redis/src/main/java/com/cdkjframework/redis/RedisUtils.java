@@ -192,7 +192,7 @@ public class RedisUtils {
     }
 
     /**
-     * 订阅消息
+     * 队列消息
      *
      * @param key 键
      * @return 返回结果
@@ -305,6 +305,42 @@ public class RedisUtils {
             logUtils.error(e.getStackTrace(), e.getMessage());
         }
         return null;
+    }
+
+    /**
+     * 设置
+     *
+     * @param key   键
+     * @param value 值
+     * @return 返回是否成功
+     */
+    public static boolean hSet(String key, String value) {
+        return hSet(key, StringUtils.NullObject, value);
+    }
+
+    /**
+     * 设置
+     *
+     * @param key   键
+     * @param field 字段
+     * @param value 值
+     * @return 返回是否成功
+     */
+    public static boolean hSet(String key, String field, String value) {
+        key = getNamespaces(key);
+        if (!syncExists(key)) {
+            return false;
+        }
+        RedisFuture<Boolean> redisFuture = redisAsyncCommands == null ? commands.hset(key, field, value) :
+                redisAsyncCommands.hset(key, field, value);
+        try {
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return false;
     }
 
     // ============================String=============================

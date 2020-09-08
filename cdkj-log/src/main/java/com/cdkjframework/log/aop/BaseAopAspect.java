@@ -88,6 +88,7 @@ public class BaseAopAspect {
      * @throws GlobalRuntimeException 异常信息
      */
     protected Object aroundProcess(ProceedingJoinPoint joinPoint) {
+        logUtils.info("aroundProcess" + System.currentTimeMillis());
         // 获取连接点参数
         Object[] args = joinPoint.getArgs();
         //获取连接点签名的方法名
@@ -103,9 +104,13 @@ public class BaseAopAspect {
             logRecordDto.setParameter(jsonObject.toJSONString());
         }
 
+        logUtils.info("try" + System.currentTimeMillis());
         Object result = null;
         try {
+            logUtils.info("isLog" + System.currentTimeMillis());
+            logUtils.info("proceed" + System.currentTimeMillis());
             result = joinPoint.proceed(args);
+            logUtils.info("proceed end" + System.currentTimeMillis());
             if (!isLog) {
                 return result;
             }
@@ -123,6 +128,7 @@ public class BaseAopAspect {
                 }
                 logRecordDto.setResult(resultJson);
             }
+            logUtils.info("isLog end" + System.currentTimeMillis());
         } catch (Throwable ex) {
             if (isLog) {
                 logRecordDto.setExecutionState(IntegerConsts.TWENTY);
@@ -132,12 +138,14 @@ public class BaseAopAspect {
                 logRecordDto.setResultTime(System.currentTimeMillis());
                 logRecordDtoQueue.add(logRecordDto);
             }
-            throw new GlobalRuntimeException(ex.getMessage());
+            logUtils.error(ex, logRecordDto.getId() + ":" + ex.getMessage());
+            throw new GlobalRuntimeException((Exception) ex, ex.getMessage());
         }
         if (isLog) {
             logRecordDto.setResultTime(System.currentTimeMillis());
             logRecordDtoQueue.add(logRecordDto);
         }
+        logUtils.info("result" + System.currentTimeMillis());
         return result;
     }
 
@@ -149,6 +157,7 @@ public class BaseAopAspect {
      * @throws Throwable 异常信息
      */
     protected Object process(ProceedingJoinPoint joinPoint) throws Throwable {
+        logUtils.info("process" + System.currentTimeMillis());
         //获取连接点参数
         Object[] args = joinPoint.getArgs();
         PermissionDto permissionDto = null;
@@ -166,7 +175,7 @@ public class BaseAopAspect {
             MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
             parameterNames = methodSignature.getParameterNames();
         }
-
+        logUtils.info("parameter" + System.currentTimeMillis());
         for (int i = 0; i < args.length; i++) {
             Object parameter = args[i];
             final String FILTER_CLASS_ENT_NAME = "Entity";
@@ -183,12 +192,15 @@ public class BaseAopAspect {
                 }
             }
         }
+        logUtils.info("parameter end" + System.currentTimeMillis());
         Object object;
         try {
+            logUtils.info("proceed mapper" + System.currentTimeMillis());
             object = joinPoint.proceed(args);
+            logUtils.info("proceed mapper end" + System.currentTimeMillis());
         } catch (Exception ex) {
             logUtils.error(ex.getMessage());
-            throw new GlobalRuntimeException(ex.getMessage());
+            throw new GlobalRuntimeException(ex, ex.getMessage());
         }
         return object;
     }
@@ -248,7 +260,8 @@ public class BaseAopAspect {
 
             // 当前机构
             Object organizationId = jsonObject.get(ORGANIZATION_ID);
-            if (permissionDto != null && permissionDto.isCurrent()) {
+            boolean controlCurrent = permissionDto != null && permissionDto.isCurrent();
+            if (controlCurrent) {
                 if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
                     jsonObject.put(ORGANIZATION_ID, CurrentUser.getOrganizationId());
                 } else if (StringUtils.isNotNullAndEmpty(organizationId) && StringUtils.NEGATIVE_ONE.equals(organizationId.toString())) {
@@ -259,7 +272,7 @@ public class BaseAopAspect {
             }
         } catch (Exception ex) {
             logUtils.error(ex.getMessage());
-            throw new GlobalRuntimeException(ex.getMessage());
+            throw new GlobalRuntimeException(ex, ex.getMessage());
         }
 
         // 返回结果
@@ -272,39 +285,39 @@ public class BaseAopAspect {
      * @param logRecordDto 日志信息
      */
     private boolean buildLogRecord(LogRecordDto logRecordDto) {
-        HttpServletRequest request = HttpServletUtils.getRequest();
-        final String servletPath = request.getServletPath();
-        logRecordDto.setServletPath(servletPath);
-        AnalysisUtils.requestHandle(logRecordDto);
-        logRecordDto.setServerHost(request.getScheme() + "://" + request.getServerName());
-        if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
-            List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
-                    .filter(f -> servletPath.contains(f))
-                    .collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(aopUrls)) {
-                logRecordDto = null;
-            }
-        }
-        if (logRecordDto == null) {
-            return false;
-        }
-        String organizationCode = "-" + CurrentUser.getOrganizationCode();
-        final String LOG_PREFIX = "LOG" + organizationCode;
-        logRecordDto.setId(GeneratedValueUtils.getUuidString());
-        logRecordDto.setAddTime(System.currentTimeMillis());
-        logRecordDto.setOperatorName(CurrentUser.getRealName());
-        logRecordDto.setUserName(CurrentUser.getUserName());
-        logRecordDto.setClientIp(HttpServletUtils.getLocalAddr());
         try {
+            HttpServletRequest request = HttpServletUtils.getRequest();
+            final String servletPath = request.getServletPath();
+            logRecordDto.setServletPath(servletPath);
+            AnalysisUtils.requestHandle(logRecordDto);
+            logRecordDto.setServerHost(request.getScheme() + "://" + request.getServerName());
+            if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
+                List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
+                        .filter(f -> servletPath.contains(f))
+                        .collect(Collectors.toList());
+                if (!CollectionUtils.isEmpty(aopUrls)) {
+                    logRecordDto = null;
+                }
+            }
+            if (logRecordDto == null) {
+                return false;
+            }
+            String organizationCode = "-" + CurrentUser.getOrganizationCode();
+            final String LOG_PREFIX = "LOG" + organizationCode;
+            logRecordDto.setId(GeneratedValueUtils.getUuidString());
+            logRecordDto.setAddTime(System.currentTimeMillis());
+            logRecordDto.setOperatorName(CurrentUser.getRealName());
+            logRecordDto.setUserName(CurrentUser.getUserName());
+            logRecordDto.setClientIp(HttpServletUtils.getLocalAddr());
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
             logRecordDto.setSerialNumber(number.replace(organizationCode, StringUtils.Empty));
+            logRecordDto.setTopOrganizationId(CurrentUser.getTopOrganizationId());
+            logRecordDto.setTopOrganizationCode(CurrentUser.getTopOrganizationCode());
+            logRecordDto.setOrganizationId(CurrentUser.getOrganizationId());
+            logRecordDto.setOrganizationCode(CurrentUser.getOrganizationCode());
         } catch (GlobalException ex) {
             logUtils.error(ex.getMessage());
         }
-        logRecordDto.setTopOrganizationId(CurrentUser.getTopOrganizationId());
-        logRecordDto.setTopOrganizationCode(CurrentUser.getTopOrganizationCode());
-        logRecordDto.setOrganizationId(CurrentUser.getOrganizationId());
-        logRecordDto.setOrganizationCode(CurrentUser.getOrganizationCode());
         // 返回不需要记录日志
         return true;
     }

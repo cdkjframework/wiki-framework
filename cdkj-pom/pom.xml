@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-200820</version>
+    <version>1.0-200908</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,24 +17,24 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-200820</cdkj-cloud.version>
-        <cdkj-util.version>1.0-200820</cdkj-util.version>
-        <cdkj-constant.version>1.0-200820</cdkj-constant.version>
-        <cdkj-core.version>1.0-200820</cdkj-core.version>
-        <cdkj-datasource.version>1.0-200820</cdkj-datasource.version>
-        <cdkj-message.version>1.0-200820</cdkj-message.version>
-        <cdkj-redis.version>1.0-200820</cdkj-redis.version>
-        <cdkj-pay.version>1.0-200820</cdkj-pay.version>
-        <cdkj-entity.version>1.0-200820</cdkj-entity.version>
-        <cdkj-center.version>1.0-200820</cdkj-center.version>
-        <cdkj-center.version>1.0-200820</cdkj-center.version>
-        <cdkj-log.version>1.0-200820</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-200820</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-200820</cdkj-security.version>
-        <cdkj-security-server.version>1.0-200820</cdkj-security-server.version>
-        <cdkj-datasource-jpa.version>1.0-200820</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-200820</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-200820</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-200908</cdkj-cloud.version>
+        <cdkj-util.version>1.0-200908</cdkj-util.version>
+        <cdkj-constant.version>1.0-200908</cdkj-constant.version>
+        <cdkj-core.version>1.0-200908</cdkj-core.version>
+        <cdkj-datasource.version>1.0-200908</cdkj-datasource.version>
+        <cdkj-message.version>1.0-200908</cdkj-message.version>
+        <cdkj-redis.version>1.0-200908</cdkj-redis.version>
+        <cdkj-pay.version>1.0-200908</cdkj-pay.version>
+        <cdkj-entity.version>1.0-200908</cdkj-entity.version>
+        <cdkj-center.version>1.0-200908</cdkj-center.version>
+        <cdkj-center.version>1.0-200908</cdkj-center.version>
+        <cdkj-log.version>1.0-200908</cdkj-log.version>
+        <cdkj-web-socket.version>1.0-200908</cdkj-web-socket.version>
+        <cdkj-security.version>1.0-200908</cdkj-security.version>
+        <cdkj-security-server.version>1.0-200908</cdkj-security-server.version>
+        <cdkj-datasource-jpa.version>1.0-200908</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-200908</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-200908</cdkj-datasource-elasticsearch.version>
 
 
         <java.version>1.8</java.version>
@@ -96,6 +96,8 @@
         <commons.io.version>2.6</commons.io.version>
         <commons-lang.version>2.6</commons-lang.version>
 
+        <io.netty.version>4.1.51.Final</io.netty.version>
+        <apache.mina.version>3.0.0-M2</apache.mina.version>
         <java.jwt.version>3.8.1</java.jwt.version>
         <jjwt.version>0.9.1</jjwt.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
@@ -319,6 +321,18 @@
                 <artifactId>mail</artifactId>
                 <version>${javax-mail.version}</version>
             </dependency>
+            <!-- socket -->
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-all</artifactId>
+                <version>${io.netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.mina</groupId>
+                <artifactId>mina-core</artifactId>
+                <version>${apache.mina.version}</version>
+            </dependency>
+
             <!-- jwt begin -->
             <dependency>
                 <groupId>com.auth0</groupId>
