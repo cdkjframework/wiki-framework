@@ -68,6 +68,7 @@ public class CopyUtils {
      * @param target 要转换成的对象
      * @return 返回对象数据集
      */
+    @Deprecated
     public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
         List<T> result = new ArrayList();
         if (list != null) {
@@ -91,6 +92,7 @@ public class CopyUtils {
      * @param target 要转换成的对象
      * @return 返回对象数据集
      */
+    @Deprecated
     public static <S, T> List<T> copyNoNullPropertiesList(List<S> list, Class<T> target) {
         List<T> result = new ArrayList();
         if (list != null) {
@@ -114,6 +116,7 @@ public class CopyUtils {
      * @param source 原数据源
      * @param target 当前数据
      */
+    @Deprecated
     public static <S, T> void copyProperties(S source, T target) {
         copyProperties(source, target, false);
     }
@@ -124,8 +127,32 @@ public class CopyUtils {
      * @param source 原数据源
      * @param target 当前数据
      */
+    @Deprecated
     public static <S, T> void copyNoNullProperties(S source, T target) {
         copyProperties(source, target, true);
+    }
+
+    /**
+     * 拷贝数据
+     *
+     * @param sourceList 原数据源
+     * @param targetList 当前数据
+     */
+    public static <S, T> List<T> copyProperties(List<S> sourceList, Class<T> targetList) {
+        List<T> result = new ArrayList();
+        if (sourceList != null) {
+            for (S o : sourceList) {
+                try {
+
+                    T d = targetList.newInstance();
+                    copyProperties(o, d, true);
+                    result.add(d);
+                } catch (Exception e) {
+                    logUtil.error(e.getMessage());
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -144,6 +171,29 @@ public class CopyUtils {
             logUtil.error(ex.getCause(), ex.getMessage());
             return null;
         }
+    }
+
+    /**
+     * 拷贝数据
+     *
+     * @param sourceList 原数据源
+     * @param targetList 当前数据
+     */
+    public static <S, T> List<T> copyNoNullProperties(List<S> sourceList, Class<T> targetList) {
+        List<T> result = new ArrayList();
+        if (sourceList != null) {
+            for (S o : sourceList) {
+                try {
+
+                    T d = targetList.newInstance();
+                    copyProperties(o, d, true);
+                    result.add(d);
+                } catch (Exception e) {
+                    logUtil.error(e.getMessage());
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -191,7 +241,7 @@ public class CopyUtils {
                 Object value = ReflectionUtils.getFieldValue(targetField, target);
                 String typeName = value.getClass().getTypeName();
                 if (typeName.contains(DATA_TYPE)) {
-                    setArrayList((ArrayList) value, target, targetField);
+                    buildArrayList((ArrayList) value, target, targetField);
                 }
                 if (value != "") {
                     continue;
@@ -225,7 +275,7 @@ public class CopyUtils {
      * @param arrayList   列表数据
      * @param targetField 目标类
      */
-    private static <T> void setArrayList(ArrayList arrayList, T target, Field targetField) throws IllegalAccessException, InstantiationException {
+    private static <T> void buildArrayList(ArrayList arrayList, T target, Field targetField) throws IllegalAccessException, InstantiationException {
         Class clazz = (Class) ((ParameterizedType) targetField.getGenericType()).getActualTypeArguments()[0];
         if (clazz.getTypeName().contains(CLASS_TYPE)) {
             return;
