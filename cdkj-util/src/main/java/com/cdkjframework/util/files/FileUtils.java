@@ -6,13 +6,17 @@ import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileItemFactory;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -26,21 +30,20 @@ import java.util.List;
 
 @Component
 public class FileUtils {
-
     /**
      * 单位 KB
      */
-    private static final int KB_SIZE = 1024;
+    private static final int KB_SIZE = IntegerConsts.BYTE_LENGTH;
 
     /**
      * 单位 MB
      */
-    private static final int MB_SIZE = 1024 * KB_SIZE;
+    private static final int MB_SIZE = IntegerConsts.BYTE_LENGTH * KB_SIZE;
 
     /**
      * 单位 GB
      */
-    private static final int GB_SIZE = 1024 * MB_SIZE;
+    private static final int GB_SIZE = IntegerConsts.BYTE_LENGTH * MB_SIZE;
     /**
      * 加密解密秘钥
      */
@@ -212,7 +215,7 @@ public class FileUtils {
             for (int i = 0; i < files.length; i++) {
                 File file = files[i];
                 //验证是否为不删除文件
-                if (excludeFiles != null && excludeFiles.size() > IntegerConsts.ZERO && excludeFiles.contains(file.getName())) {
+                if (excludeFiles != null && excludeFiles.size() > 0 && excludeFiles.contains(file.getName())) {
                     continue;
                 }
                 //判断文件是否在指定日间之前生成
@@ -473,5 +476,62 @@ public class FileUtils {
         inputStream.close();
         outputStream.flush();
         outputStream.close();
+    }
+
+    /**
+     * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
+     *
+     * @param inputStream 文件流
+     * @param fileName    文件名
+     * @return 返回多部分文件
+     */
+    public static MultipartFile buildMultipartFile(InputStream inputStream, String fileName) {
+        FileItem fileItem = createFileItem(inputStream, fileName);
+        //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
+        MultipartFile mfile = new CommonsMultipartFile(fileItem);
+        return mfile;
+    }
+
+    /**
+     * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
+     *
+     * @param outputStream 文件流
+     * @param fileName     文件名
+     * @return 返回多部分文件
+     */
+    public static MultipartFile buildMultipartFile(OutputStream outputStream, String fileName) {
+        ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
+        final ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+        FileItem fileItem = createFileItem(inputStream, fileName);
+        //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
+        return new CommonsMultipartFile(fileItem);
+    }
+
+    /**
+     * FileItem类对象创建
+     *
+     * @param inputStream 文件流
+     * @param fileName    文件名称
+     * @return
+     */
+    private static FileItem createFileItem(InputStream inputStream, String fileName) {
+        FileItemFactory factory = new DiskFileItemFactory(IntegerConsts.SIX, null);
+        String textFieldName = "file";
+        FileItem item = factory.createItem(textFieldName, "multipart/form-data", true, fileName);
+        int bytesRead;
+        final int bufferLength = 8192;
+        byte[] buffer = new byte[bufferLength];
+        //使用输出流输出输入流的字节
+        try {
+            OutputStream os = item.getOutputStream();
+            while ((bytesRead = inputStream.read(buffer, IntegerConsts.ZERO, bufferLength)) != IntegerConsts.MINUS_ONE) {
+                os.write(buffer, IntegerConsts.ZERO, bytesRead);
+            }
+            os.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return item;
     }
 }

@@ -130,6 +130,8 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     @Override
     public final void unsubscribed(String channel, long count) {
         logUtils.info("从频道取消订阅，渠道:" + channel + ",取消订阅数量:" + count);
+        logUtils.info("重新订阅，渠道:" + channel);
+        subscribe(channel);
     }
 
     /**
@@ -141,18 +143,14 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     @Override
     public final void punsubscribed(String pattern, long count) {
         logUtils.info("从模式中取消订阅，模式:" + pattern + ",取消订阅数量:" + count);
+        logUtils.info("重新订阅，模式:" + pattern);
+        psubscribe(pattern);
     }
 
     /**
      * 消息读取
      */
     protected final void consumerMessage() {
-        redisPubSubConnection.addListener(this);
-        RedisPubSubAsyncCommands<String, String> pubSubCommands = redisPubSubConnection.async();
-        if (pubSubCommands.getStatefulConnection() == null) {
-            pubSubCommands = redisClusterPubSubConnection.async();
-        }
-
         // 渠道
         if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
             List<String> channelList = new ArrayList<>();
@@ -160,7 +158,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
                     customConfig.getChannel()) {
                 channelList.add(getNamespaces(key));
             }
-            pubSubCommands.subscribe(channelList
+            subscribe(channelList
                     .toArray(new String[channelList.size()]));
         }
 
@@ -171,9 +169,51 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
                     customConfig.getPattern()) {
                 patternList.add(getNamespaces(key));
             }
-            pubSubCommands.psubscribe(patternList
+            psubscribe(patternList
                     .toArray(new String[patternList.size()]));
         }
+    }
+
+    /**
+     * 订阅单个消息
+     *
+     * @param channel 通道
+     */
+    private void subscribe(String... channel) {
+        if (StringUtils.isNullAndSpaceOrEmpty(channel)) {
+            return;
+        }
+        RedisPubSubAsyncCommands<String, String> pubSubCommands = initRedisPubSub();
+        pubSubCommands.subscribe(channel);
+    }
+
+
+    /**
+     * 订阅单个消息
+     *
+     * @param pattern 模式
+     */
+    private void psubscribe(String... pattern) {
+        if (StringUtils.isNullAndSpaceOrEmpty(pattern)) {
+            return;
+        }
+        RedisPubSubAsyncCommands<String, String> pubSubCommands = initRedisPubSub();
+        pubSubCommands.psubscribe(pattern);
+    }
+
+    /**
+     * 初始化 redis 订阅信息
+     *
+     * @return 返回订单信息
+     */
+    private RedisPubSubAsyncCommands<String, String> initRedisPubSub() {
+        redisPubSubConnection.addListener(this);
+        RedisPubSubAsyncCommands<String, String> pubSubCommands = redisPubSubConnection.async();
+        if (pubSubCommands.getStatefulConnection() == null) {
+            pubSubCommands = redisClusterPubSubConnection.async();
+        }
+
+        return pubSubCommands;
     }
 
     /**

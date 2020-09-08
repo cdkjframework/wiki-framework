@@ -9,6 +9,7 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.InterfaceEnum;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
@@ -32,6 +33,11 @@ public class CurrentUser {
      * 用户登录 token 缓存主键
      */
     public static String USER_LOGIN_TOKEN_KEY = "token";
+
+    /**
+     * 日志
+     */
+    private static LogUtils logUtils = LogUtils.getLogger(CurrentUser.class.getName());
 
     /**
      * 配置信息
@@ -192,7 +198,7 @@ public class CurrentUser {
         if (entity == null) {
             entity = new UserEntity();
             entity.setId("438a848a-60b6-4c00-b6fd-7dfc6dd94aac");
-            entity.setLoginName("测试用户");
+            entity.setLoginName("系统默认用户");
         }
 
         //返回结果
@@ -213,7 +219,7 @@ public class CurrentUser {
             String token = claims.get("token").toString();
             return getCurrentUser(token, clazz);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logUtils.error(ex);
         }
 
         //返回结果
@@ -233,7 +239,7 @@ public class CurrentUser {
             String key = CacheConsts.USER_LOGIN + token;
             userEntity = RedisUtils.syncGetEntity(key, clazz);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logUtils.error(ex);
         }
 
         //返回结果

@@ -53,7 +53,7 @@ public class HttpServletUtils {
         //
         String localAddr = getRequest().getHeader(HEADER_IP);
         if (StringUtils.isNullAndSpaceOrEmpty(localAddr)) {
-            localAddr = getRequest().getLocalAddr();
+            localAddr = getRequest().getRemoteAddr();
         }
         // 返回结果
         return localAddr;

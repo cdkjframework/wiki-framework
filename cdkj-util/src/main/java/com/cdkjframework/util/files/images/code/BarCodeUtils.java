@@ -168,7 +168,7 @@ public class BarCodeUtils {
      * @param content      内容
      * @param outputStream 二进制流
      */
-    public static void generateCodabar(String content, OutputStream outputStream) {
+    public static void generateCodeBar(String content, OutputStream outputStream) {
         if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }

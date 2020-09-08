@@ -1,9 +1,11 @@
 package com.cdkjframework.core.spring.cors;
 
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -22,6 +24,15 @@ public class CorsFilter implements Filter {
      * 日志
      */
     private LogUtils logUtils = LogUtils.getLogger(CorsFilter.class);
+
+    /**
+     * IP头部变量
+     */
+    private final String HEADER_IP = "X-Real-IP";
+    /**
+     * IP头部变量
+     */
+    private final String ForwardedFor = "X-Forwarded-For";
 
     /**
      * 初始加载
@@ -46,12 +57,32 @@ public class CorsFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpServletRequest request = (HttpServletRequest) servletRequest;
         response.setHeader("Access-Control-Allow-Origin", "*");
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
         logUtils.info("*********************************过滤器被使用**************************");
-        logUtils.info("请求地址：" + servletRequest.getRemoteHost());
+        logUtils.info("请求地址：" + request.getServletPath());
+        logUtils.info("请求客服端：" + getRemoteAddr(request));
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    /**
+     * 获取客户端IP
+     *
+     * @param request 请求
+     * @return 返回IP
+     */
+    private String getRemoteAddr(HttpServletRequest request) {
+        String ip = request.getHeader(HEADER_IP);
+        if (StringUtils.isNotNullAndEmpty(ip)) {
+            return ip;
+        }
+        ip = request.getHeader(ForwardedFor);
+        if (StringUtils.isNotNullAndEmpty(ip)) {
+            return ip;
+        }
+        return request.getRemoteAddr();
     }
 }

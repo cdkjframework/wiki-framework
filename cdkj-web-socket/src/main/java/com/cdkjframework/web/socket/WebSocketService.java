@@ -145,7 +145,7 @@ public class WebSocketService {
      * @param message 消息数据
      * @throws IOException 异常信息
      */
-    public synchronized static void sendMessage(String to, String message) throws IOException {
+    public static void sendMessage(String to, String message) throws IOException {
         WebSocketService item = getClient(to);
         if (item != null) {
             sendMessage(item, message);
@@ -159,7 +159,7 @@ public class WebSocketService {
      * @param message 消息数据
      * @throws IOException 异常信息
      */
-    public synchronized static void sendMessage(List<String> toList, String message) throws IOException {
+    public static void sendMessage(List<String> toList, String message) throws IOException {
         if (CollectionUtils.isEmpty(webSocketSet.values())) {
             return;
         }
@@ -276,11 +276,8 @@ public class WebSocketService {
      * @param message 消息
      */
     private static void sendMessage(WebSocketService service, String message) throws IOException {
-        service.session.getAsyncRemote().sendText(message);
-        try {
-            Thread.sleep(IntegerConsts.SIXTY);
-        } catch (InterruptedException e) {
-            logUtil.error(e);
+        synchronized (service.session) {
+            service.session.getBasicRemote().sendText(message);
         }
     }
 }

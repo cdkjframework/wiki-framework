@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-200820</version>
+    <version>1.0-200908</version>
     <modules>
         <module>cdkj-cloud</module>
         <module>cdkj-util</module>
@@ -41,7 +41,7 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-pom</artifactId>
-                <version>1.0-200820</version>
+                <version>1.0-200908</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -52,7 +52,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <name>lesmarthome Maven Respository</name>
-            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
 
         <repository>
@@ -60,7 +60,7 @@
             就会覆盖中央仓库的配置 -->
             <id>mvnRepository</id>
             <name>mvnRepository</name>
-            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/central/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/central/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
@@ -75,7 +75,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>
