@@ -11,6 +11,7 @@ import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.log.aop.AbstractBaseAopAspect;
 import com.cdkjframework.log.aop.enums.MethodEnums;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -78,6 +79,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
         methods.add("modify");
         methods.add("insertBatch");
         methods.add("insert");
+        insertField.add("id");
         insertField.add("status");
         insertField.add("deleted");
         insertField.add("addTime");
@@ -253,6 +255,9 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                 Object value = jsonObject.get(key);
                 if (StringUtils.isNullAndSpaceOrEmpty(value)) {
                     switch (key) {
+                        case "id":
+                            jsonObject.put(key, GeneratedValueUtils.getUuidString());
+                            break;
                         case "status":
                             jsonObject.put(key, IntegerConsts.ONE);
                             break;
