@@ -99,7 +99,7 @@
         <java.jwt.version>3.8.1</java.jwt.version>
         <jjwt.version>0.9.1</jjwt.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
-        <io.netty.version>4.1.51.Final</io.netty.version>
+        <io.netty.version>4.1.52.Final</io.netty.version>
 
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
@@ -512,6 +512,11 @@
             <dependency>
                 <groupId>io.netty</groupId>
                 <artifactId>netty-transport</artifactId>
+                <version>${io.netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
+                <artifactId>netty-handler</artifactId>
                 <version>${io.netty.version}</version>
             </dependency>
             <dependency>
