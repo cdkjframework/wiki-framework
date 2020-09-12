@@ -215,9 +215,13 @@ public class CurrentUser {
     public static <T> T getCurrentUser(Class<T> clazz) {
         try {
             String key = getRequestUserHeader();
-            Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
-            String token = claims.get("token").toString();
-            return getCurrentUser(token, clazz);
+            if (StringUtils.isNotNullAndEmpty(key)) {
+                Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
+                String token = claims.get("token").toString();
+                return getCurrentUser(token, clazz);
+            } else {
+                return null;
+            }
         } catch (Exception ex) {
             logUtils.error(ex);
         }
