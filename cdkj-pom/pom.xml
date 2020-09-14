@@ -516,6 +516,11 @@
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
+                <artifactId>netty-codec</artifactId>
+                <version>${io.netty.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.netty</groupId>
                 <artifactId>netty-handler</artifactId>
                 <version>${io.netty.version}</version>
             </dependency>
@@ -580,7 +585,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>
