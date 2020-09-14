@@ -284,7 +284,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                             break;
                     }
                 } else if (StringUtils.NEGATIVE_ONE.equals(value.toString())) {
-                    jsonObject.put(key, StringUtils.NullObject);
+                    jsonObject.put(key, null);
                 }
             }
         } catch (Exception ex) {
