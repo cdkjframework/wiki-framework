@@ -17,6 +17,12 @@ import java.util.List;
  */
 public class RibbonDiscoveryEnabledNiwsServerList extends DiscoveryEnabledNIWSServerList {
 
+    /**
+     * 构造函数
+     *
+     * @param vipAddresses         地址倣
+     * @param eurekaClientProvider 尤里卡客户提供商
+     */
     public RibbonDiscoveryEnabledNiwsServerList(String vipAddresses, Provider<EurekaClient> eurekaClientProvider) {
         super(vipAddresses, eurekaClientProvider);
     }

@@ -3,7 +3,6 @@ package com.cdkjframework.center.generate;
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.util.tool.meta.BeanRegistrationUtils;
-import com.ctrip.framework.apollo.spring.util.BeanRegistrationUtil;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
@@ -39,8 +38,8 @@ public class CdkjCoreConfigRegistrar implements ImportBeanDefinitionRegistrar {
         Map<String, Object> propertySourcesPlaceholderPropertyValues = new HashMap<>();
         propertySourcesPlaceholderPropertyValues.put("order", 0);
 
-        BeanRegistrationUtil.registerBeanDefinitionIfNotExists(registry, PropertySourcesPlaceholderConfigurer.class.getName(),
-                PropertySourcesPlaceholderConfigurer.class, propertySourcesPlaceholderPropertyValues);
+//        BeanRegistrationUtil.registerBeanDefinitionIfNotExists(registry, PropertySourcesPlaceholderConfigurer.class.getName(),
+//                PropertySourcesPlaceholderConfigurer.class, propertySourcesPlaceholderPropertyValues);
 
         BeanRegistrationUtils.registerBeanDefinitionIfNotExists(registry, Application.class.getName(), Application.class);
     }
