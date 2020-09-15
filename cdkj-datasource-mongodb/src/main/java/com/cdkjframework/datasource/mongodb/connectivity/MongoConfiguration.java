@@ -5,8 +5,6 @@ import com.cdkjframework.enums.datasource.ApolloMongoEnums;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.mapper.MapperUtils;
-import com.ctrip.framework.apollo.Config;
-import com.ctrip.framework.apollo.spring.annotation.ApolloConfig;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.MongoClientURI;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +37,6 @@ public class MongoConfiguration {
     private MongoConfig mongodbConfig;
 
     /**
-     * apollo配置
-     */
-    @ApolloConfig("cdkj.mongodb")
-    private Config apolloConfig;
-
-    /**
      * mongo模板
      *
      * @return 返回结果
@@ -62,13 +54,9 @@ public class MongoConfiguration {
     @Bean
     public MongoDbFactory mongoDbFactory() {
         //客户端配置（连接数、副本集群验证）
-        Boolean isConfig = apolloConfig == null || apolloConfig.getPropertyNames().size() == 0;
         MongoClientOptions.Builder mongoBuilder = new MongoClientOptions.Builder();
-        if (isConfig && StringUtils.isNullAndSpaceOrEmpty(mongodbConfig.getUri())) {
+        if (StringUtils.isNullAndSpaceOrEmpty(mongodbConfig.getUri())) {
             return new SimpleMongoDbFactory(new MongoClientURI("mongodb://127.0.0.1:27017/admin", mongoBuilder));
-        }
-        if (apolloConfig != null && StringUtils.isNullAndSpaceOrEmpty(mongodbConfig.getUri())) {
-            setConfiguration();
         }
         logUtil.info("mongodb 进入配置");
         mongoBuilder.maxWaitTime(mongodbConfig.getMaxWaitTime());
@@ -90,18 +78,5 @@ public class MongoConfiguration {
 
         logUtil.info("mongodb 配置结束");
         return mongoDbFactory;
-    }
-
-    /**
-     * 设置配置信息
-     */
-    private void setConfiguration() {
-        try {
-            mongodbConfig = MapperUtils.apolloToEntity(apolloConfig, ApolloMongoEnums.values(), MongoConfig.class);
-        } catch (IllegalAccessException ex) {
-            logUtil.error(ex.getCause(), ex.getMessage());
-        } catch (InstantiationException ex) {
-            logUtil.error(ex.getCause(), ex.getMessage());
-        }
     }
 }

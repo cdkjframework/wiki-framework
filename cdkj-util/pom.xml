@@ -102,10 +102,6 @@
             <artifactId>gson</artifactId>
         </dependency>
         <!-- jwt end -->
-        <dependency>
-            <groupId>com.ctrip.framework.apollo</groupId>
-            <artifactId>apollo-client</artifactId>
-        </dependency>
 
         <!-- 加载 freemarker -->
         <dependency>
@@ -281,7 +277,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>

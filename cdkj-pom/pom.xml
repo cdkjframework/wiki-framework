@@ -72,7 +72,6 @@
         <google.gson.version>2.8.5</google.gson.version>
         <google-collect.version>1.0-rc1</google-collect.version>
 
-        <apollo.version>1.3.0</apollo.version>
         <itextpdf.version>5.5.13.1</itextpdf.version>
         <apache.poi.version>4.1.0</apache.poi.version>
         <easyexcel.version>2.2.6</easyexcel.version>
@@ -85,6 +84,7 @@
         <kryo.version>4.0.2</kryo.version>
         <kryo.erializers.version>0.42</kryo.erializers.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <javax.inject.version>1</javax.inject.version>
         <tomcat.version>9.0.22</tomcat.version>
         <jackson.annotations.version>2.11.0</jackson.annotations.version>
         <jackson-datatype-jsr310.version>2.11.0</jackson-datatype-jsr310.version>
@@ -338,11 +338,6 @@
                 <artifactId>jjwt</artifactId>
                 <version>${jjwt.version}</version>
             </dependency>
-            <dependency>
-                <groupId>com.ctrip.framework.apollo</groupId>
-                <artifactId>apollo-client</artifactId>
-                <version>${apollo.version}</version>
-            </dependency>
 
             <!-- pdf begin -->
             <dependency>
@@ -474,6 +469,11 @@
                 <version>${javax.servlet.version}</version>
             </dependency>
             <dependency>
+                <groupId>javax.inject</groupId>
+                <artifactId>javax.inject</artifactId>
+                <version>${javax.inject.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.cxf</groupId>
                 <artifactId>cxf-rt-frontend-jaxws</artifactId>
                 <version>${cxf.version}</version>
@@ -585,7 +585,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>
