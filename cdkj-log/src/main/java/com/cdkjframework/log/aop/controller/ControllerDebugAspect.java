@@ -118,8 +118,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
      */
     @Override
     public Object proceed(ProceedingJoinPoint joinPoint) {
-        long currentTimeMillis = System.currentTimeMillis();
-        logUtils.info("aroundProcess" + currentTimeMillis);
         // 获取连接点参数
         Object[] args = joinPoint.getArgs();
         //获取连接点签名的方法名
@@ -129,19 +127,14 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
         //获取连接点目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
         logRecordDto.setExecutionClass(targetName);
-        logUtils.info("isLog" + System.currentTimeMillis());
         boolean isLog = buildLogRecord(logRecordDto);
         if (args.length > 0 && isLog) {
             JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
             logRecordDto.setParameter(jsonObject.toJSONString());
         }
-
-        logUtils.info("try" + System.currentTimeMillis());
         Object result = null;
         try {
-            logUtils.info("proceed" + System.currentTimeMillis());
             result = joinPoint.proceed(args);
-            logUtils.info("proceed end" + System.currentTimeMillis());
             if (!isLog) {
                 return result;
             }
@@ -159,7 +152,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
                 }
                 logRecordDto.setResult(resultJson);
             }
-            logUtils.info("isLog end" + System.currentTimeMillis());
         } catch (Throwable ex) {
             if (isLog) {
                 logRecordDto.setExecutionState(IntegerConsts.TWENTY);
@@ -176,7 +168,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logRecordDto.setResultTime(System.currentTimeMillis());
             logRecordDtoQueue.add(logRecordDto);
         }
-        logUtils.info("result" + System.currentTimeMillis());
         return result;
     }
 
@@ -223,7 +214,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logRecordDto.setClientIp(HttpServletUtils.getLocalAddr());
 
             long currentTimeMillis = System.currentTimeMillis();
-            logUtils.info("aroundProcess" + currentTimeMillis);
             String organizationCode = "-" + user.getOrganizationCode();
             final String LOG_PREFIX = "LOG" + organizationCode;
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
@@ -232,7 +222,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logRecordDto.setTopOrganizationCode(user.getTopOrganizationCode());
             logRecordDto.setOrganizationId(user.getOrganizationId());
             logRecordDto.setOrganizationCode(user.getOrganizationCode());
-            logUtils.info("CurrentUser" + (currentTimeMillis - System.currentTimeMillis()));
         } catch (GlobalException ex) {
             logUtils.error(ex.getMessage());
         }
