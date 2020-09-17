@@ -131,7 +131,6 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
         //获取连接点参数
         Object[] args = joinPoint.getArgs();
         // 权限配置读取
-        PermissionDto permissionDto = buildAuthority();
         String[] parameterNames = new String[args.length];
         MethodEnums methodEnums = null;
         if (args.length > 0) {
@@ -215,7 +214,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     private String buildParameterData(String parameterName, Object arg, UserEntity user) {
         String parameter = null;
         // 上级ID
-        if (TOP_ORGANIZATION_ID.equals(parameterName)) {
+        if (TOP_ORGANIZATION_ID.equals(parameterName) && StringUtils.isNotNullAndEmpty(user.getTopOrganizationId())) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
                 parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
@@ -224,7 +223,8 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
         }
         // 当前ID
         boolean isCurrent = user.getPermissions() != null && user.getPermissions().equals(IntegerConsts.ONE);
-        if (ORGANIZATION_ID.equals(parameterName) && isCurrent) {
+        if (ORGANIZATION_ID.equals(parameterName) && isCurrent
+                && StringUtils.isNotNullAndEmpty(user.getTopOrganizationId())) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
                 parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
@@ -267,7 +267,9 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                             jsonObject.put(key, LocalDateTime.now());
                             break;
                         case "topOrganizationId":
-                            jsonObject.put(key, user.getTopOrganizationId());
+                            if (StringUtils.isNotNullAndEmpty(user.getTopOrganizationId())) {
+                                jsonObject.put(key, user.getTopOrganizationId());
+                            }
                             break;
                         case "addUserId":
                         case "editUserId":
@@ -278,7 +280,9 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                             jsonObject.put(key, user.getDisplayName());
                             break;
                         default:
-                            jsonObject.put(key, user.getOrganizationId());
+                            if (StringUtils.isNotNullAndEmpty(user.getOrganizationId())) {
+                                jsonObject.put(key, user.getOrganizationId());
+                            }
                             break;
                     }
                 } else if (StringUtils.NEGATIVE_ONE.equals(value.toString())) {
@@ -302,6 +306,9 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     private JSONObject buildEntityData(Object parameter, UserEntity user) {
         JSONObject jsonObject = JsonUtils.beanToJsonObject(parameter);
         try {
+            if (StringUtils.isNullAndSpaceOrEmpty(user.getTopOrganizationId())) {
+                return jsonObject;
+            }
             // 顶级机构
             Object topOrganizationId = jsonObject.get(TOP_ORGANIZATION_ID);
             if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
@@ -329,27 +336,5 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 
         // 返回结果
         return jsonObject;
-    }
-
-    /**
-     * 构建权限验证
-     */
-    private PermissionDto buildAuthority() {
-        PermissionDto permissionDto;
-        if (StringUtils.isNotNullAndEmpty(customConfig.getPermission())) {
-            List<PermissionDto> permissionDtoList = JsonUtils.jsonStringToList(customConfig.getPermission(), PermissionDto.class);
-            Optional<PermissionDto> optional = permissionDtoList.stream()
-                    .filter(f -> f.getOrganization().equals(CurrentUser.getOrganizationCode()))
-                    .findFirst();
-            if (optional.isPresent()) {
-                permissionDto = optional.get();
-            } else {
-                permissionDto = null;
-            }
-        } else {
-            permissionDto = null;
-        }
-        // 返回结果
-        return permissionDto;
     }
 }
