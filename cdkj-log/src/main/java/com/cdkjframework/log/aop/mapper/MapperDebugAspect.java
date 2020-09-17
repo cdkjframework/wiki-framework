@@ -127,7 +127,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
      */
     @Override
     public Object proceed(ProceedingJoinPoint joinPoint) throws Throwable {
-        logUtils.info("process" + System.currentTimeMillis());
+        UserEntity user = CurrentUser.getCurrentUser();
         //获取连接点参数
         Object[] args = joinPoint.getArgs();
         // 权限配置读取
@@ -155,15 +155,15 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
             if (className.endsWith(FILTER_CLASS_ENT_NAME)) {
                 JSONObject jsonObject;
                 if (methodEnums == null) {
-                    jsonObject = buildEntityData(parameter, permissionDto);
+                    jsonObject = buildEntityData(parameter, user);
                 } else {
-                    jsonObject = buildEntityData(parameter, methodEnums);
+                    jsonObject = buildEntityData(parameter, user, methodEnums);
                 }
                 args[i] = JsonUtils.jsonObjectToBean(jsonObject, targetClass);
                 continue;
             }
             if (methodEnums == null) {
-                String arg = buildParameterData(parameterNames[i], parameter, permissionDto);
+                String arg = buildParameterData(parameterNames[i], parameter, user);
                 if (arg != null) {
                     args[i] = arg;
                 }
@@ -173,7 +173,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                 JSONArray array = new JSONArray();
                 for (Object object :
                         jsonArray) {
-                    JSONObject jsonObject = buildEntityData(object, methodEnums);
+                    JSONObject jsonObject = buildEntityData(object, user, methodEnums);
                     array.add(jsonObject);
                 }
                 args[i] = JsonUtils.jsonArrayToList(array, targetClass);
@@ -209,15 +209,13 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
      *
      * @param parameterName 参数名称
      * @param arg           参数
-     * @param permissionDto 权限信息
+     * @param user          用户信息
      * @return 返回结果
      */
-    private String buildParameterData(String parameterName, Object arg, PermissionDto permissionDto) {
+    private String buildParameterData(String parameterName, Object arg, UserEntity user) {
         String parameter = null;
-        UserEntity user = CurrentUser.getCurrentUser();
         // 上级ID
-        boolean isSuperior = permissionDto == null || permissionDto.isSuperior();
-        if (TOP_ORGANIZATION_ID.equals(parameterName) && isSuperior) {
+        if (TOP_ORGANIZATION_ID.equals(parameterName)) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
                 parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
@@ -225,7 +223,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
             }
         }
         // 当前ID
-        boolean isCurrent = permissionDto != null && permissionDto.isCurrent();
+        boolean isCurrent = user.getPermissions() != null && user.getPermissions().equals(IntegerConsts.ONE);
         if (ORGANIZATION_ID.equals(parameterName) && isCurrent) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
                 parameter = StringUtils.Empty;
@@ -242,13 +240,13 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
      * 构造实体数据
      *
      * @param parameter   参数
+     * @param user        用户信息
      * @param methodEnums 方法
      * @return 返回 JSON 对象
      */
-    private JSONObject buildEntityData(Object parameter, MethodEnums methodEnums) {
+    private JSONObject buildEntityData(Object parameter, UserEntity user, MethodEnums methodEnums) {
         JSONObject jsonObject = JsonUtils.beanToJsonObject(parameter);
         try {
-            UserEntity user = CurrentUser.getCurrentUser();
             List<String> replaceList = (methodEnums == MethodEnums.insert || methodEnums == MethodEnums.insertBatch) ? insertField : modifyField;
             for (String key :
                     replaceList) {
@@ -297,28 +295,25 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     /**
      * 构造实体数据
      *
-     * @param parameter     参数
-     * @param permissionDto 权限
+     * @param parameter 参数
+     * @param user      用户信息
      * @return 返回 JSON 对象
      */
-    private JSONObject buildEntityData(Object parameter, PermissionDto permissionDto) {
+    private JSONObject buildEntityData(Object parameter, UserEntity user) {
         JSONObject jsonObject = JsonUtils.beanToJsonObject(parameter);
-        UserEntity user = CurrentUser.getCurrentUser();
         try {
             // 顶级机构
-            if (permissionDto == null || permissionDto.isSuperior()) {
-                Object topOrganizationId = jsonObject.get(TOP_ORGANIZATION_ID);
-                if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
-                    jsonObject.put(TOP_ORGANIZATION_ID, user.getTopOrganizationId());
-                } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && StringUtils.NEGATIVE_ONE.equals(topOrganizationId.toString())) {
-                    jsonObject.put(TOP_ORGANIZATION_ID, StringUtils.NullObject);
-                }
+            Object topOrganizationId = jsonObject.get(TOP_ORGANIZATION_ID);
+            if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {
+                jsonObject.put(TOP_ORGANIZATION_ID, user.getTopOrganizationId());
+            } else if (StringUtils.isNotNullAndEmpty(topOrganizationId) && StringUtils.NEGATIVE_ONE.equals(topOrganizationId.toString())) {
+                jsonObject.put(TOP_ORGANIZATION_ID, StringUtils.NullObject);
             }
 
             // 当前机构
             Object organizationId = jsonObject.get(ORGANIZATION_ID);
-            boolean controlCurrent = permissionDto != null && permissionDto.isCurrent();
-            if (controlCurrent) {
+            boolean isCurrent = user.getPermissions() != null && user.getPermissions().equals(IntegerConsts.ONE);
+            if (isCurrent) {
                 if (StringUtils.isNullAndSpaceOrEmpty(organizationId)) {
                     jsonObject.put(ORGANIZATION_ID, user.getOrganizationId());
                 } else if (StringUtils.isNotNullAndEmpty(organizationId) && StringUtils.NEGATIVE_ONE.equals(organizationId.toString())) {
