@@ -2,13 +2,11 @@ package com.cdkjframework.cloud.config;
 
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -26,6 +24,16 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
      */
     private LogUtils logUtils = LogUtils.getLogger(FeignBasicAuthRequestInterceptor.class);
 
+    /**
+     *
+     */
+    private List<String> headerNameList = Arrays.asList("User-Agent", "token");
+
+    /**
+     * 应用
+     *
+     * @param requestTemplate 请求模板
+     */
     @Override
     public void apply(RequestTemplate requestTemplate) {
         try {
@@ -34,21 +42,9 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
                 logUtils.error("request is null");
                 return;
             }
-            final List<String> headerNameList = Arrays.asList("user-agent", "token");
-            Enumeration<String> headerNames = request.getHeaderNames();
-            if (headerNames != null) {
-                while (headerNames.hasMoreElements()) {
-                    String name = headerNames.nextElement();
-                    if (StringUtils.isNullAndSpaceOrEmpty(name) || !headerNameList.contains(name.toLowerCase())) {
-                        continue;
-                    }
-                    String values = request.getHeader(name);
-                    logUtils.info("name：" + name);
-                    logUtils.info("values：" + values);
-                    requestTemplate.header(name, values);
-                }
-            } else {
-                logUtils.error("headerNames is null");
+            for (String key :
+                    headerNameList) {
+                requestTemplate.header(key, request.getHeader(key));
             }
         } catch (Exception e) {
             logUtils.error(e.getStackTrace(), e.getMessage());

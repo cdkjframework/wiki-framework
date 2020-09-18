@@ -1,11 +1,13 @@
 package com.cdkjframework.core.spring.cors;
 
+import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -66,6 +68,14 @@ public class CorsFilter implements Filter {
         logUtils.info("请求地址：" + request.getServletPath());
         logUtils.info("请求客服端：" + getRemoteAddr(request));
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    /**
+     * 摧毁
+     */
+    @Override
+    public void destroy() {
+
     }
 
     /**

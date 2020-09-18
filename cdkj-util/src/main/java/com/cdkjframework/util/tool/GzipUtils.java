@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -71,7 +72,7 @@ public class GzipUtils {
                 }
             }
         }
-        return new sun.misc.BASE64Encoder().encode(out.toByteArray());
+        return Base64.getEncoder().encodeToString(out.toByteArray());
     }
 
     /**
@@ -90,7 +91,7 @@ public class GzipUtils {
         byte[] compressed = null;
         String decompressed = null;
         try {
-            compressed = new sun.misc.BASE64Decoder().decodeBuffer(compressedStr);
+            compressed = Base64.getDecoder().decode(compressedStr);
             in = new ByteArrayInputStream(compressed);
             inGzip = new GZIPInputStream(in);
             byte[] buffer = new byte[IntegerConsts.BYTE_LENGTH];

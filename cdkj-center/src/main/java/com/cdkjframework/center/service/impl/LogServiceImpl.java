@@ -8,8 +8,8 @@ import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.tool.CopyUtils;
+import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -120,10 +120,17 @@ public class LogServiceImpl implements LogService {
         query.skip((logRecordDto.getPageIndex() - IntegerConsts.ONE) * logRecordDto.getPageSize()).limit(logRecordDto.getPageSize());
 
         PageEntity pageEntity = new PageEntity();
-        List pageList = mongoDbRepository.findPageEntityList(query, LogRecordEntity.class);
-        pageEntity.setTotal(ConvertUtils.convertInt(pageList.get(IntegerConsts.ONE)));
-        Page page = (Page) pageList.get(IntegerConsts.ZERO);
-        pageEntity.setData(page.getContent());
+        Page<LogRecordEntity> pageList = mongoDbRepository.listEntityPage(query, LogRecordEntity.class);
+        pageEntity.setTotal(pageList.getTotalPages());
+        List<LogRecordEntity> logRecordEntities = pageList.getContent();
+        for (LogRecordEntity entity :
+                logRecordEntities) {
+            entity.setParameter(GzipUtils.uncompress(entity.getParameter()));
+            entity.setResult(GzipUtils.uncompress(entity.getResult()));
+            entity.setResultErrorMessage(GzipUtils.uncompress(entity.getResultErrorMessage()));
+        }
+
+        pageEntity.setData(pageList.getContent());
         pageEntity.setPageIndex(logRecordDto.getPageIndex());
 
         // 返回结果
