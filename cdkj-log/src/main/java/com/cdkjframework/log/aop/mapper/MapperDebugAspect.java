@@ -178,12 +178,9 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                 args[i] = JsonUtils.jsonArrayToList(array, targetClass);
             }
         }
-        logUtils.info("parameter end" + System.currentTimeMillis());
         Object object;
         try {
-            logUtils.info("proceed mapper" + System.currentTimeMillis());
             object = joinPoint.proceed(args);
-            logUtils.info("proceed mapper end" + System.currentTimeMillis());
         } catch (Exception ex) {
             logUtils.error(ex.getMessage());
             throw new GlobalRuntimeException(ex, ex.getMessage());
@@ -214,7 +211,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     private String buildParameterData(String parameterName, Object arg, UserEntity user) {
         String parameter = null;
         // 上级ID
-        if (TOP_ORGANIZATION_ID.equals(parameterName) && StringUtils.isNotNullAndEmpty(user.getTopOrganizationId())) {
+        if (TOP_ORGANIZATION_ID.equals(parameterName)) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
                 parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
@@ -223,8 +220,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
         }
         // 当前ID
         boolean isCurrent = user.getPermissions() != null && user.getPermissions().equals(IntegerConsts.ONE);
-        if (ORGANIZATION_ID.equals(parameterName) && isCurrent
-                && StringUtils.isNotNullAndEmpty(user.getTopOrganizationId())) {
+        if (ORGANIZATION_ID.equals(parameterName) && isCurrent) {
             if (StringUtils.isNotNullAndEmpty(arg) && StringUtils.NEGATIVE_ONE.equals(arg)) {
                 parameter = StringUtils.Empty;
             } else if (StringUtils.isNullAndSpaceOrEmpty(arg)) {
@@ -306,9 +302,6 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     private JSONObject buildEntityData(Object parameter, UserEntity user) {
         JSONObject jsonObject = JsonUtils.beanToJsonObject(parameter);
         try {
-            if (StringUtils.isNullAndSpaceOrEmpty(user.getTopOrganizationId())) {
-                return jsonObject;
-            }
             // 顶级机构
             Object topOrganizationId = jsonObject.get(TOP_ORGANIZATION_ID);
             if (StringUtils.isNullAndSpaceOrEmpty(topOrganizationId)) {

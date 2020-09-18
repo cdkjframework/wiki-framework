@@ -16,6 +16,7 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.AnalysisUtils;
+import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.aspectj.lang.JoinPoint;
@@ -71,6 +72,9 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
                     LogRecordDto logRecordDto = logRecordDtoQueue.poll();
                     if (logRecordDto != null) {
                         try {
+                            logRecordDto.setParameter(GzipUtils.compress(logRecordDto.getParameter()));
+                            logRecordDto.setResult(GzipUtils.compress(logRecordDto.getResult()));
+                            logRecordDto.setResultErrorMessage(GzipUtils.compress(logRecordDto.getResultErrorMessage()));
                             logServiceImpl.insertLog(logRecordDto);
                         } catch (Exception ex) {
                             logUtils.error("写入日志出错：");
