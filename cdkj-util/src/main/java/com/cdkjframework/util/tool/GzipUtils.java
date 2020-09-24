@@ -102,6 +102,7 @@ public class GzipUtils {
             decompressed = out.toString();
         } catch (IOException e) {
             logUtils.error(e);
+            decompressed = compressedStr;
         } finally {
             if (inGzip != null) {
                 try {
