@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * @Version: 1.0
  */
 @Component
-@ServerEndpoint(value = "{module}/socket/webSocket/{type}/{clientId}")
+@ServerEndpoint(value = "/{module}/socket/webSocket/{type}/{clientId}")
 public class WebSocketService {
 
     /**
