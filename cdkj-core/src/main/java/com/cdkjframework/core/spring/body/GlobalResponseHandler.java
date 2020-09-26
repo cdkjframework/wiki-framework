@@ -1,7 +1,9 @@
 package com.cdkjframework.core.spring.body;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -113,9 +115,21 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      * @return 返回结果
      */
     private Object encryptHandle(Object o) {
-        if (!customConfig.isEncryption()) {
-            return o;
+        String json = JsonUtils.objectToJsonString(o);
+        if (customConfig.isEncryption()) {
+            json = AesUtils.base64Encode(JsonUtils.objectToJsonString(o));
         }
-        return AesUtils.base64Encode(JsonUtils.objectToJsonString(o));
+
+        if (!customConfig.isEncryption() && customConfig.isJson()) {
+            JSONArray jsonArray = JsonUtils.parseArray(json);
+            if (jsonArray.size() > IntegerConsts.ONE) {
+                return jsonArray;
+            } else {
+                return jsonArray.size() == IntegerConsts.ZERO ?
+                        JsonUtils.parseObject(json) : jsonArray.get(IntegerConsts.ZERO);
+            }
+        } else {
+            return json;
+        }
     }
 }

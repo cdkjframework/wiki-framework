@@ -50,6 +50,11 @@ public class CustomConfig {
     private boolean encryption = false;
 
     /**
+     * 是否 JSON 格式
+     */
+    private boolean json = false;
+
+    /**
      * 过虑接口
      */
     private List<String> filters;

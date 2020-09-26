@@ -38,6 +38,7 @@ public class LocalDateUtils {
     public static final String DATE_HHMMSS = "yyyyMMddHHmmss";
     public static final String DATE_YEAR = "yyyy";
     public static final String DATE_MONTH = "yyyy-MM";
+    public static final String TIME = "HH:mm:ss";
 
     /**
      * 获取到当前时间 yyyy-MM-dd HH:mm:ss
@@ -65,8 +66,7 @@ public class LocalDateUtils {
      * @return 返回结果
      */
     public static LocalDateTime parseDateTime(String dateTime) {
-        long time = Date.parse(dateTime);
-        return Instant.ofEpochMilli(time).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return dateTimeParse(dateTime, DATE_HH_MM_SS);
     }
 
     /**

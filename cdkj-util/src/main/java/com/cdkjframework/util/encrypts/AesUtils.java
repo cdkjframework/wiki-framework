@@ -1,6 +1,7 @@
 package com.cdkjframework.util.encrypts;
 
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -65,7 +66,7 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Encode(String content) {
-        String encode = "";
+        String encode = StringUtils.Empty;
         try {
             byte[] bytes = encrypt(content);
             encode = Base64Utils.encode(bytes);
@@ -105,7 +106,7 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Decrypt(String content) {
-        String decryptString = "";
+        String decryptString = StringUtils.Empty;
         try {
             byte[] decodeDataToByte = Base64Utils.decodeDataToByte(content);
             decryptString = decrypt(decodeDataToByte);
@@ -124,7 +125,7 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Decrypt(byte[] content) {
-        String encryptString = "";
+        String encryptString = StringUtils.Empty;
         try {
             byte[] bytes = Base64Utils.decodeDataToByte(content);
             encryptString = decrypt(bytes);
