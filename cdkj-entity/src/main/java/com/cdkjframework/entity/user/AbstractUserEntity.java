@@ -107,6 +107,11 @@ public abstract class AbstractUserEntity extends BaseEntity {
     private Integer permissions;
 
     /**
+     * 床位是否 对多对
+     */
+    private Integer bedMores;
+
+    /**
      * 备注
      */
     private String remark;

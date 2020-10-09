@@ -1,6 +1,10 @@
 package com.cdkjframework.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -12,7 +16,11 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
+@Getter
+@Setter
+@ToString
 @Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.mq.message.mqtt")
 public class MqttConfig {
 
@@ -70,92 +78,4 @@ public class MqttConfig {
      * 方法名称
      */
     private String methodName = "";
-
-    public String getRegion() {
-        return region;
-    }
-
-    public void setRegion(String region) {
-        this.region = region;
-    }
-
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getToPic() {
-        return toPic;
-    }
-
-    public void setToPic(String toPic) {
-        this.toPic = toPic;
-    }
-
-    public String getToPicList() {
-        return toPicList;
-    }
-
-    public void setToPicList(String toPicList) {
-        this.toPicList = toPicList;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getConnectionTimeout() {
-        return connectionTimeout;
-    }
-
-    public void setConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
-    }
-
-    public int getKeepAliveInterval() {
-        return keepAliveInterval;
-    }
-
-    public void setKeepAliveInterval(int keepAliveInterval) {
-        this.keepAliveInterval = keepAliveInterval;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
 }

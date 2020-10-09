@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Setter
 @ToString
 @Component
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.cdkj.redis")
 public class RedisConfig {
 

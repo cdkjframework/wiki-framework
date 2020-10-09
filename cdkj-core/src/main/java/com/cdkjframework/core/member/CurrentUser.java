@@ -115,6 +115,15 @@ public class CurrentUser {
     }
 
     /**
+     * 床位是否 对多对
+     *
+     * @return 返回结果
+     */
+    public static Integer getBedMores() {
+        return getCurrentUser().getBedMores();
+    }
+
+    /**
      * 获取所在机构ID
      *
      * @return 返回结果

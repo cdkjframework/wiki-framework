@@ -1,7 +1,12 @@
 package com.cdkjframework.util.tool;
 
 import com.cdkjframework.util.log.LogUtils;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.script.Invocable;
@@ -21,7 +26,12 @@ import java.net.URL;
  * @Version: 1.0
  */
 
+@Getter
+@Setter
+@ToString
 @Component
+@Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.script")
 public class ScriptUtils {
     /**
@@ -33,14 +43,6 @@ public class ScriptUtils {
      * 地址
      */
     private String address;
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
 
     /**
      * 解析脚本数据

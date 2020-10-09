@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-200924</version>
+    <version>1.0-201009</version>
     <modules>
         <module>cdkj-cloud</module>
         <module>cdkj-util</module>

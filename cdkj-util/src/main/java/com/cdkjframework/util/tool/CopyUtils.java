@@ -1,5 +1,6 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -44,17 +45,20 @@ public class CopyUtils {
      * @return 返回结果
      */
     public static <S> String[] getNullPropertyNames(S source) {
+        if (source == null) {
+            return new String[]{};
+        }
         //包装 bean
-        final BeanWrapper src = new BeanWrapperImpl(source);
+        final BeanWrapper wrapper = new BeanWrapperImpl(source);
         //获取属性描述符
-        PropertyDescriptor[] pds = src.getPropertyDescriptors();
+        PropertyDescriptor[] propertyList = wrapper.getPropertyDescriptors();
 
         //记录信息
         Set<String> emptyNames = new HashSet<String>();
-        for (PropertyDescriptor pd : pds) {
-            Object srcValue = src.getPropertyValue(pd.getName());
+        for (PropertyDescriptor property : propertyList) {
+            Object srcValue = wrapper.getPropertyValue(property.getName());
             if (srcValue == null) {
-                emptyNames.add(pd.getName());
+                emptyNames.add(property.getName());
             }
         }
         String[] result = new String[emptyNames.size()];
@@ -225,15 +229,18 @@ public class CopyUtils {
      */
     private static <S, T> void copyProperties(S source, T target, boolean isNull) {
         try {
-            if (isNull) {
-                BeanUtils.copyProperties(source, target, getNullPropertyNames(source));
+            // 验证是否有实体信息
+            if (source == null) {
+                return;
+            }
+            String[] propertyNames = getNullPropertyNames(source);
+            if (isNull && propertyNames.length > IntegerConsts.ZERO) {
+                BeanUtils.copyProperties(source, target, propertyNames);
             } else {
                 BeanUtils.copyProperties(source, target);
             }
-            // 验证是否有实体信息
-
             List<Field> targetFields = ReflectionUtils.getDeclaredFields(target.getClass());
-            List<Field>  fields = ReflectionUtils.getDeclaredFields(source.getClass());
+            List<Field> fields = ReflectionUtils.getDeclaredFields(source.getClass());
             for (Field targetField :
                     targetFields) {
                 targetField.setAccessible(true);

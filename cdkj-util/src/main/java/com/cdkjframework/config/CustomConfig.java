@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import java.util.List;
 @Setter
 @ToString
 @Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.custom")
 public class CustomConfig {
 
