@@ -41,7 +41,7 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-pom</artifactId>
-                <version>1.0-200924</version>
+                <version>1.0-201009</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
