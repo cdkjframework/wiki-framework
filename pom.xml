@@ -28,6 +28,8 @@
         <module>cdkj-security</module>
         <module>cdkj-web-socket</module>
         <module>cdkj-datasource-rw</module>
+        <module>cdkj-flowable</module>
+        <module>cdkj-config</module>
     </modules>
 
     <parent>

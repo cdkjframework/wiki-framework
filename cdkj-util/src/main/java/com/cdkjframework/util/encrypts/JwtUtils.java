@@ -1,6 +1,7 @@
 package com.cdkjframework.util.encrypts;
 
 import com.cdkjframework.constant.HttpHeaderConsts;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
@@ -100,25 +101,25 @@ public class JwtUtils {
      *
      * @param jwtToken       token
      * @param base64Security base64安全性
+     * @param userAgent 用户代理
      * @return 返回 redis token
      * @throws Exception 异常信息
      */
-    public static String checkToken(String jwtToken, String base64Security) throws Exception {
+    public static String checkToken(String jwtToken, String base64Security, String userAgent) throws Exception {
         String token;
         try {
             Claims claims = parseJwt(jwtToken, base64Security);
-            Long effective = ConvertUtils.convertLong(claims.get("effective"));
+            long effective = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
             Long time = ConvertUtils.convertLong(claims.get("time"));
             // 验证 token 是否过期
             LocalDateTime localDateTime = LocalDateUtils.timestampToLocalDateTime(time)
                     .plusSeconds(effective);
-            if (LocalDateUtils.greater(LocalDateTime.now(), localDateTime)) {
+            if (LocalDateUtils.greater(localDateTime, LocalDateTime.now())) {
                 throw new GlobalException("token 过期！");
             }
 
             // 验证 token 签名
-            String loginName = String.valueOf(claims.get("loginName"));
-            String userAgent = HttpServletUtils.getRequest().getHeader(HttpHeaderConsts.USER_AGENT);
+            String loginName = String.valueOf(claims.get("username"));
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("loginName=%s&effective=%s&time=%s&userAgent=%s", loginName, effective, time, userAgent));
             token = String.valueOf(claims.get("token"));
@@ -147,7 +148,7 @@ public class JwtUtils {
         String token = JwtUtils.createJwt(map, key, System.currentTimeMillis());
 
         try {
-            JwtUtils.checkToken(token, key);
+            JwtUtils.checkToken(token, key,"");
         } catch (Exception e) {
             e.printStackTrace();
         }
