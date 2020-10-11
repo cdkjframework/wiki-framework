@@ -18,6 +18,7 @@
 
     <properties>
         <cdkj-cloud.version>1.0-201009</cdkj-cloud.version>
+        <cdkj-config.version>1.0-201009</cdkj-config.version>
         <cdkj-util.version>1.0-201009</cdkj-util.version>
         <cdkj-constant.version>1.0-201009</cdkj-constant.version>
         <cdkj-core.version>1.0-201009</cdkj-core.version>
@@ -75,6 +76,7 @@
         <itextpdf.version>5.5.13.1</itextpdf.version>
         <apache.poi.version>4.1.0</apache.poi.version>
         <easyexcel.version>2.2.6</easyexcel.version>
+        <flowable.version>6.5.0</flowable.version>
         <logback.version>1.2.3</logback.version>
         <lettuce-core.version>5.1.8.RELEASE</lettuce-core.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
@@ -118,6 +120,11 @@
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-cloud</artifactId>
                 <version>${cdkj-cloud.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-config</artifactId>
+                <version>${cdkj-config.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
@@ -353,6 +360,12 @@
                 <version>${easyexcel.version}</version>
             </dependency>
             <!--end Excel-->
+            <!-- 工作流-->
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-engine</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
 
             <!-- begin swagger2 -->
             <dependency>
