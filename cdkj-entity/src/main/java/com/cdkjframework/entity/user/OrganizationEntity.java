@@ -39,6 +39,11 @@ public class OrganizationEntity extends BaseEntity implements Serializable {
     private Integer permissions;
 
     /**
+     * 床位是否 对多对
+     */
+    private Integer bedMores;
+
+    /**
      * 名称
      */
     private String name;

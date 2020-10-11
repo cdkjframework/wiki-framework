@@ -1,6 +1,10 @@
 package com.cdkjframework.config;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -11,7 +15,11 @@ import org.springframework.context.annotation.Configuration;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Getter
+@Setter
+@ToString
 @Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.authority.jwt")
 public class JwtSecretConfig {
 
@@ -29,28 +37,4 @@ public class JwtSecretConfig {
      * 用于JWT 加密的密匙 自定义
      */
     public String dataKey = "jwt.cdkjframework.com";
-
-    public String getSecret() {
-        return secret;
-    }
-
-    public void setSecret(String secret) {
-        this.secret = secret;
-    }
-
-    public int getExpires() {
-        return expires;
-    }
-
-    public void setExpires(int expires) {
-        this.expires = expires;
-    }
-
-    public String getDataKey() {
-        return dataKey;
-    }
-
-    public void setDataKey(String dataKey) {
-        this.dataKey = dataKey;
-    }
 }
