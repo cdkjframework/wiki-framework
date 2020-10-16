@@ -1,18 +1,15 @@
-package com.cdkjframework.core.base.swagger;
+package com.cdkjframework.swagger;
 
 import com.cdkjframework.config.SwaggerConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.util.tool.JsonUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -45,8 +42,16 @@ public class SwaggerConfiguration {
     /**
      * 读取配置
      */
-    @Autowired
-    private SwaggerConfig swaggerConfig;
+    private final SwaggerConfig swaggerConfig;
+
+    /**
+     * 构造函数
+     *
+     * @param swaggerConfig 配置
+     */
+    public SwaggerConfiguration(SwaggerConfig swaggerConfig) {
+        this.swaggerConfig = swaggerConfig;
+    }
 
 
     /**
@@ -59,7 +64,6 @@ public class SwaggerConfiguration {
      */
     @Bean
     public void runSwagger() {
-
         //接口信息
         List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
                 .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);

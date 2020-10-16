@@ -18,6 +18,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * @ProjectName: cdkjframework
@@ -104,7 +105,13 @@ public class LogServiceImpl implements LogService {
         }
         // 查询序号
         if (StringUtils.isNotNullAndEmpty(logRecordDto.getSerialNumber())) {
-            criteria.and("serialNumber").regex(logRecordDto.getSerialNumber());
+            Pattern pattern = Pattern.compile("^.*" + logRecordDto.getSerialNumber() + ".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("serialNumber").regex(pattern);
+        }
+        // 查询地址
+        if (StringUtils.isNotNullAndEmpty(logRecordDto.getServletPath())) {
+            Pattern pattern = Pattern.compile("^.*" + logRecordDto.getServletPath() + ".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("servletPath").regex(pattern);
         }
 
         // 机构查询
@@ -132,6 +139,7 @@ public class LogServiceImpl implements LogService {
 
         pageEntity.setData(pageList.getContent());
         pageEntity.setPageIndex(logRecordDto.getPageIndex());
+        pageEntity.setTotal(pageList.getTotalElements());
 
         // 返回结果
         return pageEntity;

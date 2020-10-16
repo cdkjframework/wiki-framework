@@ -9,14 +9,22 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-flowable</artifactId>
-
-    <description>工作流</description>
+    <artifactId>cdkj-swagger</artifactId>
 
     <dependencies>
+        <!-- begin swagger2 -->
         <dependency>
-            <groupId>org.flowable</groupId>
-            <artifactId>flowable-engine</artifactId>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+        </dependency>
+        <!-- end swagger2 -->
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-util</artifactId>
         </dependency>
     </dependencies>
 
@@ -67,7 +75,6 @@
         </plugins>
     </build>
 
-
     <distributionManagement>
         <repository>
             <id>lesmarthome Maven Respository</id>
@@ -75,4 +82,5 @@
             <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
+
 </project>
