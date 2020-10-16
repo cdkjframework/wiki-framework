@@ -71,11 +71,13 @@ public class SwaggerConfiguration {
         //接口信息
         List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
                 .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
+        List<SwaggerHeaderEntity> headerEntityList;
         if (StringUtils.isNullAndSpaceOrEmpty(swaggerConfig.getHeaders())) {
-            return;
+            headerEntityList = JsonUtils
+                    .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
+        } else {
+            headerEntityList = new ArrayList<>();
         }
-        List<SwaggerHeaderEntity> headerEntityList = JsonUtils
-                .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
         final boolean hidden = swaggerConfig.getHidden();
         for (SwaggerApiInfoEntity entity :
                 apiInfoEntityList) {
