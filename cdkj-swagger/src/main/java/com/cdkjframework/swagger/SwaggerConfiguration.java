@@ -5,6 +5,7 @@ import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -64,9 +65,15 @@ public class SwaggerConfiguration {
      */
     @Bean
     public void runSwagger() {
+        if (StringUtils.isNullAndSpaceOrEmpty(swaggerConfig.getBasePackage())) {
+            return;
+        }
         //接口信息
         List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
                 .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
+        if (StringUtils.isNullAndSpaceOrEmpty(swaggerConfig.getHeaders())) {
+            return;
+        }
         List<SwaggerHeaderEntity> headerEntityList = JsonUtils
                 .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
         final boolean hidden = swaggerConfig.getHidden();
