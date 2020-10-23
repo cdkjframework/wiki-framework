@@ -76,7 +76,7 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
         //支付失效时间
         int failureTime = configEntity.getFailureTime();
         long time = 300;
-        if (failureTime >= 0) {
+        if (failureTime >= IntegerConsts.ZERO) {
             time = Long.valueOf(failureTime);
         }
         LocalDateTime dateTime = recordEntity.getAddTime().plus(time, ChronoUnit.SECONDS);
@@ -161,7 +161,7 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
         webChatQueryEntity.setNonceStr(GeneratedValueUtils.getUuidNotTransverseLine());
 
         //签名
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>(IntegerConsts.FIVE);
         data.put("appid", webChatQueryEntity.getAppId());
         data.put("mch_id", webChatQueryEntity.getMchId());
         data.put("nonce_str", webChatQueryEntity.getNonceStr());
@@ -215,7 +215,7 @@ public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPay
     private String buildSignatureHasMap(PayConfigEntity configEntity, WebChatPayResultsEntity resultsEntity,
                                         WebChatPayConfigEntity webChatPayConfigEntity) throws Exception {
         //验证签名
-        Map<String, String> data = new HashMap<>(9);
+        Map<String, String> data = new HashMap<>(IntegerConsts.NINE);
         data.put("appid", webChatPayConfigEntity.getAppId());
         data.put("mch_id", webChatPayConfigEntity.getMchId());
         data.put("nonce_str", resultsEntity.getNonceStr());

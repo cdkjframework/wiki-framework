@@ -28,8 +28,8 @@ public class PaymentResultVo {
 
 
     /**
-     * 是否有錯誤
+     * 是否有错误
      */
-    @ApiModelProperty(value = "是否有錯誤")
+    @ApiModelProperty(value = "是否有错误")
     private boolean isError;
 }

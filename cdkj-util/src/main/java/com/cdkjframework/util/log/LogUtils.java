@@ -1,20 +1,20 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,18 +28,16 @@ import java.util.logging.Logger;
  */
 
 @Component
-public class LogUtils implements BeanPostProcessor {
+public class LogUtils {
 
     /**
      * 日志
      */
-    private Logger logger;
+    private static volatile Logger logger;
 
     /**
      * 自定义配置
      */
-    @Autowired
-    private CustomConfig config;
     private static CustomConfig customConfig;
 
     /**
@@ -51,6 +49,43 @@ public class LogUtils implements BeanPostProcessor {
      * 日志级别
      */
     private final List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
+
+    /**
+     * 静态初始化
+     */
+    static {
+        customConfig = new CustomConfig();
+    }
+
+    /**
+     * 构造函数
+     */
+    public LogUtils() {
+    }
+
+    /**
+     * 构造函数
+     */
+    @Autowired
+    public LogUtils(CustomConfig config) {
+        customConfig = config;
+        setLoggerLevel(logger);
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param name 输出名称
+     */
+    public LogUtils(String name) {
+        if (logger == null) {
+            synchronized (LogUtils.class) {
+                if (logger == null) {
+                    logger = Logger.getLogger(name);
+                }
+            }
+        }
+    }
 
     /**
      * getLogger
@@ -68,29 +103,6 @@ public class LogUtils implements BeanPostProcessor {
      */
     public static LogUtils getLogger(String name) {
         return new LogUtils(name);
-    }
-
-    /**
-     * 构造函数
-     */
-    public LogUtils() {
-    }
-
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        customConfig = config;
-        return bean;
-
-    }
-
-    /**
-     * 构造函数
-     *
-     * @param name 输出名称
-     */
-    public LogUtils(String name) {
-        logger = Logger.getLogger(name);
-        setLoggerLevel(logger);
     }
 
     /**
@@ -384,10 +396,13 @@ public class LogUtils implements BeanPostProcessor {
      * @return 返回结果
      */
     private void setLoggerLevel(Logger loggerLevel) {
-        if (customConfig == null) {
-            customConfig = new CustomConfig();
-        }
         int index = LEVEL.indexOf(customConfig.getLevel());
+        // 如果配置大于 INFO 则需要配置
+        if (index > IntegerConsts.TWO) {
+            ConsoleHandler handler = new ConsoleHandler();
+            handler.setLevel(Level.ALL);
+            logger.addHandler(handler);
+        }
         switch (index) {
             case 0:
                 loggerLevel.setLevel(Level.SEVERE);
@@ -406,6 +421,4 @@ public class LogUtils implements BeanPostProcessor {
                 break;
         }
     }
-
-
 }
