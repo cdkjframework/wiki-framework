@@ -111,6 +111,34 @@ public class CustomConfig {
      */
     private String permission;
 
+    /**
+     * 密钥（16进制，和前台保持一致，或者是作为参数直接传过来也可以）
+     */
+    private String defaultKey = "cn.framewiki.com";
+
+    /**
+     * 使用AES-128-CBC加密模式，key需要为16位,key和iv可以相同！
+     */
+    private String defaultIv = "hk.framewiki.com";
+
+    /**
+     * 算法 PKCS5 Padding
+     */
+    private String aesCbcNoPadding = "AES/CBC/NoPadding";
+
+    /**
+     * 密码类型
+     */
+    private String passwordType = "AES";
+
+    /**
+     * 编码类型
+     */
+    private String charsetName = "utf-8";
+
+    /**
+     * 应用名称
+     */
     @Value("${spring.application.name}")
     private String application;
 }
