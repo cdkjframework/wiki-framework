@@ -215,7 +215,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logRecordDto.setAddTime(System.currentTimeMillis());
             logRecordDto.setOperatorName(user.getDisplayName());
             logRecordDto.setUserName(user.getLoginName());
-            logRecordDto.setClientIp(HttpServletUtils.getLocalAddr());
+            logRecordDto.setClientIp(HttpServletUtils.getRemoteAddr());
 
             long currentTimeMillis = System.currentTimeMillis();
             String organizationCode = "-" + user.getOrganizationCode();

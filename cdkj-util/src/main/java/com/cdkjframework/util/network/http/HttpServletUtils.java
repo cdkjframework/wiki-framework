@@ -49,7 +49,7 @@ public class HttpServletUtils {
      *
      * @return 返回IP地址
      */
-    public static String getLocalAddr() {
+    public static String getRemoteAddr() {
         //
         String localAddr = getRequest().getHeader(HEADER_IP);
         if (StringUtils.isNullAndSpaceOrEmpty(localAddr)) {
