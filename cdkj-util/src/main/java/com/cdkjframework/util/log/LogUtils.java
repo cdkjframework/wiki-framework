@@ -33,12 +33,12 @@ public class LogUtils {
     /**
      * 日志
      */
-    private static volatile Logger logger;
+    private Logger logger;
 
     /**
      * 自定义配置
      */
-    private static CustomConfig customConfig;
+    private static volatile CustomConfig customConfig;
 
     /**
      * 操作系统
@@ -68,8 +68,7 @@ public class LogUtils {
      */
     @Autowired
     public LogUtils(CustomConfig config) {
-        customConfig = config;
-        setLoggerLevel(logger);
+        LogUtils.customConfig = config;
     }
 
     /**
@@ -78,13 +77,8 @@ public class LogUtils {
      * @param name 输出名称
      */
     public LogUtils(String name) {
-        if (logger == null) {
-            synchronized (LogUtils.class) {
-                if (logger == null) {
-                    logger = Logger.getLogger(name);
-                }
-            }
-        }
+        logger = Logger.getLogger(name);
+        setLoggerLevel(logger);
     }
 
     /**
@@ -398,7 +392,7 @@ public class LogUtils {
     private void setLoggerLevel(Logger loggerLevel) {
         int index = LEVEL.indexOf(customConfig.getLevel());
         // 如果配置大于 INFO 则需要配置
-        if (index > IntegerConsts.TWO) {
+        if (logger.getHandlers().length == IntegerConsts.ZERO && index > IntegerConsts.TWO) {
             ConsoleHandler handler = new ConsoleHandler();
             handler.setLevel(Level.ALL);
             logger.addHandler(handler);

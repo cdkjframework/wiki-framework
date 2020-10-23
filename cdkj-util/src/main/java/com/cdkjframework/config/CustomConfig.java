@@ -44,7 +44,7 @@ public class CustomConfig {
     /**
      * 日志级别
      */
-    private String level = "ERROR";
+    private String level = "INFO";
 
     /**
      * 是否加密
