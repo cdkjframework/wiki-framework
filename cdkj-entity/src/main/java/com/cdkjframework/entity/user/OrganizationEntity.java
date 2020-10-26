@@ -44,6 +44,11 @@ public class OrganizationEntity extends BaseEntity implements Serializable {
     private Integer bedMores;
 
     /**
+     * 余额共享
+     */
+    private Integer balanceShare;
+
+    /**
      * 名称
      */
     private String name;
