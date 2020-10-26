@@ -27,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         "com.cdkjframework.constant",
         "com.cdkjframework.datasource.mybatis",
         "com.cdkjframework.datasource.mongodb",
-        "com.cdkjframework.core.base.swagger",
+        "com.cdkjframework.swagger",
         "com.cdkjframework.redis"
 }, exclude = {DataSourceAutoConfiguration.class,
         DataSourceAutoConfiguration.class,})
