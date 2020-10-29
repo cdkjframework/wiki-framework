@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -327,6 +328,9 @@ public abstract class AbstractController implements IController {
      */
     @Override
     public void outputStream(InputStream inputStream, String fileName) throws IOException {
+        if (StringUtils.isNotNullAndEmpty(fileName)) {
+            fileName = URLDecoder.decode(fileName, "UTF-8");
+        }
         HttpServletResponse response = HttpServletUtils.getResponse();
         response.reset();
         response.setCharacterEncoding("utf-8");
