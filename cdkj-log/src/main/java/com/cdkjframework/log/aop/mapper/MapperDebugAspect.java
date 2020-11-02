@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
-import com.cdkjframework.entity.log.PermissionDto;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.log.aop.AbstractBaseAopAspect;
@@ -20,7 +19,6 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -95,8 +93,16 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     /**
      * 配置读取
      */
-    @Autowired
-    private CustomConfig customConfig;
+    private final CustomConfig customConfig;
+
+    /**
+     * 构造函数
+     *
+     * @param customConfig 配置信息
+     */
+    public MapperDebugAspect(CustomConfig customConfig) {
+        this.customConfig = customConfig;
+    }
 
     /**
      * 切入点
@@ -144,7 +150,6 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
             }
             parameterNames = methodSignature.getParameterNames();
         }
-        logUtils.info("parameter" + System.currentTimeMillis());
         for (int i = 0; i < args.length; i++) {
             Object parameter = args[i];
             final String FILTER_CLASS_ENT_NAME = "Entity";
@@ -167,7 +172,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
                     args[i] = arg;
                 }
             } else {
-                targetClass = ((ArrayList) parameter).get(0).getClass();
+                targetClass = ((ArrayList) parameter).get(IntegerConsts.ZERO).getClass();
                 JSONArray jsonArray = JsonUtils.listToJsonArray(parameter);
                 JSONArray array = new JSONArray();
                 for (Object object :

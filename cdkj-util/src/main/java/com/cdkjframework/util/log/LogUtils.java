@@ -1,7 +1,6 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.files.FileUtils;
@@ -78,7 +77,6 @@ public class LogUtils {
      */
     public LogUtils(String name) {
         logger = Logger.getLogger(name);
-        setLoggerLevel(logger);
     }
 
     /**
@@ -223,6 +221,7 @@ public class LogUtils {
      */
     private void log(Level level, StackTraceElement[] stackTraceElement, String msg) {
         try {
+            setLoggerLevel(logger);
             if (stackTraceElement == null) {
                 logger.log(level, msg);
             } else {
@@ -245,6 +244,7 @@ public class LogUtils {
      */
     private void logThrowable(Level level, Throwable throwable, String msg) {
         try {
+            setLoggerLevel(logger);
             if (throwable == null) {
                 logger.log(level, msg);
             } else {
@@ -391,12 +391,6 @@ public class LogUtils {
      */
     private void setLoggerLevel(Logger loggerLevel) {
         int index = LEVEL.indexOf(customConfig.getLevel());
-        // 如果配置大于 INFO 则需要配置
-        if (logger.getHandlers().length == IntegerConsts.ZERO && index > IntegerConsts.TWO) {
-            ConsoleHandler handler = new ConsoleHandler();
-            handler.setLevel(Level.ALL);
-            logger.addHandler(handler);
-        }
         switch (index) {
             case 0:
                 loggerLevel.setLevel(Level.SEVERE);
