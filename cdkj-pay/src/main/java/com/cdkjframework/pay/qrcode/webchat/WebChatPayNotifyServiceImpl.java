@@ -1,5 +1,6 @@
 package com.cdkjframework.pay.qrcode.webchat;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
 import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.entity.pay.webchat.WebChatPayActionEntity;
@@ -13,11 +14,9 @@ import com.cdkjframework.util.tool.CompareUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import com.cdkjframework.util.tool.number.DecimalUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,13 +40,21 @@ public class WebChatPayNotifyServiceImpl extends AbstractPaymentNotifyServiceImp
     /**
      * 支付记录
      */
-    @Autowired
-    private PayRecordService payRecordServiceImpl;
+    private final PayRecordService payRecordServiceImpl;
 
     /**
      * 验证结果常量
      */
     private final String RESULTS_CODE = "SUCCESS";
+
+    /**
+     * 构造函数
+     *
+     * @param payRecordServiceImpl 支付服务
+     */
+    public WebChatPayNotifyServiceImpl(PayRecordService payRecordServiceImpl) {
+        this.payRecordServiceImpl = payRecordServiceImpl;
+    }
 
     /**
      * 验证签名
@@ -81,14 +88,14 @@ public class WebChatPayNotifyServiceImpl extends AbstractPaymentNotifyServiceImp
 
             //验证支付金额
             BigDecimal cashFee = ConvertUtils.convertDecimal(entity.getCashFee());
-            cashFee = DecimalUtils.divide(cashFee, BigDecimal.valueOf(100));
+            cashFee = DecimalUtils.divide(cashFee, BigDecimal.valueOf(IntegerConsts.ONE_HUNDRED));
             BigDecimal payAmount = recordEntity.getPayAmount();
             logUtils.info("验证支付金额！" + cashFee + "," + payAmount);
             recordEntity.setPayAmount(DecimalUtils.addition(cashFee, payAmount));
             if (!CompareUtils.less(recordEntity.getPrice(), cashFee)) {
-                recordEntity.setPayStatus(1);
+                recordEntity.setPayStatus(IntegerConsts.ONE);
             } else {
-                recordEntity.setPayStatus(2);
+                recordEntity.setPayStatus(IntegerConsts.TWO);
             }
             //支付时间
             recordEntity.setPayTime(LocalDateTime.now());

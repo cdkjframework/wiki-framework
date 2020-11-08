@@ -2,6 +2,7 @@ package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.VersionConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.file.FileEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -303,6 +305,47 @@ public abstract class AbstractController implements IController {
         } catch (IOException ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
         }
+    }
+
+    /**
+     * 下载输出
+     *
+     * @param dataList 数据列表
+     * @param clazz    数据类型
+     * @param fileName 文件名
+     */
+    @Override
+    public <T> void downloadOutput(List<T> dataList, Class<T> clazz, String fileName) throws IOException {
+        InputStream inputStream = EasyExcelUtils.listExportInputStream(dataList, clazz);
+        outputStream(inputStream, fileName);
+    }
+
+    /**
+     * 输出流
+     *
+     * @param inputStream 输出流
+     * @param fileName    文件名称
+     */
+    @Override
+    public void outputStream(InputStream inputStream, String fileName) throws IOException {
+        if (StringUtils.isNotNullAndEmpty(fileName)) {
+            fileName = URLDecoder.decode(fileName, "UTF-8");
+        }
+        HttpServletResponse response = HttpServletUtils.getResponse();
+        response.reset();
+        response.setCharacterEncoding("utf-8");
+        response.addHeader("Content-Length", "" + inputStream.available());
+        response.setContentType("application/vnd.ms-excel;charset=utf-8");
+        response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
+        response.addHeader("filename", fileName);
+        OutputStream outputStream = response.getOutputStream();
+        byte[] buf = new byte[4096];
+        int readLength;
+        while (((readLength = inputStream.read(buf)) != IntegerConsts.MINUS_ONE)) {
+            outputStream.write(buf, IntegerConsts.ZERO, readLength);
+        }
+        outputStream.flush();
+        inputStream.close();
     }
 
     /**

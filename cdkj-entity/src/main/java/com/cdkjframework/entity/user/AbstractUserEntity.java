@@ -112,6 +112,11 @@ public abstract class AbstractUserEntity extends BaseEntity {
     private Integer bedMores;
 
     /**
+     * 余额共享
+     */
+    private Integer balanceShare;
+
+    /**
      * 备注
      */
     private String remark;

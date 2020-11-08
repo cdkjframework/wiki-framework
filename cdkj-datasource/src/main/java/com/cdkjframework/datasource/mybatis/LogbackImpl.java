@@ -3,6 +3,8 @@ package com.cdkjframework.datasource.mybatis;
 import com.cdkjframework.util.log.LogUtils;
 import org.apache.ibatis.logging.Log;
 
+import java.util.logging.LogManager;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.datasource.relational.mybatis
@@ -76,12 +78,12 @@ public class LogbackImpl implements Log {
      */
     @Override
     public void debug(String message) {
-        logUtils.debug(message);
+        logUtils.info(message);
     }
 
     @Override
     public void trace(String message) {
-        logUtils.debug(message);
+        logUtils.info(message);
     }
 
     @Override

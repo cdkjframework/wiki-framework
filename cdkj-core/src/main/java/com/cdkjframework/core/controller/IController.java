@@ -145,6 +145,24 @@ public interface IController {
     void write(String content) throws IOException;
 
     /**
+     * 下载输出
+     *
+     * @param dataList 数据列表
+     * @param clazz    数据类型
+     * @param fileName 文件名
+     * @param <T>      类型
+     */
+    <T> void downloadOutput(List<T> dataList, Class<T> clazz, String fileName) throws IOException;
+
+    /**
+     * 输出流
+     *
+     * @param inputStream 输出流
+     * @param fileName    文件名称
+     */
+    void outputStream(InputStream inputStream, String fileName) throws IOException;
+
+    /**
      * 获取程序版本信息
      *
      * @param request HttpServletRequest

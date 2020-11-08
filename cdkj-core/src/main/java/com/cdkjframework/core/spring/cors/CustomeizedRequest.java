@@ -33,9 +33,6 @@ public class CustomeizedRequest extends HttpServletRequestWrapper {
      */
     @Override
     public String getHeader(String name) {
-        if (!CurrentUser.USER_LOGIN_TOKEN_KEY.equals(name)) {
-            return super.getHeader(name);
-        }
         return super.getHeader(name);
     }
 }

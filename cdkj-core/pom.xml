@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cdkj-framework</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <version>1.0-201009</version>
+        <version>1.0-201029</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -60,17 +60,6 @@
 <!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
 <!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
 <!--        </dependency>-->
-
-        <!-- begin swagger2 -->
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger-ui</artifactId>
-        </dependency>
-        <!-- end swagger2 -->
     </dependencies>
 
     <build>

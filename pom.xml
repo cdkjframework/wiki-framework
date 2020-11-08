@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-201009</version>
+    <version>1.0-201029</version>
     <modules>
         <module>cdkj-cloud</module>
         <module>cdkj-util</module>
@@ -18,7 +18,7 @@
         <module>cdkj-pom</module>
         <module>cdkj-entity</module>
         <module>cdkj-constant</module>
-        <module>cdkj-web</module>
+<!--        <module>cdkj-web</module>-->
         <module>cdkj-center</module>
         <module>cdkj-redis</module>
         <module>cdkj-datasource-jpa</module>
@@ -28,8 +28,8 @@
         <module>cdkj-security</module>
         <module>cdkj-web-socket</module>
         <module>cdkj-datasource-rw</module>
-        <module>cdkj-flowable</module>
         <module>cdkj-config</module>
+        <module>cdkj-swagger</module>
     </modules>
 
     <parent>
@@ -43,7 +43,7 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-pom</artifactId>
-                <version>1.0-201009</version>
+                <version>1.0-201029</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>

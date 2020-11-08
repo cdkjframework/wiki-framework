@@ -1,7 +1,7 @@
 package com.cdkjframework.pay.impl;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
-import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.pay.PayConfigService;
 import com.cdkjframework.pay.PaymentNotifyService;
 import com.cdkjframework.util.log.LogUtils;
@@ -49,7 +49,7 @@ public abstract class AbstractPaymentNotifyServiceImpl implements PaymentNotifyS
     public void payNotifyCallback(StringBuilder builder, String payType) throws Exception {
         logUtils.info("Callback Result：" + builder.toString());
         PayConfigEntity configEntity = new PayConfigEntity();
-        configEntity.setDeleted(0);
+        configEntity.setDeleted(IntegerConsts.ZERO);
         configEntity.setPayType(payType);
         configEntity = payConfigServiceImpl.findEntity(configEntity);
 

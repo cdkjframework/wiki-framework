@@ -1,4 +1,4 @@
-package com.cdkjframework.core.authority;
+package com.cdkjframework.core.spring.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +49,6 @@ public class WebConfigurer implements WebMvcConfigurer {
      */
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/");
 

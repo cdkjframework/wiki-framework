@@ -5,6 +5,7 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
@@ -119,7 +120,10 @@ public class JwtUtils {
             }
 
             // 验证 token 签名
-            String loginName = String.valueOf(claims.get("username"));
+            Object loginName = claims.get("username");
+            if(StringUtils.isNullAndSpaceOrEmpty(loginName)){
+                loginName = claims.get("loginName");
+            }
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("loginName=%s&effective=%s&time=%s&userAgent=%s", loginName, effective, time, userAgent));
             token = String.valueOf(claims.get("token"));
