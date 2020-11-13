@@ -37,6 +37,11 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      */
     private static List<String> parameterList;
 
+    /**
+     * 数据类型
+     */
+    private static String dataType = "java.util.ArrayList";
+
     static {
         parameterList = new ArrayList<>();
         parameterList.add("java.lang");
@@ -121,13 +126,10 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
         }
 
         if (!customConfig.isEncryption() && customConfig.isJson()) {
-            JSONArray jsonArray = JsonUtils.parseArray(json);
-            if (jsonArray.size() > IntegerConsts.ONE) {
-                return jsonArray;
-            } else {
-                return jsonArray.size() == IntegerConsts.ZERO ?
-                        JsonUtils.parseObject(json) : jsonArray.get(IntegerConsts.ZERO);
+            if (dataType.equals(o.getClass().getName())) {
+                return JsonUtils.parseArray(json);
             }
+            return JsonUtils.parseObject(json);
         } else {
             return json;
         }

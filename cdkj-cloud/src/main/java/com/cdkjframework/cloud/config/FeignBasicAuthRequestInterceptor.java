@@ -2,6 +2,7 @@ package com.cdkjframework.cloud.config;
 
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 
@@ -44,7 +45,11 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
             }
             for (String key :
                     headerNameList) {
-                requestTemplate.header(key, request.getHeader(key));
+                String header = request.getHeader(key);
+                if (StringUtils.isNullAndSpaceOrEmpty(header)) {
+                    continue;
+                }
+                requestTemplate.header(key, header);
             }
         } catch (Exception e) {
             logUtils.error(e.getStackTrace(), e.getMessage());
