@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * @ProjectName: cdkj-framework
@@ -55,14 +54,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         String validateValue = ConvertUtils.convertString(request.getSession().getAttribute(BusinessConsts.IMAGE_CODE));
         //这里需要验证前端传过来的验证码是否和session里面存的一致，并且要判断是否过期
         logger.info(validateValue);
-        String code = StringUtils.Empty;
-        InputStream inputStream = request.getInputStream();
-        byte[] bytes = new byte[inputStream.available()];
-        if (bytes.length > 0) {
-            inputStream.read(bytes);
-            Map<String, Object> map = JsonUtils.jsonStringToMap(new String(bytes));
-            code = ConvertUtils.convertString(map.get(BusinessConsts.IMAGE_CODE));
-        }
+        String code = request.getParameter(BusinessConsts.IMAGE_CODE);
 
         ResponseBuilder builder;
         if (StringUtils.isNullAndSpaceOrEmpty(code)) {
