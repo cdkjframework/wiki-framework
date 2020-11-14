@@ -1,7 +1,7 @@
 package com.cdkjframework.security.handler;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.util.tool.ResultUtils;
+import com.cdkjframework.util.network.ResponseUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
@@ -35,6 +35,6 @@ public class UserAuthAccessDeniedHandler implements AccessDeniedHandler {
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException e) throws IOException, ServletException {
         ResponseBuilder builder = ResponseBuilder.failBuilder("未授权");
-        ResultUtils.responseJson(response, builder);
+        ResponseUtils.out(response, builder);
     }
 }

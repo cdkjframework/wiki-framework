@@ -30,4 +30,14 @@ public class BusinessConsts {
      */
     public static String TIME = "time";
 
+    /**
+     * 验证码
+     */
+    public static String IMAGE_CODE = "code";
+
+    /**
+     * 登录地址
+     */
+    public static String LOGIN = "/security/login";
+
 }

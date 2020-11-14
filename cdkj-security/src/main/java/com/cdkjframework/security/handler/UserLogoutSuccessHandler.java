@@ -1,7 +1,7 @@
 package com.cdkjframework.security.handler;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.util.tool.ResultUtils;
+import com.cdkjframework.util.network.ResponseUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -30,6 +30,6 @@ public class UserLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         ResponseBuilder builder = ResponseBuilder.successBuilder();
         SecurityContextHolder.clearContext();
-        ResultUtils.responseJson(response, builder);
+        ResponseUtils.out(response, builder);
     }
 }

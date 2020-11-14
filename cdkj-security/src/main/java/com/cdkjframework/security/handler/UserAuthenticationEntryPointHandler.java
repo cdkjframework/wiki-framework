@@ -1,7 +1,8 @@
 package com.cdkjframework.security.handler;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.util.tool.ResultUtils;
+import com.cdkjframework.util.network.ResponseUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class UserAuthenticationEntryPointHandler implements AuthenticationEntryP
      */
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException e) throws IOException, ServletException {
-        ResponseBuilder builder = ResponseBuilder.failBuilder("未登录");
-        ResultUtils.responseJson(response, builder);
+        ResponseBuilder builder = ResponseBuilder.failBuilder("登录错误，请稍后在试！");
+        ResponseUtils.out(response, builder);
     }
 }

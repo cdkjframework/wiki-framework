@@ -1,11 +1,11 @@
-package com.cdkjframework.security.config;
+package com.cdkjframework.security.configure;
 
 import com.cdkjframework.security.authorization.UserAuthenticationProvider;
 import com.cdkjframework.security.authorization.UserPermissionEvaluator;
+import com.cdkjframework.security.authorization.ValidateCodeFilter;
 import com.cdkjframework.security.encrypt.JwtAuthenticationFilter;
 import com.cdkjframework.security.encrypt.Md5PasswordEncoder;
 import com.cdkjframework.security.handler.*;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,9 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
-import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @ProjectName: cdkj-framework
@@ -30,7 +29,7 @@ import org.springframework.web.context.request.RequestContextListener;
 @EnableWebSecurity
 // 开启权限注解,默认是关闭的
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     /**
      * 自定义登录成功处理器
      */
@@ -66,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      * @param userAuthenticationEntryPointHandler
      * @param userAuthenticationProvider
      */
-    public SecurityConfig(UserLoginSuccessHandler userLoginSuccessHandler, UserLoginFailureHandler userLoginFailureHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, UserAuthAccessDeniedHandler userAuthAccessDeniedHandler, UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler, UserAuthenticationProvider userAuthenticationProvider) {
+    public SecurityConfigure(UserLoginSuccessHandler userLoginSuccessHandler, UserLoginFailureHandler userLoginFailureHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, UserAuthAccessDeniedHandler userAuthAccessDeniedHandler, UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler, UserAuthenticationProvider userAuthenticationProvider) {
         this.userLoginSuccessHandler = userLoginSuccessHandler;
         this.userLoginFailureHandler = userLoginFailureHandler;
         this.userLogoutSuccessHandler = userLogoutSuccessHandler;
@@ -81,20 +80,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public Md5PasswordEncoder md5PasswordEncoder() {
         return new Md5PasswordEncoder();
-    }
-
-    @Bean
-    public RequestContextListener requestContextListener() {
-        return new RequestContextListener();
-    }
-
-    @Bean
-    public FilterRegistrationBean oauth2ClientFilterRegistration(
-            OAuth2ClientContextFilter filter) {
-        FilterRegistrationBean registration = new FilterRegistrationBean();
-        registration.setFilter(filter);
-        registration.setOrder(-100);
-        return registration;
     }
 
     /**
@@ -126,7 +111,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 // 不进行权限验证的请求或资源(从配置文件中读取)
-                .antMatchers("/login/**").permitAll()
+                .antMatchers("/security/**").permitAll()
                 // 其他的需要登陆后才能访问
                 .anyRequest().authenticated()
                 .and()
@@ -135,7 +120,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登录地址
                 .formLogin()
-                .loginProcessingUrl("/login/userLogin")
+                .loginProcessingUrl("/security/login")
                 // 配置登录成功自定义处理类
                 .successHandler(userLoginSuccessHandler)
                 // 配置登录失败自定义处理类
@@ -143,7 +128,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登出地址
                 .logout()
-                .logoutUrl("/login/userLogout")
+                .logoutUrl("/security/logout")
                 // 配置用户登出自定义处理类
                 .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()
@@ -159,6 +144,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 禁用缓存
         http.headers().cacheControl();
+        // 验证码验证
+        http.addFilterBefore(new ValidateCodeFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加JWT过滤器
         http.addFilter(new JwtAuthenticationFilter(authenticationManager()));
     }

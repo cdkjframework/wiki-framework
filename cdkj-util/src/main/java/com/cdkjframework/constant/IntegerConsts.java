@@ -82,6 +82,11 @@ public class IntegerConsts {
     public final static Integer TWENTY_FOUR = 24;
 
     /**
+     * 三十
+     */
+    public final static Integer THIRTY = 30;
+
+    /**
      * 六十
      */
     public final static Integer SIXTY = 60;

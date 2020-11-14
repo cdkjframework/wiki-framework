@@ -1,8 +1,8 @@
 package com.cdkjframework.security.handler;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.util.tool.ResultUtils;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.network.ResponseUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
@@ -50,6 +50,6 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
         } else {
             builder = ResponseBuilder.failBuilder("用户名或密码不正确");
         }
-        ResultUtils.responseJson(response, builder);
+        ResponseUtils.out(response, builder);
     }
 }
