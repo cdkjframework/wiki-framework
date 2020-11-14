@@ -38,6 +38,6 @@ public class BusinessConsts {
     /**
      * 登录地址
      */
-    public static String LOGIN = "/security/login";
+    public static String LOGIN = "/security/user/login";
 
 }

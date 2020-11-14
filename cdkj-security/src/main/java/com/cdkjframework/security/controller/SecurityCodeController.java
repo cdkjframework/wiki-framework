@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -40,9 +41,13 @@ public class SecurityCodeController {
     public void verificationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
         OutputStream outputStream = response.getOutputStream();
         response.setHeader("content-type", "text/html;charset=UTF-8");
+
+        // 创建 session
+        HttpSession session = request.getSession();
+        // 生成二维码
         String code = VerifyCodeUtils.outputVerifyImage(IntegerConsts.ONE_HUNDRED, IntegerConsts.THIRTY,
                 outputStream, IntegerConsts.FOUR);
         // 将图形验证码存入到session中
-        request.getSession().setAttribute(BusinessConsts.IMAGE_CODE, code);
+        session.setAttribute(BusinessConsts.IMAGE_CODE, code);
     }
 }
