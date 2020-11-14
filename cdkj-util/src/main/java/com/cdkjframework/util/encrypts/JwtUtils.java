@@ -1,13 +1,12 @@
 package com.cdkjframework.util.encrypts;
 
-import com.cdkjframework.constant.HttpHeaderConsts;
+import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
-import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
-import com.google.gson.Gson;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
@@ -70,11 +69,8 @@ public class JwtUtils {
      */
     public static String createJwt(Map<String, Object> map, String base64Security) {
         //添加构成JWT的参数
-        JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
-                .setPayload(new Gson().toJson(map))
-                //估计是第三段密钥
-                .signWith(signatureAlgorithm, base64Security.getBytes());
-        //生成JWT
+        JwtBuilder builder = builderJwt(map, base64Security);
+        //生成JWT token
         return builder.compact();
     }
 
@@ -88,21 +84,32 @@ public class JwtUtils {
      */
     public static String createJwt(Map<String, Object> map, String base64Security, long expiration) {
         //添加构成JWT的参数
-        JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT")
-                .setExpiration(new Date(expiration))
-                //估计是第三段密钥
-                .signWith(signatureAlgorithm, base64Security.getBytes());
+        JwtBuilder builder = builderJwt(map, base64Security);
+        builder.setExpiration(new Date(expiration));
         //生成JWT
         return builder.compact();
     }
 
+    /**
+     * 构建 jwt
+     *
+     * @param map            值
+     * @param base64Security 密钥
+     * @return 返回结果
+     */
+    private static JwtBuilder builderJwt(Map<String, Object> map, String base64Security) {
+        return Jwts.builder().setHeaderParam("typ", "JWT")
+                .setPayload(JsonUtils.objectToJsonString(map))
+                //估计是第三段密钥
+                .signWith(signatureAlgorithm, base64Security.getBytes());
+    }
 
     /**
      * 检查token
      *
      * @param jwtToken       token
      * @param base64Security base64安全性
-     * @param userAgent 用户代理
+     * @param userAgent      用户代理
      * @return 返回 redis token
      * @throws Exception 异常信息
      */
@@ -111,7 +118,7 @@ public class JwtUtils {
         try {
             Claims claims = parseJwt(jwtToken, base64Security);
             long effective = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
-            Long time = ConvertUtils.convertLong(claims.get("time"));
+            Long time = ConvertUtils.convertLong(claims.get(BusinessConsts.TIME));
             // 验证 token 是否过期
             LocalDateTime localDateTime = LocalDateUtils.timestampToLocalDateTime(time)
                     .plusSeconds(effective);
@@ -120,13 +127,13 @@ public class JwtUtils {
             }
 
             // 验证 token 签名
-            Object loginName = claims.get("username");
+            Object loginName = claims.get(BusinessConsts.USER_NAME);
             if(StringUtils.isNullAndSpaceOrEmpty(loginName)){
-                loginName = claims.get("loginName");
+                loginName = claims.get(BusinessConsts.LOGIN_NAME);
             }
             StringBuilder builder = new StringBuilder();
             builder.append(String.format("loginName=%s&effective=%s&time=%s&userAgent=%s", loginName, effective, time, userAgent));
-            token = String.valueOf(claims.get("token"));
+            token = String.valueOf(claims.get(BusinessConsts.HEADER_TOKEN));
             String tokenPassword = Md5Utils.getMd5(builder.toString());
             if (!tokenPassword.equals(token)) {
                 throw new GlobalException("token 签名验证失败！");

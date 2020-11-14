@@ -30,8 +30,7 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     public static HttpServletRequest getRequest() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        return request;
+        return getRequestAttributes().getRequest();
     }
 
     /**
@@ -40,8 +39,20 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     public static HttpServletResponse getResponse() {
-        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
-        return response;
+        return getRequestAttributes().getResponse();
+    }
+
+    /**
+     * 请求属性
+     *
+     * @return 返回结果
+     */
+    private static ServletRequestAttributes getRequestAttributes() {
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
+                .getRequestAttributes();
+        //设置子线程共享
+        RequestContextHolder.setRequestAttributes(servletRequestAttributes, true);
+        return servletRequestAttributes;
     }
 
     /**

@@ -1,13 +1,11 @@
 package com.cdkjframework.core.spring.cors;
 
-import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -20,12 +18,12 @@ import java.io.IOException;
  * @Version: 1.0
  */
 @Component
-public class CorsFilter implements Filter {
+public class CdkjCorsFilter implements Filter {
 
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(CorsFilter.class);
+    private LogUtils logUtils = LogUtils.getLogger(CdkjCorsFilter.class);
 
     /**
      * IP头部变量

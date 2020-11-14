@@ -92,6 +92,11 @@ public class IntegerConsts {
     public final static Integer ONE_HUNDRED = 100;
 
     /**
+     * 一千
+     */
+    public final static Integer ONE_THOUSAND = 1000;
+
+    /**
      * 字节长度
      */
     public final static Integer BYTE_LENGTH = 1024;

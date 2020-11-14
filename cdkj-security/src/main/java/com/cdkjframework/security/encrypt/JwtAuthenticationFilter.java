@@ -1,8 +1,10 @@
-package com.cdkjframework.security.jwt;
+package com.cdkjframework.security.encrypt;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
@@ -27,7 +29,12 @@ import java.util.ArrayList;
  * @Version: 1.0
  */
 
-public class AuthenticationFilter extends BasicAuthenticationFilter {
+public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
+
+    /**
+     * 日志
+     */
+    private LogUtils logUtils = LogUtils.getLogger(JwtAuthenticationFilter.class);
 
     /**
      * 配置读取
@@ -40,33 +47,31 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
      *
      * @param authenticationManager 身份验证管理器
      */
-    public AuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         super(authenticationManager);
     }
 
     /**
-     * 對請求進行過濾
+     * 权限验证过虑
      */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
         try {
-            final String token = "token";
-            //请求体的头中是否包含Authorization
-            String header = request.getHeader(token);
-            //Authorization中是否包含Bearer，有一个不包含时直接返回
-            if (StringUtils.isNotNullAndEmpty(header)) {
+            // 请求体的头中是否包含Authorization
+            String token = request.getHeader(BusinessConsts.HEADER_TOKEN);
+            // Authorization中是否包含Bearer，有一个不包含时直接返回
+            if (StringUtils.isNotNullAndEmpty(token)) {
                 chain.doFilter(request, response);
                 responseJson(response);
                 return;
             }
-            //获取权限失败，会抛出异常
-            UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
-            //获取后，将Authentication写入SecurityContextHolder中供后序使用
+            // 获取权限失败，会抛出异常
+            UsernamePasswordAuthenticationToken authentication = getAuthentication(token);
+            // 获取后，将Authentication写入SecurityContextHolder中供后序使用
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request, response);
         } catch (Exception e) {
             responseJson(response);
-            e.printStackTrace();
         }
     }
 
@@ -77,7 +82,7 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
      */
     private void responseJson(HttpServletResponse response) {
         try {
-            //未登錄時，使用json進行提示
+            // 未登錄時，使用json進行提示
             response.setContentType("application/json;charset=utf-8");
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             PrintWriter out = response.getWriter();
@@ -87,24 +92,26 @@ public class AuthenticationFilter extends BasicAuthenticationFilter {
             out.write(JsonUtils.objectToJsonString(builder));
             out.flush();
             out.close();
-        } catch (Exception e1) {
-            e1.printStackTrace();
+        } catch (Exception e) {
+            logUtils.error(e);
         }
     }
 
     /**
      * 通过 token，获取用户信息
      *
-     * @param request 请求
-     * @return
+     * @param token token 值
+     * @return 返回用户权限
      */
-    private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
-        String token = request.getHeader("token");
+    private UsernamePasswordAuthenticationToken getAuthentication(String token) {
         if (StringUtils.isNotNullAndEmpty(token)) {
-            //通过token解析出用户信息
+            // 通过 token 解析出用户信息
             Claims claims = JwtUtils.parseJwt(token, customConfig.getJwtKey());
-            String username = claims.get("username").toString();
-            //不为null，返回
+            Object username = claims.get(BusinessConsts.USER_NAME);
+            if (StringUtils.isNullAndSpaceOrEmpty(username)) {
+                username = claims.get(BusinessConsts.LOGIN_NAME);
+            }
+            // 不为 null，返回
             if (StringUtils.isNotNullAndEmpty(username)) {
                 return new UsernamePasswordAuthenticationToken(username, null, new ArrayList<>());
             }
