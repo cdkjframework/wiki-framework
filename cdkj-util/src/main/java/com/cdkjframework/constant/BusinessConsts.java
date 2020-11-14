@@ -33,7 +33,7 @@ public class BusinessConsts {
     /**
      * 验证码
      */
-    public static String IMAGE_CODE = "code";
+    public static String IMAGE_CODE = "verifyCode";
 
     /**
      * 登录地址
