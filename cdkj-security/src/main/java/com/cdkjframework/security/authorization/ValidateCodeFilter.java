@@ -35,9 +35,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String uri = request.getRequestURI();
         // 如果为get请求并且请求uri为/login（也就是我们登录表单的form的action地址）
-        if (BusinessConsts.LOGIN.contains(uri)) {
-            logger.info("ValidateCodeFilter执行了---- request.getRequestURI()=" + uri);
-            validateCode(request, response);
+        if (BusinessConsts.LOGIN.contains(uri) && !validateCode(request, response)) {
+            return;
         }
 
         filterChain.doFilter(request, response);
@@ -49,20 +48,22 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      * @param request  请求
      * @param response 响应
      */
-    private void validateCode(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    private boolean validateCode(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+        String validateValue = ConvertUtils.convertString(request.getSession().getAttribute(BusinessConsts.IMAGE_CODE));
         //这里需要验证前端传过来的验证码是否和session里面存的一致，并且要判断是否过期
-        logger.info(request.getSession().getAttribute(BusinessConsts.IMAGE_CODE));
+        logger.info(validateValue);
         String code = request.getParameter(BusinessConsts.IMAGE_CODE);
         ResponseBuilder builder;
         if (StringUtils.isNullAndSpaceOrEmpty(code)) {
             builder = ResponseBuilder.failBuilder("验证码错误！");
-            ResponseUtils.out(response,builder);
-            return;
+            ResponseUtils.out(response, builder);
+            return false;
         }
-        String validateValue = ConvertUtils.convertString(request.getSession().getAttribute(BusinessConsts.IMAGE_CODE));
-        if (StringUtils.isNullAndSpaceOrEmpty(validateValue) || validateValue.equals(code)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(validateValue) || !validateValue.equals(code)) {
             builder = ResponseBuilder.failBuilder("验证码错误！");
             ResponseUtils.out(response,builder);
+            return false;
         }
+        return true;
     }
 }
