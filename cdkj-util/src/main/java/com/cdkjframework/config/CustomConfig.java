@@ -102,6 +102,11 @@ public class CustomConfig {
     private List<String> ignoreAopUrls;
 
     /**
+     * Security 资源过滤地址
+     */
+    private List<String> patternsUrls;
+
+    /**
      * 缩略图
      */
     private List<String> thumbnail;

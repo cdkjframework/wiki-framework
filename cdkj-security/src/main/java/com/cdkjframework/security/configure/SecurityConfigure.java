@@ -21,13 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.security.config
  * @ClassName: SecurityConfig
- * @Description: 权限配置
+ * @Description: 权限配置 开启权限注解,默认是关闭的
  * @Author: xiaLin
  * @Version: 1.0
  */
 @Configuration
 @EnableWebSecurity
-// 开启权限注解,默认是关闭的
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     /**
@@ -133,7 +132,8 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
                 .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()
                 // 配置没有权限自定义处理类
-                .exceptionHandling().accessDeniedHandler(userAuthAccessDeniedHandler)
+                .exceptionHandling()
+                .accessDeniedHandler(userAuthAccessDeniedHandler)
                 .and()
                 // 开启跨域
                 .cors()
@@ -141,7 +141,8 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
                 // 取消跨站请求伪造防护
                 .csrf().disable();
         // 基于Token不需要session
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         // 禁用缓存
         http.headers().cacheControl();
         // 验证码验证
