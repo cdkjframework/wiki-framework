@@ -3,7 +3,6 @@ package com.cdkjframework.security.authorization;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.util.network.ResponseUtils;
-import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.stereotype.Component;
@@ -14,7 +13,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * @ProjectName: cdkj-framework
@@ -54,15 +52,12 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         String validateValue = ConvertUtils.convertString(request.getSession().getAttribute(BusinessConsts.IMAGE_CODE));
         //这里需要验证前端传过来的验证码是否和session里面存的一致，并且要判断是否过期
         logger.info(validateValue);
+        if (StringUtils.isNullAndSpaceOrEmpty(validateValue)) {
+            return true;
+        }
         String code = request.getParameter(BusinessConsts.IMAGE_CODE);
-
         ResponseBuilder builder;
         if (StringUtils.isNullAndSpaceOrEmpty(code)) {
-            builder = ResponseBuilder.failBuilder("验证码错误！");
-            ResponseUtils.out(response, builder);
-            return false;
-        }
-        if (StringUtils.isNullAndSpaceOrEmpty(validateValue) || !validateValue.equals(code)) {
             builder = ResponseBuilder.failBuilder("验证码错误！");
             ResponseUtils.out(response, builder);
             return false;
