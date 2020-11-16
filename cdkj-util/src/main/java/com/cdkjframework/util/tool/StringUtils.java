@@ -22,7 +22,7 @@ public class StringUtils {
     public final static String Empty = "";
 
     /**
-     * 空值变量
+     * 横线变量
      */
     public final static String HORIZONTAL = "-";
 
