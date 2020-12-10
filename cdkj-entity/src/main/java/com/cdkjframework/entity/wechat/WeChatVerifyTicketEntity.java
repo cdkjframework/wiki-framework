@@ -41,4 +41,9 @@ public class WeChatVerifyTicketEntity {
      */
     @XStreamAlias("ComponentVerifyTicket")
     private String verifyTicket;
+
+    /**
+     * 主键
+     */
+    private String id;
 }

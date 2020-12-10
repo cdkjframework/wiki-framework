@@ -50,13 +50,13 @@ public class SecurityRandomUtils {
      * 类状态加载
      */
     static {
-        initialSecurityInstance();
+        getInstance();
     }
 
     /**
      * 初始方法
      */
-    public static void initialSecurityInstance() {
+    public static void getInstance() {
         try {
             secureInstance = SecureRandom.getInstance(SHA_TAGS);
         } catch (Exception e) {

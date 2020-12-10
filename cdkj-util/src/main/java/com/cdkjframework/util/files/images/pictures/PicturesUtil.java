@@ -232,20 +232,20 @@ public class PicturesUtil {
      */
     private static void shearXaxis(Graphics g, int w1, int h1, Color color) {
         Random random = new Random();
-        int period = random.nextInt(2);
+        int period = random.nextInt(IntegerConsts.TWO);
         boolean borderGap = true;
-        int frames = 1;
-        int phase = random.nextInt(2);
-        for (int i = 0; i < h1; i++) {
-            double d = (double) (period >> 1)
+        int frames = IntegerConsts.ONE;
+        int phase = random.nextInt(IntegerConsts.TWO);
+        for (int i = IntegerConsts.ZERO; i < h1; i++) {
+            double d = (double) (period >> IntegerConsts.ONE)
                     * Math.sin((double) i / (double) period
                     + (6.2831853071795862D * (double) phase)
                     / (double) frames);
             //拷贝区域
-            g.copyArea(0, i, w1, 1, (int) d, 0);
+            g.copyArea(IntegerConsts.ZERO, i, w1, IntegerConsts.ONE, (int) d, IntegerConsts.ZERO);
             if (borderGap) {
                 g.setColor(color);
-                g.drawLine((int) d, i, 0, i);
+                g.drawLine((int) d, i, IntegerConsts.ZERO, i);
                 g.drawLine((int) d + w1, i, w1, i);
             }
         }

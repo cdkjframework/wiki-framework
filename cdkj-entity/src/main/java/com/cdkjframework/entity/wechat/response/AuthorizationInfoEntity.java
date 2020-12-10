@@ -21,6 +21,12 @@ import java.util.Map;
 @ToString
 public class AuthorizationInfoEntity {
 
+
+    /**
+     * 主键
+     */
+    private String id;
+
     /**
      * 授权方 appid
      */

@@ -53,4 +53,10 @@ public class WeChatRequestEntity {
      */
     @JSONField(name = "authorizer_appid")
     private String authorizerAppId;
+
+    /**
+     * 刷新TOKEN
+     */
+    @JSONField(name = "authorizer_refresh_token")
+    private String refreshToken;
 }

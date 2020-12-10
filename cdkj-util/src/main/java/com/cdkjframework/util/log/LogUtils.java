@@ -1,6 +1,7 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.files.FileUtils;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -38,6 +38,11 @@ public class LogUtils {
      * 自定义配置
      */
     private static volatile CustomConfig customConfig;
+
+    /**
+     * 换行符号
+     */
+    private final String newline = System.getProperty("line.separator");
 
     /**
      * 操作系统
@@ -317,12 +322,13 @@ public class LogUtils {
             // 日志时间
             StringBuilder builder = new StringBuilder(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s:%s ", logger.getName(), message));
-            FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
+            builder.append(String.format("%s：%s ", logger.getName(), message));
+            builder.append(newline);
             //  异常信息
             if (elements != null) {
-                builder.append(System.lineSeparator());
                 writeExceptionFile(builder, level, elements, logPath, logFileName);
+            } else {
+                FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -343,9 +349,9 @@ public class LogUtils {
                 elements) {
             builder.append(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s.%s(%s:%d)", element.getClassName(),
+            builder.append(String.format("%s.%s(%s：%d)", element.getClassName(),
                     element.getMethodName(), element.getFileName(), element.getLineNumber()));
-            builder.append(System.lineSeparator());
+            builder.append(newline);
         }
 
         // 保存文件
@@ -381,6 +387,7 @@ public class LogUtils {
         } catch (IOException e) {
             return "";
         }
+        FileUtils.deleteCatalogFile(logPath, IntegerConsts.SEVEN);
         return logPath;
     }
 

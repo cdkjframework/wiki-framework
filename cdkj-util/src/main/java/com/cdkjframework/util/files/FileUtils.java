@@ -16,7 +16,15 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributeView;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -533,5 +541,66 @@ public class FileUtils {
             e.printStackTrace();
         }
         return item;
+    }
+
+
+    /**
+     * 删除日志
+     *
+     * @param catalog 日志路径
+     * @param day     删除几天前的
+     */
+    public static void deleteCatalogFile(String catalog, int day) {
+        day = Math.abs(day) * IntegerConsts.MINUS_ONE;
+        LocalDate localDate = LocalDate.now().plusDays(day);
+        long deleteTime = localDate.atStartOfDay(ZoneOffset
+                .ofHours(IntegerConsts.EIGHT)).toInstant().toEpochMilli();
+        try {
+            File file = new File(catalog);
+            if (file.isDirectory()) {
+                File[] files = file.listFiles();
+                for (File f : files) {
+                    // 若是文件夹且在设定日期之前
+                    if (f.isDirectory()) {
+                        deleteCatalogFile(f.getPath(), day);
+                    } else {
+                        deleteFile(f, deleteTime);
+                    }
+                }
+            } else {
+                deleteFile(file, deleteTime);
+            }
+        } catch (IOException e) {
+        }
+    }
+
+    /**
+     * 获取文件创建时间
+     *
+     * @param filePath 文件路径
+     * @return 返回创建文件时间戳
+     */
+    public static long fileCreationTime(String filePath) throws IOException {
+        Path path = Paths.get(filePath);
+        BasicFileAttributeView attributeView = Files
+                .getFileAttributeView(path, BasicFileAttributeView.class, LinkOption.NOFOLLOW_LINKS);
+        BasicFileAttributes attr = attributeView.readAttributes();
+        return attr.creationTime().toMillis();
+    }
+
+    /**
+     * 删除文件
+     *
+     * @param file       文件
+     * @param deleteTime 删除时间
+     */
+    private static void deleteFile(File file, long deleteTime) throws IOException {
+        long toMillis = fileCreationTime(file.getPath());
+        if (toMillis > deleteTime) {
+            return;
+        }
+        if (file.exists()) {
+            file.delete();
+        }
     }
 }

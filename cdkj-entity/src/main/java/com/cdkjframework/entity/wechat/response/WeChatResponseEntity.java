@@ -54,4 +54,18 @@ public class WeChatResponseEntity {
     @JSONField(name = "authorizer_refresh_token")
     private String refreshToken;
 
+    /**
+     * 当前时间戳
+     */
+    private long currentTimestamp;
+
+    /**
+     * 数据类型
+     */
+    private String dataType;
+
+    /**
+     * 主键
+     */
+    private String id;
 }
