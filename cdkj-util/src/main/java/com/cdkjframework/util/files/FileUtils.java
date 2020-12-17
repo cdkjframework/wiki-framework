@@ -14,6 +14,9 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -602,5 +605,31 @@ public class FileUtils {
         if (file.exists()) {
             file.delete();
         }
+    }
+
+    /**
+     * 改变图片的大小到宽为size，然后高随着宽等比例变化
+     *
+     * @param inputStream 上传的图片的输入流
+     * @param percent     图片倍率
+     * @param format      新图片的格式
+     * @throws IOException 异常信息
+     */
+    public static OutputStream resizeImage(InputStream inputStream, int percent, String format) throws IOException {
+        // 改变了图片的大小后，把图片的流输出到目标 OutputStream
+        OutputStream os = new ByteArrayOutputStream();
+        BufferedImage prevImage = ImageIO.read(inputStream);
+        double width = prevImage.getWidth();
+        double height = prevImage.getHeight();
+        int newWidth = (int) (width * percent);
+        int newHeight = (int) (height * percent);
+        BufferedImage image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_BGR);
+        Graphics graphics = image.createGraphics();
+        graphics.drawImage(prevImage, IntegerConsts.ZERO, IntegerConsts.ZERO, newWidth, newHeight, null);
+        ImageIO.write(image, format, os);
+        os.flush();
+        inputStream.close();
+        os.close();
+        return os;
     }
 }

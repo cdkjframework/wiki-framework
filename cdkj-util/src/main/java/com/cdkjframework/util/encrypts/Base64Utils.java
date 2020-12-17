@@ -123,6 +123,7 @@ public class Base64Utils {
             logUtil.error("将字节转换为字符串");
             logUtil.error(e.getCause(), e.getMessage());
         }
+
         return "";
     }
 
@@ -165,5 +166,49 @@ public class Base64Utils {
 
         // 返回结果
         return base64String;
+    }
+
+    /**
+     * BASE64解码成File文件
+     *
+     * @param destPath 路径
+     * @param base64   编码值
+     * @param fileName 文件名称
+     */
+    public static File base64ToFile(String destPath, String base64, String fileName) {
+        File file = null;
+        //创建文件目录
+        String filePath = destPath;
+        File dir = new File(filePath);
+        if (!dir.exists() && !dir.isDirectory()) {
+            dir.mkdirs();
+        }
+        BufferedOutputStream bos = null;
+        java.io.FileOutputStream fos = null;
+        try {
+            byte[] bytes = decodeDataToByte(base64);
+            file = new File(filePath + "/" + fileName);
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
+            bos.write(bytes);
+        } catch (Exception e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        } finally {
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    logUtil.error(e.getCause(), e.getMessage());
+                }
+            }
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    logUtil.error(e.getCause(), e.getMessage());
+                }
+            }
+        }
+        return file;
     }
 }
