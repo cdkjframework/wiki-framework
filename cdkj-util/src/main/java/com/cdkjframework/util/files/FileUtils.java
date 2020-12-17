@@ -612,10 +612,10 @@ public class FileUtils {
      *
      * @param inputStream 上传的图片的输入流
      * @param percent     图片倍率
-     * @param format      新图片的格式
+     * @param fileName    图片文件名称
      * @throws IOException 异常信息
      */
-    public static OutputStream resizeImage(InputStream inputStream, int percent, String format) throws IOException {
+    public static OutputStream resizeImage(InputStream inputStream, int percent, String fileName) throws IOException {
         // 改变了图片的大小后，把图片的流输出到目标 OutputStream
         OutputStream os = new ByteArrayOutputStream();
         BufferedImage prevImage = ImageIO.read(inputStream);
@@ -626,6 +626,7 @@ public class FileUtils {
         BufferedImage image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_BGR);
         Graphics graphics = image.createGraphics();
         graphics.drawImage(prevImage, IntegerConsts.ZERO, IntegerConsts.ZERO, newWidth, newHeight, null);
+        String format = getFileSuffix(fileName).replace(StringUtils.POINT, StringUtils.Empty);
         ImageIO.write(image, format, os);
         os.flush();
         inputStream.close();
