@@ -6,6 +6,7 @@ import com.cdkjframework.util.network.RequestUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
+import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.springframework.stereotype.Component;
 
 import java.io.InputStream;
@@ -44,11 +45,7 @@ public class XmlUtils {
         T t = null;
         try {
             String xmlStr = RequestUtils.inputStreamToString(xml);
-            XStream xstream = new XStream(new DomDriver(EncodingConsts.UTF8));
-            xstream.processAnnotations(clazz);
-            xstream.autodetectAnnotations(mode);
-            xstream.setClassLoader(clazz.getClassLoader());
-            t = (T) xstream.fromXML(xmlStr);
+            t = xmlToBean(clazz, xmlStr);
         } catch (Exception ex) {
             logUtil.error("[XStream] xml 转对象出错:" + ex.getMessage());
         }
@@ -69,6 +66,8 @@ public class XmlUtils {
         T t = null;
         try {
             XStream xstream = new XStream(new DomDriver(EncodingConsts.UTF8));
+            XStream.setupDefaultSecurity(xstream);
+            xstream.addPermission(AnyTypePermission.ANY);
             xstream.processAnnotations(clazz);
             xstream.autodetectAnnotations(mode);
             xstream.setClassLoader(clazz.getClassLoader());
@@ -91,6 +90,8 @@ public class XmlUtils {
         String result = StringUtils.Empty;
         try {
             XStream xstream = new XStream(new DomDriver(EncodingConsts.UTF8));
+            XStream.setupDefaultSecurity(xstream);
+            xstream.addPermission(AnyTypePermission.ANY);
             xstream.processAnnotations(clazz);
             xstream.autodetectAnnotations(mode);
             String regex = "__", replacement = "_";

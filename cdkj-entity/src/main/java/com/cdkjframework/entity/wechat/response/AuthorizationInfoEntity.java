@@ -1,6 +1,7 @@
 package com.cdkjframework.entity.wechat.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,6 +20,7 @@ import java.util.Map;
 @Getter
 @Setter
 @ToString
+@XStreamAlias("xml")
 public class AuthorizationInfoEntity {
 
 

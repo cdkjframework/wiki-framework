@@ -8,7 +8,7 @@ import lombok.ToString;
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.entity.wechat
- * @ClassName: WeChatVerifyTicketEntity
+ * @ClassName: EncryptionEntity
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
@@ -17,7 +17,7 @@ import lombok.ToString;
 @Setter
 @ToString
 @XStreamAlias("xml")
-public class WeChatVerifyTicketEntity {
+public class EncryptionEntity {
 
     /**
      * 第三方平台 appid
@@ -26,25 +26,8 @@ public class WeChatVerifyTicketEntity {
     private String appId;
 
     /**
-     * 创建时间 时间戳，单位：s
+     * 加密内容
      */
-    @XStreamAlias("CreateTime")
-    private long createTime;
-
-    /**
-     * 固定为：component_verify_ticket"
-     */
-    @XStreamAlias("InfoType")
-    private String infoType;
-
-    /**
-     * Ticket 内容
-     */
-    @XStreamAlias("ComponentVerifyTicket")
-    private String verifyTicket;
-
-    /**
-     * 主键
-     */
-    private String id;
+    @XStreamAlias("Encrypt")
+    private String encrypt;
 }
