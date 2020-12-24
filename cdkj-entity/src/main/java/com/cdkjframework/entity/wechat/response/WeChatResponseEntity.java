@@ -1,7 +1,6 @@
 package com.cdkjframework.entity.wechat.response;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,20 +16,24 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@XStreamAlias("xml")
 public class WeChatResponseEntity {
+
+    /**
+     * 主键
+     */
+    private String id;
 
     /**
      * 第三方平台 access_token
      */
-    @JSONField(name = "component_access_token")
+    @JSONField(name = "access_token")
     private String accessToken;
 
     /**
-     * 预授权码
+     * 刷新TOKEN
      */
-    @JSONField(name = "pre_auth_code")
-    private String preAuthCode;
+    @JSONField(name = "refresh_token")
+    private String refreshToken;
 
     /**
      * 有效期，单位：秒
@@ -39,35 +42,18 @@ public class WeChatResponseEntity {
     private String expiresIn;
 
     /**
-     * 授权信息
+     * 开放受权ID
      */
-    @JSONField(name = "authorization_info")
-    private AuthorizationInfoEntity authorizationInfo;
+    @JSONField(name = "openid")
+    private String openId;
 
     /**
-     * 公众号帐号信息
+     * scope
      */
-    @JSONField(name = "authorizer_info")
-    private AuthorizerInfoEntity authorizerInfo;
-
-    /**
-     * 刷新令牌
-     */
-    @JSONField(name = "authorizer_refresh_token")
-    private String refreshToken;
-
-    /**
-     * 当前时间戳
-     */
-    private long currentTimestamp;
+    private String scope;
 
     /**
      * 数据类型
      */
     private String dataType;
-
-    /**
-     * 主键
-     */
-    private String id;
 }

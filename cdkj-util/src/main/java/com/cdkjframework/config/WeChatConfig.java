@@ -26,25 +26,20 @@ public class WeChatConfig {
     /**
      * TOKEN 获取地址
      */
-    private String tokenUri = "https://api.weixin.qq.com/cgi-bin/component/api_component_token";
+    private String tokenUri = "https://api.weixin.qq.com/sns/oauth2/access_token";
 
     /**
-     * 预授权码 获取地址
+     * accessToken 获取地址
      */
-    private String preUri = "https://api.weixin.qq.com/cgi-bin/component/api_create_preauthcode?component_access_token=";
+    private String accessTokenUri = " https://api.weixin.qq.com/cgi-bin/token";
 
     /**
-     * 授权信息 获取地址
+     * 授权信息 OPENID 获取地址
      */
-    private String authorizationUri = "https://api.weixin.qq.com/cgi-bin/component/api_query_auth?component_access_token=";
-
-    /**
-     * 权限令牌 获取地址
-     */
-    private String authorityTokenUri = "https://api.weixin.qq.com/cgi-bin/component/api_authorizer_token?component_access_token=";
+    private String accessTokenOpenIdUri = "https://api.weixin.qq.com/sns/oauth2/access_token";
 
     /**
      * 账户信息 获取地址
      */
-    private String accountInfoUri = "https://api.weixin.qq.com/cgi-bin/component/api_get_authorizer_info?component_access_token=";
+    private String accountInfoUri = "https://api.weixin.qq.com/cgi-bin/user/info";
 }

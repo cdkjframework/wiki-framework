@@ -57,7 +57,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
         }
         String code = request.getParameter(BusinessConsts.IMAGE_CODE);
         ResponseBuilder builder;
-        if (StringUtils.isNullAndSpaceOrEmpty(code)) {
+        if (StringUtils.isNullAndSpaceOrEmpty(code) || !validateValue.equals(code)) {
             builder = ResponseBuilder.failBuilder("验证码错误！");
             ResponseUtils.out(response, builder);
             return false;
