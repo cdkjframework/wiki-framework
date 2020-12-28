@@ -53,6 +53,11 @@ public class WeChatResponseEntity {
     private String scope;
 
     /**
+     * 时间戳
+     */
+    private long timeStamp;
+
+    /**
      * 数据类型
      */
     private String dataType;

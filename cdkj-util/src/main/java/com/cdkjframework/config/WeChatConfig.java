@@ -41,5 +41,5 @@ public class WeChatConfig {
     /**
      * 账户信息 获取地址
      */
-    private String accountInfoUri = "https://api.weixin.qq.com/cgi-bin/user/info";
+    private String accountInfoUri = "https://api.weixin.qq.com/sns/userinfo";
 }
