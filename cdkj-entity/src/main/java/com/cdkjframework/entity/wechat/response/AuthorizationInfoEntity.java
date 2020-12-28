@@ -41,7 +41,8 @@ public class AuthorizationInfoEntity {
     /**
      * 用户的标识，对当前公众号唯一
      */
-    private String openid;
+    @JSONField(name = "openid")
+    private String openId;
 
     /**
      * 用户的昵称
