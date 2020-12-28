@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -22,58 +24,69 @@ public class OrganizationEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-
     /**
      * 编码
      */
+    @Column(name = "code")
     private String code;
 
     /**
      * 机构类型0：普通，1：评估细分
      */
+    @Column(name = "organization_type")
     private Integer organizationType;
 
     /**
      * 是否开启两级权限 0默认值（0：未开启，1:开启）
      */
+    @Transient
     private Integer permissions;
 
     /**
      * 床位是否 对多对
      */
+    @Column(name = "bed_mores")
     private Integer bedMores;
 
     /**
      * 余额共享
      */
+    @Column(name = "balance_share")
     private Integer balanceShare;
 
     /**
      * 名称
      */
+    @Column(name = "name")
     private String name;
     /**
      * 备注
      */
+    @Column(name = "remark")
     private String remark;
     /**
      * 机构_标识
      */
+    @Column(name = "parent_id")
     private String parentId;
     /**
      * 地址_ID
      */
+    @Column(name = "address_id")
     private String addressId;
     /**
      * 联系人
      */
+    @Column(name = "contact")
     private String contact;
     /**
      * 联系电话
      */
+    @Column(name = "phone")
     private String phone;
     /**
      * 机构状态 (0-启用,1-禁用)
      */
+    @Column(name = "status")
     private Integer status;
 }

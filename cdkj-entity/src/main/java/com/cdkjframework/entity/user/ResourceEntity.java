@@ -5,6 +5,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.List;
 
 /**
@@ -19,6 +23,8 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Entity
+@Table(name = "rms_resource", catalog = "")
 public class ResourceEntity extends BaseEntity {
 
     private static final long serialVersionUID = -1;
@@ -26,42 +32,53 @@ public class ResourceEntity extends BaseEntity {
     /**
      * 名称
      */
+    @Column(name = "name")
     private String name;
     /**
      * 资源编码
      */
+    @Column(name = "code")
     private String code;
     /**
      * 等级(1：一级，1：二级，3：三级。。。)
      */
+    @Column(name = "level")
     private Integer level;
     /**
      * 资源_ID
      */
+    @Column(name = "parent_id")
     private String parentId;
     /**
      * 类型(1、菜单、2、功能)
      */
+    @Column(name = "resource_type")
     private Integer resourceType;
     /**
      * 排序
      */
+    @Column(name = "rank")
     private Integer rank;
     /**
      * 备注
      */
+    @Column(name = "remark")
     private String remark;
     /**
      * 是否可以用
      */
+    @Column(name = "enabled")
     private Integer enabled;
-    /**
-     * 子菜单
-     */
-    private List<ResourceEntity> children;
 
     /**
      * 角色id
      */
+    @Column(name = "role_id")
     private String roleId;
+
+    /**
+     * 子菜单
+     */
+    @Transient
+    private List<ResourceEntity> children;
 }

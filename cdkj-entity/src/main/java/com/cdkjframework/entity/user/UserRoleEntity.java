@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @ProjectName: HT-OMS-Project-BMS
@@ -23,19 +22,19 @@ import java.util.Date;
 @Setter
 @ToString
 @Entity
-@Table(name = "rms_role", catalog = "")
-public class RoleEntity extends BaseEntity implements Serializable {
+@Table(name = "rms_user_role", catalog = "")
+public class UserRoleEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     /**
      * 角色名称
      */
-    @Column(name = "role_name")
-    private String roleName;
+    @Column(name = "user_id")
+    private String userId;
     /**
      * 备注
      */
-    @Column(name = "remark")
-    private String remark;
+    @Column(name = "role_id")
+    private String roleId;
 }
