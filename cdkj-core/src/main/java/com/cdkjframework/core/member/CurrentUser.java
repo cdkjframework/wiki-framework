@@ -3,7 +3,7 @@ package com.cdkjframework.core.member;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.CacheConsts;
-import com.cdkjframework.entity.user.ConfigureEntity;
+import com.cdkjframework.entity.user.BmsConfigureEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.InterfaceEnum;
@@ -156,7 +156,7 @@ public class CurrentUser {
      *
      * @return 返回配置结果
      */
-    public static List<ConfigureEntity> getConfigureList() {
+    public static List<BmsConfigureEntity> getConfigureList() {
         return getCurrentUser().getConfigureList();
     }
 
@@ -166,13 +166,13 @@ public class CurrentUser {
      * @param typeEnum 枚举信息
      * @return 返回配置结果
      */
-    public static ConfigureEntity getConfigure(InterfaceEnum typeEnum) {
-        List<ConfigureEntity> configureEntityList = getConfigureList();
-        if (CollectionUtils.isEmpty(configureEntityList) || typeEnum == null ||
+    public static BmsConfigureEntity getConfigure(InterfaceEnum typeEnum) {
+        List<BmsConfigureEntity> bmsConfigureEntityList = getConfigureList();
+        if (CollectionUtils.isEmpty(bmsConfigureEntityList) || typeEnum == null ||
                 StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
             return null;
         }
-        Optional<ConfigureEntity> optional = configureEntityList.stream()
+        Optional<BmsConfigureEntity> optional = bmsConfigureEntityList.stream()
                 .filter(f -> f.getConfigKey().equals(typeEnum.getValue()))
                 .findFirst();
         if (optional.isPresent()) {
@@ -189,11 +189,11 @@ public class CurrentUser {
      * @return 返回配置结果
      */
     public static String getConfigureValue(InterfaceEnum typeEnum) {
-        ConfigureEntity configureEntity = getConfigure(typeEnum);
-        if (configureEntity == null) {
+        BmsConfigureEntity bmsConfigureEntity = getConfigure(typeEnum);
+        if (bmsConfigureEntity == null) {
             return "";
         } else {
-            return configureEntity.getConfigValue();
+            return bmsConfigureEntity.getConfigValue();
         }
     }
 

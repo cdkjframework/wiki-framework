@@ -1,6 +1,6 @@
 package com.cdkjframework.security.service;
 
-import com.cdkjframework.entity.user.ConfigureEntity;
+import com.cdkjframework.entity.user.BmsConfigureEntity;
 
 import java.util.List;
 
@@ -20,5 +20,5 @@ public interface ConfigureService {
      * @param configure 配置查询
      * @return 返回配置信息
      */
-    List<ConfigureEntity> listConfigure(ConfigureEntity configure);
+    List<BmsConfigureEntity> listConfigure(BmsConfigureEntity configure);
 }

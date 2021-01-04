@@ -22,7 +22,7 @@ import javax.persistence.Table;
 @ToString
 @Entity
 @Table(name = "bms_configure", catalog = "")
-public class ConfigureEntity extends BaseEntity {
+public class BmsConfigureEntity extends BaseEntity {
 
     /**
      * 配置名称

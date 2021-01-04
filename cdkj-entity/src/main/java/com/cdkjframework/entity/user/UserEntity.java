@@ -34,5 +34,5 @@ public class UserEntity extends AbstractUserEntity {
     /**
      * 平台配置信息
      */
-    private List<ConfigureEntity> configureList;
+    private List<BmsConfigureEntity> configureList;
 }

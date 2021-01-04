@@ -28,7 +28,6 @@ public class ThumbnailUtils {
     /**
      * 读取配置
      */
-    @Autowired
     private static CustomConfig customConfig;
 
     /**
