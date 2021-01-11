@@ -51,4 +51,15 @@ public class WorkflowEntity extends BaseEntity {
      */
     @Column(name = "status")
     private Integer status;
+
+    public WorkflowEntity() {
+    }
+
+    public WorkflowEntity(String workflowCode, String workflowName, String nodeGroup, String remark, Integer status) {
+        this.workflowCode = workflowCode;
+        this.workflowName = workflowName;
+        this.nodeGroup = nodeGroup;
+        this.remark = remark;
+        this.status = status;
+    }
 }

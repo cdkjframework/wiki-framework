@@ -57,8 +57,43 @@ public class BmsConfigureEntity extends BaseEntity {
     private String argument;
 
     /**
+     * 排序
+     */
+    @Column(name = "sort")
+    private Integer sort;
+
+    /**
      * 备注
      */
     @Column(name = "remark")
     private String remark;
+
+    /**
+     * 构造函数
+     */
+    public BmsConfigureEntity() {
+    }
+
+    /**
+     * 构造函数 2
+     *
+     * @param configName
+     * @param configKey
+     * @param configValue
+     * @param controlType
+     * @param defaultValue
+     * @param argument
+     * @param sort
+     * @param remark
+     */
+    public BmsConfigureEntity(String configName, String configKey, String configValue, String controlType, String defaultValue, String argument, Integer sort, String remark) {
+        this.configName = configName;
+        this.configKey = configKey;
+        this.configValue = configValue;
+        this.controlType = controlType;
+        this.defaultValue = defaultValue;
+        this.argument = argument;
+        this.sort = sort;
+        this.remark = remark;
+    }
 }

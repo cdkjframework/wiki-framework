@@ -3,6 +3,7 @@ package com.cdkjframework.security.handler;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.BusinessConsts;
+import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.user.BmsConfigureEntity;
@@ -10,6 +11,7 @@ import com.cdkjframework.entity.user.ResourceEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.WorkflowEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.ConfigureService;
 import com.cdkjframework.security.service.ResourceService;
 import com.cdkjframework.security.service.UserRoleService;
@@ -147,5 +149,9 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
         map.put(BusinessConsts.HEADER_TOKEN, token);
         String jwtToken = JwtUtils.createJwt(map, customConfig.getJwtKey());
         response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
+
+        // 用户信息写入缓存
+        String key = CacheConsts.USER_LOGIN + token;
+        RedisUtils.syncEntitySet(key, user, effective);
     }
 }

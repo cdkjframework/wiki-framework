@@ -24,6 +24,10 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-redis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

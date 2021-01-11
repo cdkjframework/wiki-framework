@@ -65,7 +65,7 @@ public class Base64Utils {
     public static String decodeData(byte[] inputData) {
         try {
             if (null == inputData) {
-                return "";
+                return StringUtils.Empty;
             }
             return new String(Base64.decodeBase64(inputData), UTF_8);
         } catch (UnsupportedEncodingException e) {
@@ -116,7 +116,7 @@ public class Base64Utils {
     public static String encode(byte[] dataList) {
         try {
             if (null == dataList || dataList.length == 0) {
-                return "";
+                return StringUtils.Empty;
             }
             return new String(Base64.encodeBase64(dataList), UTF_8);
         } catch (UnsupportedEncodingException e) {

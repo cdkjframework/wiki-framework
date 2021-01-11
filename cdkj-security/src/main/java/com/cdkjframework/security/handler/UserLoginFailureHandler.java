@@ -40,13 +40,13 @@ public class UserLoginFailureHandler implements AuthenticationFailureHandler {
         // 这些对于操作的处理类可以根据不同异常进行不同处理
         if (exception instanceof UsernameNotFoundException) {
             logUtils.error("【登录失败】" + exception.getMessage());
-            builder = ResponseBuilder.failBuilder("用户名不存在");
+            builder = ResponseBuilder.failBuilder(exception.getMessage());
         } else if (exception instanceof LockedException) {
             logUtils.error("【登录失败】" + exception.getMessage());
-            builder = ResponseBuilder.failBuilder("用户被冻结");
+            builder = ResponseBuilder.failBuilder(exception.getMessage());
         } else if (exception instanceof BadCredentialsException) {
             logUtils.error("【登录失败】" + exception.getMessage());
-            builder = ResponseBuilder.failBuilder("用户名或密码不正确");
+            builder = ResponseBuilder.failBuilder(exception.getMessage());
         } else {
             builder = ResponseBuilder.failBuilder("用户名或密码不正确");
         }

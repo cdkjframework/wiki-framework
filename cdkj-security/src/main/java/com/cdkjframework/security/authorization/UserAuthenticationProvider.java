@@ -75,10 +75,10 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
         SecurityUserEntity userInfo = (SecurityUserEntity) userDetails;
         // 我们还要判断密码是否正确，这里我们的密码使用BCryptPasswordEncoder进行加密的
         if (!new Md5PasswordEncoder().matches(userInfo.getPassword(), password)) {
-            throw new BadCredentialsException("密码不正确");
+            throw new BadCredentialsException("用户名或密码不正确");
         }
         // 还可以加一些其他信息的判断，比如用户账号已停用等判断
-        if (userInfo.getStatus().equals(IntegerConsts.ZERO) ||
+        if (userInfo.getStatus().equals(IntegerConsts.ONE) ||
                 userInfo.getDeleted().equals(IntegerConsts.ONE)) {
             throw new LockedException("该用户已被冻结");
         }

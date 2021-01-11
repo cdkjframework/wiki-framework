@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -70,7 +72,7 @@ public abstract class AbstractUserEntity extends BaseEntity {
     /**
      * 最后登录时间
      */
-    private Timestamp lastLoginTime;
+    private LocalDateTime lastLoginTime;
     /**
      * 是否锁定
      */
@@ -82,7 +84,7 @@ public abstract class AbstractUserEntity extends BaseEntity {
     /**
      * 生日
      */
-    private Date birthday;
+    private LocalDate birthday;
     /**
      * 居住详细地址
      */

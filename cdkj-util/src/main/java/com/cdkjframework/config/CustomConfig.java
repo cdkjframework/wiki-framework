@@ -8,6 +8,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -102,11 +103,6 @@ public class CustomConfig {
     private List<String> ignoreAopUrls;
 
     /**
-     * Security 资源过滤地址
-     */
-    private List<String> patternsUrls;
-
-    /**
      * 缩略图
      */
     private List<String> thumbnail;
@@ -146,4 +142,19 @@ public class CustomConfig {
      */
     @Value("${spring.application.name}")
     private String application;
+
+    /**
+     * Security 登录地址
+     */
+    private String loginUrl = "/security/user/login";
+
+    /**
+     * Security 退出地址
+     */
+    private String logoutUrl = "/security/user/logout";
+
+    /**
+     * Security 资源过滤地址
+     */
+    private List<String> patternsUrls = Arrays.asList("/security/**", "/configure/**");
 }

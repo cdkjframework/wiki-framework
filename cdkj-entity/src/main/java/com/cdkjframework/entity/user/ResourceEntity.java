@@ -71,12 +71,6 @@ public class ResourceEntity extends BaseEntity {
     private Integer enabled;
 
     /**
-     * 角色id
-     */
-    @Column(name = "role_id")
-    private String roleId;
-
-    /**
      * 子菜单
      */
     @Transient
