@@ -1,20 +1,16 @@
 package com.cdkjframework.security.authorization;
 
-import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.security.authorization
  * @ClassName: UserPermissionEvaluator
- * @Description: java类作用描述
+ * @Description: 自定义权限注解验证
  * @Author: xiaLin
  * @Version: 1.0
  */

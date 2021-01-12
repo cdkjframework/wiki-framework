@@ -5,7 +5,6 @@ import com.cdkjframework.util.log.LogUtils;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -78,23 +77,23 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
      * 建立客户端
      */
     private void buildClient() {
-        try {
-            final String regexCharacter = ":";
-            PreBuiltTransportClient preBuiltTransportClient = new PreBuiltTransportClient(settings());
-            if (!"".equals(elasticSearchConfig.getClusterNodes())) {
-                List<String> nodeList = Arrays.asList(elasticSearchConfig.getClusterNodes());
-                for (String nodes : nodeList) {
-                    String[] nodeSocket = nodes.split(regexCharacter);
-                    String address = nodeSocket[0];
-                    Integer port = Integer.valueOf(nodeSocket[1]);
-                    preBuiltTransportClient.addTransportAddress(new
-                            TransportAddress(InetAddress.getByName(address), port));
-                }
-                client = preBuiltTransportClient;
-            }
-        } catch (UnknownHostException e) {
-            logUtil.error(e.getMessage());
-        }
+//        try {
+//            final String regexCharacter = ":";
+////            PreBuiltTransportClient preBuiltTransportClient = new PreBuiltTransportClient(settings());
+////            if (!"".equals(elasticSearchConfig.getClusterNodes())) {
+////                List<String> nodeList = Arrays.asList(elasticSearchConfig.getClusterNodes());
+////                for (String nodes : nodeList) {
+////                    String[] nodeSocket = nodes.split(regexCharacter);
+////                    String address = nodeSocket[0];
+////                    Integer port = Integer.valueOf(nodeSocket[1]);
+////                    preBuiltTransportClient.addTransportAddress(new
+////                            TransportAddress(InetAddress.getByName(address), port));
+////                }
+////                client = preBuiltTransportClient;
+////            }
+//        } catch (UnknownHostException e) {
+//            logUtil.error(e.getMessage());
+//        }
     }
 
     /**
@@ -105,7 +104,7 @@ public class ElasticsearchConfiguration implements FactoryBean<TransportClient>,
                 .put("cluster.name", elasticSearchConfig.getClusterName())
                 .put("client.transport.sniff", true)
                 .build();
-        client = new PreBuiltTransportClient(settings);
+//        client = new PreBuiltTransportClient(settings);
 
         //返回结果
         return settings;

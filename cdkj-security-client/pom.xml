@@ -29,6 +29,10 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.github.openfeign</groupId>
+            <artifactId>feign-core</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
