@@ -6,8 +6,6 @@ import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -63,6 +61,7 @@ public class JpaConfiguration {
         factory.setDataSource(jpaDataSource);
 
         Map<String, Object> jpaProperties = new HashMap<String, Object>(6);
+        jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
         jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
         jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
         jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
