@@ -1,5 +1,6 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -33,7 +34,7 @@ public class CompareUtils {
         }
 
         //返回结果
-        return compareResult(sourceDigital, targetDigital) == 1;
+        return compareResult(sourceDigital, targetDigital) == IntegerConsts.ONE;
     }
 
     /**
@@ -70,7 +71,7 @@ public class CompareUtils {
         }
 
         //返回结果
-        return compareResult(sourceDigital, targetDigital) >= 1;
+        return compareResult(sourceDigital, targetDigital) >= IntegerConsts.ZERO;
     }
 
     /**
@@ -106,7 +107,7 @@ public class CompareUtils {
         }
 
         //返回结果
-        return compareResult(sourceDigital, targetDigital) == -1;
+        return compareResult(sourceDigital, targetDigital) == IntegerConsts.MINUS_ONE;
     }
 
     /**
@@ -143,7 +144,7 @@ public class CompareUtils {
         }
 
         //返回结果
-        return compareResult(sourceDigital, targetDigital) == 0;
+        return compareResult(sourceDigital, targetDigital) == IntegerConsts.ZERO;
     }
 
     /**
@@ -175,8 +176,8 @@ public class CompareUtils {
         if (sourceDigital == null) {
             sourceDigital = 0d;
         }
-        if (scale < 0) {
-            scale = 2;
+        if (scale < IntegerConsts.ZERO) {
+            scale = IntegerConsts.TWO;
         }
         //返回数据
         return BigDecimal.valueOf(sourceDigital).setScale(scale, BigDecimal.ROUND_HALF_UP);

@@ -107,21 +107,16 @@ public class RedisNumbersUtils {
                     buffer.append(date);
                 }
                 String key = prefix + "-" + ODD_NUMBER_KEY + "-" + date;
-                //设置过期时间
-                int time = IntegerConsts.ONE * IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
-                RedisUtils.syncExpire(key, time);
 
                 //获取单号记录
                 long target = RedisUtils.syncIncr(key, init);
                 if (target > IntegerConsts.ZERO) {
                     // 生成单号
-                    String number = String.valueOf(target);
-                    if (length > number.length()) {
-                        for (int i = IntegerConsts.ZERO; i < (length - number.length()); i++) {
-                            buffer.append(IntegerConsts.ZERO);
-                        }
-                    }
-                    return buffer.append(target).toString();
+                    String number = StringUtils.format(length, target);
+                    //设置过期时间
+                    int time = IntegerConsts.ONE * IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
+                    RedisUtils.syncExpire(key, time);
+                    return buffer.append(number).toString();
                 } else {
                     TimeUnit.MILLISECONDS.sleep(IntegerConsts.ONE_HUNDRED);
                     throw new GlobalException("生成单号失败");

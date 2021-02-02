@@ -14,7 +14,7 @@ public class CacheConsts {
     /**
      * 用户登录缓存
      */
-    public static final String USER_LOGIN = "userLogin";
+    public static final String USER_LOGIN = "user:userLogin";
 
     /**
      * 支付配置

@@ -2,7 +2,6 @@ package com.cdkjframework.util.tool.mapper;
 
 import com.cdkjframework.enums.basics.BasicsEnum;
 import com.cdkjframework.util.tool.StringUtils;
-import com.ctrip.framework.apollo.Config;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
@@ -94,55 +93,6 @@ public class MapperUtils {
             mapping(s, temp, value, targetField);
         }
         return s;
-    }
-
-    /**
-     * 将 apollo 配置信息转换为实体
-     *
-     * @param config    配置
-     * @param enumClazz 枚举
-     * @param clazz     实体
-     * @param <T>       类型
-     * @return 返回结果
-     */
-    public static <T> T apolloToEntity(Config config, BasicsEnum[] enumClazz, Class<T> clazz) throws IllegalAccessException, InstantiationException {
-        //创建实体
-        T t = clazz.newInstance();
-        Set<String> set = config.getPropertyNames();
-        if (set.size() == 0) {
-            return t;
-        }
-        //读取变量
-        Object[] objectArray = set.toArray();
-        //读取字段属性
-        List<Field> fields = ReflectionUtils.getDeclaredFields(clazz);
-        for (Object obj :
-                objectArray) {
-            BasicsEnum basicsEnum = getEnumCode(enumClazz, obj.toString());
-            if (basicsEnum == null) {
-                continue;
-            }
-            //读取名称
-            String fieldName = basicsEnum.getCode();
-            //读取字段
-            Field field = getBusFieldByLists(fieldName, fields);
-            if (StringUtils.isNullAndSpaceOrEmpty(field)) {
-                continue;
-            }
-
-            //读取数据值 并验证是否为空
-            Object objValue = config.getProperty(basicsEnum.getValue(), "");
-            if (StringUtils.isNullAndSpaceOrEmpty(objValue)) {
-                continue;
-            }
-            Class clazzField = field.getType();
-            fieldName = "set" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
-            //设置值
-            ReflectionUtils.invokeMethod(t, fieldName, new Class[]{clazzField}, new Object[]{objValue}, clazzField.getName());
-        }
-
-        //返回结果
-        return t;
     }
 
     /**

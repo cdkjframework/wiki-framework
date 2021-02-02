@@ -1,13 +1,12 @@
 package com.cdkjframework.datasource.jpa.connectivity;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.jpa.config.JpaConfig;
 import com.cdkjframework.util.tool.StringUtils;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -52,23 +51,25 @@ public class JpaConfiguration {
      *
      * @return 返回实体管理工厂
      */
-<<<<<<< HEAD
-    @Bean(name = "jpaEntityManagerFactory")
-=======
->>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
+    @Bean
     public EntityManagerFactory entityManagerFactory() {
+        // 供应商适配器
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
-
+        vendorAdapter.setDatabasePlatform(jpaReadConfig.getDialect());
+        vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
+        // 工厂
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
         factory.setPackagesToScan(jpaReadConfig.getPackagesToScan());
         factory.setDataSource(jpaDataSource);
-
-        Map<String, Object> jpaProperties = new HashMap<String, Object>(6);
+        // 其它参数
+        Map<String, Object> jpaProperties = new HashMap<String, Object>(IntegerConsts.SEVEN);
+        jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
         jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
         jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
+        jpaProperties.put("open-in-view", jpaReadConfig.isOpenInView());
         jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
         jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
         jpaProperties.put("spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults", false);
@@ -87,14 +88,10 @@ public class JpaConfiguration {
      *
      * @return 返回事务接口
      */
-    @Bean(name = "jpaTransactionManager")
-<<<<<<< HEAD
-    public PlatformTransactionManager transactionManager(@Qualifier("jpaEntityManagerFactory") EntityManagerFactory jpaEntityManagerFactory) {
-=======
+    @Bean(name = "transactionManager")
     public PlatformTransactionManager transactionManager() {
->>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
         JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(jpaEntityManagerFactory);
+        txManager.setEntityManagerFactory(entityManagerFactory());
         return txManager;
     }
 }

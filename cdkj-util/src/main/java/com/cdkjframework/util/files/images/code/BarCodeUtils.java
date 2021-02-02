@@ -1,7 +1,8 @@
 package com.cdkjframework.util.files.images.code;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
-import org.apache.commons.lang3.StringUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.krysalis.barcode4j.BarcodeGenerator;
 import org.krysalis.barcode4j.HumanReadablePlacement;
 import org.krysalis.barcode4j.impl.codabar.CodabarBean;
@@ -20,7 +21,6 @@ import org.krysalis.barcode4j.impl.upcean.UPCABean;
 import org.krysalis.barcode4j.impl.upcean.UPCEBean;
 import org.krysalis.barcode4j.output.bitmap.BitmapCanvasProvider;
 import org.krysalis.barcode4j.tools.UnitConv;
-import org.springframework.stereotype.Component;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -40,6 +40,15 @@ public class BarCodeUtils {
      * 日志
      */
     private static LogUtils logUtils = LogUtils.getLogger(BarCodeUtils.class);
+    /**
+     * 精细度
+     */
+    private static final int dpi = 150;
+
+    /**
+     * module宽度
+     */
+    private static final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
 
     /**
      * 生成文件
@@ -77,17 +86,13 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateCode39(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         Code39Bean bean = new Code39Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
-        bean.setWideFactor(3);
+        bean.setWideFactor(IntegerConsts.THREE);
         bean.doQuietZone(false);
 
         // 构建流
@@ -101,14 +106,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateCode128(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         Code128Bean bean = new Code128Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -124,14 +125,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateInterleaved2Of5(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         Interleaved2Of5Bean bean = new Interleaved2Of5Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -147,14 +144,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateItf14(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         ITF14Bean bean = new ITF14Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(true);
@@ -169,15 +162,11 @@ public class BarCodeUtils {
      * @param content      内容
      * @param outputStream 二进制流
      */
-    public static void generateCodabar(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+    public static void generateCodeBar(String content, OutputStream outputStream) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         CodabarBean bean = new CodabarBean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -193,14 +182,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateUpca(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         UPCABean bean = new UPCABean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -216,14 +201,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateUpce(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         UPCEBean bean = new UPCEBean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -239,14 +220,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateEan13(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         EAN13Bean bean = new EAN13Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -262,15 +239,11 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateEan8(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
 
         EAN8Bean bean = new EAN8Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -288,14 +261,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generatePostnet(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         POSTNETBean bean = new POSTNETBean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -311,14 +280,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateRoyalMailCbc(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         RoyalMailCBCBean bean = new RoyalMailCBCBean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -334,14 +299,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateUspsIntelligentMail(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         USPSIntelligentMailBean bean = new USPSIntelligentMailBean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -357,14 +318,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generatePdf417(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         PDF417Bean bean = new PDF417Bean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -380,14 +337,10 @@ public class BarCodeUtils {
      * @param outputStream 二进制流
      */
     public static void generateDataMatrix(String content, OutputStream outputStream) {
-        if (StringUtils.isEmpty(content) || outputStream == null) {
+        if (StringUtils.isNullAndSpaceOrEmpty(content) || outputStream == null) {
             return;
         }
         DataMatrixBean bean = new DataMatrixBean();
-        // 精细度
-        final int dpi = 150;
-        // module宽度
-        final double moduleWidth = UnitConv.in2mm(1.0f / dpi);
         // 配置对象
         bean.setModuleWidth(moduleWidth);
         bean.doQuietZone(false);
@@ -409,7 +362,7 @@ public class BarCodeUtils {
         try {
             // 输出到流
             BitmapCanvasProvider canvas = new BitmapCanvasProvider(outputStream, format, dpi,
-                    BufferedImage.TYPE_BYTE_BINARY, false, 0);
+                    BufferedImage.TYPE_BYTE_BINARY, false, IntegerConsts.ZERO);
             // 生成条形码
             generator.generateBarcode(canvas, content);
             // 结束绘制

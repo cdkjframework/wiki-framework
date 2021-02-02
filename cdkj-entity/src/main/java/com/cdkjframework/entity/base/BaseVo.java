@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -67,7 +68,7 @@ public class BaseVo {
      * 添加时间
      */
     @ApiModelProperty("添加时间")
-    protected Date addTime;
+    protected LocalDateTime addTime;
 
     /**
      * 添加用户ID
@@ -85,7 +86,7 @@ public class BaseVo {
      * 修改时间
      */
     @ApiModelProperty("修改时间")
-    protected Date editTime;
+    protected LocalDateTime editTime;
 
     /**
      * 修改用户ID

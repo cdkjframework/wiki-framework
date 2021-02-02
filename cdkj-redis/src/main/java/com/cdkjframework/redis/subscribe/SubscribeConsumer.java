@@ -1,7 +1,9 @@
 package com.cdkjframework.redis.subscribe;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -10,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ProjectName: common-core
@@ -32,6 +36,12 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
      */
     @Autowired
     private CustomConfig customConfig;
+
+    /**
+     * 配置
+     */
+    @Autowired
+    private RedisConfig redisConfig;
 
     /**
      * 订阅
@@ -120,6 +130,8 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     @Override
     public final void unsubscribed(String channel, long count) {
         logUtils.info("从频道取消订阅，渠道:" + channel + ",取消订阅数量:" + count);
+        logUtils.info("重新订阅，渠道:" + channel);
+        subscribe(channel);
     }
 
     /**
@@ -131,28 +143,93 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     @Override
     public final void punsubscribed(String pattern, long count) {
         logUtils.info("从模式中取消订阅，模式:" + pattern + ",取消订阅数量:" + count);
+        logUtils.info("重新订阅，模式:" + pattern);
+        psubscribe(pattern);
     }
 
     /**
      * 消息读取
      */
     protected final void consumerMessage() {
+        // 渠道
+        if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
+            List<String> channelList = new ArrayList<>();
+            for (String key :
+                    customConfig.getChannel()) {
+                channelList.add(getNamespaces(key));
+            }
+            subscribe(channelList
+                    .toArray(new String[channelList.size()]));
+        }
+
+        // 模式
+        if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
+            List<String> patternList = new ArrayList<>();
+            for (String key :
+                    customConfig.getPattern()) {
+                patternList.add(getNamespaces(key));
+            }
+            psubscribe(patternList
+                    .toArray(new String[patternList.size()]));
+        }
+    }
+
+    /**
+     * 订阅单个消息
+     *
+     * @param channel 通道
+     */
+    private void subscribe(String... channel) {
+        if (StringUtils.isNullAndSpaceOrEmpty(channel)) {
+            return;
+        }
+        RedisPubSubAsyncCommands<String, String> pubSubCommands = initRedisPubSub();
+        pubSubCommands.subscribe(channel);
+    }
+
+
+    /**
+     * 订阅单个消息
+     *
+     * @param pattern 模式
+     */
+    private void psubscribe(String... pattern) {
+        if (StringUtils.isNullAndSpaceOrEmpty(pattern)) {
+            return;
+        }
+        RedisPubSubAsyncCommands<String, String> pubSubCommands = initRedisPubSub();
+        pubSubCommands.psubscribe(pattern);
+    }
+
+    /**
+     * 初始化 redis 订阅信息
+     *
+     * @return 返回订单信息
+     */
+    private RedisPubSubAsyncCommands<String, String> initRedisPubSub() {
         redisPubSubConnection.addListener(this);
         RedisPubSubAsyncCommands<String, String> pubSubCommands = redisPubSubConnection.async();
         if (pubSubCommands.getStatefulConnection() == null) {
             pubSubCommands = redisClusterPubSubConnection.async();
         }
 
-        // 渠道
-        if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
-            pubSubCommands.subscribe(customConfig.getChannel()
-                    .toArray(new String[customConfig.getChannel().size()]));
+        return pubSubCommands;
+    }
+
+    /**
+     * 获取 命名空间
+     *
+     * @return 返回结果
+     */
+    private String getNamespaces(String key) {
+        String namespaces = ";";
+        if (StringUtils.isNotNullAndEmpty(redisConfig.getNamespaces()) && !key.contains(namespaces)) {
+            namespaces = redisConfig.getNamespaces() + ":" + key;
+        } else {
+            namespaces = key;
         }
 
-        // 模式
-        if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
-            pubSubCommands.psubscribe(customConfig.getPattern()
-                    .toArray(new String[customConfig.getPattern().size()]));
-        }
+        // 返回结果
+        return namespaces;
     }
 }

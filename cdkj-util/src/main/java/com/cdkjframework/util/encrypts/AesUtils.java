@@ -1,6 +1,8 @@
 package com.cdkjframework.util.encrypts;
 
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.Cipher;
@@ -34,29 +36,19 @@ public class AesUtils {
     private static Cipher cipher;
 
     /**
-     * 密钥（16进制，和前台保持一致，或者是作为参数直接传过来也可以）
+     * 配置信息
      */
-    private static final String DEFAULT_KEY = "cn.framewiki.com";
+    private static CustomConfig customConfig;
 
     /**
-     * 使用AES-128-CBC加密模式，key需要为16位,key和iv可以相同！
+     * 构造函数
+     *
+     * @param customConfig 配置
      */
-    private static String DEFAULT_IV = "hk.framewiki.com";
+    public AesUtils(CustomConfig customConfig) {
+        AesUtils.customConfig = customConfig;
+    }
 
-    /**
-     * 算法 PKCS5 Padding
-     */
-    private static final String AES_CBC_NO_PADDING = "AES/CBC/NoPadding";
-
-    /**
-     * 密码类型
-     */
-    private static final String PASSWORD_TYPE = "AES";
-
-    /**
-     * 编码类型
-     */
-    private static final String CHARSET_NAME = "utf-8";
 
     /**
      * Base 64 编码
@@ -65,7 +57,7 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Encode(String content) {
-        String encode = "";
+        String encode = StringUtils.Empty;
         try {
             byte[] bytes = encrypt(content);
             encode = Base64Utils.encode(bytes);
@@ -90,8 +82,7 @@ public class AesUtils {
 
         // 初始化
         cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
-
-        byte[] dataBytes = content.getBytes(CHARSET_NAME);
+        byte[] dataBytes = content.getBytes(customConfig.getCharsetName());
         byte[] plainText = byteLengthCompletion(cipher.getBlockSize(), dataBytes);
 
         // 返回加密结果
@@ -105,7 +96,7 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Decrypt(String content) {
-        String decryptString = "";
+        String decryptString = StringUtils.Empty;
         try {
             byte[] decodeDataToByte = Base64Utils.decodeDataToByte(content);
             decryptString = decrypt(decodeDataToByte);
@@ -124,7 +115,7 @@ public class AesUtils {
      * @return 返回结果
      */
     public static String base64Decrypt(byte[] content) {
-        String encryptString = "";
+        String encryptString = StringUtils.Empty;
         try {
             byte[] bytes = Base64Utils.decodeDataToByte(content);
             encryptString = decrypt(bytes);
@@ -145,7 +136,7 @@ public class AesUtils {
      */
     public static String decrypt(String content) throws Exception {
         // 转换为字节
-        byte[] decryptBytes = content.getBytes(CHARSET_NAME);
+        byte[] decryptBytes = content.getBytes(customConfig.getCharsetName());
 
         return decrypt(decryptBytes);
     }
@@ -171,7 +162,7 @@ public class AesUtils {
         byte[] decryptBytes = cipher.doFinal(plainText);
 
         // 返回解密结果
-        return new String(decryptBytes, CHARSET_NAME).trim();
+        return new String(decryptBytes, customConfig.getCharsetName()).trim();
     }
 
     /**
@@ -184,7 +175,7 @@ public class AesUtils {
         if (cipher == null) {
             synchronized (AesUtils.class) {
                 if (cipher == null) {
-                    cipher = Cipher.getInstance(AES_CBC_NO_PADDING);
+                    cipher = Cipher.getInstance(customConfig.getAesCbcNoPadding());
                 }
             }
         }
@@ -222,7 +213,8 @@ public class AesUtils {
      * @throws UnsupportedEncodingException 异常信息
      */
     private static SecretKeySpec getSecretKeySpec() throws UnsupportedEncodingException {
-        return new SecretKeySpec(DEFAULT_KEY.getBytes(CHARSET_NAME), PASSWORD_TYPE);
+        return new SecretKeySpec(customConfig.getDefaultKey().getBytes(customConfig.getCharsetName()),
+                customConfig.getPasswordType());
     }
 
     /**
@@ -232,6 +224,6 @@ public class AesUtils {
      * @throws UnsupportedEncodingException 异常信息
      */
     private static IvParameterSpec getIvParameterSpec() throws UnsupportedEncodingException {
-        return new IvParameterSpec(DEFAULT_IV.getBytes(CHARSET_NAME));
+        return new IvParameterSpec(customConfig.getDefaultIv().getBytes(customConfig.getCharsetName()));
     }
 }

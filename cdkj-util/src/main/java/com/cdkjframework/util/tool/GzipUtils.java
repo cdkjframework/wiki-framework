@@ -1,9 +1,14 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Base64;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -16,6 +21,11 @@ import java.util.zip.GZIPOutputStream;
  */
 @Component
 public class GzipUtils {
+
+    /**
+     * 日志
+     */
+    private static LogUtils logUtils = LogUtils.getLogger(GzipUtils.class);
 
     /**
      * Gzip 加密
@@ -34,4 +44,86 @@ public class GzipUtils {
         //返回结果
         return byteArrayOutputStream.toString(charset);
     }
+
+
+    /**
+     * 使用gzip压缩字符串
+     *
+     * @param param 要压缩的字符串
+     * @return
+     */
+    public static String compress(String param) {
+        if (StringUtils.isNullAndSpaceOrEmpty(param)) {
+            return param;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        GZIPOutputStream gzip = null;
+        try {
+            gzip = new GZIPOutputStream(out);
+            gzip.write(param.getBytes());
+        } catch (IOException e) {
+            logUtils.error(e);
+        } finally {
+            if (gzip != null) {
+                try {
+                    gzip.close();
+                } catch (IOException e) {
+                    logUtils.debug(e.getMessage());
+                }
+            }
+        }
+        return Base64.getEncoder().encodeToString(out.toByteArray());
+    }
+
+    /**
+     * 使用gzip解压缩
+     *
+     * @param compressedStr 压缩字符串
+     * @return 返回解密字符
+     */
+    public static String uncompress(String compressedStr) {
+        if (compressedStr == null) {
+            return null;
+        }
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ByteArrayInputStream in = null;
+        GZIPInputStream inGzip = null;
+        byte[] compressed = null;
+        String decompressed = null;
+        try {
+            compressed = Base64.getDecoder().decode(compressedStr);
+            in = new ByteArrayInputStream(compressed);
+            inGzip = new GZIPInputStream(in);
+            byte[] buffer = new byte[IntegerConsts.BYTE_LENGTH];
+            int offset;
+            while ((offset = inGzip.read(buffer)) != IntegerConsts.MINUS_ONE) {
+                out.write(buffer, IntegerConsts.ZERO, offset);
+            }
+            decompressed = out.toString();
+        } catch (IOException e) {
+            logUtils.error(e);
+            decompressed = compressedStr;
+        } finally {
+            if (inGzip != null) {
+                try {
+                    inGzip.close();
+                } catch (IOException e) {
+                }
+            }
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                }
+            }
+        }
+        return decompressed;
+    }
+
 }

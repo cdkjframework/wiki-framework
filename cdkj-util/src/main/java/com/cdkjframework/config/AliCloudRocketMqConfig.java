@@ -1,7 +1,11 @@
 package com.cdkjframework.config;
 
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -13,7 +17,11 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
+@Getter
+@Setter
+@ToString
 @Configuration
+@RefreshScope
 @ConfigurationProperties(prefix = "spring.queue.rocket.aliyun")
 public class AliCloudRocketMqConfig {
 
@@ -70,95 +78,4 @@ public class AliCloudRocketMqConfig {
      * 方法名称
      */
     private String methodName = "";
-
-    public String getProducerId() {
-        return producerId;
-    }
-
-    public void setProducerId(String producerId) {
-        this.producerId = producerId;
-    }
-
-    public String getConsumerId() {
-        return consumerId;
-    }
-
-    public void setConsumerId(String consumerId) {
-        this.consumerId = consumerId;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getAccessKey() {
-        return accessKey;
-    }
-
-    public void setAccessKey(String accessKey) {
-        this.accessKey = accessKey;
-    }
-
-    public String getSecretKey() {
-        return secretKey;
-    }
-
-    public void setSecretKey(String secretKey) {
-        this.secretKey = secretKey;
-    }
-
-    public String getOnsAddress() {
-        return onsAddress;
-    }
-
-    public void setOnsAddress(String onsAddress) {
-        this.onsAddress = onsAddress;
-    }
-
-    public String getTopicNames() {
-        if (StringUtils.isNullAndSpaceOrEmpty(topicNames)) {
-            this.topicNames = "";
-        }
-        return topicNames;
-    }
-
-    public void setTopicNames(String topicNames) {
-        this.topicNames = topicNames;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-
-    public void setTag(String tag) {
-        this.tag = tag;
-    }
-
-    public String getMessageType() {
-        return messageType;
-    }
-
-    public void setMessageType(String messageType) {
-        this.messageType = messageType;
-    }
-
-    public String getClassName() {
-        return className;
-    }
-
-    public void setClassName(String className) {
-        this.className = className;
-    }
-
-    public String getMethodName() {
-        return methodName;
-    }
-
-    public void setMethodName(String methodName) {
-        this.methodName = methodName;
-    }
 }

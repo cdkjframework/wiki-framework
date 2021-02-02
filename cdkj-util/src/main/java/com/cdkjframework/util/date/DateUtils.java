@@ -52,7 +52,7 @@ public class DateUtils {
     public static final String DATE_MONTH = "yyyy-MM";
     public static final String DATE_DAY = "yyyy-MM-dd";
 
-    private static List<DateFormat> formats = new ArrayList<DateFormat>();
+    private static List<DateFormat> formats = new ArrayList<>();
 
     static {
         /**alternative formats*/

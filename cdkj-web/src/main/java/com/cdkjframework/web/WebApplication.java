@@ -1,7 +1,5 @@
 package com.cdkjframework.web;
 
-import com.cdkjframework.redis.RedisUtils;
-import com.cdkjframework.redis.subscribe.SubscribeConsumer;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +18,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication(scanBasePackages = {
         "com.cdkjframework.web",
+        "com.cdkjframework.web.socket",
         "com.cdkjframework.center",
         "com.cdkjframework.config",
         "com.cdkjframework.core",
@@ -28,7 +27,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
         "com.cdkjframework.constant",
         "com.cdkjframework.datasource.mybatis",
         "com.cdkjframework.datasource.mongodb",
-        "com.cdkjframework.core.base.swagger",
+        "com.cdkjframework.swagger",
         "com.cdkjframework.redis"
 }, exclude = {DataSourceAutoConfiguration.class,
         DataSourceAutoConfiguration.class,})
@@ -40,8 +39,8 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 //@EnableApolloConfig
 public class WebApplication {
 
-    @Autowired
-    private SubscribeMessage subscribeMessage;
+//    @Autowired
+//    private SubscribeMessage subscribeMessage;
 
     /**
      * 启动方法

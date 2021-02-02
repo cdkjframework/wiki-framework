@@ -118,25 +118,25 @@ public class BaseAopAspect {
                 ReflectionUtils.invokeMethod(clazz, fieldName, new Class[]{field.getType()}, new Object[]{"value"}, dataType);
             }
 =======
-        Class targetClass;
-        if (args.length > 0) {
-            targetClass = Class.forName(args[0].getClass().getName());
-            JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
-            jsonObject.put("topOrganizationId", "topOrganizationId");
-            jsonObject.put("organizationId", "organizationId");
-            args[0] = JsonUtils.jsonObjectToBean(jsonObject, targetClass);
+            Class targetClass;
+            if (args.length > 0) {
+                targetClass = Class.forName(args[0].getClass().getName());
+                JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
+                jsonObject.put("topOrganizationId", "topOrganizationId");
+                jsonObject.put("organizationId", "organizationId");
+                args[0] = JsonUtils.jsonObjectToBean(jsonObject, targetClass);
 >>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
-        }
+            }
 
-        //根据连接点类的名字获取指定类
-        targetClass = Class.forName(targetName);
-        //获取类里面的方法
-        Method[] methods = targetClass.getMethods();
-        Object object = joinPoint.toString();
-        builder.append(targetClass.getCanonicalName())
-                .append(methodName)
-                .append(JsonUtils.objectToJsonString(args))
-                .append(object);
-        return object;
+            //根据连接点类的名字获取指定类
+            targetClass = Class.forName(targetName);
+            //获取类里面的方法
+            Method[] methods = targetClass.getMethods();
+            Object object = joinPoint.toString();
+            builder.append(targetClass.getCanonicalName())
+                    .append(methodName)
+                    .append(JsonUtils.objectToJsonString(args))
+                    .append(object);
+            return object;
+        }
     }
-}

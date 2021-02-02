@@ -1,20 +1,18 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.date.DateUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +27,7 @@ import java.util.logging.Logger;
  */
 
 @Component
-public class LogUtils implements BeanPostProcessor {
+public class LogUtils {
 
     /**
      * 日志
@@ -39,9 +37,12 @@ public class LogUtils implements BeanPostProcessor {
     /**
      * 自定义配置
      */
-    @Autowired
-    private CustomConfig config;
-    private static CustomConfig customConfig;
+    private static volatile CustomConfig customConfig;
+
+    /**
+     * 换行符号
+     */
+    private final String newline = System.getProperty("line.separator");
 
     /**
      * 操作系统
@@ -52,6 +53,36 @@ public class LogUtils implements BeanPostProcessor {
      * 日志级别
      */
     private final List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
+
+    /**
+     * 静态初始化
+     */
+    static {
+        customConfig = new CustomConfig();
+    }
+
+    /**
+     * 构造函数
+     */
+    public LogUtils() {
+    }
+
+    /**
+     * 构造函数
+     */
+    @Autowired
+    public LogUtils(CustomConfig config) {
+        LogUtils.customConfig = config;
+    }
+
+    /**
+     * 构造函数
+     *
+     * @param name 输出名称
+     */
+    public LogUtils(String name) {
+        logger = Logger.getLogger(name);
+    }
 
     /**
      * getLogger
@@ -69,29 +100,6 @@ public class LogUtils implements BeanPostProcessor {
      */
     public static LogUtils getLogger(String name) {
         return new LogUtils(name);
-    }
-
-    /**
-     * 构造函数
-     */
-    public LogUtils() {
-    }
-
-    @Override
-    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        customConfig = config;
-        return bean;
-
-    }
-
-    /**
-     * 构造函数
-     *
-     * @param name 输出名称
-     */
-    public LogUtils(String name) {
-        logger = Logger.getLogger(name);
-        setLoggerLevel(logger);
     }
 
     /**
@@ -218,6 +226,7 @@ public class LogUtils implements BeanPostProcessor {
      */
     private void log(Level level, StackTraceElement[] stackTraceElement, String msg) {
         try {
+            setLoggerLevel(logger);
             if (stackTraceElement == null) {
                 logger.log(level, msg);
             } else {
@@ -227,7 +236,7 @@ public class LogUtils implements BeanPostProcessor {
             //写入日志
             writeLog(level, stackTraceElement, msg);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -240,6 +249,7 @@ public class LogUtils implements BeanPostProcessor {
      */
     private void logThrowable(Level level, Throwable throwable, String msg) {
         try {
+            setLoggerLevel(logger);
             if (throwable == null) {
                 logger.log(level, msg);
             } else {
@@ -249,7 +259,7 @@ public class LogUtils implements BeanPostProcessor {
             //写入日志
             writeLog(level, throwable, msg);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -263,7 +273,7 @@ public class LogUtils implements BeanPostProcessor {
         try {
             logThrowable(level, null, msg);
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 
@@ -272,29 +282,19 @@ public class LogUtils implements BeanPostProcessor {
      *
      * @param level
      * @param throwable 错误信息
-     * @param msg
+     * @param message
      */
-    private synchronized void writeLog(Level level, Throwable throwable, String msg) {
+    private synchronized void writeLog(Level level, Throwable throwable, String message) {
         try {
-            // 日志文件
-            String logFileName = "log-" + level.getName().toLowerCase() +
-                    "-" + DateUtils.format(new Date()) + ".log";
-            String logPath = existsCatalog(logFileName);
-            if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
-                return;
-            }
-            // 日志时间
-            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
-            builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s:%s ", logger.getName(), msg));
-            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
             //  异常信息
+            StackTraceElement[] elements = null;
             if (throwable != null && throwable.getStackTrace() != null) {
-                StackTraceElement[] elements = throwable.getStackTrace();
-                writeExceptionFile(level, elements, logPath, logFileName);
+                elements = throwable.getStackTrace();
             }
+
+            writeLog(level, elements, message);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -303,27 +303,35 @@ public class LogUtils implements BeanPostProcessor {
      *
      * @param level
      * @param elements 错误信息
-     * @param msg
+     * @param message
      */
-    private synchronized void writeLog(Level level, StackTraceElement[] elements, String msg) {
+    private synchronized void writeLog(Level level, StackTraceElement[] elements, String message) {
         try {
+            String application = StringUtils.Empty;
+            final String replace = "-";
+            if (StringUtils.isNotNullAndEmpty(customConfig.getApplication())) {
+                application = customConfig.getApplication().replace(".", replace) + replace;
+            }
             // 日志文件
-            String logFileName = "log-" + level.getName().toLowerCase() + "-" + DateUtils.format(new Date()) + ".log";
+            String logFileName = "log-" + application + level.getName().toLowerCase() + replace +
+                    LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE) + ".log";
             String logPath = existsCatalog(logFileName);
             if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
                 return;
             }
             // 日志时间
-            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
+            StringBuilder builder = new StringBuilder(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s:%s ", logger.getName(), msg));
-            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
+            builder.append(String.format("%s：%s ", logger.getName(), message));
+            builder.append(newline);
             //  异常信息
             if (elements != null) {
-                writeExceptionFile(level, elements, logPath, logFileName);
+                writeExceptionFile(builder, level, elements, logPath, logFileName);
+            } else {
+                FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
             }
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -335,17 +343,19 @@ public class LogUtils implements BeanPostProcessor {
      * @param logPath     文件路径
      * @param logFileName 文件名称
      */
-    private void writeExceptionFile(Level level, StackTraceElement[] elements, String logPath, String logFileName) throws GlobalException {
+    private void writeExceptionFile(StringBuilder builder, Level level,
+                                    StackTraceElement[] elements, String logPath, String logFileName) throws GlobalException {
         for (StackTraceElement element :
                 elements) {
-            StringBuilder builder = new StringBuilder(DateUtils.format(new Date(), DateUtils.DATE_HH_MM_SS_SSS));
+            builder.append(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
             builder.append(String.format("    【%s】    ", level.getName()));
-            builder.append(String.format("%s.%s(%s:%d)", element.getClassName(),
+            builder.append(String.format("%s.%s(%s：%d)", element.getClassName(),
                     element.getMethodName(), element.getFileName(), element.getLineNumber()));
-
-            // 保存文件
-            FileUtils.saveFile(builder.toString(), logPath, "", logFileName);
+            builder.append(newline);
         }
+
+        // 保存文件
+        FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
     }
 
     /**
@@ -368,15 +378,16 @@ public class LogUtils implements BeanPostProcessor {
         }
 
         // 验证文件是否存在
-        file = new File(logPath + logFileName);
+        String pathName = logPath + logFileName;
+        file = new File(pathName);
         try {
             if (!file.exists()) {
                 file.createNewFile();
             }
         } catch (IOException e) {
-            System.out.println(e);
             return "";
         }
+        FileUtils.deleteCatalogFile(logPath, IntegerConsts.SEVEN);
         return logPath;
     }
 
@@ -386,9 +397,6 @@ public class LogUtils implements BeanPostProcessor {
      * @return 返回结果
      */
     private void setLoggerLevel(Logger loggerLevel) {
-        if (customConfig == null) {
-            customConfig = new CustomConfig();
-        }
         int index = LEVEL.indexOf(customConfig.getLevel());
         switch (index) {
             case 0:
@@ -408,6 +416,4 @@ public class LogUtils implements BeanPostProcessor {
                 break;
         }
     }
-
-
 }

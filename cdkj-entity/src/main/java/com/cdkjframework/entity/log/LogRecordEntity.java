@@ -34,6 +34,36 @@ public class LogRecordEntity {
     private String modular;
 
     /**
+     * 操作系统
+     */
+    private String os;
+
+    /**
+     * 浏览器
+     */
+    private String browser;
+
+    /**
+     * 浏览器版本
+     */
+    private String browserVersion;
+
+    /**
+     * 访问地址
+     */
+    private String serverHost;
+
+    /**
+     * 执行类
+     */
+    private String executionClass;
+
+    /**
+     * 方法
+     */
+    private String method;
+
+    /**
      * 访问 地址
      */
     private String servletPath;
@@ -69,6 +99,11 @@ public class LogRecordEntity {
     private String result;
 
     /**
+     * 返回错误信息
+     */
+    private String resultErrorMessage;
+
+    /**
      * 状态
      */
     private int executionState = -1;
@@ -82,4 +117,34 @@ public class LogRecordEntity {
      * 返回结果时间
      */
     private long resultTime;
+
+    /**
+     * 所在机构ID
+     */
+    protected String organizationId;
+
+    /**
+     * 所在机构编码
+     */
+    protected String organizationCode;
+
+    /**
+     * 所在机构名称
+     */
+    protected String organizationName;
+
+    /**
+     * 所在机构上级ID
+     */
+    protected String topOrganizationId;
+
+    /**
+     * 所在机构上级编码
+     */
+    protected String topOrganizationCode;
+
+    /**
+     * 所在机构上级名称
+     */
+    protected String topOrganizationName;
 }

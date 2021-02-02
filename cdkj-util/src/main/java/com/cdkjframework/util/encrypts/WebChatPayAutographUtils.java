@@ -1,5 +1,6 @@
 package com.cdkjframework.util.encrypts;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.constant.WebChatPayConsts;
 import com.cdkjframework.enums.AutographTypeEnums;
 
@@ -50,7 +51,7 @@ public class WebChatPayAutographUtils {
                 continue;
             }
             // 参数值为空，则不参与签名
-            if (data.get(k).trim().length() > 0) {
+            if (data.get(k).trim().length() > IntegerConsts.ZERO) {
                 builder.append(k).append("=").append(data.get(k).trim()).append("&");
             }
         }

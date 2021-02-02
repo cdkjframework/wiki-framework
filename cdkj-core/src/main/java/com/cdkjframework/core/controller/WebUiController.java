@@ -3,6 +3,7 @@ package com.cdkjframework.core.controller;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.CacheConsts;
+import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.redis.RedisUtils;
@@ -76,9 +77,9 @@ public class WebUiController extends AbstractController {
     public <T> T getCurrentUser(Class<T> clazz) {
         T userEntity = null;
         try {
-            String key = getRequestHeader("token");
+            String key = getRequestHeader(CurrentUser.USER_LOGIN_TOKEN_KEY);
             Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
-            String token = claims.get("token").toString();
+            String token = claims.get(CurrentUser.USER_LOGIN_TOKEN_KEY).toString();
             return getCurrentUser(token, clazz);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -134,7 +134,7 @@ public interface IController {
      * @param clazz       要转换的类
      * @return 返回结果
      */
-    List importExcelToList(InputStream inputStream, Class clazz);
+    <T> List<T> importExcelToList(InputStream inputStream, Class<T> clazz);
 
     /**
      * response 输出内容
@@ -143,6 +143,24 @@ public interface IController {
      * @throws IOException 异常信息
      */
     void write(String content) throws IOException;
+
+    /**
+     * 下载输出
+     *
+     * @param dataList 数据列表
+     * @param clazz    数据类型
+     * @param fileName 文件名
+     * @param <T>      类型
+     */
+    <T> void downloadOutput(List<T> dataList, Class<T> clazz, String fileName) throws IOException;
+
+    /**
+     * 输出流
+     *
+     * @param inputStream 输出流
+     * @param fileName    文件名称
+     */
+    void outputStream(InputStream inputStream, String fileName) throws IOException;
 
     /**
      * 获取程序版本信息

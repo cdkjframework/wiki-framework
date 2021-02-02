@@ -1,5 +1,6 @@
 package com.cdkjframework.cloud.config;
 
+import com.cdkjframework.constant.IntegerConsts;
 import feign.Request;
 import feign.Retryer;
 import feign.hystrix.HystrixFeign;
@@ -28,7 +29,7 @@ public class FeignHystrixConfig {
      */
     @Bean
     public Retryer feignRetryer() {
-        return new Retryer.Default(100, TimeUnit.SECONDS.toMillis(10), 3);
+        return new Retryer.Default(IntegerConsts.ONE_HUNDRED, TimeUnit.SECONDS.toMillis(IntegerConsts.TEN), IntegerConsts.THREE);
     }
 
     /**
@@ -38,7 +39,8 @@ public class FeignHystrixConfig {
      */
     @Bean
     public Request.Options feignOption() {
-        Request.Options option = new Request.Options(70000, 70000);
+        int timeoutMillis = IntegerConsts.ONE_HUNDRED * IntegerConsts.ONE_HUNDRED * IntegerConsts.SEVEN;
+        Request.Options option = new Request.Options(timeoutMillis, timeoutMillis);
         return option;
     }
 

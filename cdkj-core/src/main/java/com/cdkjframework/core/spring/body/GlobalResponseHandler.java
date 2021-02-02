@@ -1,7 +1,9 @@
 package com.cdkjframework.core.spring.body;
 
+import com.alibaba.fastjson.JSONArray;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -31,15 +33,14 @@ import java.util.stream.Collectors;
 public class GlobalResponseHandler implements ResponseBodyAdvice {
 
     /**
-     * 自定义配置
-     */
-    @Autowired
-    private CustomConfig customConfig;
-
-    /**
      * 参数列表
      */
     private static List<String> parameterList;
+
+    /**
+     * 数据类型
+     */
+    private static String dataType = "java.util.ArrayList";
 
     static {
         parameterList = new ArrayList<>();
@@ -48,6 +49,12 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
         parameterList.add("PageEntity");
         parameterList.add("org.springframework.http.ResponseEntity");
     }
+
+    /**
+     * 自定义配置
+     */
+    @Autowired
+    private CustomConfig customConfig;
 
     /**
      * 验证需要修改验证
@@ -84,7 +91,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         //不是 json 格式直接返回
         if (!mediaType.includes(MediaType.APPLICATION_JSON)) {
-            return encryptHandle(JsonUtils.objectToJsonString(o));
+            return encryptHandle(o);
         }
 
         final String returnTypeName = methodParameter.getParameterType().getName();
@@ -92,7 +99,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
                 .filter(f -> returnTypeName.contains(f))
                 .collect(Collectors.toList());
         if (!list.isEmpty()) {
-            return encryptHandle(JsonUtils.objectToJsonString(o));
+            return encryptHandle(o);
         }
 
         //封装对象
@@ -103,7 +110,7 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
         builder.setData(o);
 
         //返回结果
-        return encryptHandle(JsonUtils.objectToJsonString(builder));
+        return encryptHandle(builder);
     }
 
     /**
@@ -112,10 +119,19 @@ public class GlobalResponseHandler implements ResponseBodyAdvice {
      * @param o 数据
      * @return 返回结果
      */
-    private Object encryptHandle(String o) {
-        if (!customConfig.isEncryption()) {
-            return o;
+    private Object encryptHandle(Object o) {
+        String json = JsonUtils.objectToJsonString(o);
+        if (customConfig.isEncryption()) {
+            json = AesUtils.base64Encode(JsonUtils.objectToJsonString(o));
         }
-        return AesUtils.base64Encode(o);
+
+        if (!customConfig.isEncryption() && customConfig.isJson()) {
+            if (dataType.equals(o.getClass().getName())) {
+                return JsonUtils.parseArray(json);
+            }
+            return JsonUtils.parseObject(json);
+        } else {
+            return json;
+        }
     }
 }

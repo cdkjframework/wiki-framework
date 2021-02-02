@@ -6,6 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -70,7 +72,7 @@ public abstract class AbstractUserEntity extends BaseEntity {
     /**
      * 最后登录时间
      */
-    private Timestamp lastLoginTime;
+    private LocalDateTime lastLoginTime;
     /**
      * 是否锁定
      */
@@ -82,7 +84,7 @@ public abstract class AbstractUserEntity extends BaseEntity {
     /**
      * 生日
      */
-    private Date birthday;
+    private LocalDate birthday;
     /**
      * 居住详细地址
      */
@@ -95,6 +97,27 @@ public abstract class AbstractUserEntity extends BaseEntity {
      * 当前所在组织ID
      */
     private String currentOrganizationId;
+
+    /**
+     * 机构类型0：普通，1：评估细分
+     */
+    private Integer organizationType;
+
+    /**
+     * 是否开启两级权限 0默认值（0：未开启，1:开启）
+     */
+    private Integer permissions;
+
+    /**
+     * 床位是否 对多对
+     */
+    private Integer bedMores;
+
+    /**
+     * 余额共享
+     */
+    private Integer balanceShare;
+
     /**
      * 备注
      */

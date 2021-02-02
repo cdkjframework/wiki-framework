@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
+import java.util.Date;
 
 /**
  * @ProjectName: cdkj-framework
@@ -37,7 +38,7 @@ public class LocalDateUtils {
     public static final String DATE_HHMMSS = "yyyyMMddHHmmss";
     public static final String DATE_YEAR = "yyyy";
     public static final String DATE_MONTH = "yyyy-MM";
-    public static final String DATE_DAY = "yyyy-MM-dd";
+    public static final String TIME = "HH:mm:ss";
 
     /**
      * 获取到当前时间 yyyy-MM-dd HH:mm:ss
@@ -56,6 +57,16 @@ public class LocalDateUtils {
      */
     public static LocalDateTime dateTimeParse(String dateTime) {
         return LocalDateTime.parse(dateTime);
+    }
+
+    /**
+     * date 日期转换
+     *
+     * @param dateTime 时间
+     * @return 返回结果
+     */
+    public static LocalDateTime parseDateTime(String dateTime) {
+        return dateTimeParse(dateTime, DATE_HH_MM_SS);
     }
 
     /**

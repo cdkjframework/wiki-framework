@@ -12,6 +12,11 @@ package com.cdkjframework.constant;
 public class IntegerConsts {
 
     /**
+     * 负一
+     */
+    public final static Integer MINUS_ONE = -1;
+
+    /**
      * 零
      */
     public final static Integer ZERO = 0;
@@ -67,6 +72,11 @@ public class IntegerConsts {
     public final static Integer TEN = 10;
 
     /**
+     * 十三
+     */
+    public final static Integer THIRTEEN = 13;
+
+    /**
      * 二十
      */
     public final static Integer TWENTY = 20;
@@ -75,6 +85,16 @@ public class IntegerConsts {
      * 二十四
      */
     public final static Integer TWENTY_FOUR = 24;
+
+    /**
+     * 三十
+     */
+    public final static Integer THIRTY = 30;
+
+    /**
+     * 三十二
+     */
+    public final static Integer THIRTY_TWO = 32;
 
     /**
      * 六十
@@ -87,7 +107,17 @@ public class IntegerConsts {
     public final static Integer ONE_HUNDRED = 100;
 
     /**
+     * 一千
+     */
+    public final static Integer ONE_THOUSAND = 1000;
+
+    /**
      * 字节长度
      */
     public final static Integer BYTE_LENGTH = 1024;
+
+    /**
+     * 999
+     */
+    public final static Integer NINE_HUNDRED_NINETY_NINE = 999;
 }

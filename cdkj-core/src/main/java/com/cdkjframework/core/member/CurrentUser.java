@@ -3,12 +3,13 @@ package com.cdkjframework.core.member;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.CacheConsts;
-import com.cdkjframework.entity.user.ConfigureEntity;
+import com.cdkjframework.entity.user.BmsConfigureEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.InterfaceEnum;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
@@ -31,7 +32,12 @@ public class CurrentUser {
     /**
      * 用户登录 token 缓存主键
      */
-    private static String USER_LOGIN_TOKEN_KEY = "token";
+    public static String USER_LOGIN_TOKEN_KEY = "token";
+
+    /**
+     * 日志
+     */
+    private static LogUtils logUtils = LogUtils.getLogger(CurrentUser.class.getName());
 
     /**
      * 配置信息
@@ -100,6 +106,24 @@ public class CurrentUser {
     }
 
     /**
+     * 获取机构类型
+     *
+     * @return 返回结果
+     */
+    public static Integer getOrganizationType() {
+        return getCurrentUser().getOrganizationType();
+    }
+
+    /**
+     * 床位是否 对多对
+     *
+     * @return 返回结果
+     */
+    public static Integer getBedMores() {
+        return getCurrentUser().getBedMores();
+    }
+
+    /**
      * 获取所在机构ID
      *
      * @return 返回结果
@@ -132,7 +156,7 @@ public class CurrentUser {
      *
      * @return 返回配置结果
      */
-    public static List<ConfigureEntity> getConfigureList() {
+    public static List<BmsConfigureEntity> getConfigureList() {
         return getCurrentUser().getConfigureList();
     }
 
@@ -142,13 +166,13 @@ public class CurrentUser {
      * @param typeEnum 枚举信息
      * @return 返回配置结果
      */
-    public static ConfigureEntity getConfigure(InterfaceEnum typeEnum) {
-        List<ConfigureEntity> configureEntityList = getConfigureList();
-        if (CollectionUtils.isEmpty(configureEntityList) || typeEnum == null ||
+    public static BmsConfigureEntity getConfigure(InterfaceEnum typeEnum) {
+        List<BmsConfigureEntity> bmsConfigureEntityList = getConfigureList();
+        if (CollectionUtils.isEmpty(bmsConfigureEntityList) || typeEnum == null ||
                 StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
             return null;
         }
-        Optional<ConfigureEntity> optional = configureEntityList.stream()
+        Optional<BmsConfigureEntity> optional = bmsConfigureEntityList.stream()
                 .filter(f -> f.getConfigKey().equals(typeEnum.getValue()))
                 .findFirst();
         if (optional.isPresent()) {
@@ -165,11 +189,11 @@ public class CurrentUser {
      * @return 返回配置结果
      */
     public static String getConfigureValue(InterfaceEnum typeEnum) {
-        ConfigureEntity configureEntity = getConfigure(typeEnum);
-        if (configureEntity == null) {
+        BmsConfigureEntity bmsConfigureEntity = getConfigure(typeEnum);
+        if (bmsConfigureEntity == null) {
             return "";
         } else {
-            return configureEntity.getConfigValue();
+            return bmsConfigureEntity.getConfigValue();
         }
     }
 
@@ -183,7 +207,7 @@ public class CurrentUser {
         if (entity == null) {
             entity = new UserEntity();
             entity.setId("438a848a-60b6-4c00-b6fd-7dfc6dd94aac");
-            entity.setLoginName("测试用户");
+            entity.setLoginName("系统默认用户");
         }
 
         //返回结果
@@ -200,11 +224,15 @@ public class CurrentUser {
     public static <T> T getCurrentUser(Class<T> clazz) {
         try {
             String key = getRequestUserHeader();
-            Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
-            String token = claims.get("token").toString();
-            return getCurrentUser(token, clazz);
+            if (StringUtils.isNotNullAndEmpty(key)) {
+                Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
+                String token = claims.get("token").toString();
+                return getCurrentUser(token, clazz);
+            } else {
+                return null;
+            }
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logUtils.error(ex);
         }
 
         //返回结果
@@ -224,7 +252,7 @@ public class CurrentUser {
             String key = CacheConsts.USER_LOGIN + token;
             userEntity = RedisUtils.syncGetEntity(key, clazz);
         } catch (Exception ex) {
-            ex.printStackTrace();
+            logUtils.error(ex);
         }
 
         //返回结果
