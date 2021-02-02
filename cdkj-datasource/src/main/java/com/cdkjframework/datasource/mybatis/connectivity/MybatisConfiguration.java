@@ -90,11 +90,7 @@ public class MybatisConfiguration {
             MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
             sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
             //分页
-<<<<<<< HEAD
-            sqlSessionFactoryBean.setPlugins(new Interceptor[]{pageHelper()});
-=======
             sqlSessionFactoryBean.setPlugins(new Interceptor[]{buildPageHelper()});
->>>>>>> a5f9c671e949caeb9a3ff179418aadcbfa050c60
 
         } catch (Exception ex) {
             logUtil.error(ex.getMessage());
