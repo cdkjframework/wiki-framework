@@ -72,6 +72,11 @@ public class IntegerConsts {
     public final static Integer TEN = 10;
 
     /**
+     * 十三
+     */
+    public final static Integer THIRTEEN = 13;
+
+    /**
      * 二十
      */
     public final static Integer TWENTY = 20;
@@ -85,6 +90,11 @@ public class IntegerConsts {
      * 三十
      */
     public final static Integer THIRTY = 30;
+
+    /**
+     * 三十二
+     */
+    public final static Integer THIRTY_TWO = 32;
 
     /**
      * 六十

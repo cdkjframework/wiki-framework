@@ -520,6 +520,11 @@ public class RedisConfiguration extends BaseRedisConfiguration {
             }
 
             @Override
+            public RedisFuture<Long> hset(String s, Map<String, String> map) {
+                return null;
+            }
+
+            @Override
             public RedisFuture<Boolean> hsetnx(String key, String field, String value) {
                 return null;
             }
@@ -775,6 +780,26 @@ public class RedisConfiguration extends BaseRedisConfiguration {
             }
 
             @Override
+            public RedisFuture<Long> lpos(String s, String s2) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> lpos(String s, String s2, LPosArgs lPosArgs) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<Long>> lpos(String s, String s2, int i) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<Long>> lpos(String s, String s2, int i, LPosArgs lPosArgs) {
+                return null;
+            }
+
+            @Override
             public RedisFuture<Long> lpush(String key, String... values) {
                 return null;
             }
@@ -920,6 +945,11 @@ public class RedisConfiguration extends BaseRedisConfiguration {
             }
 
             @Override
+            public RedisFuture<Long> clientId() {
+                return null;
+            }
+
+            @Override
             public RedisFuture<List<Object>> command() {
                 return null;
             }
@@ -1036,6 +1066,11 @@ public class RedisConfiguration extends BaseRedisConfiguration {
 
             @Override
             public RedisFuture<Date> lastsave() {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<Long> memoryUsage(String s) {
                 return null;
             }
 
@@ -1799,6 +1834,11 @@ public class RedisConfiguration extends BaseRedisConfiguration {
                 return null;
             }
 
+            @Override
+            public RedisFuture<String> xgroupCreate(XReadArgs.StreamOffset<String> streamOffset, String s, XGroupCreateArgs xGroupCreateArgs) {
+                return null;
+            }
+
 
             @Override
             public RedisFuture<Boolean> xgroupDelconsumer(String key, Consumer<String> consumer) {
@@ -1812,6 +1852,21 @@ public class RedisConfiguration extends BaseRedisConfiguration {
 
             @Override
             public RedisFuture<String> xgroupSetid(XReadArgs.StreamOffset<String> streamOffset, String group) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<Object>> xinfoStream(String s) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<Object>> xinfoGroups(String s) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<List<Object>> xinfoConsumers(String s, String k1) {
                 return null;
             }
 
@@ -2022,6 +2077,11 @@ public class RedisConfiguration extends BaseRedisConfiguration {
 
             @Override
             public RedisFuture<Long> setrange(String key, long offset, String value) {
+                return null;
+            }
+
+            @Override
+            public RedisFuture<StringMatchResult> stralgoLcs(StrAlgoArgs strAlgoArgs) {
                 return null;
             }
 

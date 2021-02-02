@@ -52,13 +52,11 @@ public class JpaDruidDbConfiguration {
     @Primary
     public DataSource jpaDataSource() {
         DruidDataSource datasource = new DruidDataSource();
-
         //设置数据库连接
         datasource.setUrl(jpaReadConfig.getUrl());
         datasource.setUsername(jpaReadConfig.getUsername());
         datasource.setPassword(jpaReadConfig.getPassword());
         datasource.setDriverClassName(jpaReadConfig.getDriverClassName());
-
         //configuration
         datasource.setMinIdle(dataSourceConfig.getMinIdle());
         datasource.setMaxWait(dataSourceConfig.getMaxWait());

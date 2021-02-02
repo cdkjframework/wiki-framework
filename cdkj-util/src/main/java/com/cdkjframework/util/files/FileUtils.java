@@ -616,6 +616,19 @@ public class FileUtils {
      * @throws IOException 异常信息
      */
     public static OutputStream resizeImage(InputStream inputStream, int percent, String fileName) throws IOException {
+        return resizeImage(inputStream, percent, fileName, null);
+    }
+
+    /**
+     * 改变图片的大小到宽为size，然后高随着宽等比例变化
+     *
+     * @param inputStream 上传的图片的输入流
+     * @param percent     图片倍率
+     * @param fileName    图片文件名称
+     * @param bgColor     背景色
+     * @throws IOException 异常信息
+     */
+    public static OutputStream resizeImage(InputStream inputStream, int percent, String fileName, Color bgColor) throws IOException {
         // 改变了图片的大小后，把图片的流输出到目标 OutputStream
         OutputStream os = new ByteArrayOutputStream();
         BufferedImage prevImage = ImageIO.read(inputStream);
@@ -625,7 +638,11 @@ public class FileUtils {
         int newHeight = (int) (height * percent);
         BufferedImage image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_BGR);
         Graphics graphics = image.createGraphics();
-        graphics.drawImage(prevImage, IntegerConsts.ZERO, IntegerConsts.ZERO, newWidth, newHeight, null);
+        if (bgColor != null) {
+            graphics.drawImage(prevImage, IntegerConsts.ZERO, IntegerConsts.ZERO, newWidth, newHeight, bgColor, null);
+        } else {
+            graphics.drawImage(prevImage, IntegerConsts.ZERO, IntegerConsts.ZERO, newWidth, newHeight, null);
+        }
         String format = getFileSuffix(fileName).replace(StringUtils.POINT, StringUtils.Empty);
         ImageIO.write(image, format, os);
         os.flush();

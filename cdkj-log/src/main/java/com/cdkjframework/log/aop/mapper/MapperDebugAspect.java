@@ -53,17 +53,17 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     /**
      * 方法
      */
-    private static List<String> methods = new ArrayList<>();
+    private static List<String> methods = new ArrayList<String>();
 
     /**
      * 修改字段
      */
-    private static List<String> modifyField = new ArrayList<>();
+    private static List<String> modifyField = new ArrayList<String>();
 
     /**
      * 添加修改字段
      */
-    private static List<String> insertField = new ArrayList<>();
+    private static List<String> insertField = new ArrayList<String>();
 
     /**
      * 日志

@@ -58,7 +58,7 @@
         <javax.persistence-api.version>2.2</javax.persistence-api.version>
         <elasticsearch.version>7.2.1</elasticsearch.version>
         <!--alibaba -->
-        <druid.version>1.1.22</druid.version>
+        <druid.version>1.1.24</druid.version>
         <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
         <ons.client.version>1.8.2.Final</ons.client.version>
         <sms.alicloud.version>4.4.2</sms.alicloud.version>
@@ -82,7 +82,7 @@
         <easyexcel.version>2.2.6</easyexcel.version>
         <flowable.version>6.5.0</flowable.version>
         <logback.version>1.2.3</logback.version>
-        <lettuce-core.version>5.1.8.RELEASE</lettuce-core.version>
+        <lettuce-core.version>5.3.5.RELEASE</lettuce-core.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
 
 
