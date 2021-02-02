@@ -112,7 +112,7 @@ public class AmountUtils {
             number = number / IntegerConsts.TEN;
             ++numIndex;
         }
-        // 如果signum == -1，则说明输入的数字为负数，就在最前面追加特殊字符：负
+        // 如果 sigNum == -1，则说明输入的数字为负数，就在最前面追加特殊字符：负
         if (sigNum == IntegerConsts.MINUS_ONE) {
             sb.insert(IntegerConsts.ZERO, CN_NEGATIVE);
         }
