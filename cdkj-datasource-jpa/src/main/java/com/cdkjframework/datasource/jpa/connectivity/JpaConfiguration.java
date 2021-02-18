@@ -57,7 +57,6 @@ public class JpaConfiguration {
         HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
         vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
         vendorAdapter.setDatabasePlatform(jpaReadConfig.getDialect());
-        vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
         // 工厂
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
@@ -69,7 +68,7 @@ public class JpaConfiguration {
         jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
         jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
         jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
-        jpaProperties.put("open-in-view", jpaReadConfig.isOpenInView());
+        jpaProperties.put("spring.jpa.open-in-view", jpaReadConfig.isOpenInView());
         jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
         jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
         jpaProperties.put("spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults", false);
