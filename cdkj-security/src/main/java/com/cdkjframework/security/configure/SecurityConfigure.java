@@ -1,5 +1,7 @@
 package com.cdkjframework.security.configure;
 
+import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.security.authorization.AuthenticationFilter;
 import com.cdkjframework.security.authorization.UserAuthenticationProvider;
 import com.cdkjframework.security.authorization.UserPermissionEvaluator;
 import com.cdkjframework.security.authorization.ValidateCodeFilter;
@@ -55,6 +57,11 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
     private final UserAuthenticationProvider userAuthenticationProvider;
 
     /**
+     * 读取配置文件
+     */
+    private final CustomConfig customConfig;
+
+    /**
      * 构造函数
      *
      * @param userLoginSuccessHandler
@@ -63,14 +70,16 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
      * @param userAuthAccessDeniedHandler
      * @param userAuthenticationEntryPointHandler
      * @param userAuthenticationProvider
+     * @param customConfig
      */
-    public SecurityConfigure(UserLoginSuccessHandler userLoginSuccessHandler, UserLoginFailureHandler userLoginFailureHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, UserAuthAccessDeniedHandler userAuthAccessDeniedHandler, UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler, UserAuthenticationProvider userAuthenticationProvider) {
+    public SecurityConfigure(UserLoginSuccessHandler userLoginSuccessHandler, UserLoginFailureHandler userLoginFailureHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, UserAuthAccessDeniedHandler userAuthAccessDeniedHandler, UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler, UserAuthenticationProvider userAuthenticationProvider, CustomConfig customConfig) {
         this.userLoginSuccessHandler = userLoginSuccessHandler;
         this.userLoginFailureHandler = userLoginFailureHandler;
         this.userLogoutSuccessHandler = userLogoutSuccessHandler;
         this.userAuthAccessDeniedHandler = userAuthAccessDeniedHandler;
         this.userAuthenticationEntryPointHandler = userAuthenticationEntryPointHandler;
         this.userAuthenticationProvider = userAuthenticationProvider;
+        this.customConfig = customConfig;
     }
 
     /**
@@ -108,9 +117,11 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        int size = customConfig.getPatternsUrls().size();
+        String[] patternsUrls = customConfig.getPatternsUrls().toArray(new String[size]);
         http.authorizeRequests()
                 // 不进行权限验证的请求或资源(从配置文件中读取)
-                .antMatchers("/security/**").permitAll()
+                .antMatchers(patternsUrls).permitAll()
                 // 其他的需要登陆后才能访问
                 .anyRequest().authenticated()
                 .and()
@@ -120,7 +131,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登录地址
                 .formLogin()
-                .loginProcessingUrl("/security/user/login")
+                .loginProcessingUrl(customConfig.getLoginUrl())
                 // 配置登录成功自定义处理类
                 .successHandler(userLoginSuccessHandler)
                 // 配置登录失败自定义处理类
@@ -128,7 +139,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登出地址
                 .logout()
-                .logoutUrl("/security/user/logout")
+                .logoutUrl(customConfig.getLogoutUrl())
                 // 配置用户登出自定义处理类
                 .logoutSuccessHandler(userLogoutSuccessHandler)
                 .and()
@@ -148,7 +159,26 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
         http.headers().cacheControl();
         // 验证码验证
         http.addFilterBefore(new ValidateCodeFilter(), UsernamePasswordAuthenticationFilter.class);
+        // 验证码验证
+        http.addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加JWT过滤器
         http.addFilter(new JwtAuthenticationFilter(authenticationManager()));
+    }
+
+    /**
+     * 身份验证筛选器
+     *
+     * @return 返回 身份验证筛选器
+     * @throws Exception 异常信息
+     */
+    private AuthenticationFilter authenticationFilter() throws Exception {
+        AuthenticationFilter filter = new AuthenticationFilter();
+        filter.setAuthenticationManager(super.authenticationManagerBean());
+        filter.setFilterProcessesUrl(customConfig.getLoginUrl());
+        // 处理登录成功
+        filter.setAuthenticationSuccessHandler(userLoginSuccessHandler);
+        // 处理登录失败
+        filter.setAuthenticationFailureHandler(userLoginFailureHandler);
+        return filter;
     }
 }

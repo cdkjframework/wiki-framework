@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +22,8 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@Entity
+@Table(name = "rms_role", catalog = "")
 public class RoleEntity extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,9 +31,11 @@ public class RoleEntity extends BaseEntity implements Serializable {
     /**
      * 角色名称
      */
+    @Column(name = "role_name")
     private String roleName;
     /**
      * 备注
      */
+    @Column(name = "remark")
     private String remark;
 }

@@ -296,8 +296,8 @@ public class OverallSituationExceptionHandler {
      */
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public ResponseBuilder sizeLimitExceededExceptionExceptionHandler(MaxUploadSizeExceededException e) {
-        Long size = Long.valueOf(1024);
-        Long fileSizeM = size / (1024 * 1024L);
+        Long size = e.getMaxUploadSize();
+        Long fileSizeM = size / (IntegerConsts.BYTE_LENGTH * IntegerConsts.BYTE_LENGTH);
         String info = String.format("文件请勿超过%sM", fileSizeM);
         logUtil.error(e, info);
 

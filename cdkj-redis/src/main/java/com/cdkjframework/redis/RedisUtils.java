@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutionException;
  * @ClassName: RedisUtils
  * @Description: Redis 缓存工具
  * @Author: xiaLin
- * @Version: .0
+ * @Version: .IntegerConsts.ZERO
  */
 @Component
 @Order(Integer.MIN_VALUE + 1)
@@ -101,13 +101,13 @@ public class RedisUtils {
      *
      * @param key  键
      * @param time 时间(秒)
-     * @return 0
+     * @return IntegerConsts.ZERO
      */
     public static boolean syncExpire(String key, long time) {
         key = getNamespaces(key);
         try {
-            if (time < 0) {
-                time = 30 * 60;
+            if (time < IntegerConsts.ZERO) {
+                time = IntegerConsts.THIRTY * IntegerConsts.SIXTY;
             }
             RedisFuture<Boolean> redisFuture = redisAsyncCommands == null ?
                     commands.expire(key, time) :
@@ -246,7 +246,7 @@ public class RedisUtils {
      */
     public static boolean syncExists(String... keys) {
         String[] keyList = new String[keys.length];
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = IntegerConsts.ZERO; i < keys.length; i++) {
             String key = getNamespaces(keys[i]);
             keyList[i] = key;
         }
@@ -272,7 +272,7 @@ public class RedisUtils {
     @SuppressWarnings("unchecked")
     public static void syncDel(String... keys) {
         String[] keyList = new String[keys.length];
-        for (int i = 0; i < keys.length; i++) {
+        for (int i = IntegerConsts.ZERO; i < keys.length; i++) {
             String key = getNamespaces(keys[i]);
             keyList[i] = key;
         }
@@ -447,7 +447,7 @@ public class RedisUtils {
     public static boolean syncSet(String key, String value, long time) {
         key = getNamespaces(key);
         try {
-            if (time > 0) {
+            if (time > IntegerConsts.ZERO) {
                 if (redisAsyncCommands == null) {
                     commands.setex(key, time, value);
                 } else {
@@ -473,7 +473,7 @@ public class RedisUtils {
     public static long syncIncr(String key, long delta) {
         key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
-        if (delta <= 0) {
+        if (delta <= IntegerConsts.ZERO) {
             redisFuture = redisAsyncCommands == null ? commands.incr(key) : redisAsyncCommands.incr(key);
         } else {
             redisFuture = redisAsyncCommands == null ? commands.incrby(key, delta) : redisAsyncCommands.incrby(key, delta);
@@ -499,7 +499,7 @@ public class RedisUtils {
     public static long syncDecr(String key, long delta) {
         key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
-        if (delta <= 0) {
+        if (delta <= IntegerConsts.ZERO) {
             redisFuture = redisAsyncCommands == null ? commands.decr(key) : redisAsyncCommands.decr(key);
         } else {
             redisFuture = redisAsyncCommands == null ? commands.decrby(key, delta) : redisAsyncCommands.decrby(key, delta);
@@ -520,7 +520,7 @@ public class RedisUtils {
      *
      * @param key 键
      * @return 对应的多个键值
-     * 0
+     * IntegerConsts.ZERO
      */
     public static Map<String, Object> syncHashGet(String key) {
         String value = syncGet(key);
@@ -535,7 +535,7 @@ public class RedisUtils {
      * @param key 键
      * @param map 对应多个键值
      * @return true 成功 false 失败
-     * 0
+     * IntegerConsts.ZERO
      */
     public static boolean syncHashSet(String key, Map<String, Object> map) {
         try {
@@ -560,7 +560,7 @@ public class RedisUtils {
         try {
             String value = JsonUtils.objectToJsonString(map);
             syncSet(key, value);
-            if (time > 0) {
+            if (time > IntegerConsts.ZERO) {
                 syncExpire(key, time);
             }
             return true;

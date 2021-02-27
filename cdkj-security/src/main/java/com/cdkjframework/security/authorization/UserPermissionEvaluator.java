@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.security.authorization
  * @ClassName: UserPermissionEvaluator
- * @Description: java类作用描述
+ * @Description: 自定义权限注解验证
  * @Author: xiaLin
  * @Version: 1.0
  */

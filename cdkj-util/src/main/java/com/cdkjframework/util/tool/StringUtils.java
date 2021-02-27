@@ -20,6 +20,12 @@ public class StringUtils {
      * 空值变量
      */
     public final static String Empty = "";
+
+    /**
+     * 横线变量
+     */
+    public final static String HORIZONTAL = "-";
+
     /**
      * 空对像
      */

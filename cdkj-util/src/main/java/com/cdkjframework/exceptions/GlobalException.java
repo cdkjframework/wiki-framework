@@ -1,7 +1,6 @@
 package com.cdkjframework.exceptions;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.cdkjframework.util.log.LogUtils;
 
 import javax.annotation.Generated;
 import java.security.GeneralSecurityException;
@@ -10,7 +9,7 @@ import java.security.GeneralSecurityException;
  * @ProjectName: com.cdkjframework.QRcode
  * @Package: com.cdkjframework.core.exceptions
  * @ClassName: GlobalException
- * @Description: java类作用描述
+ * @Description: 公共异常处理类
  * @Author: xiaLin
  * @Version: 1.0
  */
@@ -18,7 +17,7 @@ import java.security.GeneralSecurityException;
 public class GlobalException extends GeneralSecurityException {
 
     @Generated("异常信息")
-    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalException.class);
+    private static final LogUtils LOGGER = LogUtils.getLogger(GlobalException.class);
     private static final long serialVersionUID = 1L;
 
     /**

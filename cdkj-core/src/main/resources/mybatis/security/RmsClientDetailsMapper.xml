@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cdkjframework.core.business.mapper.RmsClientDetailsMapper">
-    <resultMap id="baseResultMap" type="com.cdkjframework.entity.user.security.SecurityDetailsEntity">
+    <resultMap id="baseResultMap" type="com.cdkjframework.entity.user.security.RmsClientDetailsEntity">
         <result column="client_id" property="clientId" jdbcType="VARCHAR"/>
         <result column="resource_ids" property="resourceIds" jdbcType="VARCHAR"/>
         <result column="client_secret" property="clientSecret" jdbcType="VARCHAR"/>
@@ -30,7 +30,7 @@
             auto_approve_scopes
     </sql>
 
-    <select id="findEntity" parameterType="com.cdkjframework.entity.user.security.SecurityDetailsEntity"
+    <select id="findEntity" parameterType="com.cdkjframework.entity.user.security.RmsClientDetailsEntity"
             resultMap="baseResultMap">
         SELECT
         <include refid="base_Column_List"></include>

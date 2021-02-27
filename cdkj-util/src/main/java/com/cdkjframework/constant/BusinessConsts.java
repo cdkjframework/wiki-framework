@@ -21,6 +21,11 @@ public class BusinessConsts {
     public static String LOGIN_NAME = "loginName";
 
     /**
+     * 用户密码
+     */
+    public static String PASSWORD = "password";
+
+    /**
      * 用户名称
      */
     public static String USER_NAME = "username";

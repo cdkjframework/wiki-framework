@@ -60,6 +60,11 @@ public class JpaConfig {
     private boolean showSql;
 
     /**
+     * 打开视图
+     */
+    private boolean openInView;
+
+    /**
      * 驱动
      */
     private String dialect;

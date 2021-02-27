@@ -1,8 +1,6 @@
 package com.cdkjframework.entity.user;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import com.cdkjframework.entity.BaseEntity;
-import com.cdkjframework.entity.wechat.response.AuthorizerInfoEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

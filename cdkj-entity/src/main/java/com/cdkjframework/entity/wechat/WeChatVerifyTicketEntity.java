@@ -16,6 +16,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@XStreamAlias("xml")
 public class WeChatVerifyTicketEntity {
 
     /**
@@ -41,4 +42,9 @@ public class WeChatVerifyTicketEntity {
      */
     @XStreamAlias("ComponentVerifyTicket")
     private String verifyTicket;
+
+    /**
+     * 主键
+     */
+    private String id;
 }
