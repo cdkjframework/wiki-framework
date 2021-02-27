@@ -1,14 +1,10 @@
 package com.cdkjframework.security.authorization;
 
-import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @ProjectName: cdkj-framework
