@@ -11,7 +11,10 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
+import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.stereotype.Component;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * @program: netty
@@ -67,6 +70,8 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new WebSocketServerProtocolHandler(route, StringUtils.NullObject,
                 allowExtensions, maxContentLength, allowMaskMismatch, checkStartsWith));
         pipeline.addLast(nettyServerHandler);
+        pipeline.addLast(new IdleStateHandler(IntegerConsts.ONE, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.MINUTES));
+
         pipeline.addLast(new ChunkedWriteHandler());
     }
 }

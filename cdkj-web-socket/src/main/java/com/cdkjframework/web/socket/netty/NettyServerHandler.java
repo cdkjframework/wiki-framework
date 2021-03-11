@@ -1,5 +1,6 @@
 package com.cdkjframework.web.socket.netty;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.socket.WebSocketEntity;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.web.socket.WebSocket;
@@ -9,6 +10,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import io.netty.handler.timeout.IdleState;
+import io.netty.handler.timeout.IdleStateEvent;
 import org.springframework.stereotype.Component;
 
 
@@ -28,6 +31,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      * 接口
      */
     private final WebSocket webSocket;
+
+    /**
+     * 连接统计
+     */
+    private Integer lossConnectCount;
 
     /**
      * 日志
@@ -125,5 +133,29 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         socket.setMessage(message);
         socket.setType("REAL_TIME");
         webSocket.onMessage(socket);
+    }
+
+    /**
+     * 心跳机制
+     *
+     * @param ctx 通道进程
+     * @param evt 事件
+     * @throws Exception 异常
+     */
+    @Override
+    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+        logUtils.info("已经1分钟未收到客户端的消息了！");
+        if (evt instanceof IdleStateEvent) {
+            IdleStateEvent event = (IdleStateEvent) evt;
+            if (event.state() != IdleState.READER_IDLE) {
+                return;
+            }
+            lossConnectCount++;
+            if (lossConnectCount > IntegerConsts.TWO) {
+                ctx.channel().close();
+            }
+        } else {
+            super.userEventTriggered(ctx, evt);
+        }
     }
 }

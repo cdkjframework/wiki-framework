@@ -69,10 +69,11 @@ public class NettyServer implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         try {
             int port = webSocketConfig.getPort();
-            int value = IntegerConsts.BYTE_LENGTH * IntegerConsts.TWO;
+            int value = IntegerConsts.BYTE_LENGTH * IntegerConsts.BYTE_LENGTH;
             //创建服务器端的启动对象，配置参数
             ServerBootstrap bootstrap = new ServerBootstrap();
-            //使用链式编程来进行设置
+            // 保持长连接
+            final boolean VALUE = true;
             //设置两个线程组
             bootstrap.group(bossGroup, workerGroup)
                     //使用NioSocketChannel 作为服务器的通道实现
@@ -80,7 +81,8 @@ public class NettyServer implements ApplicationRunner {
                     // 设置线程队列得到连接个数(也可以说是并发数)
                     .option(ChannelOption.SO_BACKLOG, value)
                     //设置保持活动连接状态
-                    .childOption(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.SO_KEEPALIVE, VALUE)
+                    .option(ChannelOption.SO_BACKLOG, IntegerConsts.BYTE_LENGTH)
                     .childHandler(nettyInitializer);
 
             //绑定一个端口并且同步, 生成了一个 ChannelFuture 对象
