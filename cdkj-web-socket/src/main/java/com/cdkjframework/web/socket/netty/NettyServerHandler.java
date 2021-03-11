@@ -14,6 +14,8 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+
 
 /**
  * @program: netty
@@ -33,9 +35,9 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     private final WebSocket webSocket;
 
     /**
-     * 连接统计
+     * 记录每一个channel的心跳包丢失次数
      */
-    private Integer lossConnectCount;
+    public HashMap<String, Integer> onlineChannelsHeart = new HashMap<>();
 
     /**
      * 日志
@@ -150,9 +152,17 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
             if (event.state() != IdleState.READER_IDLE) {
                 return;
             }
-            lossConnectCount++;
-            if (lossConnectCount > IntegerConsts.TWO) {
-                ctx.channel().close();
+            // 空闲60s之后触发 (心跳包丢失)
+            Integer counter = onlineChannelsHeart.get(ctx.channel().id().asLongText());
+            if (counter >= IntegerConsts.THREE) {
+                // 连续丢失3个心跳包 (断开连接)
+                ctx.channel().close().sync();
+                logUtils.info("已与" + ctx.channel().remoteAddress() + "断开连接");
+            } else {
+                counter++;
+                // 重置心跳丢失次数
+                onlineChannelsHeart.replace(ctx.channel().id().asLongText(), counter);
+                logUtils.info("丢失了第 " + counter + " 个心跳包");
             }
         } else {
             super.userEventTriggered(ctx, evt);
