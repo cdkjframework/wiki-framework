@@ -10,6 +10,7 @@ import com.cdkjframework.entity.generate.template.TreeEntity;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -52,7 +53,7 @@ public class GenerateController extends WebUiController {
      */
     @GetMapping("/index")
     public ModelAndView index(ModelAndView view) {
-        view.setViewName("/index");
+        view.setViewName("index");
         view.addObject("applicationName", applicationName);
         //返回结果
         return view;
