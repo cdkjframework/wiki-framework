@@ -26,6 +26,57 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>swagger2markup</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.netzwerg</groupId>
+                    <artifactId>paleo-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.github.swagger2markup</groupId>
+                    <artifactId>markup-document-builder</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>io.github.swagger2markup</groupId>
+            <artifactId>markup-document-builder</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>nl.jworks.markdown_to_asciidoc</groupId>
+                    <artifactId>markdown_to_asciidoc</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>nl.jworks.markdown_to_asciidoc</groupId>
+            <artifactId>markdown_to_asciidoc</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.pegdown</groupId>
+                    <artifactId>pegdown</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>ch.netzwerg</groupId>
+            <artifactId>paleo-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.pegdown</groupId>
+            <artifactId>pegdown</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-pdf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
@@ -79,7 +130,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 

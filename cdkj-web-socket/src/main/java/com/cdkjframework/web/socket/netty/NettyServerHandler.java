@@ -3,12 +3,13 @@ package com.cdkjframework.web.socket.netty;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.socket.WebSocketEntity;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
-import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -130,10 +131,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame textWebSocketFrame) throws Exception {
         logUtils.info("服务器读取线程 " + Thread.currentThread().getName() + " 通道ID：" + ctx.channel().id().asLongText());
         String message = textWebSocketFrame.text();
-        WebSocketEntity socket = new WebSocketEntity();
+        WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
         socket.setClientId(ctx.channel().id().asLongText());
-        socket.setMessage(message);
-        socket.setType("REAL_TIME");
+        if (StringUtils.isNullAndSpaceOrEmpty(socket.getMessage())) {
+            socket.setMessage(message);
+        }
         webSocket.onMessage(socket);
     }
 

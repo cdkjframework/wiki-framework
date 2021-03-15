@@ -31,7 +31,6 @@
         <module>cdkj-config</module>
         <module>cdkj-swagger</module>
         <module>cdkj-login</module>
-        <module>cdkj-security-client</module>
     </modules>
 
     <parent>

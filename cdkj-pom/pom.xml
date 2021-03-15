@@ -49,6 +49,13 @@
         <spring.version>5.2.12.RELEASE</spring.version>
         <swagger.version>2.9.2</swagger.version>
         <swagger-annotations.version>1.5.20</swagger-annotations.version>
+        <swagger2markup.version>1.3.3</swagger2markup.version>
+        <swagger2markup-builder.version>1.1.2</swagger2markup-builder.version>
+        <jworks.version>1.1</jworks.version>
+        <asciidoctor.version>1.5.4</asciidoctor.version>
+        <pegdown.version>1.6.0</pegdown.version>
+        <paleo-core.version>0.14.1</paleo-core.version>
+        <kotlin-stdlib.version>1.4.30</kotlin-stdlib.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.8.47</mockito.version>
         <easypoi.version>4.1.0</easypoi.version>
@@ -413,6 +420,64 @@
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.github.swagger2markup</groupId>
+                <artifactId>swagger2markup</artifactId>
+                <version>${swagger2markup.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.netzwerg</groupId>
+                        <artifactId>paleo-core</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>io.github.swagger2markup</groupId>
+                        <artifactId>markup-document-builder</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>io.github.swagger2markup</groupId>
+                <artifactId>markup-document-builder</artifactId>
+                <version>${swagger2markup-builder.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>nl.jworks.markdown_to_asciidoc</groupId>
+                        <artifactId>markdown_to_asciidoc</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>nl.jworks.markdown_to_asciidoc</groupId>
+                <artifactId>markdown_to_asciidoc</artifactId>
+                <version>${jworks.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.pegdown</groupId>
+                        <artifactId>pegdown</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>ch.netzwerg</groupId>
+                <artifactId>paleo-core</artifactId>
+                <version>${paleo-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.pegdown</groupId>
+                <artifactId>pegdown</artifactId>
+                <version>${pegdown.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.asciidoctor</groupId>
+                <artifactId>asciidoctorj-pdf</artifactId>
+                <version>${asciidoctor.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-stdlib</artifactId>
+                <version>${kotlin-stdlib.version}</version>
+            </dependency>
             <!-- end swagger2 -->
             <!-- Redis begin -->
             <dependency>
@@ -644,7 +709,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>http://nexus.framewiki.com:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>

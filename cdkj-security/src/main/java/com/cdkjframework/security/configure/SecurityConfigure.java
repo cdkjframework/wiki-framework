@@ -126,7 +126,8 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 // 配置未登录自定义处理类
-                .httpBasic().authenticationEntryPoint(userAuthenticationEntryPointHandler)
+                .httpBasic()
+                .authenticationEntryPoint(userAuthenticationEntryPointHandler)
                 .and()
                 // 配置登录地址
                 .formLogin()
