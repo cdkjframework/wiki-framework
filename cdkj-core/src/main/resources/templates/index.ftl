@@ -142,7 +142,12 @@
                 let that = this
                 that.$http.post('getDatabase', {}).then(function (res) {
                     let json = this.decrypt(res.data)
-                    let data = json.data
+                    let data
+                    if (typeof json === 'object') {
+                        data = json.data
+                    } else {
+                        data = JSON.parse(json.data)
+                    }
                     that.value = data['tableSchema']
                     for (let i = 0; i < data.children.length; i++) {
                         let children = data.children[i]
@@ -182,7 +187,12 @@
                 let json = this.encrypt(JSON.stringify(data))
                 that.$http.post('generate?dataBase=' + that.value, json).then(function (res) {
                     let json = this.decrypt(res.data)
-                    let data = json
+                    let data
+                    if (typeof json === 'object') {
+                        data = json
+                    } else {
+                        data = JSON.parse(json)
+                    }
                     if (data.code === 0) {
                         that.$message.success('生成成功！')
                     } else {

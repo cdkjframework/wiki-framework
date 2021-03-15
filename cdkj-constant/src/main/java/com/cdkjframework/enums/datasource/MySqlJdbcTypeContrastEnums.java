@@ -138,6 +138,27 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
             return "INTEGER";
         }
     },
+    MEDIUMINT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "int";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "INTEGER";
+        }
+    },
     FLOAT {
         /**
          * 获取枚举值
