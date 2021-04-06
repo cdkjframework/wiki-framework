@@ -72,6 +72,7 @@ public class JpaConfiguration {
         jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
         jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
         jpaProperties.put("spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults", false);
+        System.setProperty("druid.mysql.usePingMethod", "false");
         //设置自动更新表结构
         if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getHbm2ddlAuto())) {
             jpaProperties.put("hibernate.hbm2ddl.auto", jpaReadConfig.getHbm2ddlAuto());

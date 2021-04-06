@@ -81,9 +81,8 @@ public class RedisUtils {
         if (asyncCommands.getStatefulConnection() != null) {
             redisAsyncCommands = asyncCommands;
         }
-
         pubSubAsyncCommands = redisPubSubConnection.async();
-        if (pubSubAsyncCommands == null || pubSubAsyncCommands.getStatefulConnection() != null) {
+        if (pubSubAsyncCommands == null || pubSubAsyncCommands.getStatefulConnection() == null) {
             pubSubAsyncCommands = null;
             clusterPubSubCommands = redisClusterPubSubConnection.async();
         }
@@ -130,12 +129,11 @@ public class RedisUtils {
      * @return 返回结果
      */
     public static Long publish(String key, String message) {
-        key = getNamespaces(key);
         RedisFuture<Long> redisFuture;
 
         try {
-            if (redisAsyncCommands != null) {
-                redisFuture = redisAsyncCommands.publish(key, message);
+            if (pubSubAsyncCommands != null) {
+                redisFuture = pubSubAsyncCommands.publish(key, message);
             } else {
                 redisFuture = clusterPubSubCommands.publish(key, message);
             }

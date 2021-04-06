@@ -63,7 +63,10 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      */
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        logUtils.info("通道：【" + ctx.channel().id().asLongText() + "】数据接收完成");
+        String channelId = ctx.channel().id().asLongText();
+        logUtils.info("通道：【" + channelId + "】数据接收完成");
+        // 重置心跳丢失次数
+        onlineChannelsHeart.replace(channelId, IntegerConsts.ZERO);
     }
 
     /**
@@ -148,8 +151,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        logUtils.info("已经1分钟未收到客户端的消息了！");
         if (evt instanceof IdleStateEvent) {
+            logUtils.info("已经1分钟未收到客户端的消息了！");
             IdleStateEvent event = (IdleStateEvent) evt;
             if (event.state() != IdleState.READER_IDLE) {
                 return;

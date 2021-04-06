@@ -1,5 +1,6 @@
 package com.cdkjframework.datasource.mongodb.repository.impl;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -101,8 +102,17 @@ public class MongoRepository implements IMongoRepository {
      */
     @Override
     public long findCount(Query query, Class clazz) {
+        int limit = query.getLimit();
+        long skip = query.getSkip();
+        query.limit(IntegerConsts.ZERO);
+        query.skip(IntegerConsts.ZERO);
         // 查询总数
-        return mongoTemplate.count(query, clazz);
+        long count = mongoTemplate.count(query, clazz);
+        query.skip(skip);
+        query.limit(limit);
+
+        // 返回结果
+        return count;
     }
 
     /**
@@ -129,7 +139,7 @@ public class MongoRepository implements IMongoRepository {
         Pageable pageable = PageRequest.of((int) query.getSkip(), query.getLimit());
 
         // 查询总数
-        long count = mongoTemplate.count(query, clazz);
+        long count = findCount(query, clazz);
         //查询数据
         List<T> list = mongoTemplate.find(query, clazz);
 
@@ -153,9 +163,9 @@ public class MongoRepository implements IMongoRepository {
     @Override
     public <T> Page listEntityPage(Query query, Class<T> clazz) {
         Pageable pageable = PageRequest.of((int) query.getSkip(), query.getLimit());
-
+//        query.with(pageable);
         // 查询总数
-        long count = mongoTemplate.count(query, clazz);
+        long count = findCount(query, clazz);
         //查询数据
         List<T> list = mongoTemplate.find(query, clazz);
 

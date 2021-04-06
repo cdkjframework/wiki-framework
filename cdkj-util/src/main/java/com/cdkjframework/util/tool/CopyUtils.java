@@ -6,6 +6,8 @@ import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import org.springframework.cglib.beans.BeanCopier;
+import org.springframework.util.CollectionUtils;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
@@ -74,19 +76,7 @@ public class CopyUtils {
      */
     @Deprecated
     public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
-        List<T> result = new ArrayList();
-        if (list != null) {
-            for (S o : list) {
-                try {
-                    T d = target.newInstance();
-                    copyProperties(o, d, false);
-                    result.add(d);
-                } catch (Exception e) {
-                    logUtil.error(e.getMessage());
-                }
-            }
-        }
-        return result;
+        return copyProperties(list, target);
     }
 
     /**
@@ -98,20 +88,7 @@ public class CopyUtils {
      */
     @Deprecated
     public static <S, T> List<T> copyNoNullPropertiesList(List<S> list, Class<T> target) {
-        List<T> result = new ArrayList();
-        if (list != null) {
-            for (S o : list) {
-                try {
-
-                    T d = target.newInstance();
-                    copyProperties(o, d, true);
-                    result.add(d);
-                } catch (Exception e) {
-                    logUtil.error(e.getMessage());
-                }
-            }
-        }
-        return result;
+        return copyProperties(list, target);
     }
 
     /**
@@ -140,23 +117,10 @@ public class CopyUtils {
      * 拷贝数据
      *
      * @param sourceList 原数据源
-     * @param targetList 当前数据
+     * @param target     目标数据
      */
-    public static <S, T> List<T> copyProperties(List<S> sourceList, Class<T> targetList) {
-        List<T> result = new ArrayList();
-        if (sourceList != null) {
-            for (S o : sourceList) {
-                try {
-
-                    T d = targetList.newInstance();
-                    copyProperties(o, d, true);
-                    result.add(d);
-                } catch (Exception e) {
-                    logUtil.error(e.getMessage());
-                }
-            }
-        }
-        return result;
+    public static <S, T> List<T> copyProperties(List<S> sourceList, Class<T> target) {
+        return copyNoNullProperties(sourceList, target);
     }
 
     /**
@@ -166,32 +130,31 @@ public class CopyUtils {
      * @param target 当前数据
      */
     public static <S, T> T copyProperties(S source, Class<T> target) {
-        T t;
+        T t = null;
         try {
-            t = target.newInstance();
-            copyProperties(source, t, false);
-            return t;
+            BeanCopier beanCopier = create(source.getClass(), target);
+            t = target.getDeclaredConstructor().newInstance();
+            beanCopier.copy(source, t, null);
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
-            return null;
         }
+        return t;
     }
 
     /**
      * 拷贝数据
      *
      * @param sourceList 原数据源
-     * @param targetList 当前数据
+     * @param target     目标数据
      */
-    public static <S, T> List<T> copyNoNullProperties(List<S> sourceList, Class<T> targetList) {
+    public static <S, T> List<T> copyNoNullProperties(List<S> sourceList, Class<T> target) {
         List<T> result = new ArrayList();
-        if (sourceList != null) {
-            for (S o : sourceList) {
+        if (!CollectionUtils.isEmpty(sourceList) && target != null) {
+            for (S s :
+                    sourceList) {
                 try {
-
-                    T d = targetList.newInstance();
-                    copyProperties(o, d, true);
-                    result.add(d);
+                    T t = copyNoNullProperties(s, target);
+                    result.add(t);
                 } catch (Exception e) {
                     logUtil.error(e.getMessage());
                 }
@@ -209,7 +172,7 @@ public class CopyUtils {
     public static <S, T> T copyNoNullProperties(S source, Class<T> target) {
         T t;
         try {
-            t = target.newInstance();
+            t = target.getDeclaredConstructor().newInstance();
             copyProperties(source, t, true);
             return t;
         } catch (Exception ex) {
@@ -233,44 +196,8 @@ public class CopyUtils {
             if (source == null) {
                 return;
             }
-            String[] propertyNames = getNullPropertyNames(source);
-            if (isNull && propertyNames.length > IntegerConsts.ZERO) {
-                BeanUtils.copyProperties(source, target, propertyNames);
-            } else {
-                BeanUtils.copyProperties(source, target);
-            }
-            List<Field> targetFields = ReflectionUtils.getDeclaredFields(target.getClass());
-            List<Field> fields = ReflectionUtils.getDeclaredFields(source.getClass());
-            for (Field targetField :
-                    targetFields) {
-                targetField.setAccessible(true);
-                // 读取值
-                Object value = ReflectionUtils.getFieldValue(targetField, target);
-                String typeName = value.getClass().getTypeName();
-                if (typeName.contains(DATA_TYPE)) {
-                    buildArrayList((ArrayList) value, target, targetField);
-                }
-                if (value != "") {
-                    continue;
-                }
-                // 验证是否有相同字段
-                Optional<Field> optionalField = fields.stream()
-                        .filter(f -> f.getName().equals(targetField.getName()))
-                        .findFirst();
-                if (!optionalField.isPresent()) {
-                    continue;
-                }
-                Field field = optionalField.get();
-                field.setAccessible(true);
-                // 读取值
-                value = ReflectionUtils.getFieldValue(field, source);
-                if (value == "") {
-                    continue;
-                }
-                Object clazz = targetField.getType().newInstance();
-                copyProperties(value, clazz);
-                ReflectionUtils.setFieldValue(target, targetField, clazz);
-            }
+            BeanCopier beanCopier = create(source.getClass(), target.getClass());
+            beanCopier.copy(source, target, null);
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
         }
@@ -295,5 +222,16 @@ public class CopyUtils {
             list.add(objClazz);
         }
         ReflectionUtils.setFieldValue(target, targetField, list);
+    }
+
+    /**
+     * 创建信息
+     *
+     * @param source 原类型
+     * @param target 目标类型
+     * @return 返回创建结果
+     */
+    private static BeanCopier create(Class source, Class target) {
+        return BeanCopier.create(source, target, false);
     }
 }

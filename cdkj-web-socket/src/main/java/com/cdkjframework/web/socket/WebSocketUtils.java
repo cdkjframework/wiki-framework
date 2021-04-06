@@ -37,7 +37,7 @@ public class WebSocketUtils {
      */
     private static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-    public static ChannelGroup getClients() {
+    public static synchronized ChannelGroup getClients() {
         return clients;
     }
 
@@ -51,18 +51,13 @@ public class WebSocketUtils {
      * @param message 消息内容
      */
     public static void sendMessage(String channelId, String message) {
-        Lock.lock();
-        try {
-            Channel channel = findChannel(channelId);
-            if (StringUtils.isNullAndSpaceOrEmpty(message) || channel == null) {
-                return;
-            }
-            if (channel.isOpen()) {
-                logUtils.info("channelId：" + channelId);
-                channel.writeAndFlush(new TextWebSocketFrame(message));
-            }
-        } finally {
-            Lock.unlock();
+        Channel channel = findChannel(channelId);
+        if (StringUtils.isNullAndSpaceOrEmpty(message) || channel == null) {
+            return;
+        }
+        if (channel.isOpen()) {
+            logUtils.info("channelId：" + channelId);
+            channel.writeAndFlush(new TextWebSocketFrame(message));
         }
     }
 
@@ -84,7 +79,7 @@ public class WebSocketUtils {
      * @return 返回通道
      */
     public synchronized static Channel findChannel(String channelId) {
-        Optional<Channel> optional = clients.stream()
+        Optional<Channel> optional = getClients().stream()
                 .filter(f -> f.id().asLongText().equals(channelId))
                 .findFirst();
 
@@ -95,7 +90,7 @@ public class WebSocketUtils {
         // 验证连接是否存在
         Channel channel = optional.get();
         if (!channel.isOpen()) {
-            clients.remove(channel);
+            getClients().remove(channel);
             return null;
         }
         // 返回结果

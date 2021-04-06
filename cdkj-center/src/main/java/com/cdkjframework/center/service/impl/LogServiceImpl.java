@@ -124,7 +124,9 @@ public class LogServiceImpl implements LogService {
 
         query.addCriteria(criteria);
         query.with(Sort.by(Sort.Direction.DESC, "addTime"));
-        query.skip((logRecordDto.getPageIndex() - IntegerConsts.ONE) * logRecordDto.getPageSize()).limit(logRecordDto.getPageSize());
+        long count = mongoDbRepository.findCount(query, LogRecordEntity.class);
+        query.skip((logRecordDto.getPageIndex() - IntegerConsts.ONE) * logRecordDto.getPageSize());
+        query.limit(logRecordDto.getPageSize());
 
         PageEntity pageEntity = new PageEntity();
         Page<LogRecordEntity> pageList = mongoDbRepository.listEntityPage(query, LogRecordEntity.class);

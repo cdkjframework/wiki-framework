@@ -23,9 +23,39 @@ public class AssertUtils {
     private final static String IS_EMPTY_MESSAGE = "不能为空";
 
     /**
+     * 对象断言
+     *
+     * @param t   实体
+     * @param <T> 类型
+     * @throws GlobalException 异常信息
+     */
+    public final static <T> void isEmptyMessage(T t) throws GlobalException {
+        isEmptyMessage(t, IS_EMPTY_MESSAGE);
+    }
+
+
+    /**
+     * 对象断言
+     *
+     * @param t   实体
+     * @param <T> 类型
+     * @throws GlobalException 异常信息
+     */
+    public final static <T> void isEmptyMessage(T t, String message) throws GlobalException {
+        if (StringUtils.isNullAndSpaceOrEmpty(message)) {
+            message = IS_EMPTY_MESSAGE;
+        }
+
+        if (t == null) {
+            throw new GlobalException(message);
+        }
+    }
+
+    /**
      * 断言数据集是为空
      *
      * @param list 数据集
+     * @throws GlobalException 异常信息
      */
     public final static void isListEmpty(List<?> list) throws GlobalException {
         isListEmpty(list, IS_EMPTY_MESSAGE);
@@ -35,6 +65,7 @@ public class AssertUtils {
      * 断言数据集是为空
      *
      * @param list 数据集
+     * @throws GlobalException 异常信息
      */
     public final static void isListEmpty(List<?> list, String message) throws GlobalException {
         if (StringUtils.isNullAndSpaceOrEmpty(message)) {
