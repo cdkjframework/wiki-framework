@@ -47,10 +47,11 @@ public class MongoRepository implements IMongoRepository {
     /**
      * 删除数据 by Id
      *
-     * @param id 主键
+     * @param id    主键
+     * @param clazz 类型
      */
     @Override
-    public void delete(String id) {
+    public void delete(String id, Class clazz) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
         mongoTemplate.remove(query);
@@ -60,12 +61,13 @@ public class MongoRepository implements IMongoRepository {
      * 批量删除
      *
      * @param idList 主键信息
+     * @param clazz  类型
      */
     @Override
-    public void batchDelete(Collection<String> idList) {
+    public void batchDelete(Collection<String> idList, Class clazz) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").in(idList));
-        mongoTemplate.remove(query);
+        mongoTemplate.remove(query, clazz);
     }
 
     /**

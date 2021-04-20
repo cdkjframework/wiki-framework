@@ -28,16 +28,18 @@ public interface IMongoRepository {
     /**
      * 删除数据 by Id
      *
-     * @param id 主键
+     * @param id    主键
+     * @param clazz 类型
      */
-    void delete(String id);
+    void delete(String id, Class clazz);
 
     /**
      * 批量删除
      *
      * @param idList 主键信息
+     * @param clazz 类型
      */
-    void batchDelete(Collection<String> idList);
+    void batchDelete(Collection<String> idList, Class clazz);
 
     /**
      * 批量添加

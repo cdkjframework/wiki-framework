@@ -2,6 +2,7 @@ package com.cdkjframework.util.tool;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 
 import java.util.*;
@@ -25,7 +26,7 @@ public class JsonUtils {
     /**
      * 默认值
      */
-    private static int initialCapacity = 0;
+    private static int initialCapacity = 73;
 
     /**
      * 返回 JSON 数组对象
@@ -70,7 +71,7 @@ public class JsonUtils {
      * @return 返回 map
      */
     public static Map<String, Object> jsonStringToMap(String jsonStr) {
-        Map mapList = new HashMap(73);
+        Map mapList = new HashMap(initialCapacity);
         if (StringUtils.isNullAndSpaceOrEmpty(jsonStr)) {
             return mapList;
         }
@@ -103,7 +104,7 @@ public class JsonUtils {
      * @return 返回 map
      */
     public static Map<String, Object> jsonObjectToMap(JSONObject jsonObject) {
-        if (jsonObject == null || jsonObject.size() == 0) {
+        if (jsonObject == null || jsonObject.size() == IntegerConsts.ZERO) {
             return new HashMap<String, Object>(initialCapacity);
         }
         Map<String, Object> map = new HashMap<String, Object>(jsonObject.size());
@@ -123,11 +124,12 @@ public class JsonUtils {
      * @return 返回 map
      */
     public static Map<String, Object> jsonArrayToMap(JSONArray jsonArray) {
-        if (jsonArray == null || jsonArray.size() == 0) {
+        if (jsonArray == null || jsonArray.size() == IntegerConsts.ZERO) {
             return new HashMap<String, Object>(initialCapacity);
         }
         //将数据转换
-        Map<String, Object> mapList = new HashMap<String, Object>(130);
+        final int initial = 130;
+        Map<String, Object> mapList = new HashMap<String, Object>(initial);
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             Map<String, Object> map = jsonObjectToMap(jsonObject);

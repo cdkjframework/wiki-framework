@@ -101,6 +101,7 @@ public class MybatisDruidDbConfiguration {
             datasource.setValidationQueryTimeout(dataSourceConfig.getValidationQueryTimeout());
         }
         try {
+            System.setProperty("druid.mysql.usePingMethod", "false");
             //过滤
             datasource.setFilters(dataSourceConfig.getFilters());
         } catch (SQLException e) {

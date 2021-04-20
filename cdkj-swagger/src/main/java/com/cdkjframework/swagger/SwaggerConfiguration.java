@@ -72,7 +72,7 @@ public class SwaggerConfiguration {
         List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
                 .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
         List<SwaggerHeaderEntity> headerEntityList;
-        if (StringUtils.isNullAndSpaceOrEmpty(swaggerConfig.getHeaders())) {
+        if (StringUtils.isNotNullAndEmpty(swaggerConfig.getHeaders())) {
             headerEntityList = JsonUtils
                     .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
         } else {
