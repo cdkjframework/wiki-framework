@@ -91,7 +91,7 @@ public class LogServiceImpl implements LogService {
     public PageEntity<LogRecordDto> listLogPage(LogRecordDto logRecordDto) {
         Query query = new Query();
         // 时间筛选
-        Criteria criteria = Criteria.where("executionState").nin(-1);
+        Criteria criteria = Criteria.where("executionState").nin(IntegerConsts.MINUS_ONE);
         if (logRecordDto.getAddTimeStart() != null && logRecordDto.getAddTimeEnd() != null) {
             long startTimestamp = LocalDateUtils.localDateTimeToTimestamp(logRecordDto.getAddTimeStart());
             long endTimestamp = LocalDateUtils.localDateTimeToTimestamp(logRecordDto.getAddTimeEnd());
