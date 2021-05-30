@@ -1,4 +1,4 @@
-package com.cdkjframework.enums;
+package com.cdkjframework.enums.sms;
 
 /**
  * @ProjectName: com.cdkjframework.webcode
@@ -9,7 +9,7 @@ package com.cdkjframework.enums;
  * @Version: 1.0
  */
 
-public enum AliCloudSmsEnums {
+public enum AliSmsEnums {
 
     /**
      * 成功

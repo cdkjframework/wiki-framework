@@ -61,7 +61,7 @@ public class JpaConfiguration {
         LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
         factory.setJpaVendorAdapter(vendorAdapter);
         factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        factory.setPackagesToScan(jpaReadConfig.getPackagesToScan());
+        factory.setPackagesToScan(jpaReadConfig.getPackagesToScan().toArray(new String[jpaReadConfig.getPackagesToScan().size()]));
         factory.setDataSource(jpaDataSource);
         // 其它参数
         Map<String, Object> jpaProperties = new HashMap<String, Object>(IntegerConsts.SEVEN);

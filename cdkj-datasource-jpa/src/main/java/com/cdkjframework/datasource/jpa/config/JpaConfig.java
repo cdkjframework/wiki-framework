@@ -7,6 +7,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.List;
+
 /**
  * @ProjectName: com.cdkjframework.QRcode
  * @Package: com.cdkjframework.core.database.jpa.postgresql.config
@@ -47,7 +49,7 @@ public class JpaConfig {
     /**
      * 加载实体
      */
-    private String packagesToScan;
+    private List<String> packagesToScan;
 
     /**
      * 格式化SQL
