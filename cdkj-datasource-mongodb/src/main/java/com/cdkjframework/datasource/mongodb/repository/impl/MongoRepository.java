@@ -2,6 +2,7 @@ package com.cdkjframework.datasource.mongodb.repository.impl;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
+import com.mongodb.client.result.DeleteResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -52,9 +53,10 @@ public class MongoRepository implements IMongoRepository {
      */
     @Override
     public void delete(String id, Class clazz) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(id));
-        mongoTemplate.remove(query);
+        //查询_id为11并且其中userList文档的_id为1的
+        Query query = Query.query(Criteria.where("_id").is(id));
+        DeleteResult result = mongoTemplate.remove(query, clazz);
+        result.getDeletedCount();
     }
 
     /**
@@ -65,9 +67,10 @@ public class MongoRepository implements IMongoRepository {
      */
     @Override
     public void batchDelete(Collection<String> idList, Class clazz) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("id").in(idList));
-        mongoTemplate.remove(query, clazz);
+        for (String key :
+                idList) {
+            delete(key, clazz);
+        }
     }
 
     /**
