@@ -27,6 +27,16 @@ public class StringUtils {
     public final static String HORIZONTAL = "-";
 
     /**
+     * 横线变量
+     */
+    public final static String DIAGONAL_LINE = "\\";
+
+    /**
+     * 横线变量
+     */
+    public final static String BACKSLASH = "/";
+
+    /**
      * 空对像
      */
     public final static String NullObject = null;

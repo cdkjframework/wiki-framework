@@ -2,18 +2,24 @@ package com.cdkjframework.web.socket.netty;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.config.WebSocketConfig;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
+import io.netty.handler.codec.bytes.ByteArrayDecoder;
+import io.netty.handler.codec.bytes.ByteArrayEncoder;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.websocketx.WebSocketServerProtocolHandler;
+import io.netty.handler.codec.string.StringDecoder;
+import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -30,23 +36,21 @@ import java.util.concurrent.TimeUnit;
 public class NettyInitializer extends ChannelInitializer<SocketChannel> {
 
     /**
-     * netty服务处理程序
-     */
-    private final NettyServerHandler nettyServerHandler;
-
-    /**
      * 配置
      */
     private final WebSocketConfig webSocketConfig;
 
     /**
-     * 构造函数
-     *
-     * @param nettyServerHandler netty服务处理程序
+     * 服务接口
      */
-    public NettyInitializer(NettyServerHandler nettyServerHandler, WebSocketConfig webSocketConfig) {
-        this.nettyServerHandler = nettyServerHandler;
+    private final WebSocket webSocket;
+
+    /**
+     * 构造函数
+     */
+    public NettyInitializer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
         this.webSocketConfig = webSocketConfig;
+        this.webSocket = webSocket;
     }
 
     /**
@@ -69,9 +73,20 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         final boolean checkStartsWith = true;
         pipeline.addLast(new WebSocketServerProtocolHandler(route, StringUtils.NullObject,
                 allowExtensions, maxContentLength, allowMaskMismatch, checkStartsWith));
-        pipeline.addLast(nettyServerHandler);
+        pipeline.addLast(new NettyServerHandler(webSocket));
         pipeline.addLast(new IdleStateHandler(IntegerConsts.ONE, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.MINUTES));
 
         pipeline.addLast(new ChunkedWriteHandler());
+        // 字符串解码
+        pipeline.addLast(new StringDecoder(StandardCharsets.UTF_8));
+        // 字符串编码
+        pipeline.addLast(new StringEncoder(StandardCharsets.UTF_8));
+        // byte解码
+        pipeline.addLast(new ByteArrayDecoder());
+        // byte编码
+        pipeline.addLast(new ByteArrayEncoder());
+        // 心跳暂时未开启
+        // int readerIdleTime = IntegerConsts.THIRTY + IntegerConsts.TEN;
+        // pipeline.addLast(new IdleStateHandler(readerIdleTime, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.SECONDS));
     }
 }

@@ -2,6 +2,7 @@ package com.cdkjframework.web.socket.netty;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.config.WebSocketConfig;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -10,6 +11,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
@@ -34,30 +36,23 @@ public class NettyServer implements ApplicationRunner {
     private final LogUtils logUtils = LogUtils.getLogger(NettyServerHandler.class);
 
     /**
-     * 初始netty
-     */
-    private final NettyInitializer nettyInitializer;
-
-    /**
      * 配置
      */
     private final WebSocketConfig webSocketConfig;
 
     /**
-     * netty事件集
+     * 服务接口
      */
-    private final EventLoopGroup bossGroup = new NioEventLoopGroup();
-    private final EventLoopGroup workerGroup = new NioEventLoopGroup();
+    private final WebSocket webSocket;
 
     /**
      * 构造函数
      *
-     * @param nettyInitializer 初始netty
-     * @param webSocketConfig  配置
+     * @param webSocketConfig 配置
      */
-    public NettyServer(NettyInitializer nettyInitializer, WebSocketConfig webSocketConfig) {
-        this.nettyInitializer = nettyInitializer;
+    public NettyServer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
         this.webSocketConfig = webSocketConfig;
+        this.webSocket = webSocket;
     }
 
     /**
@@ -67,6 +62,11 @@ public class NettyServer implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        /**
+         * netty事件集
+         */
+        EventLoopGroup bossGroup = null;
+        EventLoopGroup workerGroup = null;
         try {
             int port = webSocketConfig.getPort();
             int value = IntegerConsts.BYTE_LENGTH * IntegerConsts.BYTE_LENGTH;
@@ -74,6 +74,8 @@ public class NettyServer implements ApplicationRunner {
             ServerBootstrap bootstrap = new ServerBootstrap();
             // 保持长连接
             final boolean VALUE = true;
+            bossGroup = new NioEventLoopGroup();
+            workerGroup = new NioEventLoopGroup();
             //设置两个线程组
             bootstrap.group(bossGroup, workerGroup)
                     //使用NioSocketChannel 作为服务器的通道实现
@@ -83,7 +85,7 @@ public class NettyServer implements ApplicationRunner {
                     //设置保持活动连接状态
                     .childOption(ChannelOption.SO_KEEPALIVE, VALUE)
                     .option(ChannelOption.SO_BACKLOG, IntegerConsts.BYTE_LENGTH)
-                    .childHandler(nettyInitializer);
+                    .childHandler(new NettyInitializer(webSocketConfig, webSocket));
 
             //绑定一个端口并且同步, 生成了一个 ChannelFuture 对象
             //启动服务器(并绑定端口)
@@ -104,8 +106,10 @@ public class NettyServer implements ApplicationRunner {
         } catch (Exception e) {
             logUtils.error(" netty服务启动异常 " + e.getMessage());
         } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+            if (bossGroup != null) {
+                bossGroup.shutdownGracefully();
+                workerGroup.shutdownGracefully();
+            }
         }
     }
 }

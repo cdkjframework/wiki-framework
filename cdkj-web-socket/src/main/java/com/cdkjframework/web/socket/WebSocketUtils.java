@@ -56,7 +56,7 @@ public class WebSocketUtils {
             return;
         }
         if (channel.isOpen()) {
-            logUtils.info("channelId：" + channelId);
+            logUtils.info("通道ID：" + channelId);
             channel.writeAndFlush(new TextWebSocketFrame(message));
         }
     }

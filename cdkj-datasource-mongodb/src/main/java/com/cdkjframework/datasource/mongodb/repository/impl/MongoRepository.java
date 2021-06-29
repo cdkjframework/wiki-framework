@@ -2,7 +2,11 @@ package com.cdkjframework.datasource.mongodb.repository.impl;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
+import com.cdkjframework.entity.ComparisonEntity;
+import com.cdkjframework.util.tool.mapper.ComparisonUtils;
+import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import com.mongodb.client.result.DeleteResult;
+import com.mongodb.client.result.UpdateResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,6 +18,7 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -98,6 +103,29 @@ public class MongoRepository implements IMongoRepository {
         mongoTemplate.updateFirst(query, update, clazz);
     }
 
+
+    /**
+     * 修改数据【保证源数据和目标数据ID一至】
+     *
+     * @param source 源数据
+     * @param target 目标数据
+     */
+    @Override
+    public <S, T> void update(S source, T target) {
+        Object field = ReflectionUtils.getFieldValue(target, "id");
+        // 查询修改的信息
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(field));
+        List<ComparisonEntity> comparisonList = ComparisonUtils.entityComparison(source, target);
+        Update update = new Update();
+        for (ComparisonEntity entity :
+                comparisonList) {
+            update.addToSet(entity.getField(), ReflectionUtils.getFieldValue(target, entity.getField()));
+        }
+        // 修改数据
+        mongoTemplate.upsert(query, update, target.getClass());
+    }
+
     /**
      * 查询总条数
      *
@@ -140,7 +168,7 @@ public class MongoRepository implements IMongoRepository {
      * @return 返回结果
      */
     @Override
-    public <T> List findPageEntityList(Query query, Class<T> clazz) {
+    public <T> List<T> findPageEntityList(Query query, Class<T> clazz) {
         Pageable pageable = PageRequest.of((int) query.getSkip(), query.getLimit());
 
         // 查询总数
@@ -166,7 +194,7 @@ public class MongoRepository implements IMongoRepository {
      * @return 返回结果
      */
     @Override
-    public <T> Page listEntityPage(Query query, Class<T> clazz) {
+    public <T> Page<T> listEntityPage(Query query, Class<T> clazz) {
         Pageable pageable = PageRequest.of((int) query.getSkip(), query.getLimit());
 //        query.with(pageable);
         // 查询总数
@@ -186,7 +214,7 @@ public class MongoRepository implements IMongoRepository {
      * @return 返回结果
      */
     @Override
-    public <T> List findEntityList(Query query, Class<T> clazz) {
+    public <T> List<T> findEntityList(Query query, Class<T> clazz) {
         //查询数据
         return mongoTemplate.find(query, clazz);
     }

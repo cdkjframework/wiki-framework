@@ -7,6 +7,7 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -33,7 +34,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     /**
      * 接口
      */
-    private final WebSocket webSocket;
+    private WebSocket webSocket;
 
     /**
      * 记录每一个channel的心跳包丢失次数
@@ -133,6 +134,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame textWebSocketFrame) throws Exception {
         logUtils.info("服务器读取线程 " + Thread.currentThread().getName() + " 通道ID：" + ctx.channel().id().asLongText());
+
         String message = textWebSocketFrame.text();
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
         socket.setClientId(ctx.channel().id().asLongText());

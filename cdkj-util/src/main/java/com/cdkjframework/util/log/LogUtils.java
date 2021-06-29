@@ -214,7 +214,11 @@ public class LogUtils {
      * @param ex 错误信息
      */
     public void error(Exception ex) {
-        log(Level.SEVERE, ex.getStackTrace(), ex.getMessage());
+        if (ex.getCause() == null) {
+            log(Level.SEVERE, ex.getStackTrace(), ex.getMessage());
+        } else {
+            error(ex.getCause(), ex.getMessage());
+        }
     }
 
     /**

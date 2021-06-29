@@ -37,7 +37,7 @@ public interface IMongoRepository {
      * 批量删除
      *
      * @param idList 主键信息
-     * @param clazz 类型
+     * @param clazz  类型
      */
     void batchDelete(Collection<String> idList, Class clazz);
 
@@ -56,6 +56,16 @@ public interface IMongoRepository {
      * @param clazz  实体
      */
     void update(Update update, Query query, Class clazz);
+
+    /**
+     * 修改数据【保证源数据和目标数据ID一至】
+     *
+     * @param source 源数据
+     * @param target 目标数据
+     * @param <S>    源数据类型
+     * @param <T>    目标数据类型
+     */
+    <S, T> void update(S source, T target);
 
     /**
      * 查询总条数
