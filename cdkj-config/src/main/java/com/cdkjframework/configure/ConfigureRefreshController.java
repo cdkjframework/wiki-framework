@@ -19,24 +19,26 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigureRefreshController {
 
     /**
-     * 上下文刷新器
+     * 上下文刷新器 ZHONGYIDONG
      */
-    private final RefreshEndpoint refreshEndpoint;
+    private RefreshEndpoint refreshEndpoint;
 
     /**
      * 构造函数
      *
      * @param refreshEndpoint 刷新终结点
      */
-    public ConfigureRefreshController(RefreshEndpoint refreshEndpoint) {
-        this.refreshEndpoint = refreshEndpoint;
-    }
+//    public ConfigureRefreshController(RefreshEndpoint refreshEndpoint) {
+//        this.refreshEndpoint = refreshEndpoint;
+//    }
 
     /**
      * 刷新
      */
     @PostMapping(value = "/refresh")
     public void refresh() {
-        refreshEndpoint.refresh();
+        if (refreshEndpoint != null) {
+            refreshEndpoint.refresh();
+        }
     }
 }

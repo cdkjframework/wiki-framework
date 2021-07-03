@@ -33,7 +33,7 @@ public class BaseRedisConfiguration {
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(RedisUtils.class);
+    private LogUtils logUtils = LogUtils.getLogger(BaseRedisConfiguration.class);
 
     /**
      * Redis 配置
