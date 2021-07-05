@@ -8,6 +8,7 @@ import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -45,6 +46,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      * 日志
      */
     private final LogUtils logUtils = LogUtils.getLogger(NettyServerHandler.class);
+
+    /**
+     * 心跳类型
+     */
+    private final String TYPE = "heartbeat";
 
     /**
      * 构造函数
@@ -106,9 +112,14 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      */
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+        Channel channel = ctx.channel();
         //获取连接通道唯一标识
-        String channelId = ctx.channel().id().asLongText();
+        String channelId = channel.id().asLongText();
         logUtils.info("客户端【" + channelId + "】连接，连接通道数量: " + WebSocketUtils.getClients().size());
+        // 返回心跳消息
+        WebSocketEntity heartbeat = new WebSocketEntity();
+        heartbeat.setType(TYPE);
+        channel.writeAndFlush(JsonUtils.objectToJsonString(heartbeat));
     }
 
     /**
@@ -134,10 +145,17 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame textWebSocketFrame) throws Exception {
         logUtils.info("服务器读取线程 " + Thread.currentThread().getName() + " 通道ID：" + ctx.channel().id().asLongText());
-
+        Channel channel = ctx.channel();
         String message = textWebSocketFrame.text();
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
-        socket.setClientId(ctx.channel().id().asLongText());
+        if (TYPE.equals(socket.getType())) {
+            // 返回心跳消息
+            WebSocketEntity heartbeat = new WebSocketEntity();
+            heartbeat.setType(TYPE);
+            channel.writeAndFlush(JsonUtils.objectToJsonString(heartbeat));
+            return;
+        }
+        socket.setClientId(channel.id().asLongText());
         if (StringUtils.isNullAndSpaceOrEmpty(socket.getMessage())) {
             socket.setMessage(message);
         }

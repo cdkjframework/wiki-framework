@@ -86,7 +86,13 @@ public class RedisConfiguration extends BaseRedisConfiguration {
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
             logUtils.info("Requesting new StatefulRedisConnection " + System.currentTimeMillis());
-            return redisClient.connect();
+            StatefulRedisConnection<String, String> conn = null;
+            try {
+                conn = redisClient.connect();
+            } catch (Exception e) {
+                logUtils.error(e);
+            }
+            return conn;
         }, poolConfig);
 
         StatefulRedisConnection<String, String> connection = null;
