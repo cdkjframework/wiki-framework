@@ -148,14 +148,15 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         Channel channel = ctx.channel();
         String message = textWebSocketFrame.text();
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
+        String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
             // 返回心跳消息
             WebSocketEntity heartbeat = new WebSocketEntity();
             heartbeat.setType(TYPE);
-            channel.writeAndFlush(JsonUtils.objectToJsonString(heartbeat));
+            WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
             return;
         }
-        socket.setClientId(channel.id().asLongText());
+        socket.setClientId(channelId);
         if (StringUtils.isNullAndSpaceOrEmpty(socket.getMessage())) {
             socket.setMessage(message);
         }

@@ -100,4 +100,36 @@ public class GeneratedValueUtils {
     public static String getRandomCharacter(int verifySize) {
         return getRandomCharacter(verifySize, VERIFY_CODES);
     }
+
+    /**
+     * 生成指定大小整数
+     *
+     * @param min 最小值
+     * @param max 最大值
+     * @return 返回结果
+     */
+    public static int getRandomInteger(int min, int max) {
+        Random random = new Random();
+        int value = random.nextInt(max);
+        if (value < min) {
+            return getRandomInteger(min, max);
+        }
+        return value;
+    }
+
+    /**
+     * 生成指定大小 double
+     *
+     * @param min 最小值
+     * @param max 最大值
+     * @return 返回结果
+     */
+    public static double getRandomDouble(double min, double max) {
+        Random random = new Random();
+        double value = min + random.nextDouble() * (max - min);
+        if (value < min) {
+            return getRandomDouble(min, max);
+        }
+        return value;
+    }
 }

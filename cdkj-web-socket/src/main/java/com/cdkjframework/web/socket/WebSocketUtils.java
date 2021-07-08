@@ -37,7 +37,7 @@ public class WebSocketUtils {
      */
     private static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
-    public static synchronized ChannelGroup getClients() {
+    public static ChannelGroup getClients() {
         return clients;
     }
 
@@ -78,7 +78,7 @@ public class WebSocketUtils {
      * @param channelId 通道ID
      * @return 返回通道
      */
-    public synchronized static Channel findChannel(String channelId) {
+    public static Channel findChannel(String channelId) {
         Optional<Channel> optional = getClients().stream()
                 .filter(f -> f.id().asLongText().equals(channelId))
                 .findFirst();
