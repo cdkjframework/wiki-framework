@@ -133,6 +133,11 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         String channelId = ctx.channel().id().asLongText();
         logUtils.info("客户端【" + channelId + "】断开连接，连接通道数量: " + WebSocketUtils.getClients().size());
         WebSocketUtils.findChannel(channelId);
+        WebSocketEntity socket = new WebSocketEntity();
+        socket.setClientId(channelId);
+        socket.setType("channelInactive");
+        socket.setMessage("{\"type\":\"channelInactive\"}");
+        webSocket.onMessage(socket);
     }
 
     /**
