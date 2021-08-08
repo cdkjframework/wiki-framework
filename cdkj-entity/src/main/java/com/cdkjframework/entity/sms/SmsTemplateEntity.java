@@ -1,6 +1,7 @@
 package com.cdkjframework.entity.sms;
 
 import com.cdkjframework.constant.sms.SmsParameterConsts;
+import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.enums.sms.AliSmsTemplateEnums;
 import com.cdkjframework.enums.sms.AliSmsActionEnums;
 import lombok.Data;
@@ -16,7 +17,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Data
-public class SmsTemplateEntity {
+public class SmsTemplateEntity extends BaseSmsEntity {
 
     /**
      * 阿里短信请求类型

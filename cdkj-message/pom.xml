@@ -39,6 +39,11 @@
             <groupId>org.springframework.integration</groupId>
             <artifactId>spring-integration-mqtt</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-datasource-mongodb</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

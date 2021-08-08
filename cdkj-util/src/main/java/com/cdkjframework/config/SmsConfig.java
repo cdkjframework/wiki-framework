@@ -67,5 +67,10 @@ public class SmsConfig {
     /**
      * 区域ID
      */
-    private String regionId;
+    private String regionId = "cn-hangzhou";
+
+    /**
+     * 阿里云版本号
+     */
+    private String version = "2017-05-25";
 }
