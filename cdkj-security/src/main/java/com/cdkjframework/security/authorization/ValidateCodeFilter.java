@@ -16,6 +16,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -61,10 +62,18 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
      * @param response 响应
      */
     private boolean validateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String validateValue = ConvertUtils.convertString(request.getSession().getAttribute(BusinessConsts.IMAGE_CODE));
+        HttpSession httpSession = request.getSession();
+        String validateValue = ConvertUtils.convertString(httpSession.getAttribute(BusinessConsts.IMAGE_CODE));
         //这里需要验证前端传过来的验证码是否和session里面存的一致，并且要判断是否过期
         if (StringUtils.isNullAndSpaceOrEmpty(validateValue)) {
             return true;
+        }
+        // 时间效验
+        long time = ConvertUtils.convertLong(httpSession.getAttribute(BusinessConsts.TIME));
+        final long EXPIRATION_TIME = IntegerConsts.FIVE * IntegerConsts.SIXTY * IntegerConsts.ONE_THOUSAND;
+        if (EXPIRATION_TIME < (System.currentTimeMillis() - time)) {
+            ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码过期！"));
+            return false;
         }
         validateValue = validateValue.toLowerCase();
 
