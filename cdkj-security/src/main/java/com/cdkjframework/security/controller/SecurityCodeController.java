@@ -49,5 +49,6 @@ public class SecurityCodeController {
                 outputStream, IntegerConsts.FOUR);
         // 将图形验证码存入到session中
         session.setAttribute(BusinessConsts.IMAGE_CODE, code);
+        session.setAttribute(BusinessConsts.TIME, System.currentTimeMillis());
     }
 }

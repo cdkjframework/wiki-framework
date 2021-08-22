@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.sms;
 
+import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Data
-public class SendSmsEntity {
+public class SendSmsEntity extends BaseSmsEntity {
 
     /**
      * 签名名称
@@ -22,7 +23,7 @@ public class SendSmsEntity {
     private String signName;
 
     /**
-     * 模板类型
+     * 手机号列表
      */
     private List<String> phoneNumbers;
 

@@ -70,6 +70,7 @@
         <ons.client.version>1.8.2.Final</ons.client.version>
         <sms.alicloud.version>4.4.2</sms.alicloud.version>
         <sms.alicloud.dysmsapi.version>1.1.0</sms.alicloud.dysmsapi.version>
+        <com.aliyun.mns.version>1.1.9</com.aliyun.mns.version>
         <oss.version>3.4.2</oss.version>
 
         <log4j-core.version>2.13.0</log4j-core.version>
@@ -331,6 +332,11 @@
                 <groupId>com.aliyun</groupId>
                 <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
                 <version>${sms.alicloud.dysmsapi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun.mns</groupId>
+                <artifactId>aliyun-sdk-mns</artifactId>
+                <version>${com.aliyun.mns.version}</version>
             </dependency>
 
             <dependency>

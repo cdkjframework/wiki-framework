@@ -63,3 +63,5 @@
 /cdkj-security-client/cdkj-security-client.iml
 /cdkj-security/cdkj-security.iml
 /cdkj-datasource-jpa/cdkj-datasource-jpa.iml
+/cdkj-cache/cdkj-cache.iml
+/cdkj-security-client/target/

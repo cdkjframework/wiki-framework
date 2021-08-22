@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.sms;
 
+import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.enums.sms.AliSmsActionEnums;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-public class SmsSignEntity {
+public class SmsSignEntity extends BaseEntity {
 
     /**
      * 签名请求方式 {@link AliSmsActionEnums}

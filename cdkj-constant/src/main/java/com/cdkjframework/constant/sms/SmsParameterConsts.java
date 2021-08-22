@@ -41,6 +41,11 @@ public class SmsParameterConsts {
     public final static String regionId = "RegionId";
 
     /**
+     * 区域Id
+     */
+    public final static String accessKeyId = "AccessKeyId";
+
+    /**
      * 手机号 JSON 对象
      */
     public final static String phoneNumberJson = "PhoneNumberJson";
