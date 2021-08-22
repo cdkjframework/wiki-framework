@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
+import com.cdkjframework.enums.HttpMethodEnums;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -96,14 +98,16 @@ public class HttpRequestUtils {
         try {
             URL realUrl = new URL(httpRequestEntity.getRequestAddress());
             // 打开和URL之间的连接
-            URLConnection connection = realUrl.openConnection();
+            HttpURLConnection connection = (HttpURLConnection)realUrl.openConnection();
             connection.setRequestProperty("Content-Type", httpRequestEntity.getContentType());
             // 设置通用的请求属性
             //设置 http 请求头
             setHeader(connection, httpRequestEntity);
+            connection.setRequestMethod(HttpMethodEnums.POST.getValue());
             // 发送POST请求必须设置如下两行
             connection.setDoOutput(true);
             connection.setDoInput(true);
+            connection.connect();
             // 获取URLConnection对象对应的输出流
             printWriter = connection.getOutputStream();
 
@@ -195,7 +199,7 @@ public class HttpRequestUtils {
             }
             URL realUrl = new URL(urlString.toString());
             // 打开和URL之间的连接
-            URLConnection connection = realUrl.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
             //设置 http 请求头
             setHeader(connection, httpRequestEntity);
             // 建立实际的连接
@@ -229,7 +233,7 @@ public class HttpRequestUtils {
      * @param connection        URL连接
      * @param httpRequestEntity 请求头参数
      */
-    public static void setHeader(URLConnection connection, HttpRequestEntity httpRequestEntity) {
+    public static void setHeader(HttpURLConnection connection, HttpRequestEntity httpRequestEntity) {
         Map<String, String> mapHeader = httpRequestEntity.getHeaderMap();
         Set<Map.Entry<String, String>> entrySet = mapHeader.entrySet();
         // 设置通用的请求属性
