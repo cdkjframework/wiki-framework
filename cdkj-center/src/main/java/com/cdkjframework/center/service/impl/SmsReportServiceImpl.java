@@ -34,8 +34,16 @@ public class SmsReportServiceImpl implements SmsReportService {
     /**
      * mongo 接口
      */
-    @Autowired
-    private IMongoRepository mongoRepository;
+    private final IMongoRepository mongoRepository;
+
+    /**
+     * 构造函数
+     *
+     * @param mongoRepository 仓库
+     */
+    public SmsReportServiceImpl(IMongoRepository mongoRepository) {
+        this.mongoRepository = mongoRepository;
+    }
 
     /**
      * 状态报告接收
