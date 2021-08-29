@@ -35,4 +35,12 @@
             <optional>true</optional>
         </dependency>
     </dependencies>
+
+    <distributionManagement>
+        <repository>
+            <id>cdkj Maven Respository</id>
+            <layout>default</layout>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        </repository>
+    </distributionManagement>
 </project>

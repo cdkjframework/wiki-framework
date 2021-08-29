@@ -1,11 +1,13 @@
 package com.cdkjframework.datasource.mongodb.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -15,9 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "spring.cdkj.datasource.mongodb")
@@ -49,6 +49,11 @@ public class MongoConfig {
     private String dataSource;
 
     /**
+     * 权限控制
+     */
+    private String adminSource = "admin";
+
+    /**
      * 最大等待时间
      */
     private int maxWaitTime;
@@ -71,4 +76,14 @@ public class MongoConfig {
      * @return
      */
     private int maxConnectionsPerHost = 6000;
+
+    /**
+     * 是否集群【默认非集群模式】
+     */
+    private boolean cluster = false;
+
+    /**
+     * 是否为碎片连接
+     */
+    private boolean sharded = false;
 }
