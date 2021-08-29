@@ -98,7 +98,7 @@ public class HttpRequestUtils {
         try {
             URL realUrl = new URL(httpRequestEntity.getRequestAddress());
             // 打开和URL之间的连接
-            HttpURLConnection connection = (HttpURLConnection)realUrl.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
             connection.setRequestProperty("Content-Type", httpRequestEntity.getContentType());
             // 设置通用的请求属性
             //设置 http 请求头
@@ -117,7 +117,8 @@ public class HttpRequestUtils {
                 param = JSONArray.toJSONString(httpRequestEntity.getObjectList());
             } else if (httpRequestEntity.getData() != null) {
                 param = JSONObject.toJSONString(httpRequestEntity.getData());
-            } else {
+            }
+            if (httpRequestEntity.getParamsMap() != null && !httpRequestEntity.getParamsMap().isEmpty()) {
                 Map<String, Object> params = httpRequestEntity.getParamsMap();
                 if (params == null) {
                     params = new HashMap<>(IntegerConsts.ONE);

@@ -44,7 +44,14 @@ public class ${className}ServiceImpl implements ${className}Service {
      * ${description} mapper
      */
     @Autowired
-    private ${className}Mapper ${classLowName}Mapper;
+    private final ${className}Mapper ${classLowName}Mapper;
+
+    /**
+    * 构造函数
+    */
+    public ${className}ServiceImpl(${className}Mapper ${classLowName}Mapper){
+        this.${classLowName}Mapper = ${classLowName}Mapper
+    }
 
     /**
      * 修改数据
@@ -56,8 +63,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setEditTime(LocalDateTime.now());
         ${classLowName}Dto.setEditUserId(CurrentUser.getUserId());
         ${classLowName}Dto.setEditUserName(CurrentUser.getUserName());
-        ${className}Entity entity = new ${className}Entity();
-        CopyUtils.copyProperties(${classLowName}Dto, entity);
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
         ${classLowName}Mapper.modify(entity);
     }
 
@@ -73,8 +79,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setAddUserId(CurrentUser.getUserId());
         ${classLowName}Dto.setAddUserName(CurrentUser.getUserName());
         ${classLowName}Dto.setDeleted(IntegerConsts.ZERO);
-        ${className}Entity entity = new ${className}Entity();
-        CopyUtils.copyProperties(${classLowName}Dto, entity);
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
         ${classLowName}Mapper.insert(entity);
     }
     /**
@@ -84,8 +89,7 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     @Override
     public void delete${className}(${className}Dto ${classLowName}Dto) {
-        ${className}Entity entity = new ${className}Entity();
-        CopyUtils.copyProperties(${classLowName}Dto, entity);
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
         ${classLowName}Mapper.delete(entity);
     }
 
@@ -96,7 +100,7 @@ public class ${className}ServiceImpl implements ${className}Service {
      * @return 返回分页数据实体
      */
     @Override
-    public PageEntity find${className}PageList(${className}Dto ${classLowName}Dto) {
+    public PageEntity list${className}Page(${className}Dto ${classLowName}Dto) {
 
         //返回对象
         PageEntity pageEntity = new PageEntity();
@@ -105,8 +109,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         Page page = PageHelper.startPage(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize());
 
         //对象转换 dto -> entity
-        ${className}Entity entity = new ${className}Entity();
-        CopyUtils.copyProperties(${classLowName}Dto, entity);
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
 
         ${classLowName}Mapper.listFindByEntity(entity);
 

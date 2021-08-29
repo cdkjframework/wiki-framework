@@ -1,7 +1,10 @@
 package com.cdkjframework.util.make;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.StringUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
@@ -14,12 +17,78 @@ import java.util.UUID;
  * @Version: 1.0
  */
 
-public class GeneratedValueUtils {
+public class GeneratedValueUtils extends AbstractUUIDGenerator {
 
     /**
      * 使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
      */
     public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+    private static final String sep = "-";
+
+    /**
+     * 获取有序UUID
+     *
+     * @return 返回UUID字符串
+     */
+    public static String getOrderlyUuid() {
+        return
+                format(getJVM()) + sep
+                        + format(getHiTime()) + sep
+                        + format(getLoTime()) + sep
+                        + format(getIP()) + sep
+                        + format(getCount());
+    }
+
+    /**
+     * 获取有序UUID
+     *
+     * @return 返回UUID字符串
+     */
+    public static String getOrderlyShortUuid() {
+        return format(getJVM()) + format(getHiTime()) + format(getLoTime()) + format(getIP()) + format(getCount());
+    }
+
+
+    /**
+     * 格式化为 8 的长度
+     *
+     * @param intValue 值
+     * @return 返回结果
+     */
+    private static String format(int intValue) {
+        String formatted = Integer.toHexString(intValue);
+        StringBuilder buf = new StringBuilder("00000000");
+        int start = IntegerConsts.EIGHT - formatted.length();
+        buf.replace(start, IntegerConsts.EIGHT, formatted);
+        return buf.toString();
+    }
+
+    /**
+     * 获取结果
+     *
+     * @param shortValue short值
+     * @return 返回结果
+     */
+    private static String format(short shortValue) {
+        String formatted = Integer.toHexString(shortValue);
+        StringBuilder buf = new StringBuilder("0000");
+        int start = IntegerConsts.FOUR - formatted.length();
+        buf.replace(start, IntegerConsts.FOUR, formatted);
+        return buf.toString();
+    }
+
+
+    public static void main(String[] args) {
+        List<String> idList = new ArrayList<>();
+        for (int i = 0; i < 2000000; i++) {
+            String id = getOrderlyShortUuid();
+            if (!idList.contains(id)) {
+                idList.add(id);
+            }
+        }
+        System.out.println(idList.size());
+    }
 
     /**
      * 返回UUID 值

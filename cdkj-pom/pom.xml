@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-210724</version>
+    <version>1.0-210827</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,26 +17,26 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-210724</cdkj-cloud.version>
-        <cdkj-config.version>1.0-210724</cdkj-config.version>
-        <cdkj-util.version>1.0-210724</cdkj-util.version>
-        <cdkj-constant.version>1.0-210724</cdkj-constant.version>
-        <cdkj-core.version>1.0-210724</cdkj-core.version>
-        <cdkj-datasource.version>1.0-210724</cdkj-datasource.version>
-        <cdkj-message.version>1.0-210724</cdkj-message.version>
-        <cdkj-redis.version>1.0-210724</cdkj-redis.version>
-        <cdkj-swagger.version>1.0-210724</cdkj-swagger.version>
-        <cdkj-pay.version>1.0-210724</cdkj-pay.version>
-        <cdkj-entity.version>1.0-210724</cdkj-entity.version>
-        <cdkj-center.version>1.0-210724</cdkj-center.version>
-        <cdkj-center.version>1.0-210724</cdkj-center.version>
-        <cdkj-log.version>1.0-210724</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-210724</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-210724</cdkj-security.version>
-        <cdkj-security-client.version>1.0-210724</cdkj-security-client.version>
-        <cdkj-datasource-jpa.version>1.0-210724</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-210724</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-210724</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-210827</cdkj-cloud.version>
+        <cdkj-config.version>1.0-210827</cdkj-config.version>
+        <cdkj-util.version>1.0-210827</cdkj-util.version>
+        <cdkj-constant.version>1.0-210827</cdkj-constant.version>
+        <cdkj-core.version>1.0-210827</cdkj-core.version>
+        <cdkj-datasource.version>1.0-210827</cdkj-datasource.version>
+        <cdkj-message.version>1.0-210827</cdkj-message.version>
+        <cdkj-redis.version>1.0-210827</cdkj-redis.version>
+        <cdkj-swagger.version>1.0-210827</cdkj-swagger.version>
+        <cdkj-pay.version>1.0-210827</cdkj-pay.version>
+        <cdkj-entity.version>1.0-210827</cdkj-entity.version>
+        <cdkj-center.version>1.0-210827</cdkj-center.version>
+        <cdkj-center.version>1.0-210827</cdkj-center.version>
+        <cdkj-log.version>1.0-210827</cdkj-log.version>
+        <cdkj-web-socket.version>1.0-210827</cdkj-web-socket.version>
+        <cdkj-security.version>1.0-210827</cdkj-security.version>
+        <cdkj-security-client.version>1.0-210827</cdkj-security-client.version>
+        <cdkj-datasource-jpa.version>1.0-210827</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-210827</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-210827</cdkj-datasource-elasticsearch.version>
 
 
         <java.version>1.8</java.version>
@@ -48,7 +48,8 @@
         <spring.platform.version>Cairo-SR8</spring.platform.version>
         <spring.version>5.2.12.RELEASE</spring.version>
         <swagger.version>2.9.2</swagger.version>
-        <swagger-annotations.version>1.5.20</swagger-annotations.version>
+        <swagger-annotations.version>1.5.21</swagger-annotations.version>
+        <swagger-models.version>1.5.21</swagger-models.version>
         <swagger2markup.version>1.3.3</swagger2markup.version>
         <swagger2markup-builder.version>1.1.2</swagger2markup-builder.version>
         <jworks.version>1.1</jworks.version>
@@ -425,6 +426,11 @@
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-annotations</artifactId>
                 <version>${swagger-annotations.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-models</artifactId>
+                <version>${swagger-models.version}</version>
             </dependency>
 
             <dependency>
