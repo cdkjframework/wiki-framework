@@ -69,7 +69,7 @@
         <druid.version>1.1.24</druid.version>
         <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
         <ons.client.version>1.8.2.Final</ons.client.version>
-        <sms.alicloud.version>4.4.2</sms.alicloud.version>
+        <sms.alicloud.version>2.0.5</sms.alicloud.version>
         <sms.alicloud.dysmsapi.version>1.1.0</sms.alicloud.dysmsapi.version>
         <com.aliyun.mns.version>1.1.9</com.aliyun.mns.version>
         <oss.version>3.4.2</oss.version>
@@ -328,13 +328,8 @@
             <!--aliYun 短信-->
             <dependency>
                 <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-core</artifactId>
+                <artifactId>dysmsapi20170525</artifactId>
                 <version>${sms.alicloud.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>${sms.alicloud.dysmsapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun.mns</groupId>
