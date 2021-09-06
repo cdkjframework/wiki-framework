@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-framework</artifactId>
-        <version>1.0-210827</version>
+        <version>1.0-210901</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -25,13 +25,10 @@
         </dependency>
 
         <!--aliYun 短信-->
+
         <dependency>
             <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+            <artifactId>dysmsapi20170525</artifactId>
         </dependency>
 
         <!--mqtt MQ -->

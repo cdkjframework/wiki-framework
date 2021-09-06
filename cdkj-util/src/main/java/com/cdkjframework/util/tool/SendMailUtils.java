@@ -1,7 +1,9 @@
 package com.cdkjframework.util.tool;
 
 import com.cdkjframework.config.MailConfig;
+import com.cdkjframework.constant.Application;
 import com.cdkjframework.exceptions.GlobalException;
+import com.sun.mail.util.MailSSLSocketFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -15,6 +17,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,8 +36,7 @@ public class SendMailUtils implements ApplicationRunner {
     /**
      * 邮件配置
      */
-    @Autowired
-    private MailConfig mailConfig;
+    private static MailConfig mailConfig;
 
     /**
      * 创建邮件发送信息
@@ -49,6 +51,7 @@ public class SendMailUtils implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        mailConfig = Application.applicationContext.getBean(MailConfig.class);
         if (StringUtils.isNullAndSpaceOrEmpty(mailConfig.getHost()) ||
                 StringUtils.isNullAndSpaceOrEmpty(mailConfig.getFromMail())) {
             return;
@@ -63,6 +66,21 @@ public class SendMailUtils implements ApplicationRunner {
 
         // Properties
         Properties properties = new Properties();
+        //使用smtp身份验证
+        properties.setProperty("mail.smtp.auth", "true");
+        //使用SSL，企业邮箱必需！
+        //开启安全协议
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+            sf.setTrustAllHosts(true);
+        } catch (GeneralSecurityException e1) {
+            e1.printStackTrace();
+        }
+        properties.put("mail.smtp.ssl.enable", "true");
+        properties.put("mail.smtp.ssl.socketFactory", sf);
+
+
         properties.setProperty("mail.smtp.timeout", String.valueOf(mailConfig.getMailTimeout()));
         mailSender.setJavaMailProperties(properties);
     }
@@ -74,7 +92,7 @@ public class SendMailUtils implements ApplicationRunner {
      * @param subject 主主题
      * @param message 信息
      */
-    public void sendMail(List<String> toMail, String subject, String message) throws IOException, MessagingException, GlobalException {
+    public static void sendMail(List<String> toMail, String subject, String message) throws IOException, MessagingException, GlobalException {
         sendMail(toMail, subject, message, null, null, null);
     }
 
@@ -86,7 +104,7 @@ public class SendMailUtils implements ApplicationRunner {
      * @param message 信息
      * @param ccMail  抄送邮箱
      */
-    public void sendMail(List<String> toMail, String subject, String message, List<StringUtils> ccMail) throws IOException, MessagingException, GlobalException {
+    public static void sendMail(List<String> toMail, String subject, String message, List<StringUtils> ccMail) throws IOException, MessagingException, GlobalException {
         sendMail(toMail, subject, message, ccMail, null, null);
     }
 
@@ -100,7 +118,7 @@ public class SendMailUtils implements ApplicationRunner {
      * @throws IOException        IO异常信息
      * @throws GlobalException    公共异常信息
      */
-    public void sendMail(List<String> toMail, String subject, String message, String fileName, InputStream inputStream) throws IOException, MessagingException, GlobalException {
+    public static void sendMail(List<String> toMail, String subject, String message, String fileName, InputStream inputStream) throws IOException, MessagingException, GlobalException {
         sendMail(toMail, subject, message, null, fileName, inputStream);
     }
 
@@ -117,8 +135,8 @@ public class SendMailUtils implements ApplicationRunner {
      * @throws IOException        IO异常信息
      * @throws GlobalException    公共异常信息
      */
-    public void sendMail(List<String> toMail, String subject, String message,
-                         List<StringUtils> ccMail, String fileName, InputStream inputStream) throws MessagingException, IOException, GlobalException {
+    public static void sendMail(List<String> toMail, String subject, String message,
+                                List<StringUtils> ccMail, String fileName, InputStream inputStream) throws MessagingException, IOException, GlobalException {
         if (mailSender == null) {
             throw new GlobalException("未配置邮件信息");
         }

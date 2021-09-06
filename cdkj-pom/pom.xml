@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-210827</version>
+    <version>1.0-210901</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,26 +17,26 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-210827</cdkj-cloud.version>
-        <cdkj-config.version>1.0-210827</cdkj-config.version>
-        <cdkj-util.version>1.0-210827</cdkj-util.version>
-        <cdkj-constant.version>1.0-210827</cdkj-constant.version>
-        <cdkj-core.version>1.0-210827</cdkj-core.version>
-        <cdkj-datasource.version>1.0-210827</cdkj-datasource.version>
-        <cdkj-message.version>1.0-210827</cdkj-message.version>
-        <cdkj-redis.version>1.0-210827</cdkj-redis.version>
-        <cdkj-swagger.version>1.0-210827</cdkj-swagger.version>
-        <cdkj-pay.version>1.0-210827</cdkj-pay.version>
-        <cdkj-entity.version>1.0-210827</cdkj-entity.version>
-        <cdkj-center.version>1.0-210827</cdkj-center.version>
-        <cdkj-center.version>1.0-210827</cdkj-center.version>
-        <cdkj-log.version>1.0-210827</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-210827</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-210827</cdkj-security.version>
-        <cdkj-security-client.version>1.0-210827</cdkj-security-client.version>
-        <cdkj-datasource-jpa.version>1.0-210827</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-210827</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-210827</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-210901</cdkj-cloud.version>
+        <cdkj-config.version>1.0-210901</cdkj-config.version>
+        <cdkj-util.version>1.0-210901</cdkj-util.version>
+        <cdkj-constant.version>1.0-210901</cdkj-constant.version>
+        <cdkj-core.version>1.0-210901</cdkj-core.version>
+        <cdkj-datasource.version>1.0-210901</cdkj-datasource.version>
+        <cdkj-message.version>1.0-210901</cdkj-message.version>
+        <cdkj-redis.version>1.0-210901</cdkj-redis.version>
+        <cdkj-swagger.version>1.0-210901</cdkj-swagger.version>
+        <cdkj-pay.version>1.0-210901</cdkj-pay.version>
+        <cdkj-entity.version>1.0-210901</cdkj-entity.version>
+        <cdkj-center.version>1.0-210901</cdkj-center.version>
+        <cdkj-center.version>1.0-210901</cdkj-center.version>
+        <cdkj-log.version>1.0-210901</cdkj-log.version>
+        <cdkj-web-socket.version>1.0-210901</cdkj-web-socket.version>
+        <cdkj-security.version>1.0-210901</cdkj-security.version>
+        <cdkj-security-client.version>1.0-210901</cdkj-security-client.version>
+        <cdkj-datasource-jpa.version>1.0-210901</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-210901</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-210901</cdkj-datasource-elasticsearch.version>
 
 
         <java.version>1.8</java.version>
@@ -69,7 +69,7 @@
         <druid.version>1.1.24</druid.version>
         <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
         <ons.client.version>1.8.2.Final</ons.client.version>
-        <sms.alicloud.version>4.4.2</sms.alicloud.version>
+        <sms.alicloud.version>2.0.5</sms.alicloud.version>
         <sms.alicloud.dysmsapi.version>1.1.0</sms.alicloud.dysmsapi.version>
         <com.aliyun.mns.version>1.1.9</com.aliyun.mns.version>
         <oss.version>3.4.2</oss.version>
@@ -100,6 +100,8 @@
         <kryo.erializers.version>0.42</kryo.erializers.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
         <javax.inject.version>1</javax.inject.version>
+        <javax.mail.version>1.6.2</javax.mail.version>
+        <mailapi.version>1.4.3</mailapi.version>
         <tomcat.version>9.0.22</tomcat.version>
         <jackson.annotations.version>2.11.0</jackson.annotations.version>
         <jackson-datatype-jsr310.version>2.11.0</jackson-datatype-jsr310.version>
@@ -326,13 +328,8 @@
             <!--aliYun 短信-->
             <dependency>
                 <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-core</artifactId>
+                <artifactId>dysmsapi20170525</artifactId>
                 <version>${sms.alicloud.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>${sms.alicloud.dysmsapi.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.aliyun.mns</groupId>
@@ -348,7 +345,17 @@
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>mail</artifactId>
-                <version>${javax-mail.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.sun.mail</groupId>
+                <artifactId>javax.mail</artifactId>
+                <version>${javax.mail.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mailapi</artifactId>
+                <version>${mailapi.version}</version>
             </dependency>
             <!-- socket -->
             <dependency>

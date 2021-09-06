@@ -1,48 +1,31 @@
 package com.cdkjframework.message.sms.aliyun;
 
-import com.aliyuncs.CommonRequest;
-import com.aliyuncs.CommonResponse;
-import com.aliyuncs.DefaultAcsClient;
+import com.aliyun.dysmsapi20170525.models.*;
+import com.aliyun.teaopenapi.models.Config;
 import com.aliyuncs.IAcsClient;
-import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.QuerySendDetailsResponse;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsRequest;
-import com.aliyuncs.dysmsapi.model.v20170525.SendSmsResponse;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
-import com.aliyuncs.http.MethodType;
-import com.aliyuncs.profile.DefaultProfile;
-import com.aliyuncs.profile.IClientProfile;
 import com.cdkjframework.config.SmsConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.constant.sms.SmsConfigureConsts;
 import com.cdkjframework.constant.sms.SmsParameterConsts;
-import com.cdkjframework.constant.sms.SmsSignParameterConsts;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.sms.*;
-import com.cdkjframework.entity.sms.data.SmsDetailEntity;
 import com.cdkjframework.entity.sms.data.SmsEntity;
 import com.cdkjframework.entity.user.BmsConfigureEntity;
-import com.cdkjframework.enums.sms.AliSmsActionEnums;
-import com.cdkjframework.enums.sms.AliSmsEnums;
-import com.cdkjframework.enums.sms.AliSmsTemplateEnums;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * @ProjectName: com.cdkjframework.webcode
@@ -65,17 +48,9 @@ public class AliCloudSms implements ApplicationRunner {
      */
     private static LogUtils logUtils = LogUtils.getLogger(AliCloudSms.class.getName());
     /**
-     * 共同请求
-     */
-    private static CommonRequest request;
-    /**
-     * Acs客户端
-     */
-    private static IAcsClient client;
-    /**
      * 签名
      */
-    private static String singName;
+    private static String signName;
     /**
      * 配置
      */
@@ -89,14 +64,23 @@ public class AliCloudSms implements ApplicationRunner {
     /**
      * 读取配置
      */
-    @Autowired
-    private SmsConfig smsConfig;
+    private final SmsConfig smsConfig;
 
     /**
      * mongo接口
      */
-    @Autowired
-    private IMongoRepository repository;
+    private final IMongoRepository repository;
+
+    /**
+     * 构造函数
+     *
+     * @param repository mongo接口
+     * @param smsConfig  短信配置
+     */
+    public AliCloudSms(IMongoRepository repository, SmsConfig smsConfig) {
+        this.repository = repository;
+        this.smsConfig = smsConfig;
+    }
 
     /**
      * 短信模板
@@ -107,37 +91,19 @@ public class AliCloudSms implements ApplicationRunner {
     public static SmsResponseEntity smsTemplate(SmsTemplateEntity smsTemplate) {
         SmsResponseEntity smsResponse = null;
         try {
-            CommonRequest commonRequest = new CommonRequest();
-            IAcsClient acsClient = buildRequest(commonRequest);
-            // 设置请求类型
-            commonRequest.setSysAction(smsTemplate.getTemplateAction().getValue());
-            // 设置为短信模板
-            if (smsTemplate.getTemplateType() != null) {
-                commonRequest.putQueryParameter(SmsParameterConsts.templateType,
-                        smsTemplate.getTemplateType().getCode());
-            }
+
             // 设置请求内容
-            Set<Map.Entry<String, String>> entrySet = smsTemplate.getContent().entrySet();
-            for (Map.Entry<String, String> entry :
-                    entrySet) {
-                commonRequest.putQueryParameter(entry.getKey(), entry.getValue());
-            }
-            // 修改、删除、查询信息
-            AliSmsActionEnums actionEnums = smsTemplate.getTemplateAction();
-            if (AliSmsActionEnums.MODIFY_SMS_TEMPLATE.getValue()
-                    .equals(actionEnums.getValue()) ||
-                    AliSmsActionEnums.DELETE_SMS_TEMPLATE.getValue()
-                            .equals(actionEnums.getValue()) ||
-                    AliSmsActionEnums.QUERY_SMS_TEMPLATE.getValue()
-                            .equals(actionEnums.getValue())) {
-                commonRequest.putQueryParameter(SmsParameterConsts.accessKeyId, config.getAccessKeyId());
-            }
-            CommonResponse response = acsClient.getCommonResponse(commonRequest);
-            if (StringUtils.isNotNullAndEmpty(response.getData())) {
-                smsResponse = JsonUtils.jsonStringToBean(response.getData(), SmsResponseEntity.class);
-            } else {
-                throw new GlobalException("请求错误！状态码：" + response.getHttpStatus());
-            }
+            Map<String, String> entrySet = smsTemplate.getContent();
+
+            com.aliyun.dysmsapi20170525.Client client = createClient();
+            AddSmsTemplateRequest addSmsTemplateRequest = new AddSmsTemplateRequest()
+                    .setTemplateType(Integer.valueOf(smsTemplate.getTemplateType().getCode()))
+                    .setTemplateName(entrySet.get(SmsParameterConsts.templateName))
+                    .setTemplateContent(entrySet.get(SmsParameterConsts.templateContent))
+                    .setRemark(entrySet.get(SmsParameterConsts.remark));
+            // 复制代码运行请自行打印 API 的返回值
+            AddSmsTemplateResponse response = client.addSmsTemplate(addSmsTemplateRequest);
+            smsResponse = CopyUtils.copyNoNullProperties(response, SmsResponseEntity.class);
         } catch (Exception e) {
             logUtils.error(e);
         }
@@ -159,50 +125,35 @@ public class AliCloudSms implements ApplicationRunner {
     public static SmsResponseEntity smsSign(SmsSignEntity smsSign) {
         SmsResponseEntity smsResponse = null;
         try {
-            CommonRequest commonRequest = new CommonRequest();
-            IAcsClient acsClient = buildRequest(commonRequest);
-            // 设置请求类型
-            commonRequest.setSysAction(smsSign.getSignAction().getValue());
-            // 设置为短信模板
-            commonRequest.putQueryParameter(SmsSignParameterConsts.remark,
-                    smsSign.getRemark());
-            commonRequest.putQueryParameter(SmsSignParameterConsts.signName,
-                    smsSign.getSignName());
-            commonRequest.putQueryParameter(SmsSignParameterConsts.signSource,
-                    String.valueOf(smsSign.getSignSource()));
+            com.aliyun.dysmsapi20170525.Client client = createClient();
+            List<AddSmsSignRequest.AddSmsSignRequestSignFileList> signFileLists = new ArrayList<>();
             // 设置请求内容
             List<SmsSignFileEntity> signFileList = smsSign.getSignFileList();
             if (CollectionUtils.isEmpty(signFileList)) {
                 signFileList = new ArrayList<>();
             }
-            for (int i = IntegerConsts.ZERO; i < signFileList.size(); i++) {
-                SmsSignFileEntity signFile = signFileList.get(i);
-                String key = SmsSignParameterConsts.signFileList + StringUtils.POINT + (i + IntegerConsts.ONE) + StringUtils.POINT;
-                String keyContent = key + SmsSignParameterConsts.fileContents;
-                commonRequest.putQueryParameter(keyContent, signFile.getFileContents());
-                String keySuffix = key + SmsSignParameterConsts.fileSuffix;
-                commonRequest.putQueryParameter(keySuffix, signFile.getFileSuffix());
+            for (SmsSignFileEntity signFile :
+                    signFileList) {
+                AddSmsSignRequest.AddSmsSignRequestSignFileList sign = new AddSmsSignRequest.AddSmsSignRequestSignFileList()
+                        .setFileContents(signFile.getFileContents())
+                        .setFileSuffix(signFile.getFileSuffix());
+                signFileLists.add(sign);
             }
-
-            // 删除、查询签名
-            if (AliSmsActionEnums.DELETE_SMS_SIGN.getValue()
-                    .equals(smsSign.getSignAction().getValue()) ||
-                    AliSmsActionEnums.QUERY_SMS_SIGN.getValue()
-                            .equals(smsSign.getSignAction().getValue())) {
-                commonRequest.putQueryParameter(SmsParameterConsts.accessKeyId, config.getAccessKeyId());
-            }
-
-            CommonResponse response = acsClient.getCommonResponse(commonRequest);
-            if (StringUtils.isNotNullAndEmpty(response.getData())) {
-                smsResponse = JsonUtils.jsonStringToBean(response.getData(), SmsResponseEntity.class);
-            } else {
-                throw new GlobalException("请求错误！状态码：" + response.getHttpStatus());
-            }
+            AddSmsSignRequest addSmsSignRequest = new AddSmsSignRequest()
+                    .setSignName(smsSign.getSignName())
+                    .setSignSource(smsSign.getSignSource())
+                    .setRemark(smsSign.getRemark())
+                    .setSignFileList(signFileLists);
+            // 复制代码运行请自行打印 API 的返回值
+            AddSmsSignResponse response = client.addSmsSign(addSmsSignRequest);
+            smsResponse = CopyUtils.copyProperties(response.body, SmsResponseEntity.class);
         } catch (ServerException e) {
             logUtils.error(e);
         } catch (ClientException e) {
             logUtils.error(e);
         } catch (GlobalException e) {
+            logUtils.error(e);
+        } catch (Exception e) {
             logUtils.error(e);
         }
         CopyUtils.copyProperties(smsResponse, smsSign);
@@ -220,7 +171,46 @@ public class AliCloudSms implements ApplicationRunner {
      * @return 返回结果 数据为查询短信详情
      * @throws ClientException 异常信息
      */
-    public static SmsResponseEntity sendSms(SendSmsEntity sendSms) throws ClientException {
+    public static SmsResponseEntity sendSms(SendSmsEntity sendSms) throws Exception {
+        SmsResponseEntity smsResponse = null;
+        List<String> phoneNumberList = sendSms.getPhoneNumbers();
+        List<String> signNameList = new ArrayList<>();
+
+        if (CollectionUtils.isEmpty(signNameList)) {
+            signNameList.add(signName);
+        }
+        com.aliyun.dysmsapi20170525.Client client = createClient();
+        SendSmsRequest sendSmsRequest = new SendSmsRequest()
+                .setPhoneNumbers(phoneNumberList.get(IntegerConsts.ZERO))
+                .setSignName(StringUtils.isNotNullAndEmpty(sendSms.getSignName()) ? sendSms.getSignName() : signName)
+                .setTemplateCode(sendSms.getTemplateCode())
+                .setTemplateParam(JsonUtils.objectToJsonString(sendSms.getContent()));
+        try {
+            // 复制代码运行请自行打印 API 的返回值
+            SendSmsResponse response = client.sendSms(sendSmsRequest);
+            smsResponse = CopyUtils.copyNoNullProperties(response.body, SmsResponseEntity.class);
+        } catch (ServerException e) {
+            logUtils.error(e);
+        } catch (ClientException e) {
+            logUtils.error(e);
+        }
+
+        SmsEntity sms = new SmsEntity();
+        CopyUtils.copyProperties(smsResponse, sms);
+        sms.setAddTime(LocalDateTime.now());
+        sms.setId(GeneratedValueUtils.getUuidString());
+        mongoRepository.save(sms);
+        return smsResponse;
+    }
+
+    /**
+     * 批量发送短信
+     *
+     * @param sendSms 短信消息内容
+     * @return 返回结果 数据为查询短信详情
+     * @throws ClientException 异常信息
+     */
+    public static SmsResponseEntity sendBatchSms(SendSmsEntity sendSms) throws Exception {
         SmsResponseEntity smsResponse = null;
         List<String> phoneNumberList = sendSms.getPhoneNumbers();
         List<String> signNameList = new ArrayList<>();
@@ -233,21 +223,21 @@ public class AliCloudSms implements ApplicationRunner {
             smsList.add(sms);
             signNameList.add(sendSms.getSignName());
         }
-        CommonRequest commonRequest = new CommonRequest();
-        IAcsClient acsClient = buildRequest(commonRequest);
-        // 设置请求
-        commonRequest.setSysAction(AliSmsActionEnums.SEND_BATCH_SMS.getValue());
-        commonRequest.putQueryParameter(SmsParameterConsts.phoneNumberJson,
-                JsonUtils.objectToJsonString(phoneNumberList));
-        String signNameJson = !CollectionUtils.isEmpty(signNameList) ? "[" + singName + "]" :
-                JsonUtils.objectToJsonString(signNameList);
-        commonRequest.putQueryParameter(SmsParameterConsts.signNameJson, signNameJson);
-        commonRequest.putQueryParameter(SmsParameterConsts.templateCode, sendSms.getTemplateCode());
-        commonRequest.putQueryParameter(SmsParameterConsts.templateParamJson,
-                "[" + JsonUtils.objectToJsonString(sendSms.getContent()) + "]");
+
+        if (CollectionUtils.isEmpty(signNameList)) {
+            signNameList.add(signName);
+        }
+        String signNameJson = JsonUtils.objectToJsonString(signNameList);
+        com.aliyun.dysmsapi20170525.Client client = createClient();
+        SendBatchSmsRequest sendBatchSmsRequest = new SendBatchSmsRequest()
+                .setPhoneNumberJson(JsonUtils.objectToJsonString(phoneNumberList))
+                .setSignNameJson(signNameJson)
+                .setTemplateCode(sendSms.getTemplateCode())
+                .setTemplateParamJson("[" + JsonUtils.objectToJsonString(sendSms.getContent()) + "]");
         try {
-            CommonResponse response = acsClient.getCommonResponse(commonRequest);
-            smsResponse = JsonUtils.jsonStringToBean(response.getData(), SmsResponseEntity.class);
+            // 复制代码运行请自行打印 API 的返回值
+            SendBatchSmsResponse response = client.sendBatchSms(sendBatchSmsRequest);
+            smsResponse = CopyUtils.copyNoNullProperties(response.body, SmsResponseEntity.class);
         } catch (ServerException e) {
             logUtils.error(e);
         } catch (ClientException e) {
@@ -268,59 +258,59 @@ public class AliCloudSms implements ApplicationRunner {
      *
      * @return 返回结果
      */
-    private static IAcsClient buildRequest(CommonRequest commonRequest) {
-        if (CollectionUtils.isEmpty(configureList)) {
-            commonRequest = request;
-            return client;
-        }
-        SmsConfig sms = new SmsConfig();
+    private static void buildConfig(Config configSet) {
+        String accessKeyId = StringUtils.Empty;
+        String accessKeySecret = StringUtils.Empty;
+        String endpoint = StringUtils.Empty;
         Optional<BmsConfigureEntity> optional = configureList.stream()
                 .filter(f -> f.getConfigKey().equals(SmsConfigureConsts.ACCESS_KEY_ID))
                 .findFirst();
         if (optional.isPresent()) {
-            sms.setAccessKeyId(optional.get().getConfigValue());
-        } else {
-            commonRequest = request;
-            return client;
+            accessKeyId = optional.get().getConfigValue();
         }
         optional = configureList.stream()
                 .filter(f -> f.getConfigKey().equals(SmsConfigureConsts.ACCESS_KEY_SECRET))
                 .findFirst();
         if (optional.isPresent()) {
-            sms.setAccessKeySecret(optional.get().getConfigValue());
-        } else {
-            commonRequest = request;
-            return client;
+            accessKeySecret = optional.get().getConfigValue();
         }
         optional = configureList.stream()
                 .filter(f -> f.getConfigKey().equals(SmsConfigureConsts.ENDPOINT))
                 .findFirst();
         if (optional.isPresent()) {
-            sms.setEndpoint(optional.get().getConfigValue());
+            endpoint = optional.get().getConfigValue();
         }
-        return buildConfig(commonRequest, sms);
+        // 您的AccessKey ID
+        configSet.setAccessKeyId(accessKeyId)
+                // 您的AccessKey Secret
+                .setAccessKeySecret(accessKeySecret);
+        // 访问的域名
+        configSet.endpoint = endpoint;
     }
 
     /**
-     * 构建配置
+     * 使用AK&SK初始化账号Client
      *
-     * @param commonRequest 请求
-     * @param sms           配置
-     * @return 返回客户端
+     * @return Client 客户端
+     * @throws Exception 异常信息
      */
-    private static IAcsClient buildConfig(CommonRequest commonRequest, SmsConfig sms) {
-
-        // 实例短信功能
-        DefaultProfile profile = DefaultProfile
-                .getProfile(sms.getEndpoint(),
-                        sms.getAccessKeyId(),
-                        sms.getAccessKeySecret());
-        IAcsClient defaultAcsClient = new DefaultAcsClient(profile);
-        commonRequest.setSysMethod(MethodType.POST);
-        commonRequest.setSysDomain(sms.getDomain());
-        commonRequest.setSysVersion(sms.getVersion());
-        return defaultAcsClient;
+    public static com.aliyun.dysmsapi20170525.Client createClient() throws Exception {
+        Config configSet;
+        if (CollectionUtils.isEmpty(configureList)) {
+            configSet = new Config()
+                    // 您的AccessKey ID
+                    .setAccessKeyId(config.getAccessKeyId())
+                    // 您的AccessKey Secret
+                    .setAccessKeySecret(config.getAccessKeySecret());
+            // 访问的域名
+            configSet.endpoint = config.getDomain();
+        } else {
+            configSet = new Config();
+            buildConfig(configSet);
+        }
+        return new com.aliyun.dysmsapi20170525.Client(configSet);
     }
+
 
     /**
      * 初始化
@@ -331,10 +321,7 @@ public class AliCloudSms implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         config = smsConfig;
-        // 实例短信功能
-        request = new CommonRequest();
-        client = buildConfig(request, config);
-        singName = smsConfig.getSignName();
+        signName = smsConfig.getSignName();
         mongoRepository = repository;
     }
 }
