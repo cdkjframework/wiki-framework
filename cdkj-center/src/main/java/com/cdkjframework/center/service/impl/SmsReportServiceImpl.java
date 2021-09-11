@@ -1,6 +1,7 @@
 package com.cdkjframework.center.service.impl;
 
 import com.cdkjframework.center.service.SmsReportService;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.sms.SmsSignEntity;
 import com.cdkjframework.entity.sms.SmsTemplateEntity;
@@ -77,7 +78,9 @@ public class SmsReportServiceImpl implements SmsReportService {
         SmsEntity sms = mongoRepository.findEntity(query, SmsEntity.class);
         CopyUtils.copyProperties(smsReport, sms);
         sms.setEditTime(LocalDateTime.now());
-
+        if (smsReport.isSuccess()) {
+            sms.setStatus(IntegerConsts.ONE);
+        }
         mongoRepository.save(sms);
     }
 

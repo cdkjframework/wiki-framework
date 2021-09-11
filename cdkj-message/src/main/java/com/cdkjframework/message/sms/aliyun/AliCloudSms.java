@@ -111,6 +111,7 @@ public class AliCloudSms implements ApplicationRunner {
         CopyUtils.copyProperties(smsResponse, smsTemplate);
         smsTemplate.setAddTime(LocalDateTime.now());
         smsTemplate.setId(GeneratedValueUtils.getUuidString());
+        smsTemplate.setStatus(IntegerConsts.ZERO);
         mongoRepository.save(smsTemplate);
         // 返回结果
         return smsResponse;
@@ -159,6 +160,7 @@ public class AliCloudSms implements ApplicationRunner {
         CopyUtils.copyProperties(smsResponse, smsSign);
         smsSign.setAddTime(LocalDateTime.now());
         smsSign.setId(GeneratedValueUtils.getUuidString());
+        smsSign.setStatus(IntegerConsts.ZERO);
         mongoRepository.save(smsSign);
         // 返回结果
         return smsResponse;
@@ -199,6 +201,7 @@ public class AliCloudSms implements ApplicationRunner {
         CopyUtils.copyProperties(smsResponse, sms);
         sms.setAddTime(LocalDateTime.now());
         sms.setId(GeneratedValueUtils.getUuidString());
+        sms.setStatus(IntegerConsts.ZERO);
         mongoRepository.save(sms);
         return smsResponse;
     }
@@ -248,6 +251,7 @@ public class AliCloudSms implements ApplicationRunner {
             CopyUtils.copyProperties(smsResponse, sms);
             sms.setAddTime(LocalDateTime.now());
             sms.setId(GeneratedValueUtils.getUuidString());
+            sms.setStatus(IntegerConsts.ZERO);
             mongoRepository.save(sms);
         }
         return smsResponse;

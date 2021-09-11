@@ -60,4 +60,9 @@ public class TemplateReportEntity {
      */
     @JSONField(name = "create_date")
     private String createDate;
+
+    /**
+     * 状态
+     */
+    private Integer status;
 }

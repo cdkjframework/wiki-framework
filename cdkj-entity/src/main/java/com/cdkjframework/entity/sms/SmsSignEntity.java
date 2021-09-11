@@ -45,6 +45,12 @@ public class SmsSignEntity extends BaseEntity {
     private String Remark;
 
     /**
+     * 状态
+     */
+    private Integer status;
+
+
+    /**
      * 签名名称
      */
     private List<SmsSignFileEntity> SignFileList;
