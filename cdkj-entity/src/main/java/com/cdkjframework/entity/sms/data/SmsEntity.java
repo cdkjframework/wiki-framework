@@ -35,7 +35,7 @@ public class SmsEntity extends BaseSmsEntity {
     private Map<String, String> content;
 
     /**
-     * 短信内容
+     * 内容
      */
     private String smsContent;
 

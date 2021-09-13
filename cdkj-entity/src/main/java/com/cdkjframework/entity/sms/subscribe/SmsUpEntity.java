@@ -29,7 +29,8 @@ public class SmsUpEntity {
     /**
      * 发送内容
      */
-    private String content;
+    @JSONField(name = "content")
+    private String smsContent;
 
     /**
      * 签名
@@ -48,4 +49,33 @@ public class SmsUpEntity {
      */
     @JSONField(name = "sequence_id")
     private int sequenceId;
+
+    /**
+     * 是否成功
+     */
+    private boolean success;
+
+    /**
+     * 状态报告编码
+     */
+    @JSONField(name = "err_code")
+    private String errCode;
+
+    /**
+     * 状态报告说明
+     */
+    @JSONField(name = "err_msg")
+    private String errMsg;
+
+    /**
+     * 发送序列号
+     */
+    @JSONField(name = "biz_id")
+    private String bizId;
+
+    /**
+     * 用户序列号
+     */
+    @JSONField(name = "out_id")
+    private String outId;
 }

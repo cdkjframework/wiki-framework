@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-210911</version>
+    <version>1.0-210913</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,26 +17,26 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-210911</cdkj-cloud.version>
-        <cdkj-config.version>1.0-210911</cdkj-config.version>
-        <cdkj-util.version>1.0-210911</cdkj-util.version>
-        <cdkj-constant.version>1.0-210911</cdkj-constant.version>
-        <cdkj-core.version>1.0-210911</cdkj-core.version>
-        <cdkj-datasource.version>1.0-210911</cdkj-datasource.version>
-        <cdkj-message.version>1.0-210911</cdkj-message.version>
-        <cdkj-redis.version>1.0-210911</cdkj-redis.version>
-        <cdkj-swagger.version>1.0-210911</cdkj-swagger.version>
-        <cdkj-pay.version>1.0-210911</cdkj-pay.version>
-        <cdkj-entity.version>1.0-210911</cdkj-entity.version>
-        <cdkj-center.version>1.0-210911</cdkj-center.version>
-        <cdkj-center.version>1.0-210911</cdkj-center.version>
-        <cdkj-log.version>1.0-210911</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-210911</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-210911</cdkj-security.version>
-        <cdkj-security-client.version>1.0-210911</cdkj-security-client.version>
-        <cdkj-datasource-jpa.version>1.0-210911</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-210911</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-210911</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-210913</cdkj-cloud.version>
+        <cdkj-config.version>1.0-210913</cdkj-config.version>
+        <cdkj-util.version>1.0-210913</cdkj-util.version>
+        <cdkj-constant.version>1.0-210913</cdkj-constant.version>
+        <cdkj-core.version>1.0-210913</cdkj-core.version>
+        <cdkj-datasource.version>1.0-210913</cdkj-datasource.version>
+        <cdkj-message.version>1.0-210913</cdkj-message.version>
+        <cdkj-redis.version>1.0-210913</cdkj-redis.version>
+        <cdkj-swagger.version>1.0-210913</cdkj-swagger.version>
+        <cdkj-pay.version>1.0-210913</cdkj-pay.version>
+        <cdkj-entity.version>1.0-210913</cdkj-entity.version>
+        <cdkj-center.version>1.0-210913</cdkj-center.version>
+        <cdkj-center.version>1.0-210913</cdkj-center.version>
+        <cdkj-log.version>1.0-210913</cdkj-log.version>
+        <cdkj-web-socket.version>1.0-210913</cdkj-web-socket.version>
+        <cdkj-security.version>1.0-210913</cdkj-security.version>
+        <cdkj-security-client.version>1.0-210913</cdkj-security-client.version>
+        <cdkj-datasource-jpa.version>1.0-210913</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-210913</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-210913</cdkj-datasource-elasticsearch.version>
 
 
         <java.version>1.8</java.version>
@@ -73,6 +73,8 @@
         <sms.alicloud.dysmsapi.version>1.1.0</sms.alicloud.dysmsapi.version>
         <com.aliyun.mns.version>1.1.9</com.aliyun.mns.version>
         <oss.version>3.4.2</oss.version>
+        <jpush-client.version>3.3.10</jpush-client.version>
+        <jiguang-common.version>1.1.4</jiguang-common.version>
 
         <log4j-core.version>2.13.0</log4j-core.version>
         <junit.jupiter.api.version>5.5.1</junit.jupiter.api.version>
@@ -324,6 +326,18 @@
                 <groupId>com.aliyun.openservices</groupId>
                 <artifactId>ons-client</artifactId>
                 <version>${ons.client.version}</version>
+            </dependency>
+
+            <!-- 极光推送 -->
+            <dependency>
+                <groupId>cn.jpush.api</groupId>
+                <artifactId>jpush-client</artifactId>
+                <version>${jpush-client.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.jpush.api</groupId>
+                <artifactId>jiguang-common</artifactId>
+                <version>${jiguang-common.version}</version>
             </dependency>
             <!--aliYun 短信-->
             <dependency>
