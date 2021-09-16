@@ -68,4 +68,14 @@ public class MailConfig {
      * 编码
      */
     private String encoding = "UTF-8";
+
+    /**
+     * SSL加密
+     */
+    private boolean ssl = true;
+
+    /**
+     * 权限验证
+     */
+    private boolean auth = true;
 }

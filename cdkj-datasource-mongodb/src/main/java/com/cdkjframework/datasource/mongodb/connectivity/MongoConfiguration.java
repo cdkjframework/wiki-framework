@@ -129,7 +129,7 @@ public class MongoConfiguration {
         MongoClientSettings setting = builder.applyToClusterSettings(cluster ->
                 cluster.hosts(Arrays.asList(new ServerAddress(mongodbConfig.getUri(), mongodbConfig.getPort())))
                         .mode(ClusterConnectionMode.SINGLE)
-                        .requiredClusterType(ClusterType.REPLICA_SET)
+                        .requiredClusterType(ClusterType.STANDALONE)
         ).build();
         // 返回结果
         return MongoClients.create(setting);

@@ -59,6 +59,7 @@
         <kotlin-stdlib.version>1.4.30</kotlin-stdlib.version>
         <junit.version>4.12</junit.version>
         <mockito.version>2.8.47</mockito.version>
+        <poi.version>3.13</poi.version>
         <easypoi.version>4.1.0</easypoi.version>
         <mybatis.starter.version>2.1.2</mybatis.starter.version>
         <mybatis.version>3.5.0</mybatis.version>
@@ -87,7 +88,6 @@
         <loadkit.version>v1.0.1</loadkit.version>
 
         <itextpdf.version>5.5.13.1</itextpdf.version>
-        <apache.poi.version>4.1.0</apache.poi.version>
         <easyexcel.version>2.2.6</easyexcel.version>
         <flowable.version>6.5.0</flowable.version>
         <logback.version>1.2.3</logback.version>
@@ -303,6 +303,27 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql-connector-java.version}</version>
+            </dependency>
+            <!-- POI -->
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml-schemas</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${poi.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-scratchpad</artifactId>
+                <version>${poi.version}</version>
             </dependency>
             <!-- alibaba Begin -->
             <dependency>
