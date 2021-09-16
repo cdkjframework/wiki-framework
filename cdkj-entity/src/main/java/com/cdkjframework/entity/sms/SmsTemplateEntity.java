@@ -28,8 +28,24 @@ public class SmsTemplateEntity extends BaseSmsEntity {
      * 模板类型
      */
     private AliSmsTemplateEnums templateType;
+
     /**
-     * 内容 【map主键请用 {@link SmsParameterConsts}】
+     * 模板名称
      */
-    private Map<String, String> content;
+    public String templateName;
+
+    /**
+     * 模板编码
+     */
+    public String templateCode;
+
+    /**
+     * 模板内容
+     */
+    public String templateContent;
+
+    /**
+     * 模板备注
+     */
+    public String remark;
 }

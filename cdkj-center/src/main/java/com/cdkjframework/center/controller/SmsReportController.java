@@ -6,6 +6,9 @@ import com.cdkjframework.entity.sms.subscribe.SignReportEntity;
 import com.cdkjframework.entity.sms.subscribe.SmsReportEntity;
 import com.cdkjframework.entity.sms.subscribe.SmsUpEntity;
 import com.cdkjframework.entity.sms.subscribe.TemplateReportEntity;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @Version: 1.0
  */
 @RequestMapping(value = "/sms/subscribe")
+@Api(tags = "短信报表")
 public class SmsReportController {
 
     /**
@@ -36,6 +40,7 @@ public class SmsReportController {
      */
     @PostMapping(value = "/smsUpReport")
     @ResponseBody
+    @ApiOperation(value = "短信上报")
     public ResponseBuilder smsUpReport(@RequestBody SmsUpEntity smsUp) {
         ResponseBuilder builder = null;
         try {
@@ -54,6 +59,7 @@ public class SmsReportController {
      */
     @PostMapping(value = "/smsReport")
     @ResponseBody
+    @ApiOperation(value = "短信状态报告")
     public ResponseBuilder smsReport(@RequestBody SmsReportEntity smsReport) {
         ResponseBuilder builder = null;
         try {
@@ -72,6 +78,7 @@ public class SmsReportController {
      */
     @PostMapping(value = "/signReport")
     @ResponseBody
+    @ApiOperation(value = "签名审核状态消息接收")
     public ResponseBuilder signReport(@RequestBody SignReportEntity signReport) {
         ResponseBuilder builder = null;
         try {
@@ -90,6 +97,7 @@ public class SmsReportController {
      */
     @PostMapping(value = "/templateReport")
     @ResponseBody
+    @ApiOperation(value = "模版审核状态消息接收")
     public ResponseBuilder templateReport(@RequestBody TemplateReportEntity templateReport) {
         ResponseBuilder builder = null;
         try {

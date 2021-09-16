@@ -35,6 +35,11 @@ public class SmsEntity extends BaseSmsEntity {
     private Map<String, String> content;
 
     /**
+     * 内容
+     */
+    private String smsContent;
+
+    /**
      * 手机号列表
      */
     private String phoneNumbers;

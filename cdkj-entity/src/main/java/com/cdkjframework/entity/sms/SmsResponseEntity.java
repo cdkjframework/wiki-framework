@@ -29,6 +29,11 @@ public class SmsResponseEntity {
      */
     @JSONField(name = "BizId")
     private String bizId;
+    /**
+     * 签名名称。
+     */
+    @JSONField(name = "SignName")
+    private String signName;
 
     /**
      * 状态码的描述。

@@ -1,6 +1,7 @@
 package com.cdkjframework.center.service.impl;
 
 import com.cdkjframework.center.service.SmsReportService;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.sms.SmsSignEntity;
 import com.cdkjframework.entity.sms.SmsTemplateEntity;
@@ -53,13 +54,19 @@ public class SmsReportServiceImpl implements SmsReportService {
     @Override
     public void smsUpReport(SmsUpEntity smsUp) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("phoneNumbers").in(smsUp.getPhoneNumber()));
+        Criteria criteria = Criteria.where("phoneNumbers").in(smsUp.getPhoneNumber());
+        criteria.and("bizId").is(smsUp.getBizId());
+        query.addCriteria(criteria);
         SmsEntity sms = mongoRepository.findEntity(query, SmsEntity.class);
 
-        sms.setDestCode(smsUp.getDestCode());
-        sms.setSequenceId(smsUp.getSequenceId());
+        //转换数据
+        CopyUtils.copyNoNullProperties(smsUp, sms);
         sms.setEditTime(LocalDateTime.now());
+        if (smsUp.isSuccess()) {
+            sms.setStatus(IntegerConsts.ONE);
+        }
 
+        // 保存数据
         mongoRepository.save(sms);
     }
 
@@ -75,9 +82,11 @@ public class SmsReportServiceImpl implements SmsReportService {
         criteria.and("bizId").is(smsReport.getBizId());
         query.addCriteria(criteria);
         SmsEntity sms = mongoRepository.findEntity(query, SmsEntity.class);
-        CopyUtils.copyProperties(smsReport, sms);
+        CopyUtils.copyNoNullProperties(smsReport, sms);
         sms.setEditTime(LocalDateTime.now());
-
+        if (smsReport.isSuccess()) {
+            sms.setStatus(IntegerConsts.ONE);
+        }
         mongoRepository.save(sms);
     }
 
@@ -92,7 +101,7 @@ public class SmsReportServiceImpl implements SmsReportService {
         Criteria criteria = Criteria.where("signName").is(signReport.getSignName());
         query.addCriteria(criteria);
         SmsSignEntity sign = mongoRepository.findEntity(query, SmsSignEntity.class);
-        CopyUtils.copyProperties(signReport, sign);
+        CopyUtils.copyNoNullProperties(signReport, sign);
         sign.setEditTime(LocalDateTime.now());
 
         mongoRepository.save(sign);
@@ -109,7 +118,7 @@ public class SmsReportServiceImpl implements SmsReportService {
         Criteria criteria = Criteria.where("templateCode").is(templateReport.getTemplateCode());
         query.addCriteria(criteria);
         SmsTemplateEntity template = mongoRepository.findEntity(query, SmsTemplateEntity.class);
-        CopyUtils.copyProperties(templateReport, template);
+        CopyUtils.copyNoNullProperties(templateReport, template);
         template.setEditTime(LocalDateTime.now());
 
         mongoRepository.save(template);
