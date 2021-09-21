@@ -3,8 +3,8 @@ package com.cdkjframework.util.push;
 import cn.jiguang.common.ClientConfig;
 import cn.jiguang.common.ServiceHelper;
 import cn.jiguang.common.connection.NativeHttpClient;
+import cn.jiguang.common.resp.BaseResult;
 import cn.jpush.api.JPushClient;
-import cn.jpush.api.push.PushResult;
 import cn.jpush.api.push.model.Options;
 import cn.jpush.api.push.model.Platform;
 import cn.jpush.api.push.model.PushPayload;
@@ -14,10 +14,11 @@ import cn.jpush.api.push.model.notification.IosNotification;
 import cn.jpush.api.push.model.notification.Notification;
 import com.cdkjframework.constant.push.JpushConstants;
 import com.cdkjframework.entity.message.PushEntity;
-import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.date.LocalDateUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @ProjectName: cdkj-framework
@@ -36,14 +37,21 @@ public class JpushUtils {
      * @param push 推送实体
      * @return 返回推送结果
      */
-    public static PushResult sendPush(PushEntity push) throws Exception {
+    public static BaseResult sendPush(PushEntity push) throws Exception {
         PushPayload payload = buildPushPayload(push);
         ClientConfig clientConfig = ClientConfig.getInstance();
         String authCode = ServiceHelper.getBasicAuthorization(push.getAppKey(), push.getSecretKey());
         NativeHttpClient httpClient = new NativeHttpClient(authCode, null, clientConfig);
         JPushClient jpushClient = new JPushClient(push.getSecretKey(), push.getAppKey(), null, clientConfig);
         jpushClient.getPushClient().setHttpClient(httpClient);
-        return jpushClient.sendPush(payload);
+        // 定时推送
+        if (push.getFixedTime()) {
+            String name = push.getTitle() + new Random().nextInt();
+            String time = LocalDateUtils.dateTimeFormatter(push.getPushTime(), LocalDateUtils.DATE_HH_MM_SS);
+            return jpushClient.createSingleSchedule(name, time, payload);
+        } else {
+            return jpushClient.sendPush(payload);
+        }
     }
 
     /**

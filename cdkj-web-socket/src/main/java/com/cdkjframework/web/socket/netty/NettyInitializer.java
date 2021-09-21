@@ -61,7 +61,6 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
      */
     @Override
     protected void initChannel(SocketChannel channel) throws Exception {
-
         ChannelPipeline pipeline = channel.pipeline();
         // 编解码http请求
         pipeline.addLast(new HttpServerCodec());

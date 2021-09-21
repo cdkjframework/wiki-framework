@@ -66,4 +66,9 @@ public class PushEntity {
      * 推送时间
      */
     private LocalDateTime pushTime;
+
+    /**
+     * 是否固定时间
+     */
+    private Boolean fixedTime;
 }
