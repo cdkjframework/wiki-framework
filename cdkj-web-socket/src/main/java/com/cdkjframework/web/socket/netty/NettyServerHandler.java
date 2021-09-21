@@ -33,24 +33,21 @@ import java.util.HashMap;
 public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
 
     /**
-     * 接口
-     */
-    private WebSocket webSocket;
-
-    /**
-     * 记录每一个channel的心跳包丢失次数
-     */
-    public HashMap<String, Integer> onlineChannelsHeart = new HashMap<>();
-
-    /**
      * 日志
      */
     private final LogUtils logUtils = LogUtils.getLogger(NettyServerHandler.class);
-
     /**
      * 心跳类型
      */
     private final String TYPE = "heartbeat";
+    /**
+     * 记录每一个channel的心跳包丢失次数
+     */
+    public HashMap<String, Integer> onlineChannelsHeart = new HashMap<>();
+    /**
+     * 接口
+     */
+    private WebSocket webSocket;
 
     /**
      * 构造函数
@@ -88,8 +85,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         ctx.close();
         String channelId = ctx.channel().id().asLongText();
         logUtils.info("客户端【" + channelId + "】异常，关闭连接");
-        logUtils.info("连接通道数量: " + WebSocketUtils.getClients().size());
-        WebSocketUtils.findChannel(channelId);
+        WebSocketUtils.clients.remove(ctx.channel());
+        logUtils.info("连接通道数量: " + WebSocketUtils.clients.size());
     }
 
     /**
@@ -101,7 +98,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         logUtils.info("handlerAdded" + ctx.channel().id().asLongText());
-        WebSocketUtils.getClients().add(ctx.channel());
+        WebSocketUtils.clients.add(ctx.channel());
     }
 
     /**
@@ -115,7 +112,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         Channel channel = ctx.channel();
         //获取连接通道唯一标识
         String channelId = channel.id().asLongText();
-        logUtils.info("客户端【" + channelId + "】连接，连接通道数量: " + WebSocketUtils.getClients().size());
+        logUtils.info("客户端【" + channelId + "】连接，连接通道数量: " + WebSocketUtils.clients.size());
         // 返回心跳消息
         WebSocketEntity heartbeat = new WebSocketEntity();
         heartbeat.setType(TYPE);
@@ -131,8 +128,8 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         String channelId = ctx.channel().id().asLongText();
-        logUtils.info("客户端【" + channelId + "】断开连接，连接通道数量: " + WebSocketUtils.getClients().size());
-        WebSocketUtils.findChannel(channelId);
+        logUtils.info("客户端【" + channelId + "】断开连接，连接通道数量: " + WebSocketUtils.clients.size());
+        WebSocketUtils.clients.remove(ctx.channel());
         WebSocketEntity socket = new WebSocketEntity();
         socket.setClientId(channelId);
         socket.setType("channelInactive");

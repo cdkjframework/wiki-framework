@@ -28,22 +28,9 @@ public class WebSocketUtils {
     private static final LogUtils logUtils = LogUtils.getLogger(WebSocketUtils.class);
 
     /**
-     * 锁
-     */
-    private static final ReentrantLock Lock = new ReentrantLock();
-
-    /**
      * 客户端集合
      */
-    private static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
-
-    public static ChannelGroup getClients() {
-        return clients;
-    }
-
-    public static void setClients(ChannelGroup clients) {
-        WebSocketUtils.clients = clients;
-    }
+    public static ChannelGroup clients = new DefaultChannelGroup(GlobalEventExecutor.INSTANCE);
 
     /**
      * 发送消息
@@ -79,7 +66,7 @@ public class WebSocketUtils {
      * @return 返回通道
      */
     public static Channel findChannel(String channelId) {
-        Optional<Channel> optional = getClients().stream()
+        Optional<Channel> optional = clients.stream()
                 .filter(f -> f.id().asLongText().equals(channelId))
                 .findFirst();
 
@@ -90,7 +77,7 @@ public class WebSocketUtils {
         // 验证连接是否存在
         Channel channel = optional.get();
         if (!channel.isOpen()) {
-            getClients().remove(channel);
+            clients.remove(channel);
             return null;
         }
         // 返回结果

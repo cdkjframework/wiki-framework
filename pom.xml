@@ -55,7 +55,7 @@
         <repository>
             <id>lesmarthome Maven Respository</id>
             <name>lesmarthome Maven Respository</name>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://maven.aliyun.com/content/repositories/thirdparty/</url>
         </repository>
 
         <repository>
@@ -63,7 +63,7 @@
             就会覆盖中央仓库的配置 -->
             <id>mvnRepository</id>
             <name>mvnRepository</name>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/central/</url>
+            <url>https://maven.aliyun.com/repository/central/</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
@@ -76,9 +76,9 @@
 
     <distributionManagement>
         <repository>
-            <id>lesmarthome Maven Respository</id>
+            <id>cdkj Maven Respository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
         </repository>
     </distributionManagement>
 </project>
