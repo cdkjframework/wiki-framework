@@ -9,20 +9,14 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-cache</artifactId>
+    <artifactId>cdkj-web-socket-client</artifactId>
+
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
+            <groupId>org.java-websocket</groupId>
+            <artifactId>Java-WebSocket</artifactId>
+            <version>1.5.2</version>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>lesmarthome Maven Respository</id>
-            <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
-        </repository>
-    </distributionManagement>
 
 </project>

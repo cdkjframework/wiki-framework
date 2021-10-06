@@ -15,7 +15,9 @@ public enum PushRangeEnums {
     AUDIENCE_REGISTRATION_ID(2, "registration_id", "注册ID推送，多个注册ID之间是 OR 关系，即取并集。一次推送最多 1000 个。"),
     AUDIENCE_TAG_AND(3, "tag_and", "标签推送，多个标签之间是 OR 的关系，即取并集。一次推送最多 20 个。"),
     AUDIENCE_TAG_NOT(4, "tag_not", "标签推送，多个标签之间是 AND 关系，即取交集。一次推送最多 20 个。"),
-    AUDIENCE_ALIAS(5, "alias", "别名推送，多个别名之间是 OR 关系，即取并集。一次推送最多 1000 个。");
+    AUDIENCE_ALIAS(5, "alias", "别名推送，多个别名之间是 OR 关系，即取并集。一次推送最多 1000 个。"),
+    AUDIENCE_TOKEN(6, "token", "token 推送。"),
+    AUDIENCE_TAG(7, "tag", "tag推送。");
 
     private Integer key;
     private String value;

@@ -26,8 +26,14 @@ public class PayConfigServiceImpl implements PayConfigService {
     /**
      * 支付配置服务
      */
-    @Autowired
-    private PayConfigMapper payConfigMapper;
+    private final PayConfigMapper payConfigMapper;
+
+    /**
+     * 构造函数
+     */
+    public PayConfigServiceImpl(PayConfigMapper payConfigMapper) {
+        this.payConfigMapper = payConfigMapper;
+    }
 
     /**
      * 根据 entity 条件，查询全部记录

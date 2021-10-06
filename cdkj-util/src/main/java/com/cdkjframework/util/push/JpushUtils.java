@@ -15,6 +15,7 @@ import cn.jpush.api.push.model.notification.Notification;
 import com.cdkjframework.constant.push.JpushConstants;
 import com.cdkjframework.entity.message.PushEntity;
 import com.cdkjframework.util.date.LocalDateUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class JpushUtils {
         jpushClient.getPushClient().setHttpClient(httpClient);
         // 定时推送
         if (push.getFixedTime()) {
-            String name = push.getTitle() + new Random().nextInt();
+            String name = push.getTitle().replace(" ", StringUtils.Empty);
             String time = LocalDateUtils.dateTimeFormatter(push.getPushTime(), LocalDateUtils.DATE_HH_MM_SS);
             return jpushClient.createSingleSchedule(name, time, payload);
         } else {

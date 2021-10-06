@@ -131,8 +131,6 @@ public class ConsumerConfiguration {
             // 自动提交的频率(ms)
             propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, kafkaConfig.getAutoCommitInterval());
         }
-        // Session超时设置
-//        propsMap.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, kafkaConfig.getSessionTimeout());
         // 键的反序列化方式
         propsMap.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         // 值的反序列化方式

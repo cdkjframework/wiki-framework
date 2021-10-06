@@ -77,9 +77,9 @@
 
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Respository</id>
+            <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>

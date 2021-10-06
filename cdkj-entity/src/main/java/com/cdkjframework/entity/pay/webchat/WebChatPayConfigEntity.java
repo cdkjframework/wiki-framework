@@ -34,7 +34,7 @@ public class WebChatPayConfigEntity {
     /**
      * 自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
      */
-//    @XStreamAlias("device_info")
+    @XStreamAlias("device_info")
     private String deviceInfo;
 
     /**

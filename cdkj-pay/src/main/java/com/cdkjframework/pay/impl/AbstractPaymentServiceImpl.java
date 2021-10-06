@@ -105,7 +105,7 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
 
         // 获取支付方式
         PayConfigEntity configEntity = new PayConfigEntity();
-        configEntity.setDeleted(0);
+        configEntity.setDeleted(IntegerConsts.ZERO);
 
         // 支付信息
         WebChatPayConfigEntity webChat = null;
@@ -165,9 +165,9 @@ public abstract class AbstractPaymentServiceImpl<T> implements PaymentService<T>
      */
     @Override
     public String generateQrCode(String address) {
-        String enCode = "";
+        String enCode = StringUtils.Empty;
         try {
-            QrCodeUtils qrCode = new QrCodeUtils(200, 200);
+            QrCodeUtils qrCode = new QrCodeUtils(IntegerConsts.ONE_HUNDRED * IntegerConsts.TWO, IntegerConsts.ONE_HUNDRED * IntegerConsts.TWO);
             //生成二进制图片信息
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
             qrCode.createQrCode(address, outputStream);

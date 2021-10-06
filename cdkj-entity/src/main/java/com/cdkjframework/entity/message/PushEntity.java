@@ -43,6 +43,10 @@ public class PushEntity {
      */
     private String extras;
     /**
+     * 应用程序ID
+     */
+    private String appId;
+    /**
      * 极光appKey
      */
     private String appKey;
@@ -55,7 +59,9 @@ public class PushEntity {
      */
     private long count;
     /**
-     * 推送状态 true 成功 false 失败
+     * 推送状态
+     * true 成功
+     * false 失败
      */
     private boolean status;
     /**
@@ -71,4 +77,19 @@ public class PushEntity {
      * 是否固定时间
      */
     private Boolean fixedTime;
+
+    /**
+     * 远程 LOGO
+     */
+    private String logoUrl;
+
+    /**
+     * 本地 LOGO
+     */
+    private String logo;
+
+    /**
+     * 请求服务
+     */
+    private String url;
 }

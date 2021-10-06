@@ -76,6 +76,11 @@
         <oss.version>3.4.2</oss.version>
         <jpush-client.version>3.3.10</jpush-client.version>
         <jiguang-common.version>1.1.4</jiguang-common.version>
+        <gexin.version>4.1.2.1</gexin.version>
+        <xinge.version>1.2.4.9</xinge.version>
+        <fastjson.version>1.0.0.7</fastjson.version>
+        <base.version>4.0.0.7</base.version>
+        <template.version>4.0.0.8</template.version>
 
         <log4j-core.version>2.13.0</log4j-core.version>
         <junit.jupiter.api.version>5.5.1</junit.jupiter.api.version>
@@ -359,6 +364,33 @@
                 <groupId>cn.jpush.api</groupId>
                 <artifactId>jiguang-common</artifactId>
                 <version>${jiguang-common.version}</version>
+            </dependency>
+            <!--xinge-->
+            <dependency>
+                <groupId>com.github.xingePush</groupId>
+                <artifactId>xinge</artifactId>
+                <version>${xinge.version}</version>
+            </dependency>
+            <!-- uni push 推送 -->
+            <dependency>
+                <groupId>com.gexin.platform</groupId>
+                <artifactId>gexin-rp-sdk-http</artifactId>
+                <version>${gexin.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gexin.platform</groupId>
+                <artifactId>gexin-rp-fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gexin.platform</groupId>
+                <artifactId>gexin-rp-sdk-base</artifactId>
+                <version>${base.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.gexin.platform</groupId>
+                <artifactId>gexin-rp-sdk-template</artifactId>
+                <version>${template.version}</version>
             </dependency>
             <!--aliYun 短信-->
             <dependency>
@@ -765,9 +797,9 @@
 
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Respository</id>
+            <id>lesmarthome Maven Respository</id>
             <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
         </repository>
     </distributionManagement>
 </project>
