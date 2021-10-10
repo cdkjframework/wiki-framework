@@ -1,5 +1,6 @@
 package com.cdkjframework.exceptions;
 
+import com.cdkjframework.constant.BusinessConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +33,20 @@ public class GlobalRuntimeException extends RuntimeException {
      */
     public GlobalRuntimeException(Exception ex, final String message) {
         super(message, ex.getCause());
+    }
+
+    /**
+     * 构造函数
+     */
+    public GlobalRuntimeException(Integer code, final String message) {
+        super(code + BusinessConsts.errorKey + message);
+    }
+
+    /**
+     * 构造函数
+     */
+    public GlobalRuntimeException(final String message, Throwable cause) {
+        super(message, cause);
     }
 
     /**

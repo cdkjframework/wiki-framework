@@ -58,8 +58,20 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
     /**
      * 日志服务
      */
-    @Autowired
-    private LogService logServiceImpl;
+    private final LogService logServiceImpl;
+
+    /**
+     * 自定义配置
+     */
+    private final CustomConfig customConfig;
+
+    /**
+     * 构造函数
+     */
+    public ControllerDebugAspect(CustomConfig customConfig, LogService logServiceImpl) {
+        this.customConfig = customConfig;
+        this.logServiceImpl = logServiceImpl;
+    }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -87,12 +99,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logUtils.error(ex.getStackTrace(), ex.getMessage());
         }
     }
-
-    /**
-     * 自定义配置
-     */
-    @Autowired
-    private CustomConfig customConfig;
 
     /**
      * 切入点
@@ -217,7 +223,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logRecordDto.setUserName(user.getLoginName());
             logRecordDto.setClientIp(HttpServletUtils.getRemoteAddr());
 
-            long currentTimeMillis = System.currentTimeMillis();
             String organizationCode = "-" + user.getOrganizationCode();
             final String LOG_PREFIX = "LOG" + organizationCode;
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);

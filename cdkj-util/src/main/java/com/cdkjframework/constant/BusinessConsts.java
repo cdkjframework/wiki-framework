@@ -13,36 +13,40 @@ public class BusinessConsts {
     /**
      * 用户 TOKEN
      */
-    public static String HEADER_TOKEN = "token";
+    public static final String HEADER_TOKEN = "token";
 
     /**
      * 用户登录名称
      */
-    public static String LOGIN_NAME = "loginName";
+    public static final String LOGIN_NAME = "loginName";
 
     /**
      * 用户密码
      */
-    public static String PASSWORD = "password";
+    public static final String PASSWORD = "password";
 
     /**
      * 用户名称
      */
-    public static String USER_NAME = "username";
+    public static final String USER_NAME = "username";
 
     /**
      * 时间
      */
-    public static String TIME = "time";
+    public static final String TIME = "time";
 
     /**
      * 验证码
      */
-    public static String IMAGE_CODE = "verifyCode";
+    public static final String IMAGE_CODE = "verifyCode";
 
     /**
      * 登录地址
      */
-    public static String LOGIN = "/security/user/login";
+    public static final String LOGIN = "/security/user/login";
 
+    /**
+     * 错误分割符号
+     */
+    public static final String errorKey = "global";
 }

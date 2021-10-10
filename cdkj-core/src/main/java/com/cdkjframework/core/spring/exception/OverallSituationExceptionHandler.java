@@ -1,11 +1,14 @@
 package com.cdkjframework.core.spring.exception;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -56,9 +59,48 @@ public class OverallSituationExceptionHandler {
      */
     @ExceptionHandler(GlobalException.class)
     public ResponseBuilder GlobalException(GlobalException e) {
+        String message = e.getMessage();
+        Integer code = ResponseBuilderEnums.Error.getValue();
+        if (StringUtils.isNotNullAndEmpty(message)) {
+            String[] messageList = message.split(BusinessConsts.errorKey);
+            if (messageList.length == IntegerConsts.TWO) {
+                code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
+                message = messageList[IntegerConsts.ONE];
+            }
+        }
         ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
+        builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
-        params.put("error", e.getMessage());
+        params.put("error", message);
+
+        logUtil.error(e, JsonUtils.objectToJsonString(params));
+
+        builder.setData(params);
+        return builder;
+    }
+
+
+    /**
+     * 声明要捕获的异常
+     *
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(GlobalRuntimeException.class)
+    public ResponseBuilder defultExcepitonHandler(GlobalRuntimeException e) {
+        String message = e.getMessage();
+        Integer code = ResponseBuilderEnums.Error.getValue();
+        if (StringUtils.isNotNullAndEmpty(message)) {
+            String[] messageList = message.split(BusinessConsts.errorKey);
+            if (messageList.length == IntegerConsts.TWO) {
+                code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
+                message = messageList[IntegerConsts.ONE];
+            }
+        }
+        ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
+        builder.setCode(code);
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", message);
 
         logUtil.error(e, JsonUtils.objectToJsonString(params));
 
@@ -81,23 +123,6 @@ public class OverallSituationExceptionHandler {
 
         logUtil.error(e, JsonUtils.objectToJsonString(params));
 
-        return builder;
-    }
-    /**
-     * 声明要捕获的异常
-     *
-     * @param e
-     * @return
-     */
-    @ExceptionHandler(GlobalRuntimeException.class)
-    public ResponseBuilder defultExcepitonHandler(GlobalRuntimeException e) {
-        ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
-        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
-        params.put("error", e.getMessage());
-
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
-        builder.setData(params);
         return builder;
     }
 

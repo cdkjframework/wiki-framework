@@ -1,5 +1,6 @@
 package com.cdkjframework.exceptions;
 
+import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.util.log.LogUtils;
 
 import javax.annotation.Generated;
@@ -25,6 +26,20 @@ public class GlobalException extends GeneralSecurityException {
      */
     public GlobalException(final String message) {
         super(message);
+    }
+
+    /**
+     * 构造函数
+     */
+    public GlobalException(Integer code, final String message) {
+        super(code + BusinessConsts.errorKey + message);
+    }
+
+    /**
+     * 构造函数
+     */
+    public GlobalException(final String message, Throwable cause) {
+        super(message, cause);
     }
 
     /**
