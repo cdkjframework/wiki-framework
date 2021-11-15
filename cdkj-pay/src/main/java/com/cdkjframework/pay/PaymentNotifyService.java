@@ -21,7 +21,7 @@ public interface PaymentNotifyService {
      *
      * @param builder 返回结果
      * @param payType 支付类型
-     * @throws IOException
+     * @throws Exception 异常信息
      */
     void payNotifyCallback(StringBuilder builder, String payType) throws Exception;
 
@@ -30,7 +30,7 @@ public interface PaymentNotifyService {
      *
      * @param configEntity 配置信息
      * @param builder      数据结果
-     * @throws IOException
+     * @throws Exception 异常信息
      */
     void checkSignature(PayConfigEntity configEntity, StringBuilder builder) throws Exception;
 }

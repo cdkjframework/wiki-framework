@@ -342,19 +342,20 @@ public class AliCloudSms implements ApplicationRunner {
             SmsEntity sms = CopyUtils.copyNoNullProperties(sendSms, SmsEntity.class);
             sms.setPhoneNumbers(phone);
             smsList.add(sms);
-            signNameList.add(sendSms.getSignName());
+            if (StringUtils.isNotNullAndEmpty(sendSms.getSignName())) {
+                signNameList.add(sendSms.getSignName());
+            } else {
+                signNameList.add(signName);
+            }
         }
 
-        if (CollectionUtils.isEmpty(signNameList)) {
-            signNameList.add(signName);
-        }
         String signNameJson = JsonUtils.objectToJsonString(signNameList);
         com.aliyun.dysmsapi20170525.Client client = createClient();
         SendBatchSmsRequest sendBatchSmsRequest = new SendBatchSmsRequest()
                 .setPhoneNumberJson(JsonUtils.objectToJsonString(phoneNumberList))
                 .setSignNameJson(signNameJson)
                 .setTemplateCode(sendSms.getTemplateCode())
-                .setTemplateParamJson("[" + JsonUtils.objectToJsonString(sendSms.getContent()) + "]");
+                .setTemplateParamJson(JsonUtils.objectToJsonString(sendSms.getContentList()));
         try {
             // 复制代码运行请自行打印 API 的返回值
             SendBatchSmsResponse response = client.sendBatchSms(sendBatchSmsRequest);

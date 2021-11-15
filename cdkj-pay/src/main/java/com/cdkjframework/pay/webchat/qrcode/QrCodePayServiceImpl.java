@@ -1,4 +1,4 @@
-package com.cdkjframework.pay.qrcode.webchat;
+package com.cdkjframework.pay.webchat.qrcode;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
@@ -9,6 +9,7 @@ import com.cdkjframework.entity.pay.webchat.query.WebChatQueryEntity;
 import com.cdkjframework.entity.pay.webchat.query.WebChatQueryResultEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.pay.impl.AbstractPaymentServiceImpl;
+import com.cdkjframework.pay.webchat.PayRequest;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.encrypts.WebChatPayAutographUtils;
 import com.cdkjframework.util.files.XmlUtils;
@@ -34,12 +35,12 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Service
-public class WebChatPayServiceImpl extends AbstractPaymentServiceImpl<WebChatPayConfigEntity> {
+public class QrCodePayServiceImpl extends AbstractPaymentServiceImpl<WebChatPayConfigEntity> {
 
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(WebChatPayServiceImpl.class);
+    private LogUtils logUtils = LogUtils.getLogger(QrCodePayServiceImpl.class);
 
     /**
      * 支付请求

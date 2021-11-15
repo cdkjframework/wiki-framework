@@ -130,7 +130,7 @@ public class TencentPushUtils {
         pushAppRequest.getMessage().setAndroid(messageAndroid);
         // 设备token
         ArrayList<String> tokenList = new ArrayList();
-        tokenList.add(push.getPushId());
+        tokenList.addAll(push.getRegisterIdList());
         pushAppRequest.setToken_list(tokenList);
 
         // 返回请求
@@ -150,7 +150,7 @@ public class TencentPushUtils {
         // 设备在推送的账户信息
         pushAppRequest.setAccount_push_type(IntegerConsts.ONE);
         ArrayList<String> accountList = new ArrayList();
-        accountList.add(push.getPushId());
+        accountList.addAll(push.getRegisterIdList());
         pushAppRequest.setAccount_list(accountList);
 
         // 返回请求
@@ -172,7 +172,7 @@ public class TencentPushUtils {
         pushAppRequest.getMessage().setAndroid(messageAndroid);
 
         ArrayList<String> tagList = new ArrayList();
-        tagList.add(push.getPushId());
+        tagList.addAll(push.getRegisterIdList());
         TagListObject tagListObject = new TagListObject();
         tagListObject.setTags(tagList);
         tagListObject.setOp(OpType.OR);
@@ -241,7 +241,7 @@ public class TencentPushUtils {
         pushAppRequest.getMessage().setIos(messageIos);
         // 设备token
         ArrayList<String> tokenList = new ArrayList();
-        tokenList.add(push.getPushId());
+        tokenList.addAll(push.getRegisterIdList());
         pushAppRequest.setToken_list(tokenList);
 
         // 返回请求
@@ -265,7 +265,7 @@ public class TencentPushUtils {
         // 设备在推送的账户信息
         pushAppRequest.setAccount_push_type(IntegerConsts.ONE);
         ArrayList<String> accountList = new ArrayList();
-        accountList.add(push.getPushId());
+        accountList.addAll(push.getRegisterIdList());
         pushAppRequest.setAccount_list(accountList);
 
         // 返回请求
@@ -287,7 +287,7 @@ public class TencentPushUtils {
         pushAppRequest.getMessage().setIos(messageIos);
 
         ArrayList<String> tagList = new ArrayList();
-        tagList.add(push.getPushId());
+        tagList.addAll(push.getRegisterIdList());
         TagListObject tagListObject = new TagListObject();
         tagListObject.setTags(tagList);
         tagListObject.setOp(OpType.OR);

@@ -38,9 +38,4 @@ public class BaseSmsEntity extends BaseEntity {
      */
     @JSONField(name = "Code")
     private String code;
-
-    /**
-     * 状态
-     */
-    private Integer status;
 }

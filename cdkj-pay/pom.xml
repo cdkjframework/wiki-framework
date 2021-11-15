@@ -18,7 +18,15 @@
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-entity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-redis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-datasource-mongodb</artifactId>
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>

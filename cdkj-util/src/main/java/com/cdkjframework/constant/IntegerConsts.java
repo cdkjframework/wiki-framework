@@ -77,6 +77,11 @@ public class IntegerConsts {
     public final static Integer THIRTEEN = 13;
 
     /**
+     * 十六
+     */
+    public final static Integer SIXTEEN = 16;
+
+    /**
      * 二十
      */
     public final static Integer TWENTY = 20;

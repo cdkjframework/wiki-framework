@@ -1,4 +1,4 @@
-package com.cdkjframework.pay.qrcode.webchat;
+package com.cdkjframework.pay.webchat.qrcode;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.pay.PayConfigEntity;
@@ -30,12 +30,12 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Service
-public class WebChatPayNotifyServiceImpl extends AbstractPaymentNotifyServiceImpl {
+public class QrCodePayNotifyServiceImpl extends AbstractPaymentNotifyServiceImpl {
 
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(WebChatPayNotifyServiceImpl.class);
+    private LogUtils logUtils = LogUtils.getLogger(QrCodePayNotifyServiceImpl.class);
 
     /**
      * 支付记录
@@ -52,7 +52,7 @@ public class WebChatPayNotifyServiceImpl extends AbstractPaymentNotifyServiceImp
      *
      * @param payRecordServiceImpl 支付服务
      */
-    public WebChatPayNotifyServiceImpl(PayRecordService payRecordServiceImpl) {
+    public QrCodePayNotifyServiceImpl(PayRecordService payRecordServiceImpl) {
         this.payRecordServiceImpl = payRecordServiceImpl;
     }
 

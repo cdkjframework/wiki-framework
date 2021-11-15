@@ -1,5 +1,7 @@
-package com.cdkjframework.pay.qrcode.webchat;
+package com.cdkjframework.pay.webchat;
 
+import com.cdkjframework.constant.EncodingConsts;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.files.XmlUtils;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
@@ -57,8 +59,8 @@ public class PayRequest {
             conn.setDoOutput(true);
             conn.getOutputStream().write(postDataBytes);
 
-            Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-            for (int c; (c = in.read()) >= 0; ) {
+            Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), EncodingConsts.UTF8));
+            for (int c; (c = in.read()) >= IntegerConsts.ZERO; ) {
                 builder.append((char) c);
             }
         } catch (Exception ex) {

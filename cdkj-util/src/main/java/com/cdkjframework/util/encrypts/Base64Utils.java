@@ -108,6 +108,22 @@ public class Base64Utils {
     }
 
     /**
+     * 对给定的字符串进行base64加密操作
+     */
+    public static byte[] encodeDataToByte(String inputData) {
+        try {
+            if (null == inputData) {
+                return null;
+            }
+            return Base64.encodeBase64(inputData.getBytes(UTF_8));
+        } catch (UnsupportedEncodingException e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+
+        return null;
+    }
+
+    /**
      * byte 生成 base 64
      *
      * @param dataList 数据

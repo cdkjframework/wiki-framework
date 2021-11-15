@@ -71,6 +71,11 @@ public class KafkaConfig {
     private String sessionTimeout = "5000";
 
     /**
+     * 会话超时
+     */
+    private Integer maxPollInterval = 10000;
+
+    /**
      * 组ID
      */
     private String groupId = "defaultGroup";
@@ -78,7 +83,7 @@ public class KafkaConfig {
     /**
      * 最大投票记录
      */
-    private String maxPollRecords;
+    private Integer maxPollRecords = 1;
 
     /**
      * 并发性

@@ -36,4 +36,8 @@ public class SendSmsEntity extends BaseSmsEntity {
      * 内容
      */
     private Map<String, String> content;
+    /**
+     * 批量内容
+     */
+    private List<Map<String, String>> contentList;
 }

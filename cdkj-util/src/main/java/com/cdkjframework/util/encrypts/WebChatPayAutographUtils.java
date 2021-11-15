@@ -3,11 +3,14 @@ package com.cdkjframework.util.encrypts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.constant.WebChatPayConsts;
 import com.cdkjframework.enums.AutographTypeEnums;
+import com.cdkjframework.util.tool.StringUtils;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.MessageDigest;
+import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,7 +33,7 @@ public class WebChatPayAutographUtils {
      * @return 签名
      */
     public static String generateSignature(final Map<String, String> data, String key) throws Exception {
-        return generateSignature(data, key, AutographTypeEnums.MD5);
+        return generateSignature(data, key, StringUtils.Empty, AutographTypeEnums.MD5);
     }
 
     /**
@@ -41,7 +44,7 @@ public class WebChatPayAutographUtils {
      * @param signType 签名方式
      * @return 签名
      */
-    public static String generateSignature(final Map<String, String> data, String key, AutographTypeEnums signType) throws Exception {
+    public static String generateSignature(final Map<String, String> data, String key, String privateKey, AutographTypeEnums signType) throws Exception {
         Set<String> keySet = data.keySet();
         String[] keyArray = keySet.toArray(new String[keySet.size()]);
         Arrays.sort(keyArray);
@@ -61,6 +64,9 @@ public class WebChatPayAutographUtils {
         switch (signType) {
             case HMACSHA256:
                 signString = hmacSha256(builder.toString(), key);
+                break;
+            case SHA256WITHRSA:
+                signString = sha256withrsa(builder.toString(), privateKey);
                 break;
             case MD5:
                 signString = md5(builder.toString()).toUpperCase();
@@ -108,4 +114,48 @@ public class WebChatPayAutographUtils {
         }
         return builder.toString().toUpperCase();
     }
+
+    /**
+     * 生成 sha256withrsa
+     *
+     * @param data 待处理数据
+     * @param key  关键字
+     * @return 加密结果
+     * @throws Exception
+     */
+    public static String sha256withrsa(String data, String key) throws Exception {
+        Signature sign = Signature.getInstance("SHA256withRSA");
+        sign.initSign(stringToPrivateKey(key));
+        sign.update(data.getBytes());
+        return Base64.getEncoder().encodeToString(sign.sign());
+    }
+
+    /**
+     * 随机生成秘钥对
+     *
+     * @return
+     * @throws Exception
+     */
+    public static KeyPair getKeyPair() throws Exception {
+        KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
+        keyPairGenerator.initialize(IntegerConsts.BYTE_LENGTH * IntegerConsts.TWO);
+        KeyPair keyPair = keyPairGenerator.generateKeyPair();
+        return keyPair;
+    }
+
+    /**
+     * 将Base64编码后的私钥转换成PrivateKey对象
+     *
+     * @param privateStr 加密 key 字符
+     * @return 返回结果
+     * @throws Exception 异常信息
+     */
+    public static PrivateKey stringToPrivateKey(String privateStr) throws Exception {
+        byte[] keyBytes = Base64Utils.encodeDataToByte(privateStr);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyBytes);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+        return privateKey;
+    }
+
 }

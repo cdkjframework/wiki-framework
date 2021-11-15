@@ -68,7 +68,7 @@ public class OverallSituationExceptionHandler {
                 message = messageList[IntegerConsts.ONE];
             }
         }
-        ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
+        ResponseBuilder builder = ResponseBuilder.failBuilder(message);
         builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", message);
@@ -97,7 +97,7 @@ public class OverallSituationExceptionHandler {
                 message = messageList[IntegerConsts.ONE];
             }
         }
-        ResponseBuilder builder = ResponseBuilder.failBuilder(e.getMessage());
+        ResponseBuilder builder = ResponseBuilder.failBuilder(message);
         builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", message);

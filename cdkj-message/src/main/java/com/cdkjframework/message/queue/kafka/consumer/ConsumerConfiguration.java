@@ -4,9 +4,7 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.message.queue.kafka.KafkaConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import org.apache.kafka.clients.consumer.*;
-import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -18,10 +16,7 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.BatchErrorHandler;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ConsumerAwareErrorHandler;
-import org.springframework.kafka.listener.ContainerProperties;
 
-import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -72,7 +67,6 @@ public class ConsumerConfiguration {
         factory.setConcurrency(kafkaConfig.getConcurrency());
         // 拉取超时时间
         factory.getContainerProperties().setPollTimeout(kafkaConfig.getPollTimeout());
-
         // 当使用批量监听器时需要设置为true
         factory.setBatchListener(kafkaConfig.isBatchListener());
         // 将单条消息异常处理器添加到参数中
@@ -99,6 +93,7 @@ public class ConsumerConfiguration {
                 }
             });
         }
+//        factory.setContainerCustomizer();
 
         return factory;
     }
@@ -127,6 +122,10 @@ public class ConsumerConfiguration {
         propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaConfig.getGroupId());
         // 是否自动提交offset偏移量(默认true)
         propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, kafkaConfig.isEnableAutoCommit());
+        // 心跳机制
+        propsMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, kafkaConfig.getMaxPollInterval());
+        // 每次读取最大记录
+        propsMap.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, kafkaConfig.getMaxPollRecords());
         if (kafkaConfig.isEnableAutoCommit()) {
             // 自动提交的频率(ms)
             propsMap.put(ConsumerConfig.AUTO_COMMIT_INTERVAL_MS_CONFIG, kafkaConfig.getAutoCommitInterval());

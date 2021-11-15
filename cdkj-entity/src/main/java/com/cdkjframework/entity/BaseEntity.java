@@ -39,6 +39,12 @@ public class BaseEntity implements Serializable {
     private Integer deleted;
 
     /**
+     * 状态
+     */
+    @Column(name = "status", nullable = false)
+    private Integer status;
+
+    /**
      * 添加时间
      */
     @Column(name = "add_time", nullable = false)

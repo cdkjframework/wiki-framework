@@ -16,6 +16,11 @@ public enum AutographTypeEnums {
     HMACSHA256,
 
     /**
+     * SHA256WITHRSA 加密
+     */
+    SHA256WITHRSA,
+
+    /**
      * RSA2 加密
      */
     RSA2,

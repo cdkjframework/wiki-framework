@@ -5,6 +5,7 @@ import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -18,6 +19,7 @@ import java.util.List;
  *  @Author:         zouDeLong
  *  @Version:        1.0
  */
+@Configuration
 public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
 
     /**
@@ -26,9 +28,9 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
     private LogUtils logUtils = LogUtils.getLogger(FeignBasicAuthRequestInterceptor.class);
 
     /**
-     *
+     * 头部内容
      */
-    private List<String> headerNameList = Arrays.asList("User-Agent", "token");
+    private List<String> headerNameList = Arrays.asList("User-Agent", "token", "X-Real-IP");
 
     /**
      * 应用
