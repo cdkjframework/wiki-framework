@@ -326,9 +326,6 @@ public class RedisUtils {
      */
     public static boolean hSet(String key, String field, String value) {
         key = getNamespaces(key);
-        if (!syncExists(key)) {
-            return false;
-        }
         RedisFuture<Boolean> redisFuture = redisAsyncCommands == null ? commands.hset(key, field, value) :
                 redisAsyncCommands.hset(key, field, value);
         try {
