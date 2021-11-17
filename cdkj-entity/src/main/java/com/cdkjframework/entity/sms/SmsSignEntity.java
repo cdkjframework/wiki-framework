@@ -51,6 +51,11 @@ public class SmsSignEntity extends BaseEntity {
 
 
     /**
+     * 场景类型
+     */
+    private Integer sceneType;
+
+    /**
      * 签名名称
      */
     private List<SmsSignFileEntity> SignFileList;
