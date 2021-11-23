@@ -24,8 +24,6 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
      */
     public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
 
-    private static final String sep = "-";
-
     /**
      * 获取有序UUID
      *
@@ -33,10 +31,10 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
      */
     public static String getOrderlyUuid() {
         return
-                format(getJVM()) + sep
-                        + format(getHiTime()) + sep
-                        + format(getLoTime()) + sep
-                        + format(getIP()) + sep
+                format(getJVM()) + StringUtils.HORIZONTAL
+                        + format(getHiTime()) + StringUtils.HORIZONTAL
+                        + format(getLoTime()) + StringUtils.HORIZONTAL
+                        + format(getIP()) + StringUtils.HORIZONTAL
                         + format(getCount());
     }
 
@@ -80,14 +78,7 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
 
 
     public static void main(String[] args) {
-        List<String> idList = new ArrayList<>();
-        for (int i = 0; i < 2000000; i++) {
-            String id = getOrderlyShortUuid();
-            if (!idList.contains(id)) {
-                idList.add(id);
-            }
-        }
-        System.out.println(idList.size());
+        System.out.println(getRandom(IntegerConsts.FOUR));
     }
 
     /**
@@ -114,7 +105,7 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
      * @return 返回
      */
     public static String getUuidNotTransverseLine() {
-        return getUuidString().replace("-", "");
+        return getUuidString().replace(StringUtils.HORIZONTAL, StringUtils.Empty);
     }
 
     /**
@@ -124,9 +115,9 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
      * @return 返回随机数
      */
     public static Integer getRandom(int digit) {
-        int ans = 0;
-        while (Math.log10(ans) + 1 < digit) {
-            ans = (int) (Math.random() * Math.pow(10, digit));
+        int ans = IntegerConsts.ZERO;
+        while (Math.log10(ans) + IntegerConsts.ONE < digit) {
+            ans = (int) (Math.random() * Math.pow(IntegerConsts.TEN, digit));
         }
         return ans;
     }
@@ -145,7 +136,7 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
         int codesLen = sources.length();
         Random rand = new Random(System.currentTimeMillis());
         StringBuilder verifyCode = new StringBuilder(verifySize);
-        for (int i = 0; i < verifySize; i++) {
+        for (int i = IntegerConsts.ZERO; i < verifySize; i++) {
             verifyCode.append(sources.charAt(rand.nextInt(codesLen - 1)));
         }
         return verifyCode.toString();
@@ -157,7 +148,7 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
      * @return 返回结果
      */
     public static String getRandomCharacter() {
-        return getRandomCharacter(4);
+        return getRandomCharacter(IntegerConsts.FOUR);
     }
 
     /**

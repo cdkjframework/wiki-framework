@@ -40,6 +40,10 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         try {
+            if (requestTemplate == null) {
+                logUtils.error("requestTemplate is null");
+                return;
+            }
             HttpServletRequest request = HttpServletUtils.getRequest();
             if (request == null) {
                 logUtils.error("request is null");
