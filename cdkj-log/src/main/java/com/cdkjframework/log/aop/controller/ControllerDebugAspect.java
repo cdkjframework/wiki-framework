@@ -138,9 +138,11 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
         String targetName = joinPoint.getTarget().getClass().getName();
         logRecordDto.setExecutionClass(targetName);
         boolean isLog = buildLogRecord(logRecordDto);
-        if (args.length > 0 && isLog) {
-            JSONObject jsonObject = JsonUtils.beanToJsonObject(args[0]);
-            logRecordDto.setParameter(jsonObject.toJSONString());
+        if (args.length > IntegerConsts.ZERO && isLog) {
+            JSONObject jsonObject = JsonUtils.beanToJsonObject(args[IntegerConsts.ZERO]);
+            if (jsonObject != null) {
+                logRecordDto.setParameter(jsonObject.toJSONString());
+            }
         }
         Object result = null;
         try {
