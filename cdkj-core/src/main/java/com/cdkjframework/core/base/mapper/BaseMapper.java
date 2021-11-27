@@ -1,6 +1,9 @@
 package com.cdkjframework.core.base.mapper;
 
+import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.dynamic.sql.insert.render.MultiRowInsertStatementProvider;
+import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -28,10 +31,11 @@ public interface BaseMapper<T> {
     /**
      * 批量插入
      *
-     * @param list 数据集
+     * @param insertStatement 插入语句
      * @return int
      */
-    Integer insertBatch(List<T> list);
+    @InsertProvider(type = SqlProviderAdapter.class, method = "insertBatch")
+    Integer insertBatch(MultiRowInsertStatementProvider<T> insertStatement);
 
     /**
      * 根据 ID 删除

@@ -58,4 +58,15 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect {
      */
     @Override
     public abstract Object JoinPoint(JoinPoint joinPoint) throws Throwable;
+
+    /**
+     * 获取参数
+     *
+     * @param joinPoint 连接点
+     * @return 返回结果
+     */
+    @Override
+    public Object[] getArgs(ProceedingJoinPoint joinPoint) {
+        return joinPoint.getArgs();
+    }
 }

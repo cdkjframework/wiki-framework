@@ -135,7 +135,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
     public Object proceed(ProceedingJoinPoint joinPoint) throws Throwable {
         UserEntity user = CurrentUser.getCurrentUser();
         //获取连接点参数
-        Object[] args = joinPoint.getArgs();
+        Object[] args = getArgs(joinPoint);
         // 权限配置读取
         String[] parameterNames = new String[args.length];
         MethodEnums methodEnums = null;

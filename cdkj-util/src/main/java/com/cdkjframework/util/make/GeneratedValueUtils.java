@@ -78,7 +78,9 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
 
 
     public static void main(String[] args) {
-        System.out.println(getRandom(IntegerConsts.FOUR));
+        long currentTimeMillis = System.currentTimeMillis();
+        System.out.println(currentTimeMillis);
+        System.out.println(currentTimeMillis >>> 8);
     }
 
     /**

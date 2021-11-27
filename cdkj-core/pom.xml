@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cdkj-framework</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <version>1.0-211117</version>
+        <version>1.0-211127</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -66,6 +66,10 @@
         <!--            <groupId>com.fasterxml.jackson.datatype</groupId>-->
         <!--            <artifactId>jackson-datatype-jsr310</artifactId>-->
         <!--        </dependency>-->
+        <dependency>
+            <groupId>org.mybatis.dynamic-sql</groupId>
+            <artifactId>mybatis-dynamic-sql</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

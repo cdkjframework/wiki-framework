@@ -30,4 +30,12 @@ public interface IBaseAopAspect {
      * @throws Throwable 异常信息
      */
     Object JoinPoint(JoinPoint joinPoint) throws Throwable;
+
+    /**
+     * 获取参数
+     *
+     * @param joinPoint 连接点
+     * @return 返回结果
+     */
+    Object[] getArgs(ProceedingJoinPoint joinPoint);
 }

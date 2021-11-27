@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -57,6 +58,12 @@ public class BaseVo {
      */
     @ApiModelProperty("日志ID")
     protected String logId;
+
+    /**
+     * 状态
+     */
+    @ApiModelProperty("状态")
+    private Integer status;
 
     /**
      * 是否删除
