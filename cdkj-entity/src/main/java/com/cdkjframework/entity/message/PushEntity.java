@@ -92,4 +92,9 @@ public class PushEntity {
      * 请求服务
      */
     private String url;
+
+    /**
+     * 环境
+     */
+    private String environment;
 }

@@ -44,6 +44,7 @@
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
+        <spring.eureka.version>1.4.6.RELEASE</spring.eureka.version>
         <spring.cloud.version>Hoxton.SR9</spring.cloud.version>
         <spring.platform.version>Cairo-SR8</spring.platform.version>
         <spring.version>5.2.12.RELEASE</spring.version>
@@ -287,6 +288,11 @@
                 <version>${spring.cloud.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-eureka-server</artifactId>
+                <version>${spring.eureka.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>

@@ -7,6 +7,7 @@ import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.tencent.xinge.XingeApp;
 import com.tencent.xinge.bean.*;
 import com.tencent.xinge.push.app.PushAppRequest;
@@ -138,6 +139,7 @@ public class TencentPushUtils {
     }
 
     /**
+     *
      */
     private static PushAppRequest pushAccountAndroid(PushEntity push) {
         // 请求
@@ -220,6 +222,15 @@ public class TencentPushUtils {
             default:
                 request = pushAccountIos(push);
                 break;
+        }
+
+        if (StringUtils.isNullAndSpaceOrEmpty(push.getEnvironment())) {
+            push.setEnvironment(Environment.dev.getName());
+        }
+        if (Environment.product.getName().equals(push.getEnvironment())) {
+            request.setEnvironment(Environment.product);
+        } else {
+            request.setEnvironment(Environment.dev);
         }
 
         // 返回请求

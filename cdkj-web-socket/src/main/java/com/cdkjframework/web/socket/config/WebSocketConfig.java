@@ -1,5 +1,6 @@
 package com.cdkjframework.web.socket.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -15,12 +16,10 @@ import org.springframework.stereotype.Component;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Data
 @Component
 @Configuration
 @ConfigurationProperties(prefix = "spring.socket")
-@Getter
-@Setter
-@ToString
 public class WebSocketConfig {
 
     /**

@@ -31,11 +31,10 @@ public interface BaseMapper<T> {
     /**
      * 批量插入
      *
-     * @param insertStatement 插入语句
+     * @param list 数据集
      * @return int
      */
-    @InsertProvider(type = SqlProviderAdapter.class, method = "insertBatch")
-    Integer insertBatch(MultiRowInsertStatementProvider<T> insertStatement);
+    Integer insertBatch(List<T> list);
 
     /**
      * 根据 ID 删除
