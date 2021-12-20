@@ -2,21 +2,24 @@ package com.cdkjframework.web.socket.netty;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.socket.WebSocketEntity;
+import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
-import io.netty.buffer.ByteBuf;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
+import com.cdkjframework.web.socket.config.WebSocketConfig;
+import io.netty.channel.*;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import org.springframework.stereotype.Component;
 
+import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -40,21 +43,30 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      * 心跳类型
      */
     private final String TYPE = "heartbeat";
+
     /**
      * 记录每一个channel的心跳包丢失次数
      */
     public HashMap<String, Integer> onlineChannelsHeart = new HashMap<>();
+
+    /**
+     * 配置
+     */
+    private final WebSocketConfig webSocketConfig;
+
     /**
      * 接口
      */
-    private WebSocket webSocket;
+    private final WebSocket webSocket;
 
     /**
      * 构造函数
      *
-     * @param webSocket 接口
+     * @param webSocketConfig 配置信息
+     * @param webSocket       接口
      */
-    public NettyServerHandler(WebSocket webSocket) {
+    public NettyServerHandler(WebSocketConfig webSocketConfig, WebSocket webSocket) {
+        this.webSocketConfig = webSocketConfig;
         this.webSocket = webSocket;
     }
 
@@ -97,26 +109,18 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
      */
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        logUtils.info("handlerAdded" + ctx.channel().id().asLongText());
-        WebSocketUtils.clients.add(ctx.channel());
-    }
-
-    /**
-     * 有客户端连接服务器会触发此函数
-     *
-     * @param ctx 通道进程
-     * @throws Exception 异常信息
-     */
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         //获取连接通道唯一标识
         String channelId = channel.id().asLongText();
+        logUtils.info("handlerAdded" + channelId);
+        try {
+            currentLimiting(channel);
+        } catch (Exception e) {
+            logUtils.error(e);
+            return;
+        }
+        WebSocketUtils.clients.add(ctx.channel());
         logUtils.info("客户端【" + channelId + "】连接，连接通道数量: " + WebSocketUtils.clients.size());
-        // 返回心跳消息
-        WebSocketEntity heartbeat = new WebSocketEntity();
-        heartbeat.setType(TYPE);
-        channel.writeAndFlush(JsonUtils.objectToJsonString(heartbeat));
     }
 
     /**
@@ -195,5 +199,66 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         } else {
             super.userEventTriggered(ctx, evt);
         }
+    }
+
+    /**
+     * 限流设置
+     *
+     * @param channel 通道
+     */
+    private void currentLimiting(Channel channel) throws GlobalException {
+        // 获取客户端IP地址
+        SocketChannel socketChannel = (SocketChannel) channel;
+        InetSocketAddress socketAddress = socketChannel.remoteAddress();
+        String ip = socketAddress.getAddress().getHostAddress();
+        logUtils.info("IP:" + ip);
+        if (webSocketConfig.getNginxIp() == null) {
+            webSocketConfig.setNginxIp(new ArrayList<>());
+        }
+        if (webSocketConfig.getNginxIp().contains(ip)) {
+            return;
+        }
+        long newTime = System.currentTimeMillis();
+        String socketValue = RedisUtils.syncGet(ip);
+        Long longTime = null;
+        int quantity = IntegerConsts.ZERO;
+        if (StringUtils.isNotNullAndEmpty(socketValue)) {
+            String[] socketArray = socketValue.split(StringUtils.COMMA);
+            longTime = ConvertUtils.convertLong(socketArray[IntegerConsts.ZERO]);
+            if (socketArray.length == IntegerConsts.TWO) {
+                quantity = ConvertUtils.convertInt(socketArray[IntegerConsts.ONE]);
+            }
+        } else {
+            longTime = Long.valueOf(IntegerConsts.ZERO);
+        }
+        long difference = newTime - longTime;
+        // 是否小于1分钟
+        if (difference <= (IntegerConsts.ONE_THOUSAND * IntegerConsts.SIXTY) && quantity > IntegerConsts.THREE) {
+            sendCloseMessage(channel);
+        } else if (difference >= (IntegerConsts.ONE_THOUSAND * IntegerConsts.SIXTY)) {
+            quantity = IntegerConsts.ZERO;
+        }
+        RedisUtils.syncSet(ip, newTime + StringUtils.COMMA + (++quantity));
+    }
+
+    /**
+     * 发送断开消息
+     *
+     * @param channel 通道
+     */
+    private void sendCloseMessage(Channel channel) throws GlobalException {
+        // 返回心跳消息
+        WebSocketEntity heartbeat = new WebSocketEntity();
+        heartbeat.setType(TYPE);
+        heartbeat.setMessage("连接超限，每分钟只限连接三次。");
+        String message = JsonUtils.objectToJsonString(heartbeat);
+        channel.writeAndFlush(new TextWebSocketFrame(message));
+        WebSocketUtils.clients.remove(channel);
+        try {
+            channel.close().sync();
+        } catch (InterruptedException e) {
+            logUtils.error(e);
+        }
+        throw new GlobalException("异常信息");
     }
 }

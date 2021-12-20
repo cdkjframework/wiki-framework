@@ -26,6 +26,10 @@
             <artifactId>cdkj-entity</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-redis</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.netty</groupId>
             <artifactId>netty-all</artifactId>
         </dependency>

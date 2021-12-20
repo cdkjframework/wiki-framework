@@ -72,7 +72,7 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         final boolean checkStartsWith = true;
         pipeline.addLast(new WebSocketServerProtocolHandler(route, StringUtils.NullObject,
                 allowExtensions, maxContentLength, allowMaskMismatch, checkStartsWith));
-        pipeline.addLast(new NettyServerHandler(webSocket));
+        pipeline.addLast(new NettyServerHandler(webSocketConfig, webSocket));
         pipeline.addLast(new IdleStateHandler(IntegerConsts.ONE, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.MINUTES));
 
         pipeline.addLast(new ChunkedWriteHandler());

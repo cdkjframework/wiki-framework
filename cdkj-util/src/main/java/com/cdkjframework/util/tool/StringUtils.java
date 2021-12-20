@@ -27,6 +27,11 @@ public class StringUtils {
     public final static String HORIZONTAL = "-";
 
     /**
+     * 冒号
+     */
+    public final static String COLON = ":";
+
+    /**
      * 横线变量
      */
     public final static String DIAGONAL_LINE = "\\";

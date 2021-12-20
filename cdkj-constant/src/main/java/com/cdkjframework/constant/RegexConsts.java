@@ -12,6 +12,11 @@ package com.cdkjframework.constant;
 public class RegexConsts {
 
     /**
+     * 验证UUID
+     */
+    public static final String REGEX_UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$";
+
+    /**
      * 验证正数字
      */
     public static final String REGEX_NUMBER = "^[+-]?[0-9]*$";

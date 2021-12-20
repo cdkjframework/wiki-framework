@@ -45,12 +45,6 @@ public class SmsSignEntity extends BaseEntity {
     private String Remark;
 
     /**
-     * 状态
-     */
-    private Integer status;
-
-
-    /**
      * 场景类型
      */
     private Integer sceneType;

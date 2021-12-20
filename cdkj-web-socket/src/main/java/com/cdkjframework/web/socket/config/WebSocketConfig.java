@@ -8,6 +8,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.web.socket.config
@@ -31,4 +33,9 @@ public class WebSocketConfig {
      * 路径
      */
     private String route;
+
+    /**
+     * nginx IP地址
+     */
+    private List<String> nginxIp;
 }

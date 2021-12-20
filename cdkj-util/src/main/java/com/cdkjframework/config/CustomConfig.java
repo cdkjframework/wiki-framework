@@ -98,6 +98,11 @@ public class CustomConfig {
     private List<String> ignoreUrls;
 
     /**
+     * 开放接口
+     */
+    private List<String> openUrls;
+
+    /**
      * AOP 过滤地址
      */
     private List<String> ignoreAopUrls;

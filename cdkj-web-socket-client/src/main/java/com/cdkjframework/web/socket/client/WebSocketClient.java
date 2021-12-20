@@ -1,12 +1,10 @@
 package com.cdkjframework.web.socket.client;
 
-import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -17,15 +15,15 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public class SocketClient {
+public class WebSocketClient {
 
     /**
      * 获取实例
      *
      * @return 返回当前实体
      */
-    public static SocketClient getInstance(WebSocketService socketService) {
-        return new SocketClient(socketService);
+    public static WebSocketClient getInstance(WebSocketService socketService) {
+        return new WebSocketClient(socketService);
     }
 
     /**
@@ -33,14 +31,14 @@ public class SocketClient {
      *
      * @return 返回当前实体
      */
-    public static SocketClient getInstance(WebSocketService socketService, String wsUri) {
-        return new SocketClient(socketService, wsUri);
+    public static WebSocketClient getInstance(WebSocketService socketService, String wsUri) {
+        return new WebSocketClient(socketService, wsUri);
     }
 
     /**
      * 服务
      */
-    private WebSocketClient webSocketClient;
+    private org.java_websocket.client.WebSocketClient webSocketClient;
 
     /**
      * 连接服务
@@ -50,19 +48,19 @@ public class SocketClient {
     /**
      * 请求地址
      */
-    private String wsUri = "wss://wss.langzhiyun.net";
+    private String wsUri = "wss://wss.langzhiyun.net/pms/socket/webSocket/real_time/4673695";
 
     /**
      * 构造函数
      */
-    private SocketClient(WebSocketService socketService) {
-        new SocketClient(socketService, wsUri);
+    private WebSocketClient(WebSocketService socketService) {
+        new WebSocketClient(socketService, wsUri);
     }
 
     /**
      * 构造函数
      */
-    private SocketClient(WebSocketService socketService, String wsUri) {
+    private WebSocketClient(WebSocketService socketService, String wsUri) {
         this.socketService = socketService;
         this.wsUri = wsUri;
     }
@@ -78,7 +76,7 @@ public class SocketClient {
         if (webSocketClient != null) {
             throw new Exception("连接已存在请勿重复创建连接！");
         }
-        webSocketClient = new WebSocketClient(new URI(wsUri)) {
+        webSocketClient = new org.java_websocket.client.WebSocketClient(new URI(wsUri)) {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 socketService.connected();
