@@ -133,6 +133,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
      */
     @Override
     public Object proceed(ProceedingJoinPoint joinPoint) throws Throwable {
+        long logTime = System.currentTimeMillis();
         UserEntity user = CurrentUser.getCurrentUser();
         //获取连接点参数
         Object[] args = getArgs(joinPoint);
@@ -190,6 +191,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
             logUtils.error(ex.getMessage());
             throw new GlobalRuntimeException(ex, ex.getMessage());
         }
+        logUtils.info("Mapper logTime：" + (System.currentTimeMillis() - logTime) + "ms");
         return object;
     }
 

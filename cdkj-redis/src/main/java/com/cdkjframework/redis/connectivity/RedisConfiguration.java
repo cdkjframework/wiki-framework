@@ -1,14 +1,16 @@
 package com.cdkjframework.redis.connectivity;
 
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
+import com.cdkjframework.redis.realize.ReactiveCommands;
 import com.cdkjframework.redis.realize.RedisCommands;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
+import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
+import io.lettuce.core.api.reactive.RedisReactiveCommands;
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -17,7 +19,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
-import java.time.Duration;
+import javax.annotation.Resource;
 
 /**
  * @ProjectName: cdkj-framework
@@ -37,10 +39,38 @@ public class RedisConfiguration extends BaseRedisConfiguration {
     private LogUtils logUtils = LogUtils.getLogger(RedisConfiguration.class);
 
     /**
-     * 配置
+     * redis请求
      */
-    @Autowired
-    private RedisConfig redisConfig;
+    @Resource(name = "abstractRedisClient")
+    private AbstractRedisClient redisClient;
+
+    /**
+     * 连接状态
+     */
+    private StatefulRedisConnection<String, String> connection;
+
+    /**
+     * 构造函数
+     *
+     * @param redisConfig
+     */
+    public RedisConfiguration(RedisConfig redisConfig) {
+        this.redisConfig = redisConfig;
+    }
+
+    /**
+     * 构造函数
+     */
+    public void initConnection() {
+        if (connection != null) {
+            return;
+        }
+        if (redisClient != null && redisClient instanceof RedisClient) {
+            connection = ((RedisClient) redisClient).connect();
+        } else {
+            connection = null;
+        }
+    }
 
     /**
      * Redis高级集群命令
@@ -49,62 +79,55 @@ public class RedisConfiguration extends BaseRedisConfiguration {
      */
     @Bean(name = "redisAsyncCommands")
     public RedisAsyncCommands<String, String> redisAsyncCommands() throws GlobalException {
-        int port = redisConfig.getPort();
-        RedisAsyncCommands<String, String> commands;
-        if (redisClusterCommands()) {
-            commands = redisClient();
-        } else {
-            commands = redisClient(port);
-            logUtils.info("Redis 配置结束：" + LocalDateUtils.dateTimeCurrentFormatter());
-        }
-
-        // 返回结果
-        return commands;
+        // 初始化连接
+        initConnection();
+        return redisClient();
     }
 
     /**
-     * 连接 默认配置
+     * 响应
      *
-     * @return
+     * @return 返回结果
      */
-    private RedisAsyncCommands<String, String> redisClient() {
-        return new RedisCommands();
+    @Bean(name = "redisReactiveCommands")
+    public RedisReactiveCommands<String, String> redisReactiveCommands() {
+        // 初始化连接
+        initConnection();
+        if (connection == null) {
+            return new ReactiveCommands();
+        }
+        logUtils.info("Redis 普通连接锁结束：" + LocalDateUtils.dateTimeCurrentFormatter());
+        return connection.reactive();
     }
 
     /**
      * redis 连接
      */
-    private RedisAsyncCommands<String, String> redisClient(int port) {
-        String url = redisConfig.getHost().get(IntegerConsts.ZERO);
-        // 创建地址
-        RedisClient redisClient = RedisClient.create(createRedisUrl(url, port));
-        redisClient.setOptions(clientOptions());
-        redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
+    private RedisAsyncCommands<String, String> redisClient() {
+        if (connection == null) {
+            return new RedisCommands();
+        }
         GenericObjectPool<StatefulRedisConnection<String, String>> pool;
         GenericObjectPoolConfig<StatefulRedisConnection<String, String>> poolConfig =
                 genericObjectPoolConfig();
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
             logUtils.info("Requesting new StatefulRedisConnection " + System.currentTimeMillis());
-            StatefulRedisConnection<String, String> conn = null;
-            try {
-                conn = redisClient.connect();
-            } catch (Exception e) {
-                logUtils.error(e);
-            }
-            return conn;
+            return connection;
         }, poolConfig);
 
-        StatefulRedisConnection<String, String> connection = null;
+        StatefulRedisConnection<String, String> redisConnection;
         try {
-            connection = pool.borrowObject();
-            connection.setAutoFlushCommands(true);
+            redisConnection = pool.borrowObject();
+            redisConnection.setAutoFlushCommands(true);
 
-            return connection.async();
+            logUtils.info("Redis 普通连接结束：" + LocalDateUtils.dateTimeCurrentFormatter());
+            // 返回结果
+            return redisConnection.async();
         } catch (Exception ex) {
             logUtils.error(ex.getCause(), ex.getMessage());
         }
 
-        return null;
+        return new RedisCommands();
     }
 }

@@ -1,17 +1,24 @@
 package com.cdkjframework.redis.connectivity;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.AssertUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.ClientOptions;
+import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.cluster.ClusterClientOptions;
+import io.lettuce.core.cluster.RedisClusterClient;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @ProjectName: cdkj-framework
@@ -25,15 +32,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class BaseRedisConfiguration {
 
     /**
-     * 配置
-     */
-    @Autowired
-    protected RedisConfig redisConfig;
-
-    /**
      * 日志
      */
     private LogUtils logUtils = LogUtils.getLogger(BaseRedisConfiguration.class);
+
+    /**
+     * 配置
+     */
+    protected RedisConfig redisConfig;
+
+    /**
+     * redis客户端
+     *
+     * @return 返回结果
+     */
+    @Bean(name = "abstractRedisClient")
+    public AbstractRedisClient abstractRedisClient() {
+        try {
+            if (!redisClusterCommands()) {
+                RedisClient redisClient = RedisClient.create(createRedisUrl(redisConfig.getHost().get(IntegerConsts.ZERO), redisConfig.getPort()));
+                redisClient.setOptions(clientOptions());
+                redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
+                // 返回结果
+                return redisClient;
+            } else {
+                List<RedisURI> urlList = new ArrayList<>();
+                for (String key :
+                        redisConfig.getHost()) {
+                    urlList.add(createRedisUrl(key, redisConfig.getPort()));
+                }
+                RedisClusterClient clusterClient = RedisClusterClient.create(urlList);
+                clusterClient.setOptions(clusterClientOptions());
+                clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
+
+                // 返回结果
+                return clusterClient;
+            }
+        } catch (GlobalException e) {
+            return RedisClient.create();
+        }
+    }
 
     /**
      * Redis 配置
@@ -45,7 +83,7 @@ public class BaseRedisConfiguration {
         AssertUtils.isListEmpty(redisConfig.getHost(), "redis 没有配置连接地址");
         // redis 集群连接
         boolean redisCluster = false;
-        if (redisConfig.getHost().size() > 1) {
+        if (redisConfig.getHost().size() > IntegerConsts.ONE) {
             logUtils.info("Redis 集群配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
             redisCluster = true;
         } else {
@@ -63,7 +101,7 @@ public class BaseRedisConfiguration {
      */
     protected RedisURI createRedisUrl(String redisUrl, int port) {
         RedisURI redisUri;
-        if (port == 0) {
+        if (port == IntegerConsts.ZERO) {
             redisUri = RedisURI.create("redis://" + redisUrl);
         } else {
             redisUri = RedisURI.create(redisUrl, port);
@@ -90,7 +128,7 @@ public class BaseRedisConfiguration {
         poolConfig.setMinEvictableIdleTimeMillis(redisConfig.getMinEvictableIdleTimeMillis());
         poolConfig.setSoftMinEvictableIdleTimeMillis(redisConfig.getSoftMinEvictableIdleTimeMillis());
 
-
+        // 返回配置
         return poolConfig;
     }
 
@@ -100,7 +138,7 @@ public class BaseRedisConfiguration {
      * @return 返回结果
      */
     protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(1).build();
+        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
     }
 
     /**

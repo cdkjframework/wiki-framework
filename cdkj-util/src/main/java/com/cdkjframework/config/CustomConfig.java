@@ -103,6 +103,11 @@ public class CustomConfig {
     private List<String> openUrls;
 
     /**
+     * 唯一登录地址
+     */
+    private List<String> uniqueLoginUrls;
+
+    /**
      * AOP 过滤地址
      */
     private List<String> ignoreAopUrls;

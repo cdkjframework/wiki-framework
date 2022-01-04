@@ -1,9 +1,8 @@
 package com.cdkjframework.message.queue.kafka.producer;
 
 import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.message.queue.kafka.KafkaConfig;
+import com.cdkjframework.config.KafkaConfig;
 import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.KafkaAdmin;

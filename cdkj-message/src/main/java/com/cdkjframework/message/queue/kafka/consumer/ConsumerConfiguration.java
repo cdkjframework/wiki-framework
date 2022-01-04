@@ -1,7 +1,6 @@
 package com.cdkjframework.message.queue.kafka.consumer;
 
-import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.message.queue.kafka.KafkaConfig;
+import com.cdkjframework.config.KafkaConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import org.apache.kafka.clients.consumer.*;

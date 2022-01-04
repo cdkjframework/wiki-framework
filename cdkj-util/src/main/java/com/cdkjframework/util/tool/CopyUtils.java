@@ -267,7 +267,12 @@ public class CopyUtils {
                 if (value == "") {
                     continue;
                 }
-                Object clazz = targetField.getType().newInstance();
+                Object clazz;
+                if (targetField.getType().equals(Integer.class)) {
+                    clazz = targetField.getType().getConstructor(int.class).newInstance();
+                } else {
+                    clazz = targetField.getType().newInstance();
+                }
                 copyProperties(value, clazz);
                 ReflectionUtils.setFieldValue(target, targetField, clazz);
             }

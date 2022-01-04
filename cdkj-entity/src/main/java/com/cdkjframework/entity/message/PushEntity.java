@@ -97,4 +97,9 @@ public class PushEntity {
      * 环境
      */
     private String environment;
+
+    /**
+     * 推送类型
+     */
+    private String pushType;
 }

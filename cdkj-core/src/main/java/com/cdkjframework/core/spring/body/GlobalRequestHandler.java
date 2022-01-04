@@ -1,8 +1,7 @@
 package com.cdkjframework.core.spring.body;
 
-import com.cdkjframework.config.CustomConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -21,13 +20,7 @@ import java.lang.reflect.Type;
  */
 
 @ControllerAdvice
-public class GlobalRequestHandler implements RequestBodyAdvice {
-
-    /**
-     * 自定义配置
-     */
-    @Autowired
-    private CustomConfig customConfig;
+public class GlobalRequestHandler extends BodyHandler implements RequestBodyAdvice {
 
     /**
      * 验证是否修改
@@ -39,7 +32,7 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Type type, Class<? extends HttpMessageConverter<?>> aClass) {
-        return true;
+        return supportsFilter(customConfig.getFilters(), methodParameter.getMember().getDeclaringClass().getName());
     }
 
     /**
@@ -56,7 +49,12 @@ public class GlobalRequestHandler implements RequestBodyAdvice {
     public HttpInputMessage beforeBodyRead(HttpInputMessage httpInputMessage,
                                            MethodParameter methodParameter, Type type,
                                            Class<? extends HttpMessageConverter<?>> aClass) throws IOException {
-        return new HttpInputMessageAdvice(httpInputMessage, customConfig.isEncryption());
+        Boolean encryption = customConfig.isEncryption();
+        HttpHeaders httpHeaders = httpInputMessage.getHeaders();
+        if (httpHeaders != null && !httpHeaders.isEmpty()) {
+            encryption = header(httpHeaders);
+        }
+        return new HttpInputMessageAdvice(httpInputMessage, encryption);
     }
 
     /**

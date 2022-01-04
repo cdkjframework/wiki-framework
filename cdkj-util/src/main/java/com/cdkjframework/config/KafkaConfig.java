@@ -1,9 +1,8 @@
-package com.cdkjframework.message.queue.kafka;
+package com.cdkjframework.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -93,7 +92,7 @@ public class KafkaConfig {
     /**
      * 拉取超时时间
      */
-    private Integer pollTimeout = 3000;
+    private Integer pollTimeout = 60000;
 
     /**
      * 批量监听

@@ -1,9 +1,6 @@
-package com.cdkjframework.redis.config;
+package com.cdkjframework.redisjson.config;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.stereotype.Component;
@@ -12,9 +9,9 @@ import java.util.List;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.config
- * @ClassName: RedisConfig
- * @Description: Redis 缓存工具读取配置
+ * @Package: com.cdkjframework.redisjson.config
+ * @ClassName: RedisJsonConfig
+ * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
@@ -22,18 +19,8 @@ import java.util.List;
 @Data
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.cdkj.redis")
-public class RedisConfig {
-
-    /**
-     * 命名空间
-     */
-    private String namespaces;
-
-    /**
-     * 是否订阅
-     */
-    private boolean subscribe = false;
+@ConfigurationProperties(prefix = "spring.redis.json")
+public class RedisJsonConfig {
 
     /**
      * Redis数据库索引（默认为0）
@@ -43,7 +30,7 @@ public class RedisConfig {
     /**
      * Redis服务器地址
      */
-    private List<String> host;
+    private String host;
 
     /**
      * Redis服务器连接端口
