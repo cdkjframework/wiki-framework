@@ -1,6 +1,7 @@
 package com.cdkjframework.log.aop;
 
 import com.cdkjframework.entity.log.LogRecordDto;
+import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -63,10 +64,11 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect {
      * 获取参数
      *
      * @param joinPoint 连接点
+     * @param user      用户信息
      * @return 返回结果
      */
     @Override
-    public Object[] getArgs(ProceedingJoinPoint joinPoint) {
+    public Object[] getArgs(ProceedingJoinPoint joinPoint, UserEntity user) {
         return joinPoint.getArgs();
     }
 }

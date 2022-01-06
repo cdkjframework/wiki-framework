@@ -1,5 +1,6 @@
 package com.cdkjframework.log.aop;
 
+import com.cdkjframework.entity.user.UserEntity;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 
@@ -35,7 +36,8 @@ public interface IBaseAopAspect {
      * 获取参数
      *
      * @param joinPoint 连接点
+     * @param user      用户信息
      * @return 返回结果
      */
-    Object[] getArgs(ProceedingJoinPoint joinPoint);
+    Object[] getArgs(ProceedingJoinPoint joinPoint, UserEntity user);
 }

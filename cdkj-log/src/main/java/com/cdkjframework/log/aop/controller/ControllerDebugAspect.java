@@ -128,7 +128,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
      */
     @Override
     public Object proceed(ProceedingJoinPoint joinPoint) {
-        long logTime = System.currentTimeMillis();
         // 获取连接点参数
         Object[] args = joinPoint.getArgs();
         //获取连接点签名的方法名
@@ -181,7 +180,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             logRecordDto.setResultTime(System.currentTimeMillis());
             logRecordDtoQueue.add(logRecordDto);
         }
-        logUtils.info("controller logTime：" + (System.currentTimeMillis() - logTime) + "ms");
         return result;
     }
 

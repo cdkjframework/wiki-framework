@@ -14,6 +14,7 @@ import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -34,6 +35,7 @@ import java.util.List;
  */
 @Configuration
 @Component
+@AutoConfigureOrder(value = 3)
 public class RedisPubSubConfiguration extends BaseRedisConfiguration {
 
     /**
@@ -64,7 +66,7 @@ public class RedisPubSubConfiguration extends BaseRedisConfiguration {
     @Bean(name = "clusterPubSubConnection")
     public StatefulRedisClusterPubSubConnection<String, String> clusterPubSubConnection() throws GlobalException {
         StatefulRedisClusterPubSubConnection<String, String> connection;
-        if (!redisConfig.isSubscribe() || redisClient instanceof RedisClusterClient) {
+        if (!redisConfig.isSubscribe() || redisClient instanceof RedisClient) {
             connection = new RedisClusterPubSubConnection();
         } else {
             connection = ((RedisClusterClient) redisClient).connectPubSub();
@@ -83,7 +85,7 @@ public class RedisPubSubConfiguration extends BaseRedisConfiguration {
     @Bean(name = "redisPubSubConnection")
     public StatefulRedisPubSubConnection<String, String> redisPubSubConnection() throws GlobalException {
         StatefulRedisPubSubConnection<String, String> commands;
-        if (!redisConfig.isSubscribe() || redisClient instanceof RedisClient) {
+        if (!redisConfig.isSubscribe() || redisClient instanceof RedisClusterClient) {
             commands = new RedisPubSubConnection();
         } else {
             commands = ((RedisClient) redisClient).connectPubSub();

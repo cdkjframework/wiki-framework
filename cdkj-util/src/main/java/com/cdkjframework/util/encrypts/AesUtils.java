@@ -13,6 +13,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * @ProjectName: cdkj-framework
@@ -170,8 +171,7 @@ public class AesUtils {
      *
      * @return 返回 Cipher
      */
-    private static Cipher initKey() throws NoSuchAlgorithmException,
-            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException, UnsupportedEncodingException {
+    private static Cipher initKey() throws NoSuchAlgorithmException, NoSuchPaddingException {
         if (cipher == null) {
             synchronized (AesUtils.class) {
                 if (cipher == null) {
@@ -204,6 +204,8 @@ public class AesUtils {
         // 返回结果
         return plainText;
     }
+
+
 
 
     /**

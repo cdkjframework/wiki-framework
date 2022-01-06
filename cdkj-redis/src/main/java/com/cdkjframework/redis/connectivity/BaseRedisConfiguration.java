@@ -42,79 +42,6 @@ public class BaseRedisConfiguration {
     protected RedisConfig redisConfig;
 
     /**
-     * redis客户端
-     *
-     * @return 返回结果
-     */
-    @Bean(name = "abstractRedisClient")
-    public AbstractRedisClient abstractRedisClient() {
-        try {
-            if (!redisClusterCommands()) {
-                RedisClient redisClient = RedisClient.create(createRedisUrl(redisConfig.getHost().get(IntegerConsts.ZERO), redisConfig.getPort()));
-                redisClient.setOptions(clientOptions());
-                redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
-                // 返回结果
-                return redisClient;
-            } else {
-                List<RedisURI> urlList = new ArrayList<>();
-                for (String key :
-                        redisConfig.getHost()) {
-                    urlList.add(createRedisUrl(key, redisConfig.getPort()));
-                }
-                RedisClusterClient clusterClient = RedisClusterClient.create(urlList);
-                clusterClient.setOptions(clusterClientOptions());
-                clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
-
-                // 返回结果
-                return clusterClient;
-            }
-        } catch (GlobalException e) {
-            return RedisClient.create();
-        }
-    }
-
-    /**
-     * Redis 配置
-     *
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    protected Boolean redisClusterCommands() throws GlobalException {
-        AssertUtils.isListEmpty(redisConfig.getHost(), "redis 没有配置连接地址");
-        // redis 集群连接
-        boolean redisCluster = false;
-        if (redisConfig.getHost().size() > IntegerConsts.ONE) {
-            logUtils.info("Redis 集群配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
-            redisCluster = true;
-        } else {
-            logUtils.info("Redis 配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
-        }
-        return redisCluster;
-    }
-
-    /**
-     * 创建连接
-     *
-     * @param redisUrl 连接地址
-     * @param port     端口
-     * @return 返回结果
-     */
-    protected RedisURI createRedisUrl(String redisUrl, int port) {
-        RedisURI redisUri;
-        if (port == IntegerConsts.ZERO) {
-            redisUri = RedisURI.create("redis://" + redisUrl);
-        } else {
-            redisUri = RedisURI.create(redisUrl, port);
-        }
-        redisUri.setDatabase(redisConfig.getDatabase());
-        if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
-            redisUri.setPassword(redisConfig.getPassword());
-        }
-        // 返回地址
-        return redisUri;
-    }
-
-    /**
      * 设置配置
      *
      * @return 返回配置结果
@@ -130,23 +57,5 @@ public class BaseRedisConfiguration {
 
         // 返回配置
         return poolConfig;
-    }
-
-    /**
-     * 配置集群选项,自动重连,最多重定型1次
-     *
-     * @return 返回结果
-     */
-    protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
-    }
-
-    /**
-     * 自动重连
-     *
-     * @return 返回结果
-     */
-    protected ClientOptions clientOptions() {
-        return ClientOptions.builder().autoReconnect(true).build();
     }
 }

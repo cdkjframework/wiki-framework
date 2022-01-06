@@ -1,5 +1,6 @@
 package com.cdkjframework.redis.connectivity;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.redis.realize.ReactiveCommands;
@@ -15,6 +16,7 @@ import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -31,6 +33,7 @@ import javax.annotation.Resource;
  */
 @Configuration
 @Component
+@AutoConfigureOrder(value = 1)
 public class RedisConfiguration extends BaseRedisConfiguration {
 
     /**

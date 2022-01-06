@@ -1,5 +1,6 @@
 package com.cdkjframework.core.spring.body;
 
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
@@ -21,6 +22,8 @@ import java.lang.reflect.Type;
 
 @ControllerAdvice
 public class GlobalRequestHandler extends BodyHandler implements RequestBodyAdvice {
+
+    private LogUtils logUtils = LogUtils.getLogger(GlobalRequestHandler.class);
 
     /**
      * 验证是否修改
@@ -54,6 +57,8 @@ public class GlobalRequestHandler extends BodyHandler implements RequestBodyAdvi
         if (httpHeaders != null && !httpHeaders.isEmpty()) {
             encryption = header(httpHeaders);
         }
+
+        // 返回结果
         return new HttpInputMessageAdvice(httpInputMessage, encryption);
     }
 

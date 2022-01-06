@@ -21,11 +21,6 @@ import java.io.IOException;
 public class CdkjCorsFilter implements Filter {
 
     /**
-     * 日志
-     */
-    private LogUtils logUtils = LogUtils.getLogger(CdkjCorsFilter.class);
-
-    /**
      * IP头部变量
      */
     private final String HEADER_IP = "X-Real-IP";
@@ -62,9 +57,6 @@ public class CdkjCorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
-        logUtils.info("*********************************过滤器被使用**************************");
-        logUtils.info("请求地址：" + request.getServletPath());
-        logUtils.info("请求客服端：" + getRemoteAddr(request));
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
