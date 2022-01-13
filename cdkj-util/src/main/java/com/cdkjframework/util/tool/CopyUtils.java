@@ -269,7 +269,7 @@ public class CopyUtils {
                 }
                 Object clazz;
                 if (targetField.getType().equals(Integer.class)) {
-                    clazz = targetField.getType().getConstructor(int.class).newInstance();
+                    clazz = targetField.getType().getConstructor(int.class).newInstance(IntegerConsts.ZERO);
                 } else {
                     clazz = targetField.getType().newInstance();
                 }
