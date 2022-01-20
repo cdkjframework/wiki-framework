@@ -209,7 +209,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     private RedisPubSubAsyncCommands<String, String> initRedisPubSub() {
         redisPubSubConnection.addListener(this);
         RedisPubSubAsyncCommands<String, String> pubSubCommands = redisPubSubConnection.async();
-        if (pubSubCommands.getStatefulConnection() == null) {
+        if (pubSubCommands == null || pubSubCommands.getStatefulConnection() == null) {
             pubSubCommands = redisClusterPubSubConnection.async();
         }
 

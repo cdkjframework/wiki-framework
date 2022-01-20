@@ -39,7 +39,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     /**
      * 配置读取
      */
-    @Autowired
     private CustomConfig customConfig;
 
     /**
@@ -47,8 +46,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
      *
      * @param authenticationManager 身份验证管理器
      */
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CustomConfig customConfig) {
         super(authenticationManager);
+        this.customConfig = customConfig;
     }
 
     /**

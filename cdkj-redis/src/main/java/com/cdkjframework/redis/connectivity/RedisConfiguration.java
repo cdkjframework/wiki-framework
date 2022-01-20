@@ -3,6 +3,7 @@ package com.cdkjframework.redis.connectivity;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
+import com.cdkjframework.redis.realize.ClusterReactiveCommands;
 import com.cdkjframework.redis.realize.ReactiveCommands;
 import com.cdkjframework.redis.realize.RedisCommands;
 import com.cdkjframework.util.date.LocalDateUtils;
@@ -94,6 +95,9 @@ public class RedisConfiguration extends BaseRedisConfiguration {
      */
     @Bean(name = "redisReactiveCommands")
     public RedisReactiveCommands<String, String> redisReactiveCommands() {
+        if (!redisConfig.isLock()) {
+            return new ReactiveCommands();
+        }
         // 初始化连接
         initConnection();
         if (connection == null) {
@@ -115,7 +119,7 @@ public class RedisConfiguration extends BaseRedisConfiguration {
                 genericObjectPoolConfig();
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
-            logUtils.info("Requesting new StatefulRedisConnection " + System.currentTimeMillis());
+            logUtils.info("请求新的有状态连接： " + System.currentTimeMillis());
             return connection;
         }, poolConfig);
 

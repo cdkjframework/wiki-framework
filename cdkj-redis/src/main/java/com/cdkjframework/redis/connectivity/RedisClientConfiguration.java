@@ -95,10 +95,9 @@ public class RedisClientConfiguration {
     protected Boolean redisClusterCommands() throws GlobalException {
         AssertUtils.isListEmpty(redisConfig.getHost(), "redis 没有配置连接地址");
         // redis 集群连接
-        boolean redisCluster = false;
-        if (redisConfig.getHost().size() > IntegerConsts.ONE) {
+        boolean redisCluster = redisConfig.isCluster();
+        if (redisCluster) {
             logUtils.info("Redis 集群配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
-            redisCluster = true;
         } else {
             logUtils.info("Redis 配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
@@ -113,12 +112,8 @@ public class RedisClientConfiguration {
      * @return 返回结果
      */
     protected RedisURI createRedisUrl(String redisUrl, int port) {
-        RedisURI redisUri;
-        if (port == IntegerConsts.ZERO) {
-            redisUri = RedisURI.create("redis://" + redisUrl);
-        } else {
-            redisUri = RedisURI.create(redisUrl, port);
-        }
+        RedisURI redisUri = RedisURI.create("redis://" + redisUrl);
+        redisUri.setPort(port);
         redisUri.setDatabase(redisConfig.getDatabase());
         if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
             redisUri.setPassword(redisConfig.getPassword());
@@ -133,7 +128,7 @@ public class RedisClientConfiguration {
      * @return 返回结果
      */
     protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
+        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.THREE).build();
     }
 
     /**
