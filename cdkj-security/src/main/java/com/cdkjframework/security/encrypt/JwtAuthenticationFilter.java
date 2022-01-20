@@ -60,7 +60,7 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             // 请求体的头中是否包含Authorization
             String token = request.getHeader(BusinessConsts.HEADER_TOKEN);
             // Authorization中是否包含Bearer，有一个不包含时直接返回
-            if (StringUtils.isNotNullAndEmpty(token)) {
+            if (StringUtils.isNullAndSpaceOrEmpty(token)) {
                 chain.doFilter(request, response);
                 responseJson(response);
                 return;
