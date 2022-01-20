@@ -160,14 +160,14 @@ public class OverallSituationExceptionHandler {
             List<FieldError> errors = bindingResult.getFieldErrors();
             if (!CollectionUtils.isEmpty(errors)) {
                 // 只获取第一个异常信息
-                builder.setMessage(errors.get(0).getDefaultMessage());
+                builder.setMessage(errors.get(IntegerConsts.ZERO).getDefaultMessage());
                 for (FieldError error : errors) {
                     errorList.add(error.getDefaultMessage());
                 }
             }
         }
 
-        logUtil.error(e, String.join(";", errorList));
+        logUtil.error(e, String.join(StringUtils.SEMICOLON, errorList));
 
         builder.setData(errorList);
         return builder;
@@ -302,8 +302,8 @@ public class OverallSituationExceptionHandler {
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseBuilder constraintViolationExceptionHandler(ConstraintViolationException e) {
         String message = e.getMessage();
-        Integer begin = message.indexOf(":") + 1;
-        Integer end = message.indexOf(",");
+        Integer begin = message.indexOf(StringUtils.COLON) + 1;
+        Integer end = message.indexOf(StringUtils.COMMA);
         if (end > begin) {
             message = message.substring(begin, end);
         } else {

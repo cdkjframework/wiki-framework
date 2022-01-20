@@ -3,10 +3,10 @@ package com.cdkjframework.util.encrypts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.util.Base64;
 
 /**
  * 将String进行base64编码解码，使用utf-8
@@ -35,7 +35,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return "";
             }
-            return new String(Base64.decodeBase64(inputData.getBytes(UTF_8)), UTF_8);
+            return new String(Base64.getDecoder().decode(inputData.getBytes(UTF_8)), UTF_8);
         } catch (UnsupportedEncodingException e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -51,8 +51,8 @@ public class Base64Utils {
             if (null == inputData) {
                 return null;
             }
-            return Base64.decodeBase64(inputData.getBytes(UTF_8));
-        } catch (UnsupportedEncodingException e) {
+            return Base64.getDecoder().decode(inputData);
+        } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
 
@@ -67,8 +67,8 @@ public class Base64Utils {
             if (null == inputData) {
                 return StringUtils.Empty;
             }
-            return new String(Base64.decodeBase64(inputData), UTF_8);
-        } catch (UnsupportedEncodingException e) {
+            return new String(Base64.getDecoder().decode(inputData), UTF_8);
+        } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
 
@@ -83,7 +83,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return null;
             }
-            return Base64.decodeBase64(inputData);
+            return Base64.getDecoder().decode(inputData);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -97,14 +97,14 @@ public class Base64Utils {
     public static String encodeData(String inputData) {
         try {
             if (null == inputData) {
-                return "";
+                return StringUtils.Empty;
             }
-            return new String(encode(inputData.getBytes(UTF_8)));
+            return encode(inputData.getBytes(UTF_8));
         } catch (UnsupportedEncodingException e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
 
-        return "";
+        return StringUtils.Empty;
     }
 
     /**
@@ -115,7 +115,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return null;
             }
-            return Base64.encodeBase64(inputData.getBytes(UTF_8));
+            return Base64.getEncoder().encode(inputData.getBytes(UTF_8));
         } catch (UnsupportedEncodingException e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -134,7 +134,7 @@ public class Base64Utils {
             if (null == dataList || dataList.length == 0) {
                 return StringUtils.Empty;
             }
-            return new String(Base64.encodeBase64(dataList), UTF_8);
+            return new String(Base64.getEncoder().encode(dataList), UTF_8);
         } catch (UnsupportedEncodingException e) {
             logUtil.error("将字节转换为字符串");
             logUtil.error(e.getCause(), e.getMessage());
