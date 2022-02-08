@@ -6,6 +6,7 @@ import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
@@ -27,6 +28,11 @@ public class RedisNumbersUtils {
     private static final String ODD_NUMBER_KEY = "odd_Number_Key";
 
     /**
+     * 单号生成主键 是否带日期
+     */
+    private static final boolean isDate = true;
+
+    /**
      * 日志
      */
     private static LogUtils logUtils = LogUtils.getLogger(RedisNumbersUtils.class);
@@ -44,9 +50,20 @@ public class RedisNumbersUtils {
         //客户代码：3位数字
         //采购订单：CG00117072500001
         //销售订单：XS00117072500001
-        return generate(prefix, length, IntegerConsts.ZERO, true);
+        return generate(prefix, length, IntegerConsts.ZERO, isDate);
     }
 
+    /**
+     * 生成序列号
+     * 限制最小值为 10000
+     *
+     * @return 返回生成数据
+     */
+    public static Long generateSequenceNumber() throws GlobalException {
+        String prefix = IntegerConsts.ONE.toString();
+        String value = generate(prefix, IntegerConsts.FOUR, IntegerConsts.TEN_THOUSAND, !isDate);
+        return ConvertUtils.convertLong(value);
+    }
 
     /**
      * 生成单据号（无日期）
@@ -57,7 +74,7 @@ public class RedisNumbersUtils {
      * @throws GlobalException 异常信息
      */
     public static String generateNoDateNumber(String prefix, int length) throws GlobalException {
-        return generate(prefix, length, IntegerConsts.ZERO, false);
+        return generate(prefix, length, IntegerConsts.ZERO, !isDate);
     }
 
 
@@ -96,7 +113,7 @@ public class RedisNumbersUtils {
      * @return 返回结果
      */
     private static synchronized String autoRetryGenerate(String prefix, int length, int init, int maxError, boolean isDate) {
-        int error = 0;
+        int error = IntegerConsts.ZERO;
         while (error < maxError) {
             try {
                 // 生成前缀信息

@@ -113,12 +113,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
         //获取连接通道唯一标识
         String channelId = channel.id().asLongText();
         logUtils.info("handlerAdded" + channelId);
-        try {
-            currentLimiting(channel);
-        } catch (Exception e) {
-            logUtils.error(e);
-            return;
-        }
+
         WebSocketUtils.clients.add(ctx.channel());
         logUtils.info("客户端【" + channelId + "】连接，连接通道数量: " + WebSocketUtils.clients.size());
     }

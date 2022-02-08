@@ -147,6 +147,7 @@ public class RedisUtils {
         return Long.valueOf(IntegerConsts.ZERO);
     }
 
+
     /**
      * sis成员是否存在
      *

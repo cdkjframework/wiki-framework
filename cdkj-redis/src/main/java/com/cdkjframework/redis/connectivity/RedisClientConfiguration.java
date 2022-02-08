@@ -128,7 +128,7 @@ public class RedisClientConfiguration {
      * @return 返回结果
      */
     protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.THREE).build();
+        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
     }
 
     /**

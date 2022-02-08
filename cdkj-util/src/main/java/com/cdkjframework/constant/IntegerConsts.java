@@ -122,6 +122,11 @@ public class IntegerConsts {
     public final static Integer BYTE_LENGTH = 1024;
 
     /**
+     * 一万
+     */
+    public final static Integer TEN_THOUSAND = 100000;
+
+    /**
      * 999
      */
     public final static Integer NINE_HUNDRED_NINETY_NINE = 999;
