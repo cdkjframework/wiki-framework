@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.cdkj.redis")
+@ConfigurationProperties(prefix = "spring.custom.redis")
 public class RedisConfig {
 
     /**
