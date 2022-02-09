@@ -103,7 +103,7 @@
         <easyexcel.version>2.2.6</easyexcel.version>
         <flowable.version>6.5.0</flowable.version>
         <logback.version>1.2.3</logback.version>
-        <lettuce-core.version>5.3.5.RELEASE</lettuce-core.version>
+        <lettuce-core.version>6.1.6.RELEASE</lettuce-core.version>
         <redis-json.version>4.0.0</redis-json.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
 

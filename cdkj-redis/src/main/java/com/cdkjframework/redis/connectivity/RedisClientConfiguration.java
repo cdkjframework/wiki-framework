@@ -78,7 +78,6 @@ public class RedisClientConfiguration {
                 RedisClusterClient clusterClient = RedisClusterClient.create(urlList);
                 clusterClient.setOptions(clusterClientOptions());
                 clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
-
                 // 返回结果
                 return clusterClient;
             }
