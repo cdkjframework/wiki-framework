@@ -76,7 +76,6 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
      */
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        long logTime = System.currentTimeMillis();
         // 验证终端是否需要加密
         Boolean encryption = customConfig.isEncryption();
         HttpHeaders httpHeaders = serverHttpRequest.getHeaders();
@@ -105,11 +104,7 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
         builder.setData(o);
 
         //返回结果
-        long logTime2 = System.currentTimeMillis();
-        Object obj = encryptHandle(builder, encryption);
-        logUtils.info("encryptHandle：" + (System.currentTimeMillis() - logTime2));
-        logUtils.info("beforeBodyWrite：" + (System.currentTimeMillis() - logTime));
-        return obj;
+        return encryptHandle(builder, encryption);
     }
 
     /**

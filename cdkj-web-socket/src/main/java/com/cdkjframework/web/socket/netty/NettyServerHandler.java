@@ -154,6 +154,7 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<TextWebSocke
             // 返回心跳消息
             WebSocketEntity heartbeat = new WebSocketEntity();
             heartbeat.setType(TYPE);
+            heartbeat.setClientId(channelId);
             WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
             return;
         }
