@@ -30,6 +30,11 @@ public class SmsTemplateEntity extends BaseSmsEntity {
     private AliSmsTemplateEnums templateType;
 
     /**
+     * 短信类型
+     */
+    private String smsType;
+
+    /**
      * 模板名称
      */
     public String templateName;

@@ -73,7 +73,6 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new WebSocketServerProtocolHandler(route, StringUtils.NullObject,
                 allowExtensions, maxContentLength, allowMaskMismatch, checkStartsWith));
         pipeline.addLast(new NettyServerHandler(webSocketConfig, webSocket));
-        pipeline.addLast(new IdleStateHandler(IntegerConsts.ONE, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.MINUTES));
 
         pipeline.addLast(new ChunkedWriteHandler());
         // 字符串解码
@@ -84,8 +83,8 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new ByteArrayDecoder());
         // byte编码
         pipeline.addLast(new ByteArrayEncoder());
-        // 心跳暂时未开启
-        // int readerIdleTime = IntegerConsts.THIRTY + IntegerConsts.TEN;
-        // pipeline.addLast(new IdleStateHandler(readerIdleTime, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.SECONDS));
+        // 心跳
+         int readerIdleTime = IntegerConsts.THIRTY + IntegerConsts.TEN;
+         pipeline.addLast(new IdleStateHandler(readerIdleTime, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.SECONDS));
     }
 }

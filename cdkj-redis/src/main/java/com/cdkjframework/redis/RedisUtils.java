@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -163,6 +164,43 @@ public class RedisUtils {
         } catch (Exception e) {
             logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * sis成员添加
+     *
+     * @return 返回结果
+     */
+    public static long sadd(String key, String value) {
+        key = getNamespaces(key);
+        try {
+            RedisFuture<Long> redisFuture = redisAsyncCommands == null ?
+                    commands.sadd(key, value) :
+                    redisAsyncCommands.sadd(key, value);
+
+            return redisFuture.get();
+        } catch (Exception e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+            return IntegerConsts.ZERO;
+        }
+    }
+
+    /**
+     * sis成员添加
+     *
+     * @return 返回结果
+     */
+    public static long srem(String key, String value) {
+        key = getNamespaces(key);
+        try {
+            RedisFuture<Long> redisFuture = redisAsyncCommands == null ?
+                    commands.srem(key, value) :
+                    redisAsyncCommands.srem(key, value);
+            return redisFuture.get();
+        } catch (Exception e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+            return IntegerConsts.ZERO;
         }
     }
 
@@ -396,9 +434,6 @@ public class RedisUtils {
      */
     public static String syncGet(String key) {
         key = getNamespaces(key);
-        if (!syncExists(key)) {
-            return null;
-        }
         RedisFuture<String> redisFuture = redisAsyncCommands == null ? commands.get(key) :
                 redisAsyncCommands.get(key);
         try {

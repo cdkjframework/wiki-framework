@@ -27,7 +27,7 @@ public class BaseVo {
      * 计算后的页码大小
      */
     @ApiModelProperty("类目编码")
-    private int pageSize = 10;
+    private int pageSize = 15;
 
     /**
      * 当前页索引
@@ -45,7 +45,7 @@ public class BaseVo {
      * 排序类型
      */
     @ApiModelProperty("排序类型")
-    private String sortType = "descending";
+    private String sortType;
 
     /**
      * 主键

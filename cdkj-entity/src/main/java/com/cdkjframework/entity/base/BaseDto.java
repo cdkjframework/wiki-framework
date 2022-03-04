@@ -21,7 +21,7 @@ public class BaseDto extends BaseEntity {
     /**
      * 计算后的页码大小
      */
-    private int pageSize = 10;
+    private int pageSize = 15;
 
     /**
      * 当前页索引
@@ -36,5 +36,5 @@ public class BaseDto extends BaseEntity {
     /**
      * 排序类型
      */
-    private String sortType = "descending";
+    private String sortType;
 }

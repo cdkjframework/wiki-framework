@@ -39,6 +39,11 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
     private static List<String> parameterList;
 
     /**
+     * 结束进程常量
+     */
+    private final String SHUTDOWN = "shutdown";
+
+    /**
      * 数据类型
      */
     private static String dataType = "java.util.ArrayList";
@@ -60,6 +65,10 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
+        // 验证是否为
+        if (SHUTDOWN.equals(methodParameter.getMember().getName())) {
+            return false;
+        }
         return supportsFilter(customConfig.getFilters(), methodParameter.getMember().getDeclaringClass().getName());
     }
 
