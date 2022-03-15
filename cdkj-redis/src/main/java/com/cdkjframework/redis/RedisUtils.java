@@ -93,8 +93,6 @@ public class RedisUtils {
     /**
      * 读取配置
      */
-    @Autowired
-    private RedisConfig redisConfig;
     private static RedisConfig config;
 
     /**

@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @ChannelHandler.Sharable
-public class NettyInitializer extends ChannelInitializer<SocketChannel> {
+public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
 
     /**
      * 配置
@@ -48,7 +48,7 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
     /**
      * 构造函数
      */
-    public NettyInitializer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
+    public WebSocketInitializer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
         this.webSocketConfig = webSocketConfig;
         this.webSocket = webSocket;
     }
@@ -72,7 +72,7 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         final boolean checkStartsWith = true;
         pipeline.addLast(new WebSocketServerProtocolHandler(route, StringUtils.NullObject,
                 allowExtensions, maxContentLength, allowMaskMismatch, checkStartsWith));
-        pipeline.addLast(new NettyServerHandler(webSocketConfig, webSocket));
+        pipeline.addLast(new WebSocketServerHandler(webSocketConfig, webSocket));
 
         pipeline.addLast(new ChunkedWriteHandler());
         // 字符串解码
@@ -84,7 +84,9 @@ public class NettyInitializer extends ChannelInitializer<SocketChannel> {
         // byte编码
         pipeline.addLast(new ByteArrayEncoder());
         // 心跳
-         int readerIdleTime = IntegerConsts.THIRTY + IntegerConsts.TEN;
-         pipeline.addLast(new IdleStateHandler(readerIdleTime, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.SECONDS));
+        int readerIdleTime = IntegerConsts.THIRTY + IntegerConsts.TEN;
+        pipeline.addLast(new IdleStateHandler(readerIdleTime, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.SECONDS));
+        // 添加心跳检测类
+        pipeline.addLast(new WebSocketHeartbeatHandler());
     }
 }
