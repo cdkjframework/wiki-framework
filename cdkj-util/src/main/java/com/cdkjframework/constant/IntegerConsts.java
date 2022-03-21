@@ -554,4 +554,13 @@ public class IntegerConsts {
      * 999
      */
     public static final Integer NINE_HUNDRED_NINETY_NINE = 999;
+
+    /**
+     * 空对像
+     */
+    public static final Integer NULL = null;
+    /**
+     * 空对像
+     */
+    public static final Long NULL_LONG = null;
 }

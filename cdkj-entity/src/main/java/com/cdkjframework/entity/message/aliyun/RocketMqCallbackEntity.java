@@ -46,4 +46,14 @@ public class RocketMqCallbackEntity {
      * 出生时间戳
      */
     private long bornTimestamp;
+
+    /**
+     * 订单ID
+     */
+    private String shardingKey;
+
+    /**
+     * 获取定时消息开始投递时间
+     */
+    private long startDeliverTime;
 }

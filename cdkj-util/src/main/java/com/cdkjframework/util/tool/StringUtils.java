@@ -45,6 +45,12 @@ public class StringUtils {
      * 空对像
      */
     public final static String NullObject = null;
+
+    /**
+     * 默认值
+     */
+    public final static String DEFAULT_VALUE = "cdkj_";
+
     /**
      * 0 值变量
      */
