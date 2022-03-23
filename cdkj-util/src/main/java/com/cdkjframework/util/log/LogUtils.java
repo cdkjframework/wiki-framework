@@ -125,6 +125,16 @@ public class LogUtils {
         }
     }
 
+//    /**
+//     * 日志信息输出
+//     *
+//     * @param format 格式
+//     * @param arguments    内容
+//     */
+//    public void info(String format, Object... arguments) {
+//        String.format()
+//    }
+
     /**
      * 信息输出日志
      *

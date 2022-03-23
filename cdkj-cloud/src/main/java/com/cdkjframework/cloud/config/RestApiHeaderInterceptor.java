@@ -1,16 +1,14 @@
 package com.cdkjframework.cloud.config;
 
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.http.client.ClientHttpResponse;
-import org.springframework.http.client.support.HttpRequestWrapper;
+import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +21,7 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Component
 public class RestApiHeaderInterceptor implements ClientHttpRequestInterceptor {
 
     /**
@@ -50,20 +49,19 @@ public class RestApiHeaderInterceptor implements ClientHttpRequestInterceptor {
         try {
             HttpHeaders headers = request.getHeaders();
             // 远程调用请求增加头部信息处理(简写代码如下)
-            HttpServletRequest servletRequest = HttpServletUtils.getRequest();
-            if (servletRequest != null) {
+            ClientHttpResponse response = execution.execute(request, body);
 
+            if (response != null) {
+                response.getHeaders();
                 for (String key :
                         headerNameList) {
-                    String header = servletRequest.getHeader(key);
+                    Object header = headers.get(key);
                     if (StringUtils.isNullAndSpaceOrEmpty(header)) {
                         continue;
                     }
-                    headers.add(key, header);
+                    response.getHeaders().add(key, header.toString());
                 }
             }
-
-            ClientHttpResponse response = execution.execute(request, body);
 
             // 返回响应
             return response;
