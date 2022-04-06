@@ -56,8 +56,6 @@ public class RocketProducer {
      */
     private Properties buildProperties() {
         Properties properties = new Properties();
-        // 设置 GROUP_ID 提换 MQ ConsumerId ID
-        properties.setProperty(PropertyKeyConst.GROUP_ID, aliCloudRocketMqConfig.getGroupId());
         // 鉴权用 AccessKey
         properties.setProperty(PropertyKeyConst.AccessKey, aliCloudRocketMqConfig.getAccessKey());
         // 鉴权用 SecretKey

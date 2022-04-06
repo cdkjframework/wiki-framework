@@ -25,15 +25,8 @@ import java.nio.charset.Charset;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Order()
 @Component
-public class ProducerUtils implements ApplicationRunner {
-
-    /**
-     * 订单消息生产者
-     */
-    @Resource(name = "buildOrderProducer")
-    private OrderProducerBean buildOrderProducer;
+public class ProducerUtils {
 
     /**
      * 订单消息生产者
@@ -41,23 +34,23 @@ public class ProducerUtils implements ApplicationRunner {
     private static OrderProducer orderProducer;
 
     /**
-     * 创建初始化数据
+     * 构造函数
      */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public ProducerUtils(OrderProducerBean buildOrderProducer) {
         orderProducer = buildOrderProducer;
     }
 
     /**
      * 发送消息
      *
-     * @param topic 主题
-     * @param tag   tag
-     * @param body  消息内容
+     * @param topic       主题
+     * @param tag         tag
+     * @param body        消息内容
+     * @param shardingKey 设置代表消息的业务关键属性，请尽可能全局唯一。
      * @return 返回结果
      */
-    public static String send(String topic, String tag, String body) throws GlobalException {
-        return send(topic, tag, IntegerConsts.NULL_LONG, body);
+    public static String send(String topic, String tag, String body, String shardingKey) throws GlobalException {
+        return send(topic, tag, body, shardingKey, IntegerConsts.NULL_LONG);
     }
 
     /**
@@ -65,17 +58,16 @@ public class ProducerUtils implements ApplicationRunner {
      *
      * @param topic            主题
      * @param tag              tag
-     * @param startDeliverTime 定时消息
      * @param body             消息内容
+     * @param shardingKey      设置代表消息的业务关键属性，请尽可能全局唯一。
+     * @param startDeliverTime 定时消息
      * @return 返回结果
      */
-    public static String send(String topic, String tag, Long startDeliverTime, String body) throws GlobalException {
+    public static String send(String topic, String tag, String body, String shardingKey, Long startDeliverTime) throws GlobalException {
         AssertUtils.isEmptyMessage(topic, "主题不能为空");
         AssertUtils.isEmptyMessage(tag, "TAG不能为空");
         AssertUtils.isEmptyMessage(body, "消息内容不能为空");
-        // 设置代表消息的业务关键属性，请尽可能全局唯一。
-        String shardingKey = StringUtils.DEFAULT_VALUE + GeneratedValueUtils.getOrderlyShortUuid();
-        Message message = new Message(topic, tag, body.getBytes(Charset.defaultCharset()));
+        Message message = new Message(topic, tag, body.getBytes());
         if (startDeliverTime != null) {
             message.setStartDeliverTime(startDeliverTime);
         }
