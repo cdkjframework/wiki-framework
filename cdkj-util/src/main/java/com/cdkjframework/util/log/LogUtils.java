@@ -7,6 +7,7 @@ import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +49,11 @@ public class LogUtils {
      * 操作系统
      */
     private final String OS = "win";
+
+    /**
+     * 目标值
+     */
+    private final String TARGET = "{}";
 
     /**
      * 日志级别
@@ -105,6 +111,20 @@ public class LogUtils {
     /**
      * 调试输出日志
      *
+     * @param format    格式
+     * @param arguments 内容
+     */
+    public void debug(String format, Object... arguments) {
+        String replace = StringUtils.Empty;
+        for (int i = IntegerConsts.ZERO; i < arguments.length; i++) {
+            replace += "%s";
+        }
+        info(String.format(format.replace(TARGET, replace), arguments));
+    }
+
+    /**
+     * 调试输出日志
+     *
      * @param msg 错误信息
      */
     public void debug(String msg) {
@@ -125,15 +145,19 @@ public class LogUtils {
         }
     }
 
-//    /**
-//     * 日志信息输出
-//     *
-//     * @param format 格式
-//     * @param arguments    内容
-//     */
-//    public void info(String format, Object... arguments) {
-//        String.format()
-//    }
+    /**
+     * 日志信息输出
+     *
+     * @param format    格式
+     * @param arguments 内容
+     */
+    public void info(String format, Object... arguments) {
+        String replace = StringUtils.Empty;
+        for (int i = IntegerConsts.ZERO; i < arguments.length; i++) {
+            replace += "%s";
+        }
+        info(String.format(format.replace(TARGET, replace), arguments));
+    }
 
     /**
      * 信息输出日志
@@ -179,6 +203,20 @@ public class LogUtils {
         } else {
             logThrowable(Level.INFO, msg);
         }
+    }
+
+    /**
+     * 错误输出日志
+     *
+     * @param format    格式
+     * @param arguments 内容
+     */
+    public void error(String format, Object... arguments) {
+        String replace = StringUtils.Empty;
+        for (int i = IntegerConsts.ZERO; i < arguments.length; i++) {
+            replace += "%s";
+        }
+        info(String.format(format.replace(TARGET, replace), arguments));
     }
 
     /**
