@@ -25,6 +25,9 @@ import java.io.Serializable;
 @Table(name = "rms_user_role", catalog = "")
 public class UserRoleEntity extends BaseEntity implements Serializable {
 
+    /**
+     * 序列版本UID
+     */
     private static final long serialVersionUID = 1L;
 
     /**

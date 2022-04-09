@@ -25,6 +25,9 @@ import javax.persistence.*;
 @ToString
 public class ${className}Dto extends BaseDto {
 
+    /**
+    * 序列版本UID
+    */
     private static final long serialVersionUID = ${serialVersionUID};
 
 <#list children as item>

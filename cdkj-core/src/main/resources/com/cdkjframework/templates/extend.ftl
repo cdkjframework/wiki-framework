@@ -27,7 +27,11 @@ import javax.persistence.*;
 @Table(name = "${table}", catalog = "${dataBase}")
 public class ${className}ExtendEntity extends ${className}Entity {
 
+    /**
+    * 序列版本UID
+    */
     private static final long serialVersionUID = ${serialVersionUID};
+
 <#list children as item>
     <#if item.columnShow && item.isExtension==1>
 
