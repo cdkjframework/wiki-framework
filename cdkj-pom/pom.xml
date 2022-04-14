@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-220407</version>
+    <version>1.0-220414</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,27 +17,27 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-220407</cdkj-cloud.version>
-        <cdkj-config.version>1.0-220407</cdkj-config.version>
-        <cdkj-util.version>1.0-220407</cdkj-util.version>
-        <cdkj-constant.version>1.0-220407</cdkj-constant.version>
-        <cdkj-core.version>1.0-220407</cdkj-core.version>
-        <cdkj-datasource.version>1.0-220407</cdkj-datasource.version>
-        <cdkj-message.version>1.0-220407</cdkj-message.version>
-        <cdkj-redis.version>1.0-220407</cdkj-redis.version>
-        <cdkj-redisJson.version>1.0-220407</cdkj-redisJson.version>
-        <cdkj-swagger.version>1.0-220407</cdkj-swagger.version>
-        <cdkj-pay.version>1.0-220407</cdkj-pay.version>
-        <cdkj-entity.version>1.0-220407</cdkj-entity.version>
-        <cdkj-center.version>1.0-220407</cdkj-center.version>
-        <cdkj-center.version>1.0-220407</cdkj-center.version>
-        <cdkj-log.version>1.0-220407</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-220407</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-220407</cdkj-security.version>
-        <cdkj-security-client.version>1.0-220407</cdkj-security-client.version>
-        <cdkj-datasource-jpa.version>1.0-220407</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-220407</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-220407</cdkj-datasource-elasticsearch.version>
+        <cdkj-cloud.version>1.0-220414</cdkj-cloud.version>
+        <cdkj-config.version>1.0-220414</cdkj-config.version>
+        <cdkj-util.version>1.0-220414</cdkj-util.version>
+        <cdkj-constant.version>1.0-220414</cdkj-constant.version>
+        <cdkj-core.version>1.0-220414</cdkj-core.version>
+        <cdkj-datasource.version>1.0-220414</cdkj-datasource.version>
+        <cdkj-message.version>1.0-220414</cdkj-message.version>
+        <cdkj-redis.version>1.0-220414</cdkj-redis.version>
+        <cdkj-redisJson.version>1.0-220414</cdkj-redisJson.version>
+        <cdkj-swagger.version>1.0-220414</cdkj-swagger.version>
+        <cdkj-pay.version>1.0-220414</cdkj-pay.version>
+        <cdkj-entity.version>1.0-220414</cdkj-entity.version>
+        <cdkj-center.version>1.0-220414</cdkj-center.version>
+        <cdkj-center.version>1.0-220414</cdkj-center.version>
+        <cdkj-log.version>1.0-220414</cdkj-log.version>
+        <cdkj-web-socket.version>1.0-220414</cdkj-web-socket.version>
+        <cdkj-security.version>1.0-220414</cdkj-security.version>
+        <cdkj-security-client.version>1.0-220414</cdkj-security-client.version>
+        <cdkj-datasource-jpa.version>1.0-220414</cdkj-datasource-jpa.version>
+        <cdkj-datasource-mongodb.version>1.0-220414</cdkj-datasource-mongodb.version>
+        <cdkj-datasource-elasticsearch.version>1.0-220414</cdkj-datasource-elasticsearch.version>
 
 
         <java.version>1.8</java.version>

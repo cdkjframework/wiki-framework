@@ -33,7 +33,7 @@ public class RocketConsumer {
     /**
      * 回调
      */
-    private final RocketMessageListener rocketMessageListener;
+    private final AbstractMessageListener abstractMessageListener;
 
     /**
      * 读取配置信息
@@ -43,8 +43,8 @@ public class RocketConsumer {
     /**
      * 构造函数
      */
-    public RocketConsumer(RocketMessageListener rocketMessageListener, AliCloudRocketMqConfig aliCloudRocketMqConfig) {
-        this.rocketMessageListener = rocketMessageListener;
+    public RocketConsumer(AbstractMessageListener abstractMessageListener, AliCloudRocketMqConfig aliCloudRocketMqConfig) {
+        this.abstractMessageListener = abstractMessageListener;
         this.aliCloudRocketMqConfig = aliCloudRocketMqConfig;
     }
 
@@ -84,7 +84,7 @@ public class RocketConsumer {
             Subscription subscription = new Subscription();
             subscription.setTopic(topicList.get(i));
             subscription.setExpression(tagList.get(i));
-            subscriptionTable.put(subscription, rocketMessageListener);
+            subscriptionTable.put(subscription, abstractMessageListener);
         }
 
         orderConsumerBean.setSubscriptionTable(subscriptionTable);
