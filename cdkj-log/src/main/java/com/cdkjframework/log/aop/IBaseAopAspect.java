@@ -15,6 +15,11 @@ import org.aspectj.lang.ProceedingJoinPoint;
 public interface IBaseAopAspect {
 
     /**
+     * 任务名称
+     */
+    String NAME = "PageEntity";
+
+    /**
      * 进程解析
      *
      * @param joinPoint 进程连接点

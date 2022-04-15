@@ -27,10 +27,6 @@
             <artifactId>cdkj-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-center</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>

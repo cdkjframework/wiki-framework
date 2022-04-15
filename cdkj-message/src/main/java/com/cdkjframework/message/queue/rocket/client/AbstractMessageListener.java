@@ -4,14 +4,14 @@ import com.aliyun.openservices.ons.api.Message;
 import com.aliyun.openservices.ons.api.order.ConsumeOrderContext;
 import com.aliyun.openservices.ons.api.order.MessageOrderListener;
 import com.aliyun.openservices.ons.api.order.OrderAction;
+import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.entity.message.aliyun.RocketMqCallbackEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.util.List;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
@@ -23,6 +23,7 @@ import java.util.List;
  */
 
 @Component
+@RequiredArgsConstructor
 public abstract class AbstractMessageListener implements MessageOrderListener,
         RocketMessageListener {
 
@@ -34,8 +35,7 @@ public abstract class AbstractMessageListener implements MessageOrderListener,
     /**
      * TAG信息
      */
-    @Value("${spring.rocket.tag}")
-    private List<String> tags;
+    private final AliCloudRocketMqConfig aliCloudRocketMqConfig;
 
     /**
      * 订阅消息回传
@@ -48,7 +48,8 @@ public abstract class AbstractMessageListener implements MessageOrderListener,
     public final OrderAction consume(Message message, ConsumeOrderContext consumeContext) {
         //调用参数
         try {
-            if (!CollectionUtils.isEmpty(tags) || tags.contains(message.getTag())) {
+            if (!CollectionUtils.isEmpty(aliCloudRocketMqConfig.getTag()) ||
+                    aliCloudRocketMqConfig.getTag().contains(message.getTag())) {
                 return OrderAction.Suspend;
             }
 

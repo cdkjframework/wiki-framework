@@ -1,9 +1,6 @@
 package com.cdkjframework.core.base.mapper;
 
-import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.Param;
-import org.mybatis.dynamic.sql.insert.render.MultiRowInsertStatementProvider;
-import org.mybatis.dynamic.sql.util.SqlProviderAdapter;
 
 import java.io.Serializable;
 import java.util.Collection;
