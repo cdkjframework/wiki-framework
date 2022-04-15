@@ -7,7 +7,11 @@ import com.aliyun.openservices.ons.api.order.OrderAction;
 import com.cdkjframework.entity.message.aliyun.RocketMqCallbackEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * @ProjectName: HT-OMS-Project-WEB
@@ -28,6 +32,12 @@ public abstract class AbstractMessageListener implements MessageOrderListener,
     private static LogUtils logUtil = LogUtils.getLogger(AbstractMessageListener.class);
 
     /**
+     * TAG信息
+     */
+    @Value("${spring.rocket.tag}")
+    private List<String> tags;
+
+    /**
      * 订阅消息回传
      *
      * @param message        消息内容
@@ -38,6 +48,10 @@ public abstract class AbstractMessageListener implements MessageOrderListener,
     public final OrderAction consume(Message message, ConsumeOrderContext consumeContext) {
         //调用参数
         try {
+            if (!CollectionUtils.isEmpty(tags) || tags.contains(message.getTag())) {
+                return OrderAction.Suspend;
+            }
+
             RocketMqCallbackEntity callbackEntity = new RocketMqCallbackEntity();
             callbackEntity.setBornTimestamp(message.getBornTimestamp());
             callbackEntity.setMessage(new String(message.getBody()));
