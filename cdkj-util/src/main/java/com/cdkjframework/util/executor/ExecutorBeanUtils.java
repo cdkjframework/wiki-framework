@@ -1,4 +1,4 @@
-package com.cdkjframework.executor;
+package com.cdkjframework.util.executor;
 
 import com.cdkjframework.constant.IntegerConsts;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +17,7 @@ import java.util.concurrent.ThreadPoolExecutor;
  * @Version: 1.0
  */
 @Component
-public class ExecutorBean {
+public class ExecutorBeanUtils {
 
     /**
      * 创建线程池管理
