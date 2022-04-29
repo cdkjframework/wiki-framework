@@ -1,9 +1,12 @@
 package com.cdkjframework.message.queue.rocket.client;
 
+import com.aliyun.openservices.ons.api.ONSFactory;
 import com.aliyun.openservices.ons.api.PropertyKeyConst;
+import com.aliyun.openservices.ons.api.PropertyValueConst;
 import com.aliyun.openservices.ons.api.bean.OrderConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import com.aliyun.openservices.ons.api.order.MessageOrderListener;
+import com.aliyun.openservices.ons.api.order.OrderConsumer;
 import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
@@ -61,6 +64,10 @@ public class RocketConsumer {
         properties.setProperty(PropertyKeyConst.SecretKey, aliCloudRocketMqConfig.getSecretKey());
         // 地址
         properties.setProperty(PropertyKeyConst.NAMESRV_ADDR, aliCloudRocketMqConfig.getOnsAddress());
+        // 设置模式
+        if (aliCloudRocketMqConfig.isBroadcasting()) {
+            properties.put(PropertyKeyConst.MessageModel, PropertyValueConst.BROADCASTING);
+        }
 
         //返回集合
         return properties;
@@ -73,8 +80,8 @@ public class RocketConsumer {
      */
     @Bean(initMethod = "start", destroyMethod = "shutdown")
     public OrderConsumerBean buildOrderConsumer() {
+        // 创建并客户端并架构配置
         OrderConsumerBean orderConsumerBean = new OrderConsumerBean();
-        // 配置文件
         orderConsumerBean.setProperties(buildProperties());
         // 订阅关系
         Map<Subscription, MessageOrderListener> subscriptionTable = new HashMap<>();

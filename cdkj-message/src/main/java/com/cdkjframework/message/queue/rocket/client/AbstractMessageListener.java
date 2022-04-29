@@ -48,8 +48,8 @@ public abstract class AbstractMessageListener implements MessageOrderListener,
     public final OrderAction consume(Message message, ConsumeOrderContext consumeContext) {
         //调用参数
         try {
-            if (!CollectionUtils.isEmpty(aliCloudRocketMqConfig.getTag()) ||
-                    aliCloudRocketMqConfig.getTag().contains(message.getTag())) {
+            if (CollectionUtils.isEmpty(aliCloudRocketMqConfig.getTag()) ||
+                    !aliCloudRocketMqConfig.getTag().contains(message.getTag())) {
                 return OrderAction.Suspend;
             }
 

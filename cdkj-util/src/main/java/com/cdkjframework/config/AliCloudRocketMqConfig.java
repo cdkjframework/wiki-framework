@@ -57,6 +57,11 @@ public class AliCloudRocketMqConfig {
     private String onsAddress;
 
     /**
+     * 订阅模式
+     */
+    private boolean broadcasting;
+
+    /**
      * 消息所属的 Topic 名称
      */
     private List<String> topic;

@@ -152,10 +152,7 @@ public class LogUtils {
      * @param arguments 内容
      */
     public void info(String format, Object... arguments) {
-        String replace = StringUtils.Empty;
-        for (int i = IntegerConsts.ZERO; i < arguments.length; i++) {
-            replace += "%s";
-        }
+        String replace = "%s";
         info(String.format(format.replace(TARGET, replace), arguments));
     }
 

@@ -3,6 +3,7 @@ package com.cdkjframework.entity.pay.webchat.transactions.app;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: cdkj-framework
@@ -13,6 +14,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class TransactionsAppEntity extends BaseEntity {
 
     /**

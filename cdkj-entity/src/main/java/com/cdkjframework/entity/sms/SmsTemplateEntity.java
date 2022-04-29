@@ -5,6 +5,7 @@ import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.enums.sms.AliSmsTemplateEnums;
 import com.cdkjframework.enums.sms.AliSmsActionEnums;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class SmsTemplateEntity extends BaseSmsEntity {
 
     /**
