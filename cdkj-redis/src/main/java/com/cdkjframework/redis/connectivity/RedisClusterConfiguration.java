@@ -15,15 +15,12 @@ import io.lettuce.core.cluster.api.reactive.RedisAdvancedClusterReactiveCommands
 import io.lettuce.core.support.ConnectionPoolSupport;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.time.Duration;
-import java.util.*;
 
 /**
  * @ProjectName: cdkj-framework
@@ -84,6 +81,9 @@ public class RedisClusterConfiguration extends BaseRedisConfiguration {
      */
     @Bean(name = "clusterReactiveCommands")
     public RedisAdvancedClusterReactiveCommands<String, String> clusterReactiveCommands() {
+        if (!redisConfig.isLock()) {
+            return new ClusterReactiveCommands();
+        }
         // 初始化连接
         initConnection();
         if (connection == null) {

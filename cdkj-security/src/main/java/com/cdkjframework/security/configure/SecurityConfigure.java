@@ -162,7 +162,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
         // 验证码验证
         http.addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
         // 添加JWT过滤器
-        http.addFilter(new JwtAuthenticationFilter(authenticationManager()));
+        http.addFilter(new JwtAuthenticationFilter(authenticationManager(), customConfig));
     }
 
     /**

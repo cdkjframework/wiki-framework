@@ -2,6 +2,7 @@ package com.cdkjframework.entity.search;
 
 import com.cdkjframework.entity.base.MongoBaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: cdkj-framework
@@ -12,6 +13,7 @@ import lombok.Data;
  * @Description: 搜索引擎
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class SearchEnginesEntity extends MongoBaseEntity {
 
     /**

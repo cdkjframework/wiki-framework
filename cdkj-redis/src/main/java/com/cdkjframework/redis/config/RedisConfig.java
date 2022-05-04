@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.cdkj.redis")
+@ConfigurationProperties(prefix = "spring.custom.redis")
 public class RedisConfig {
 
     /**
@@ -94,4 +94,14 @@ public class RedisConfig {
      * 连接超时时间（毫秒）
      */
     private Integer timeout = 1000;
+
+    /**
+     * 是否启动集群
+     */
+    private boolean cluster = false;
+
+    /**
+     * 是否启用redis锁
+     */
+    private boolean lock = false;
 }

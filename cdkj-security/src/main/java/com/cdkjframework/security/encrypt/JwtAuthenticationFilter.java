@@ -3,6 +3,7 @@ package com.cdkjframework.security.encrypt;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.BusinessConsts;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -13,12 +14,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @ProjectName: cdkj-framework
@@ -39,16 +43,21 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     /**
      * 配置读取
      */
-    @Autowired
     private CustomConfig customConfig;
+
+    /**
+     * 替换字符
+     */
+    private final String REPLACE = "**";
 
     /**
      * 构造函数
      *
      * @param authenticationManager 身份验证管理器
      */
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
+    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, CustomConfig customConfig) {
         super(authenticationManager);
+        this.customConfig = customConfig;
     }
 
     /**
@@ -57,12 +66,18 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) {
         try {
+            // 是否验证权限
+            if (!verifyToken(request)) {
+                chain.doFilter(request, response);
+                return;
+            }
+
             // 请求体的头中是否包含Authorization
             String token = request.getHeader(BusinessConsts.HEADER_TOKEN);
             // Authorization中是否包含Bearer，有一个不包含时直接返回
-            if (StringUtils.isNotNullAndEmpty(token)) {
-                chain.doFilter(request, response);
+            if (StringUtils.isNullAndSpaceOrEmpty(token)) {
                 responseJson(response);
+                chain.doFilter(request, response);
                 return;
             }
             // 获取权限失败，会抛出异常
@@ -118,5 +133,24 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             return null;
         }
         return null;
+    }
+
+    /**
+     * 是否需要验证 token
+     *
+     * @param request 请求
+     * @return 结果
+     */
+    private boolean verifyToken(HttpServletRequest request) {
+        // 读取配置
+        List<String> patternsUrls = customConfig.getPatternsUrls();
+        // 请求地址
+        String contextPath = request.getServletPath();
+        // 比对结构
+        List<String> filterList = patternsUrls.stream()
+                .filter(url -> contextPath.startsWith(url.replace(REPLACE, StringUtils.Empty)))
+                .collect(Collectors.toList());
+        // 返回结果
+        return CollectionUtils.isEmpty(filterList);
     }
 }

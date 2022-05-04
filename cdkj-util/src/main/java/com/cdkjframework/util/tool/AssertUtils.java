@@ -33,6 +33,31 @@ public class AssertUtils {
         isEmptyMessage(t, IS_EMPTY_MESSAGE);
     }
 
+    /**
+     * 对象断言
+     *
+     * @param key 验证字段
+     * @throws GlobalException 异常信息
+     */
+    public final static void isEmptyMessage(String key) throws GlobalException {
+        isEmptyMessage(key, IS_EMPTY_MESSAGE);
+    }
+
+    /**
+     * 对象断言
+     *
+     * @param key     验证字段
+     * @param message 消息
+     * @throws GlobalException 异常信息
+     */
+    public final static void isEmptyMessage(String key, String message) throws GlobalException {
+        if (StringUtils.isNullAndSpaceOrEmpty(message)) {
+            message = IS_EMPTY_MESSAGE;
+        }
+        if (StringUtils.isNullAndSpaceOrEmpty(key)) {
+            throw new GlobalException(message);
+        }
+    }
 
     /**
      * 对象断言

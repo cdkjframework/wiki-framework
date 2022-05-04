@@ -11,7 +11,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
@@ -28,12 +27,12 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Configuration
-public class NettyServer implements ApplicationRunner {
+public class WebSocketServer implements ApplicationRunner {
 
     /**
      * 日志
      */
-    private final LogUtils logUtils = LogUtils.getLogger(NettyServerHandler.class);
+    private final LogUtils logUtils = LogUtils.getLogger(WebSocketServerHandler.class);
 
     /**
      * 配置
@@ -50,7 +49,7 @@ public class NettyServer implements ApplicationRunner {
      *
      * @param webSocketConfig 配置
      */
-    public NettyServer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
+    public WebSocketServer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
         this.webSocketConfig = webSocketConfig;
         this.webSocket = webSocket;
     }
@@ -85,7 +84,7 @@ public class NettyServer implements ApplicationRunner {
                     //设置保持活动连接状态
                     .childOption(ChannelOption.SO_KEEPALIVE, VALUE)
                     .option(ChannelOption.SO_BACKLOG, IntegerConsts.BYTE_LENGTH)
-                    .childHandler(new NettyInitializer(webSocketConfig, webSocket));
+                    .childHandler(new WebSocketInitializer(webSocketConfig, webSocket));
 
             //绑定一个端口并且同步, 生成了一个 ChannelFuture 对象
             //启动服务器(并绑定端口)

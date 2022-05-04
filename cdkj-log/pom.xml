@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cdkj-framework</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <version>1.0-220113</version>
+        <version>1.0-220422</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -25,10 +25,6 @@
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-center</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

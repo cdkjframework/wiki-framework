@@ -12,8 +12,8 @@ import io.lettuce.core.ClientOptions;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.cluster.ClusterClientOptions;
+import io.lettuce.core.cluster.ClusterTopologyRefreshOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
-import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -63,21 +63,21 @@ public class RedisClientConfiguration {
     public AbstractRedisClient abstractRedisClient() {
         try {
             if (!redisClusterCommands()) {
-                RedisClient redisClient = RedisClient.create(createRedisUrl(redisConfig.getHost().get(IntegerConsts.ZERO), redisConfig.getPort()));
+                RedisClient redisClient = RedisClient.create(createRedisUrl(redisConfig.getHost()
+                        .get(IntegerConsts.ZERO), redisConfig.getPort()));
                 redisClient.setOptions(clientOptions());
                 redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
                 // 返回结果
                 return redisClient;
             } else {
                 List<RedisURI> urlList = new ArrayList<>();
-                for (String key :
+                for (String host :
                         redisConfig.getHost()) {
-                    urlList.add(createRedisUrl(key, redisConfig.getPort()));
+                    urlList.add(createRedisUrl(host, redisConfig.getPort()));
                 }
                 RedisClusterClient clusterClient = RedisClusterClient.create(urlList);
                 clusterClient.setOptions(clusterClientOptions());
                 clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
-
                 // 返回结果
                 return clusterClient;
             }
@@ -95,10 +95,9 @@ public class RedisClientConfiguration {
     protected Boolean redisClusterCommands() throws GlobalException {
         AssertUtils.isListEmpty(redisConfig.getHost(), "redis 没有配置连接地址");
         // redis 集群连接
-        boolean redisCluster = false;
-        if (redisConfig.getHost().size() > IntegerConsts.ONE) {
+        boolean redisCluster = redisConfig.isCluster();
+        if (redisCluster) {
             logUtils.info("Redis 集群配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
-            redisCluster = true;
         } else {
             logUtils.info("Redis 配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
@@ -113,13 +112,11 @@ public class RedisClientConfiguration {
      * @return 返回结果
      */
     protected RedisURI createRedisUrl(String redisUrl, int port) {
-        RedisURI redisUri;
-        if (port == IntegerConsts.ZERO) {
-            redisUri = RedisURI.create("redis://" + redisUrl);
-        } else {
-            redisUri = RedisURI.create(redisUrl, port);
-        }
-        redisUri.setDatabase(redisConfig.getDatabase());
+        RedisURI redisUri = RedisURI.builder()
+                .withHost(redisUrl)
+                .withPort(port)
+                .withDatabase(redisConfig.getDatabase())
+                .build();
         if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
             redisUri.setPassword(redisConfig.getPassword());
         }
@@ -133,7 +130,13 @@ public class RedisClientConfiguration {
      * @return 返回结果
      */
     protected ClusterClientOptions clusterClientOptions() {
-        return ClusterClientOptions.builder().autoReconnect(true).maxRedirects(IntegerConsts.ONE).build();
+        ClusterTopologyRefreshOptions topologyRefreshOptions = ClusterTopologyRefreshOptions
+                .builder().enableAdaptiveRefreshTrigger(ClusterTopologyRefreshOptions.RefreshTrigger.MOVED_REDIRECT,
+                        ClusterTopologyRefreshOptions.RefreshTrigger.PERSISTENT_RECONNECTS)
+                .adaptiveRefreshTriggersTimeout(Duration.ofSeconds(redisConfig.getTimeout()))
+                .build();
+        return ClusterClientOptions.builder().autoReconnect(true)
+                .topologyRefreshOptions(topologyRefreshOptions).build();
     }
 
     /**

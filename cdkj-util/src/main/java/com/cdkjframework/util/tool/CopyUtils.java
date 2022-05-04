@@ -120,7 +120,6 @@ public class CopyUtils {
      * @param source 原数据源
      * @param target 当前数据
      */
-    @Deprecated
     public static <S, T> void copyProperties(S source, T target) {
         copyProperties(source, target, false);
     }
@@ -131,7 +130,6 @@ public class CopyUtils {
      * @param source 原数据源
      * @param target 当前数据
      */
-    @Deprecated
     public static <S, T> void copyNoNullProperties(S source, T target) {
         copyProperties(source, target, true);
     }

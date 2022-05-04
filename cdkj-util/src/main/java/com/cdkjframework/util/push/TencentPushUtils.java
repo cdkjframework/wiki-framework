@@ -129,6 +129,7 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        messageAndroid.setCustom_content(push.getExtras());
         // 设备token
         ArrayList<String> tokenList = new ArrayList();
         tokenList.addAll(push.getRegisterIdList());
@@ -148,6 +149,7 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        messageAndroid.setCustom_content(push.getExtras());
 
         // 设备在推送的账户信息
         pushAppRequest.setAccount_push_type(IntegerConsts.ONE);
@@ -172,6 +174,7 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        messageAndroid.setCustom_content(push.getExtras());
 
         ArrayList<String> tagList = new ArrayList();
         tagList.addAll(push.getRegisterIdList());
@@ -197,6 +200,7 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        messageAndroid.setCustom_content(push.getExtras());
         // 返回请求
         return pushAppRequest;
     }
@@ -343,6 +347,7 @@ public class TencentPushUtils {
         Message message = new Message();
         message.setTitle(push.getTitle());
         message.setContent(push.getMessage());
+
         pushAppRequest.setMessage(message);
     }
 }

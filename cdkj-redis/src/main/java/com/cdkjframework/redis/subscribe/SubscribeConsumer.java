@@ -156,6 +156,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
             List<String> channelList = new ArrayList<>();
             for (String key :
                     customConfig.getChannel()) {
+                key = String.format(key, redisConfig.getDatabase());
                 channelList.add(getNamespaces(key));
             }
             subscribe(channelList
@@ -167,6 +168,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
             List<String> patternList = new ArrayList<>();
             for (String key :
                     customConfig.getPattern()) {
+                key = String.format(key, redisConfig.getDatabase());
                 patternList.add(getNamespaces(key));
             }
             psubscribe(patternList
@@ -209,7 +211,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     private RedisPubSubAsyncCommands<String, String> initRedisPubSub() {
         redisPubSubConnection.addListener(this);
         RedisPubSubAsyncCommands<String, String> pubSubCommands = redisPubSubConnection.async();
-        if (pubSubCommands.getStatefulConnection() == null) {
+        if (pubSubCommands == null || pubSubCommands.getStatefulConnection() == null) {
             pubSubCommands = redisClusterPubSubConnection.async();
         }
 

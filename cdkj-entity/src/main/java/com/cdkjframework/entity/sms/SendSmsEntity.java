@@ -2,6 +2,7 @@ package com.cdkjframework.entity.sms;
 
 import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class SendSmsEntity extends BaseSmsEntity {
 
     /**

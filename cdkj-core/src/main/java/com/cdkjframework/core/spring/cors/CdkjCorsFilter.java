@@ -30,6 +30,11 @@ public class CdkjCorsFilter implements Filter {
     private final String ForwardedFor = "X-Forwarded-For";
 
     /**
+     * 结束进程常量
+     */
+    private final String SHUTDOWN = "/shutdown";
+
+    /**
      * 初始加载
      *
      * @param filterConfig 过虑配置
@@ -57,6 +62,10 @@ public class CdkjCorsFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
+        String servletPath = request.getServletPath();
+        if (StringUtils.isNotNullAndEmpty(servletPath) && SHUTDOWN.equals(servletPath)) {
+            return;
+        }
         filterChain.doFilter(servletRequest, servletResponse);
     }
 

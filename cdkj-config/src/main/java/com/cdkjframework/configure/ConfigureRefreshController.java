@@ -1,5 +1,6 @@
 package com.cdkjframework.configure;
 
+import org.springframework.cloud.context.refresh.ContextRefresher;
 import org.springframework.cloud.endpoint.RefreshEndpoint;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,24 +22,24 @@ public class ConfigureRefreshController {
     /**
      * 上下文刷新器 ZHONGYIDONG
      */
-    private RefreshEndpoint refreshEndpoint;
+    private ContextRefresher contextRefresher;
 
     /**
      * 构造函数
      *
-     * @param refreshEndpoint 刷新终结点
+     * @param contextRefresher 刷新终结点
      */
-//    public ConfigureRefreshController(RefreshEndpoint refreshEndpoint) {
-//        this.refreshEndpoint = refreshEndpoint;
-//    }
+    public ConfigureRefreshController(ContextRefresher contextRefresher) {
+        this.contextRefresher = contextRefresher;
+    }
 
     /**
      * 刷新
      */
     @PostMapping(value = "/refresh")
     public void refresh() {
-        if (refreshEndpoint != null) {
-            refreshEndpoint.refresh();
+        if (contextRefresher != null) {
+            contextRefresher.refresh();
         }
     }
 }

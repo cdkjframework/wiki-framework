@@ -1,10 +1,10 @@
 package com.cdkjframework.log.aop.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.cdkjframework.center.service.LogService;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
+import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.entity.user.UserEntity;
@@ -15,23 +15,21 @@ import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
-import com.cdkjframework.util.tool.AnalysisUtils;
-import com.cdkjframework.util.tool.GzipUtils;
-import com.cdkjframework.util.tool.JsonUtils;
-import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.*;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,7 +46,7 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
-public class ControllerDebugAspect extends AbstractBaseAopAspect implements ApplicationRunner {
+public class ControllerDebugAspect extends AbstractBaseAopAspect {
 
     /**
      * 日志
@@ -58,7 +56,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
     /**
      * 日志服务
      */
-    private final LogService logServiceImpl;
+    private final IMongoRepository mongoDbRepository;
 
     /**
      * 自定义配置
@@ -66,38 +64,17 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
     private final CustomConfig customConfig;
 
     /**
+     * 执行器
+     */
+    @Resource(name = "cdkjExecutor")
+    private Executor cdkjExecutor;
+
+    /**
      * 构造函数
      */
-    public ControllerDebugAspect(CustomConfig customConfig, LogService logServiceImpl) {
+    public ControllerDebugAspect(CustomConfig customConfig, IMongoRepository mongoDbRepository) {
         this.customConfig = customConfig;
-        this.logServiceImpl = logServiceImpl;
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        // 创建线程
-        try {
-            ScheduledExecutorService executorService = Executors.newScheduledThreadPool(IntegerConsts.ONE);
-            executorService.scheduleWithFixedDelay(new Runnable() {
-                @Override
-                public void run() {
-                    LogRecordDto logRecordDto = logRecordDtoQueue.poll();
-                    if (logRecordDto != null) {
-                        try {
-                            logRecordDto.setParameter(GzipUtils.compress(logRecordDto.getParameter()));
-                            logRecordDto.setResult(GzipUtils.compress(logRecordDto.getResult()));
-                            logRecordDto.setResultErrorMessage(GzipUtils.compress(logRecordDto.getResultErrorMessage()));
-                            logServiceImpl.insertLog(logRecordDto);
-                        } catch (Exception ex) {
-                            logUtils.error("写入日志出错：");
-                            logUtils.error(ex.getStackTrace(), ex.getMessage());
-                        }
-                    }
-                }
-            }, IntegerConsts.ZERO, IntegerConsts.ONE_HUNDRED, TimeUnit.MILLISECONDS);
-        } catch (Exception ex) {
-            logUtils.error(ex.getStackTrace(), ex.getMessage());
-        }
+        this.mongoDbRepository = mongoDbRepository;
     }
 
     /**
@@ -150,12 +127,10 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             if (!isLog) {
                 return result;
             }
-            if (result == null) {
+            if (StringUtils.isNullAndSpaceOrEmpty(result)) {
                 logRecordDto.setExecutionState(IntegerConsts.ZERO);
             } else {
-                String resultJson;
-                resultJson = JsonUtils.objectToJsonString(result);
-                final String NAME = "PageEntity";
+                String resultJson = JsonUtils.objectToJsonString(result);
                 if (result.getClass().getName().contains(NAME)) {
                     PageEntity builder = JsonUtils.jsonStringToBean(resultJson, PageEntity.class);
                     logRecordDto.setExecutionState(builder.getCode());
@@ -171,14 +146,14 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
             }
             if (isLog) {
                 logRecordDto.setResultTime(System.currentTimeMillis());
-                logRecordDtoQueue.add(logRecordDto);
+                cdkjExecutor.execute(new LogQueue(logRecordDto));
             }
             logUtils.error(ex, logRecordDto.getId() + ":" + ex.getMessage());
             throw new GlobalRuntimeException((Exception) ex, ex.getMessage());
         }
         if (isLog) {
             logRecordDto.setResultTime(System.currentTimeMillis());
-            logRecordDtoQueue.add(logRecordDto);
+            cdkjExecutor.execute(new LogQueue(logRecordDto));
         }
         return result;
     }
@@ -238,5 +213,40 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect implements Appl
         }
         // 返回不需要记录日志
         return true;
+    }
+
+    /**
+     * 日志队列
+     */
+    private class LogQueue implements Runnable {
+
+        /**
+         * 日志信息
+         */
+        private LogRecordDto logRecordDto;
+
+        /**
+         * 构造函数
+         */
+        public LogQueue(LogRecordDto logRecordDto) {
+            this.logRecordDto = logRecordDto;
+        }
+
+        /**
+         * 线程执行
+         */
+        @Override
+        public void run() {
+            try {
+                AssertUtils.isEmptyMessage(logRecordDto, "断言空日志信息");
+                logRecordDto.setParameter(GzipUtils.compress(logRecordDto.getParameter()));
+                logRecordDto.setResult(GzipUtils.compress(logRecordDto.getResult()));
+                logRecordDto.setResultErrorMessage(GzipUtils.compress(logRecordDto.getResultErrorMessage()));
+                mongoDbRepository.save(logRecordDto);
+            } catch (Exception ex) {
+                logUtils.error("写入日志出错：");
+                logUtils.error(ex.getStackTrace(), ex.getMessage());
+            }
+        }
     }
 }

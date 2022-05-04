@@ -19,4 +19,9 @@ public interface WebSocket {
      * @param webSocketEntity 消息内容
      */
     void onMessage(WebSocketEntity webSocketEntity);
+
+    /**
+     * 断开连接
+     */
+    void onDisconnect();
 }

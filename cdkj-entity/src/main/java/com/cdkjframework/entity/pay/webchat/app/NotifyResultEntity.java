@@ -2,6 +2,7 @@ package com.cdkjframework.entity.pay.webchat.app;
 
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: cdkj-framework
@@ -12,6 +13,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class NotifyResultEntity extends UnifiedOrderReturnEntity {
 
     /**
