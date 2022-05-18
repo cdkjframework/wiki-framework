@@ -102,7 +102,6 @@ public class CopyUtils {
         if (list != null) {
             for (S o : list) {
                 try {
-
                     T d = target.newInstance();
                     copyProperties(o, d, true);
                     result.add(d);

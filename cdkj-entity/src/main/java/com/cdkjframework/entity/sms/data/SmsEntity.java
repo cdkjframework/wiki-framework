@@ -1,6 +1,6 @@
 package com.cdkjframework.entity.sms.data;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.sms.BaseSmsEntity;
 import lombok.Data;

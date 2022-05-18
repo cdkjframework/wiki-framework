@@ -45,6 +45,7 @@
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
+        <disruptor.version>3.4.2</disruptor.version>
         <spring.eureka.version>1.4.6.RELEASE</spring.eureka.version>
         <spring.cloud.version>Hoxton.SR9</spring.cloud.version>
         <spring.platform.version>Cairo-SR8</spring.platform.version>
@@ -282,6 +283,11 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.spring.platform</groupId>

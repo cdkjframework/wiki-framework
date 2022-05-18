@@ -1,7 +1,8 @@
 package com.cdkjframework.util.network.http;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
@@ -53,10 +54,10 @@ public class HttpRequestUtils {
         StringBuilder result = httpRequest(httpRequestEntity);
 
         if (clazz.getName().contains(name)) {
-            JSONArray jsonArray = JSONArray.parseArray(result.toString());
+            JSONArray jsonArray = JSON.parseArray(result.toString());
             t = (T) jsonArray.toJavaList(clazz);
         } else {
-            JSONObject jsonObject = JSONObject.parseObject(result.toString());
+            JSONObject jsonObject = JSON.parseObject(result.toString());
             t = jsonObject.toJavaObject(clazz);
         }
 
@@ -114,9 +115,9 @@ public class HttpRequestUtils {
             //将参数转换为 json 对象
             String param = StringUtils.Empty;
             if (httpRequestEntity.getObjectList().size() > 0) {
-                param = JSONArray.toJSONString(httpRequestEntity.getObjectList());
+                param = JSON.toJSONString(httpRequestEntity.getObjectList());
             } else if (httpRequestEntity.getData() != null) {
-                param = JSONObject.toJSONString(httpRequestEntity.getData());
+                param = JSON.toJSONString(httpRequestEntity.getData());
             }
             if (httpRequestEntity.getParamsMap() != null && !httpRequestEntity.getParamsMap().isEmpty()) {
                 Map<String, Object> params = httpRequestEntity.getParamsMap();
@@ -124,7 +125,7 @@ public class HttpRequestUtils {
                     params = new HashMap<>(IntegerConsts.ONE);
                 }
                 if (httpRequestEntity.isJson()) {
-                    param = JSONObject.toJSONString(params);
+                    param = JSON.toJSONString(params);
                 } else {
                     Set<Map.Entry<String, Object>> entrySet = params.entrySet();
                     for (Map.Entry entry :

@@ -1,7 +1,7 @@
 package com.cdkjframework.log.aop.mapper;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
