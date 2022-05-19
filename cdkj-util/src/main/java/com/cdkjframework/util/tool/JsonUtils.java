@@ -30,17 +30,32 @@ public class JsonUtils {
     private static int initialCapacity = 73;
 
     /**
+     * 是否为 json 数组对象
+     *
+     * @param json JSON字符串
+     * @return 返回结果
+     */
+    public static boolean isValidArray(String json) {
+        return JSON.isValidArray(json);
+    }
+
+    /**
      * 返回 JSON 数组对象
      *
      * @param json JSON字符串
      * @return 返回结果
      */
     public static JSONArray parseArray(String json) {
-        JSONArray jsonArray = new JSONArray();
+        JSONArray jsonArray;
         try {
-            jsonArray = JSONArray.of(json);
+            if (StringUtils.isNotNullAndEmpty(json)) {
+                jsonArray = JSON.parseArray(json);
+            } else {
+                jsonArray = new JSONArray();
+            }
         } catch (Exception ex) {
             logUtil.error("字符串转JSON对象出错！" + ex.getMessage());
+            jsonArray = new JSONArray();
         }
 
         //返回结果
@@ -54,11 +69,16 @@ public class JsonUtils {
      * @return 返回结果
      */
     public static JSONObject parseObject(String json) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject;
         try {
-            jsonObject = JSON.parseObject(json);
+            if (StringUtils.isNotNullAndEmpty(json)) {
+                jsonObject = JSON.parseObject(json);
+            } else {
+                jsonObject = new JSONObject();
+            }
         } catch (Exception ex) {
             logUtil.error("字符串转JSON对象出错！" + ex.getMessage());
+            jsonObject = new JSONObject();
         }
 
         //返回结果
@@ -77,10 +97,10 @@ public class JsonUtils {
             return mapList;
         }
         try {
-            if (JSON.isValidArray(jsonStr)) {
-                mapList = jsonArrayToMap(JSON.parseArray(jsonStr));
+            if (isValidArray(jsonStr)) {
+                mapList = jsonArrayToMap(parseArray(jsonStr));
             } else {
-                mapList = jsonObjectToMap(JSON.parseObject(jsonStr));
+                mapList = jsonObjectToMap(parseObject(jsonStr));
             }
         } catch (Exception ex) {
             logUtil.error("字符串转JSON对象出错！" + ex.getMessage());
@@ -144,7 +164,7 @@ public class JsonUtils {
     public static <T> List<T> jsonStringToList(String jsonStr, Class<T> clazz) {
         List list = new ArrayList();
         try {
-            list = jsonArrayToList(JSON.parseArray(jsonStr), clazz);
+            list = jsonArrayToList(parseArray(jsonStr), clazz);
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -220,7 +240,7 @@ public class JsonUtils {
     public static JSONObject beanToJsonObject(Object obj) {
         JSONObject jsonObject = new JSONObject();
         try {
-            jsonObject = JSON.parseObject(objectToJsonString(obj));
+            jsonObject = parseObject(objectToJsonString(obj));
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -238,7 +258,7 @@ public class JsonUtils {
     public static JSONArray listToJsonArray(Object object) {
         JSONArray jsonArray = new JSONArray();
         try {
-            jsonArray = JSON.parseArray(objectToJsonString(object));
+            jsonArray = parseArray(objectToJsonString(object));
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -256,7 +276,7 @@ public class JsonUtils {
     public static String listToJsonString(Object object) {
         JSONArray jsonArray = null;
         try {
-            jsonArray = JSON.parseArray(objectToJsonString(object));
+            jsonArray = parseArray(objectToJsonString(object));
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
