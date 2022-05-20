@@ -1,11 +1,10 @@
 package com.cdkjframework.util.encrypts;
 
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 
-import java.math.BigInteger;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /**
  * @ProjectName: com.cdkjframework
@@ -35,16 +34,47 @@ public class Md5Utils {
      */
     public static String getMd5(String str) {
         try {
-            // 生成一个MD5加密计算摘要
-            MessageDigest messageDigest = MessageDigest.getInstance(ALGORITHM);
             // 计算md5函数
-            messageDigest.update(str.getBytes(Charset.defaultCharset()));
-            // digest()最后确定返回md5 hash值，返回值为8为字符串。因为md5 hash值是16位的hex值，实际上就是8位的字符
-            // BigInteger函数则将8位的字符串转换成16位hex值，用字符串来表示；得到字符串形式的hash值
-            return new BigInteger(IntegerConsts.ONE, messageDigest.digest()).toString(IntegerConsts.SIXTEEN);
+            byte[] md5 = getMd5(str.getBytes(Charset.defaultCharset()));
+            return toHexString(md5);
         } catch (Exception e) {
             logUtils.error(e);
             return null;
         }
+    }
+
+    /**
+     * 将字节数组进行 MD5 加密
+     *
+     * @param data 字节数组
+     * @return 返回加密结果
+     */
+    public static byte[] getMd5(byte[] data) {
+        try {
+            // 生成一个MD5加密计算摘要
+            MessageDigest messageDigest = MessageDigest.getInstance(ALGORITHM);
+            // 计算md5函数
+            messageDigest.update(data);
+            return messageDigest.digest();
+        } catch (NoSuchAlgorithmException e) {
+            logUtils.error(e);
+        }
+        return new byte[]{};
+    }
+
+
+    /**
+     * 将加密后的字节数组，转换成16进制的字符串
+     *
+     * @param md5 md5值
+     * @return 返回结果
+     */
+    private static String toHexString(byte[] md5) {
+        StringBuilder builder = new StringBuilder();
+        for (byte by : md5) {
+            builder.append(Integer.toHexString(by & 0xff));
+        }
+        // 返回结果
+        return builder.toString();
     }
 }
