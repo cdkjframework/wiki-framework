@@ -36,7 +36,11 @@ public class JsonUtils {
      * @return 返回结果
      */
     public static boolean isValidArray(String json) {
-        return JSON.isValidArray(json);
+        if (StringUtils.isNotNullAndEmpty(json)) {
+            return JSON.isValidArray(json);
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -203,7 +207,7 @@ public class JsonUtils {
     public static <T> T jsonStringToBean(String jsonString, Class<T> clazz) {
         T t = null;
         try {
-            t = jsonObjectToBean(JSON.parseObject(jsonString), clazz);
+            t = jsonObjectToBean(parseObject(jsonString), clazz);
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -222,7 +226,9 @@ public class JsonUtils {
     public static <T> T jsonObjectToBean(JSONObject jsonObject, Class<T> clazz) {
         T t = null;
         try {
-            t = (T) JSON.toJavaObject(jsonObject, clazz);
+            if (jsonObject != null && !jsonObject.isEmpty()) {
+                t = (T) JSON.toJavaObject(jsonObject, clazz);
+            }
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -276,7 +282,10 @@ public class JsonUtils {
     public static String listToJsonString(Object object) {
         JSONArray jsonArray = null;
         try {
-            jsonArray = parseArray(objectToJsonString(object));
+            String json = objectToJsonString(object);
+            if (isValidArray(json)) {
+                jsonArray = parseArray(objectToJsonString(object));
+            }
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -296,9 +305,11 @@ public class JsonUtils {
      * @return 返回结果
      */
     public static String objectToJsonString(Object obj) {
-        String jsonObject = "";
+        String jsonObject = StringUtils.Empty;
         try {
-            jsonObject = JSON.toJSONString(obj);
+            if (obj != null) {
+                jsonObject = JSON.toJSONString(obj);
+            }
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
