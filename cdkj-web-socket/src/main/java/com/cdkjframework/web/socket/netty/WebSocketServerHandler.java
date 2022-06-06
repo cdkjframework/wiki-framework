@@ -72,9 +72,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-        String channelId = ctx.channel().id().asLongText();
+        Channel channel = ctx.channel();
+        String channelId = channel.id().asLongText();
         logUtils.info("客户端【" + channelId + "】异常，关闭连接");
-        WebSocketUtils.clients.remove(ctx.channel());
+        channelDisconnected(channel);
         logUtils.info("连接通道数量: " + WebSocketUtils.clients.size());
     }
 
@@ -103,15 +104,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        String channelId = ctx.channel().id().asLongText();
+        Channel channel = ctx.channel();
+        String channelId = channel.id().asLongText();
         logUtils.info("客户端【" + channelId + "】断开连接，连接通道数量: " + WebSocketUtils.clients.size());
-        WebSocketUtils.clients.remove(ctx.channel());
-        WebSocketEntity socket = new WebSocketEntity();
-        socket.setClientId(channelId);
-        socket.setType("channelInactive");
-        socket.setMessage("{\"type\":\"channelInactive\"}");
-        webSocket.onMessage(socket);
-        webSocket.onDisconnect();
+        channelDisconnected(channel);
     }
 
     /**
@@ -150,4 +146,19 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         webSocket.onMessage(socket);
     }
 
+    /**
+     * 通道断开处理
+     *
+     * @param channel 当前通道
+     */
+    private void channelDisconnected(Channel channel) {
+        String channelId = channel.id().asLongText();
+        WebSocketUtils.clients.remove(channel);
+        WebSocketEntity socket = new WebSocketEntity();
+        socket.setClientId(channelId);
+        socket.setType("channelInactive");
+        socket.setMessage("{\"type\":\"channelInactive\"}");
+        webSocket.onMessage(socket);
+        webSocket.onDisconnect();
+    }
 }
