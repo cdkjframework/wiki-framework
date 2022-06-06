@@ -30,6 +30,11 @@ public class WebSocketUtils {
     public static HashMap<String, Integer> onlineChannelsHeart = new HashMap<>();
 
     /**
+     * 通道断开记录
+     */
+    public static HashMap<String, Long> onOffChannelsHeart = new HashMap<>();
+
+    /**
      * 日志
      */
     private static final LogUtils logUtils = LogUtils.getLogger(WebSocketUtils.class);
@@ -53,6 +58,8 @@ public class WebSocketUtils {
             logUtils.info("通道ID：" + channelId);
             onlineChannelsHeart.replace(channelId, IntegerConsts.ZERO);
             channel.writeAndFlush(new TextWebSocketFrame(message));
+        } else if (!onOffChannelsHeart.containsKey(channelId)) {
+            onOffChannelsHeart.put(channelId, System.currentTimeMillis());
         }
     }
 
@@ -64,6 +71,10 @@ public class WebSocketUtils {
      */
     public static boolean isOpen(String channelId) {
         Channel channel = findChannel(channelId);
+        // 记录不存在的异常通道
+        if (channel == null && !onOffChannelsHeart.containsKey(channelId)) {
+            onOffChannelsHeart.put(channelId, System.currentTimeMillis());
+        }
         return channel != null;
     }
 

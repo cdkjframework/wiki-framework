@@ -72,7 +72,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
         final boolean checkStartsWith = true;
         pipeline.addLast(new WebSocketServerProtocolHandler(route, StringUtils.NullObject,
                 allowExtensions, maxContentLength, allowMaskMismatch, checkStartsWith));
-        pipeline.addLast(new WebSocketServerHandler(webSocketConfig, webSocket));
+        pipeline.addLast(new WebSocketServerHandler(webSocket));
 
         pipeline.addLast(new ChunkedWriteHandler());
         // 字符串解码

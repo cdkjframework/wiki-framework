@@ -7,7 +7,6 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
-import com.cdkjframework.web.socket.config.WebSocketConfig;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.stereotype.Component;
@@ -35,11 +34,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     private final String TYPE = "heartbeat";
 
     /**
-     * 配置
-     */
-    private final WebSocketConfig webSocketConfig;
-
-    /**
      * 接口
      */
     private final WebSocket webSocket;
@@ -47,11 +41,9 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     /**
      * 构造函数
      *
-     * @param webSocketConfig 配置信息
-     * @param webSocket       接口
+     * @param webSocket 接口
      */
-    public WebSocketServerHandler(WebSocketConfig webSocketConfig, WebSocket webSocket) {
-        this.webSocketConfig = webSocketConfig;
+    public WebSocketServerHandler(WebSocket webSocket) {
         this.webSocket = webSocket;
     }
 
@@ -137,11 +129,18 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
         String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
-            // 返回心跳消息
-            WebSocketEntity heartbeat = new WebSocketEntity();
-            heartbeat.setType(TYPE);
-            heartbeat.setClientId(channelId);
-            WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
+            // 验证该通过是否已经异常
+            if (WebSocketUtils.onOffChannelsHeart.containsKey(channelId)) {
+                // 关闭通道
+                channel.close().sync();
+                WebSocketUtils.onOffChannelsHeart.remove(channelId);
+            } else {
+                // 返回心跳消息
+                WebSocketEntity heartbeat = new WebSocketEntity();
+                heartbeat.setType(TYPE);
+                heartbeat.setClientId(channelId);
+                WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
+            }
             return;
         }
         socket.setClientId(channelId);
