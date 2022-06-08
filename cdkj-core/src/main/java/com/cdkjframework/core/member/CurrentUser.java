@@ -180,7 +180,7 @@ public class CurrentUser {
      * @return 返回配置结果
      */
     public static BmsConfigureEntity getConfigure(InterfaceEnum typeEnum) {
-        List<BmsConfigureEntity> bmsConfigureEntityList = CopyUtils.copyProperties(getConfigureList(), BmsConfigureEntity.class);
+        List<BmsConfigureEntity> bmsConfigureEntityList = getConfigureList();
         if (CollectionUtils.isEmpty(bmsConfigureEntityList) || typeEnum == null ||
                 StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
             return null;
