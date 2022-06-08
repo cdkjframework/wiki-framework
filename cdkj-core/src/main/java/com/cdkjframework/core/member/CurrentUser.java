@@ -1,5 +1,6 @@
 package com.cdkjframework.core.member;
 
+import com.alibaba.fastjson2.JSONArray;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.CacheConsts;
@@ -12,6 +13,7 @@ import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.CopyUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.util.CollectionUtils;
@@ -149,7 +151,12 @@ public class CurrentUser {
      * @return 返回结果
      */
     public static List<RoleEntity> getRoleList() {
-        return getCurrentUser().getRoleList();
+        Object roleList = getCurrentUser().getConfigureList();
+        if (roleList.getClass().equals(JSONArray.class)) {
+            String jsonString = JsonUtils.objectToJsonString(roleList);
+            return JsonUtils.jsonStringToList(jsonString, RoleEntity.class);
+        }
+        return (List<RoleEntity>) roleList;
     }
 
     /**
@@ -158,7 +165,12 @@ public class CurrentUser {
      * @return 返回配置结果
      */
     public static List<BmsConfigureEntity> getConfigureList() {
-        return getCurrentUser().getConfigureList();
+        Object configureList = getCurrentUser().getConfigureList();
+        if (configureList.getClass().equals(JSONArray.class)) {
+            String jsonString = JsonUtils.objectToJsonString(configureList);
+            return JsonUtils.jsonStringToList(jsonString, BmsConfigureEntity.class);
+        }
+        return (List<BmsConfigureEntity>) configureList;
     }
 
     /**
@@ -227,7 +239,7 @@ public class CurrentUser {
             String key = getRequestUserHeader();
             if (StringUtils.isNotNullAndEmpty(key)) {
                 Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
-                String token = claims.get("token").toString();
+                String token = claims.get(USER_LOGIN_TOKEN_KEY).toString();
                 return getCurrentUser(token, clazz);
             } else {
                 return null;
