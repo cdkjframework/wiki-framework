@@ -11,6 +11,7 @@ import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.util.CollectionUtils;
@@ -167,7 +168,7 @@ public class CurrentUser {
      * @return 返回配置结果
      */
     public static BmsConfigureEntity getConfigure(InterfaceEnum typeEnum) {
-        List<BmsConfigureEntity> bmsConfigureEntityList = getConfigureList();
+        List<BmsConfigureEntity> bmsConfigureEntityList = CopyUtils.copyProperties(getConfigureList(), BmsConfigureEntity.class);
         if (CollectionUtils.isEmpty(bmsConfigureEntityList) || typeEnum == null ||
                 StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
             return null;
