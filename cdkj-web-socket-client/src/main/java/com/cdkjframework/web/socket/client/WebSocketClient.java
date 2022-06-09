@@ -94,7 +94,6 @@ public class WebSocketClient {
              */
             @Override
             public void onMessage(String message) {
-                System.out.println(message);
                 if (message.contains(HEARTBEAT)) {
                     heartbeat();
                     return;
