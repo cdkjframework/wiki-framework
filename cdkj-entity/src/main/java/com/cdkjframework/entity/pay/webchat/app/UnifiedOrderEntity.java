@@ -1,9 +1,10 @@
 package com.cdkjframework.entity.pay.webchat.app;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.cdkjframework.entity.BaseEntity;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  */
 @Data
 @XStreamAlias("xml")
+@EqualsAndHashCode(callSuper = false)
 public class UnifiedOrderEntity extends BaseEntity {
 
     /**

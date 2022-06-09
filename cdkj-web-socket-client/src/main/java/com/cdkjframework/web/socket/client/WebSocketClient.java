@@ -20,7 +20,8 @@ public class WebSocketClient {
     /**
      * 获取实例
      *
-     * @return 返回当前实体
+     * @param socketService 实现接口
+     * @return 返回实例
      */
     public static WebSocketClient getInstance(WebSocketService socketService) {
         return new WebSocketClient(socketService);
@@ -29,7 +30,9 @@ public class WebSocketClient {
     /**
      * 获取实例
      *
-     * @return 返回当前实体
+     * @param socketService 实现接口
+     * @param wsUri         ws地址
+     * @return 返回实例
      */
     public static WebSocketClient getInstance(WebSocketService socketService, String wsUri) {
         return new WebSocketClient(socketService, wsUri);

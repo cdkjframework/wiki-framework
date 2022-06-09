@@ -43,6 +43,13 @@ public class SendMailUtils implements ApplicationRunner {
     private static JavaMailSenderImpl mailSender;
 
     /**
+     * 构造函数
+     */
+    public SendMailUtils(MailConfig config) {
+        mailConfig = config;
+    }
+
+    /**
      * 发送邮件
      *
      * @param toMail  收件邮箱
@@ -126,7 +133,6 @@ public class SendMailUtils implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        mailConfig = Application.applicationContext.getBean(MailConfig.class);
         if (StringUtils.isNullAndSpaceOrEmpty(mailConfig.getHost()) ||
                 StringUtils.isNullAndSpaceOrEmpty(mailConfig.getFromMail())) {
             return;

@@ -1,6 +1,7 @@
 package com.cdkjframework.redis;
 
-import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.log.LogUtils;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -92,8 +94,6 @@ public class RedisUtils {
     /**
      * 读取配置
      */
-    @Autowired
-    private RedisConfig redisConfig;
     private static RedisConfig config;
 
     /**
@@ -147,6 +147,7 @@ public class RedisUtils {
         return Long.valueOf(IntegerConsts.ZERO);
     }
 
+
     /**
      * sis成员是否存在
      *
@@ -162,6 +163,43 @@ public class RedisUtils {
         } catch (Exception e) {
             logUtils.error(e.getStackTrace(), e.getMessage());
             return false;
+        }
+    }
+
+    /**
+     * sis成员添加
+     *
+     * @return 返回结果
+     */
+    public static long sadd(String key, String value) {
+        key = getNamespaces(key);
+        try {
+            RedisFuture<Long> redisFuture = redisAsyncCommands == null ?
+                    commands.sadd(key, value) :
+                    redisAsyncCommands.sadd(key, value);
+
+            return redisFuture.get();
+        } catch (Exception e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+            return IntegerConsts.ZERO;
+        }
+    }
+
+    /**
+     * sis成员添加
+     *
+     * @return 返回结果
+     */
+    public static long srem(String key, String value) {
+        key = getNamespaces(key);
+        try {
+            RedisFuture<Long> redisFuture = redisAsyncCommands == null ?
+                    commands.srem(key, value) :
+                    redisAsyncCommands.srem(key, value);
+            return redisFuture.get();
+        } catch (Exception e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+            return IntegerConsts.ZERO;
         }
     }
 
@@ -395,9 +433,6 @@ public class RedisUtils {
      */
     public static String syncGet(String key) {
         key = getNamespaces(key);
-        if (!syncExists(key)) {
-            return null;
-        }
         RedisFuture<String> redisFuture = redisAsyncCommands == null ? commands.get(key) :
                 redisAsyncCommands.get(key);
         try {
@@ -636,7 +671,7 @@ public class RedisUtils {
         if (value == null) {
             return false;
         }
-        return syncSet(key, value.toJSONString());
+        return syncSet(key, JSON.toJSONString(value));
     }
 
     /**
@@ -652,7 +687,7 @@ public class RedisUtils {
         if (value == null) {
             return false;
         }
-        return syncSet(key, value.toJSONString(), time);
+        return syncSet(key, JSON.toJSONString(value), time);
     }
 
     /**

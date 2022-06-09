@@ -89,11 +89,9 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
             return new ByteArrayInputStream(swapStream.toByteArray());
         }
         byte[] bytes = swapStream.toByteArray();
-        LOG_UTILS.info(new String(bytes, StandardCharsets.UTF_8));
-        String context = AesUtils.base64Decrypt(bytes);
-        LOG_UTILS.info(context);
+        String context = new String(bytes, StandardCharsets.UTF_8).trim();
+        context = AesUtils.base64Decrypt(context);
         context = URLDecoder.decode(context, EncodingConsts.UTF8);
-        LOG_UTILS.info(context);
         return new ByteArrayInputStream(context.getBytes(StandardCharsets.UTF_8));
     }
 }

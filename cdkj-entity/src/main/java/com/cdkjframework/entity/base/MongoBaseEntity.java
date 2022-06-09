@@ -1,11 +1,6 @@
 package com.cdkjframework.entity.base;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 /**
  * @ProjectName: cdkj-framework

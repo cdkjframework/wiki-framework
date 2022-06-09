@@ -1,8 +1,9 @@
 package com.cdkjframework.entity.sms;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: common-core
@@ -13,6 +14,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class BaseSmsEntity extends BaseEntity {
 
     /**

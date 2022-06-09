@@ -1,7 +1,8 @@
 package com.cdkjframework.util.network.https;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
@@ -66,14 +67,14 @@ public class HttpsClientUtils {
             //将参数转换为 json 对象
             String param = StringUtils.Empty;
             if (requestEntity.getObjectList().size() > 0) {
-                param = JSONArray.toJSONString(requestEntity.getObjectList());
+                param = JSON.toJSONString(requestEntity.getObjectList());
             } else {
                 Map<String, Object> paramsMap = requestEntity.getParamsMap();
                 if (paramsMap == null) {
                     paramsMap = new HashMap<>(IntegerConsts.ONE);
                 }
                 if (contentType.equals(basicHeader)) {
-                    param = JSONObject.toJSONString(requestEntity.getParamsMap());
+                    param = JSON.toJSONString(requestEntity.getParamsMap());
                 } else {
                     Set<Map.Entry<String, Object>> entrySet = paramsMap.entrySet();
                     for (Map.Entry entry :

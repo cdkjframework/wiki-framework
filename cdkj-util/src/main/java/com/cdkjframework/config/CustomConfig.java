@@ -1,5 +1,6 @@
 package com.cdkjframework.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,9 +20,7 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "spring.custom")

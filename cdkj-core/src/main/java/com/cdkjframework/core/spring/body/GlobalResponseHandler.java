@@ -39,6 +39,11 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
     private static List<String> parameterList;
 
     /**
+     * 结束进程常量
+     */
+    private final String SHUTDOWN = "shutdown";
+
+    /**
      * 数据类型
      */
     private static String dataType = "java.util.ArrayList";
@@ -60,6 +65,10 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
      */
     @Override
     public boolean supports(MethodParameter methodParameter, Class aClass) {
+        // 验证是否为
+        if (SHUTDOWN.equals(methodParameter.getMember().getName())) {
+            return false;
+        }
         return supportsFilter(customConfig.getFilters(), methodParameter.getMember().getDeclaringClass().getName());
     }
 
@@ -76,7 +85,6 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
      */
     @Override
     public Object beforeBodyWrite(Object o, MethodParameter methodParameter, MediaType mediaType, Class aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        long logTime = System.currentTimeMillis();
         // 验证终端是否需要加密
         Boolean encryption = customConfig.isEncryption();
         HttpHeaders httpHeaders = serverHttpRequest.getHeaders();
@@ -105,11 +113,7 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
         builder.setData(o);
 
         //返回结果
-        long logTime2 = System.currentTimeMillis();
-        Object obj = encryptHandle(builder, encryption);
-        logUtils.info("encryptHandle：" + (System.currentTimeMillis() - logTime2));
-        logUtils.info("beforeBodyWrite：" + (System.currentTimeMillis() - logTime));
-        return obj;
+        return encryptHandle(builder, encryption);
     }
 
     /**

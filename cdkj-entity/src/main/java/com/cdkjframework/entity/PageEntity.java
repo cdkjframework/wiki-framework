@@ -25,7 +25,7 @@ import java.util.List;
 public class PageEntity<T> implements Serializable {
 
     /**
-     * 串行版本UID
+     * 序列版本UID
      */
     private static final long serialVersionUID = -766231940524932922L;
 

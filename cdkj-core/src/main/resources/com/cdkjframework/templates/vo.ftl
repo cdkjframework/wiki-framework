@@ -28,6 +28,9 @@ import javax.persistence.*;
 @ApiModel(" ${description}")
 public class ${className}Vo extends BaseVo {
 
+    /**
+    * 序列版本UID
+    */
     private static final long serialVersionUID = ${serialVersionUID};
 
 <#list children as item>

@@ -1,6 +1,8 @@
 package com.cdkjframework.core.spring;
 
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.util.log.LogUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
@@ -22,6 +24,7 @@ public class CdkjApplication {
      * @return 返回结果
      */
     public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
+        // 启动程序
         ConfigurableApplicationContext context = SpringApplication.run(primarySource, args);
         Application.applicationContext = context;
         return context;
