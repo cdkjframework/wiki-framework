@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Version: 1.0
  */
 public class WebSocketClient {
+    /**
+     * 请求地址
+     */
+    private static String wssUri = "wss://wss.langzhiyun.net/pms/socket/webSocket/real_time/4673695";
 
     /**
      * 获取实例
@@ -24,7 +28,7 @@ public class WebSocketClient {
      * @return 返回实例
      */
     public static WebSocketClient getInstance(WebSocketService socketService) {
-        return getInstance(socketService, wsUri);
+        return getInstance(socketService, wssUri);
     }
 
     /**
@@ -46,17 +50,17 @@ public class WebSocketClient {
     /**
      * 连接服务
      */
-    private static WebSocketService socketService;
+    private WebSocketService socketService;
 
     /**
      * 请求地址
      */
-    private static String wsUri = "wss://wss.langzhiyun.net/pms/socket/webSocket/real_time/4673695";
+    private String wsUri;
 
     /**
      * 心跳值
      */
-    private final static String HEARTBEAT = "heartbeat";
+    private final String HEARTBEAT = "heartbeat";
 
     /**
      * 构造函数
@@ -190,7 +194,7 @@ public class WebSocketClient {
 //            public void disconnect() {
 //
 //            }
-//        });
+//        },WebSocketClient.wssUri);
 //        client.connected();
 //    }
 }
