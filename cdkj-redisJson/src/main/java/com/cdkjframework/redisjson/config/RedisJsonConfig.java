@@ -19,7 +19,7 @@ import java.util.List;
 @Data
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.redis.json")
+@ConfigurationProperties(prefix = "spring.custom.redis.json")
 public class RedisJsonConfig {
 
     /**
