@@ -51,7 +51,7 @@ public class WebSocketClient {
     /**
      * 请求地址
      */
-    private String wsUri = "wss://wss.langzhiyun.net/pms/socket/webSocket/real_time/4673695";
+    private String wsUri = "wss://wss.langzhiyun.net:10701/pms/socket/webSocket/real_time/4673695";
 
     /**
      * 构造函数

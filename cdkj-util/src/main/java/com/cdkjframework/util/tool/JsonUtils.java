@@ -5,8 +5,13 @@ import com.alibaba.fastjson2.JSONArray;
 import com.alibaba.fastjson2.JSONObject;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -228,6 +233,27 @@ public class JsonUtils {
         try {
             if (jsonObject != null && !jsonObject.isEmpty()) {
                 t = (T) JSON.toJavaObject(jsonObject, clazz);
+                // 是否为空
+                if (t == null) {
+                    return null;
+                }
+                // 验证是否有 list 数据结构
+                List<Field> fieldList = Arrays.stream(t.getClass().getDeclaredFields())
+                        .filter(f -> f.getType().getName().equals(List.class.getName()))
+                        .collect(Collectors.toList());
+                for (Field field :
+                        fieldList) {
+                    Object jsonArray = ReflectionUtils.getFieldValue(field, t);
+                    if (jsonArray == null || !JSON.isValidArray(jsonArray.toString())) {
+                        continue;
+                    }
+
+                    Type[] types = ((ParameterizedType) field.getGenericType()).getActualTypeArguments();
+                    if (types == null || types.length == IntegerConsts.ZERO) {
+                        continue;
+                    }
+                    ReflectionUtils.setFieldValue(t, field, jsonArrayToList((JSONArray) jsonArray, Class.forName(types[IntegerConsts.ZERO].getTypeName())));
+                }
             }
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
