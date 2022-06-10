@@ -2,12 +2,14 @@ package com.cdkjframework.redisjson.connectivity;
 
 import com.cdkjframework.redisjson.config.RedisJsonConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.redislabs.modules.rejson.JReJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisCluster;
 import redis.clients.jedis.Protocol;
 
 /**
@@ -48,6 +50,8 @@ public class RedisJsonConfiguration implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
         HostAndPort config = new HostAndPort(redisJsonConfig.getHost(), redisJsonConfig.getPort());
+        JReJSON client= new JReJSON(config);
+
 //        PooledJedisConnectionProvider provider = new PooledJedisConnectionProvider(config);
 //        UnifiedJedis client = new UnifiedJedis(provider);
     }

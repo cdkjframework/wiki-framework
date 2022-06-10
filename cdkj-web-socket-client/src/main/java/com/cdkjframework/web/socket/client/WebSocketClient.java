@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Version: 1.0
  */
 public class WebSocketClient {
+    /**
+     * 请求地址
+     */
+    private static String wssUri = "wss://wss.langzhiyun.net/pms/socket/webSocket/real_time/4673695";
 
     /**
      * 获取实例
@@ -24,7 +28,7 @@ public class WebSocketClient {
      * @return 返回实例
      */
     public static WebSocketClient getInstance(WebSocketService socketService) {
-        return new WebSocketClient(socketService);
+        return getInstance(socketService, wssUri);
     }
 
     /**
@@ -51,21 +55,19 @@ public class WebSocketClient {
     /**
      * 请求地址
      */
-    private String wsUri = "wss://wss.langzhiyun.net:10701/pms/socket/webSocket/real_time/4673695";
+    private String wsUri;
+
+    /**
+     * 心跳值
+     */
+    private final String HEARTBEAT = "heartbeat";
 
     /**
      * 构造函数
      */
-    private WebSocketClient(WebSocketService socketService) {
-        new WebSocketClient(socketService, wsUri);
-    }
-
-    /**
-     * 构造函数
-     */
-    private WebSocketClient(WebSocketService socketService, String wsUri) {
-        this.socketService = socketService;
-        this.wsUri = wsUri;
+    private WebSocketClient(WebSocketService service, String url) {
+        socketService = service;
+        wsUri = url;
     }
 
 
@@ -83,6 +85,7 @@ public class WebSocketClient {
             @Override
             public void onOpen(ServerHandshake serverHandshake) {
                 socketService.connected();
+                heartbeat();
             }
 
             /**
@@ -91,6 +94,10 @@ public class WebSocketClient {
              */
             @Override
             public void onMessage(String message) {
+                if (message.contains(HEARTBEAT)) {
+                    heartbeat();
+                    return;
+                }
                 socketService.onMessage(message);
             }
 
@@ -144,4 +151,49 @@ public class WebSocketClient {
             }
         }, 1000 * 60);
     }
+
+
+    /**
+     * 心跳机制
+     */
+    private void heartbeat() {
+        try {
+            AtomicReference<Timer> timer = new AtomicReference<>(new Timer());
+            timer.get().schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        sendMessage("{\"type\": \"" + HEARTBEAT + "\"}\n");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, 1000 * 5);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+//    private static WebSocketClient client;
+//
+//    public static void main(String[] args) throws Exception {
+//        client = WebSocketClient.getInstance(new WebSocketService() {
+//            @Override
+//            public void onMessage(String message) {
+//                System.out.println(message);
+//            }
+//
+//            @Override
+//            public void connected() {
+//                System.out.println("connected");
+//            }
+//
+//            @Override
+//            public void disconnect() {
+//
+//            }
+//        },WebSocketClient.wssUri);
+//        client.connected();
+//    }
 }
