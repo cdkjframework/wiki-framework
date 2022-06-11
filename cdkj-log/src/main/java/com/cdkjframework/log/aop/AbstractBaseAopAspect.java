@@ -1,10 +1,12 @@
 package com.cdkjframework.log.aop;
 
+import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.entity.user.UserEntity;
-import com.cdkjframework.util.log.LogUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingDeque;
@@ -18,7 +20,7 @@ import java.util.concurrent.LinkedBlockingDeque;
  * @Version: 1.0
  */
 
-public abstract class AbstractBaseAopAspect implements IBaseAopAspect {
+public abstract class AbstractBaseAopAspect implements IBaseAopAspect, ApplicationRunner {
 
     /**
      * 日志队列
@@ -39,6 +41,11 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect {
      * 映射器执行切入点值
      */
     protected final String executionMapperPoint = "execution(public * com.*.*.mapper.*.*(..))";
+
+    /**
+     * 接口服务
+     */
+    private LogAopAspect logAopAspect;
 
     /**
      * 进程解析
@@ -69,6 +76,21 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect {
      */
     @Override
     public Object[] getArgs(ProceedingJoinPoint joinPoint, UserEntity user) {
-        return joinPoint.getArgs();
+        if (logAopAspect == null) {
+            return joinPoint.getArgs();
+        } else {
+            return logAopAspect.getArgs(joinPoint, user);
+        }
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        if (Application.applicationContext != null && logAopAspect == null) {
+            try {
+                logAopAspect = Application.applicationContext.getBean(LogAopAspect.class);
+            } catch (Exception ex) {
+
+            }
+        }
     }
 }

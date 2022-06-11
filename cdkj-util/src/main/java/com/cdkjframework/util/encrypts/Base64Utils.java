@@ -91,6 +91,23 @@ public class Base64Utils {
         return null;
     }
 
+
+    /**
+     * 对给定的字符串进行base64解码操作
+     */
+    public static byte[] decodeDataJavaToByte(byte[] inputData) {
+        try {
+            if (null == inputData) {
+                return null;
+            }
+            return Base64.decodeBase64(inputData);
+        } catch (Exception e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+
+        return null;
+    }
+
     /**
      * 对给定的字符串进行base64加密操作
      */

@@ -1,6 +1,6 @@
 package com.cdkjframework.core.member;
 
-import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson.JSONArray;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.CacheConsts;

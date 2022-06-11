@@ -1,8 +1,9 @@
 package com.cdkjframework.util.tool;
 
-import com.alibaba.fastjson2.JSON;
-import com.alibaba.fastjson2.JSONArray;
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONValidator;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.mapper.ReflectionUtils;
@@ -43,6 +44,24 @@ public class JsonUtils {
     public static boolean isValidArray(String json) {
         if (StringUtils.isNotNullAndEmpty(json)) {
             return JSON.isValidArray(json);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * 是否为 json 对象
+     *
+     * @param json JSON字符串
+     * @return 返回结果
+     */
+    public static boolean isValid(String json) {
+        if (StringUtils.isNotNullAndEmpty(json)) {
+            try {
+                return JSONValidator.from(json).validate();
+            } catch (Exception e) {
+                return false;
+            }
         } else {
             return false;
         }
@@ -171,7 +190,7 @@ public class JsonUtils {
      * @return 返回结果
      */
     public static <T> List<T> jsonStringToList(String jsonStr, Class<T> clazz) {
-        List list = new ArrayList();
+        List<T> list = new ArrayList();
         try {
             list = jsonArrayToList(parseArray(jsonStr), clazz);
         } catch (Exception ex) {
@@ -191,9 +210,20 @@ public class JsonUtils {
      * @return 返回结果
      */
     public static <T> List<T> jsonArrayToList(JSONArray jsonArray, Class<T> clazz) {
-        List list = new ArrayList();
+        List<T> list = new ArrayList();
         try {
-            list = jsonArray.toJavaList(clazz);
+            if (clazz.getName().startsWith("java.lang")) {
+                for (int i = IntegerConsts.ZERO; i < jsonArray.size(); i++) {
+                    list.add((T) jsonArray.get(i));
+                }
+            } else {
+                list = jsonArray.toJavaList(clazz);
+            }
+//            for (T t :
+//                    list) {
+//                // 重置属性值
+//                resetFieldValue(t);
+//            }
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
         }
@@ -233,27 +263,12 @@ public class JsonUtils {
         try {
             if (jsonObject != null && !jsonObject.isEmpty()) {
                 t = (T) JSON.toJavaObject(jsonObject, clazz);
-                // 是否为空
-                if (t == null) {
-                    return null;
-                }
-                // 验证是否有 list 数据结构
-                List<Field> fieldList = Arrays.stream(t.getClass().getDeclaredFields())
-                        .filter(f -> f.getType().getName().equals(List.class.getName()))
-                        .collect(Collectors.toList());
-                for (Field field :
-                        fieldList) {
-                    Object jsonArray = ReflectionUtils.getFieldValue(field, t);
-                    if (jsonArray == null || !JSON.isValidArray(jsonArray.toString())) {
-                        continue;
-                    }
-
-                    Type[] types = ((ParameterizedType) field.getGenericType()).getActualTypeArguments();
-                    if (types == null || types.length == IntegerConsts.ZERO) {
-                        continue;
-                    }
-                    ReflectionUtils.setFieldValue(t, field, jsonArrayToList((JSONArray) jsonArray, Class.forName(types[IntegerConsts.ZERO].getTypeName())));
-                }
+//                // 是否为空
+//                if (t == null) {
+//                    return null;
+//                }
+                // 重置属性值
+//                resetFieldValue(t);
             }
         } catch (Exception ex) {
             logUtil.error("JSON转数据集出错！" + ex.getMessage());
@@ -342,5 +357,40 @@ public class JsonUtils {
 
         //返回结果
         return jsonObject;
+    }
+
+    /**
+     * 重置属性值
+     *
+     * @param s   实体对象
+     * @param <T> 类型
+     */
+    private static <T> void resetFieldValue(T s) {
+        try {
+            // 验证是否有 list 数据结构
+            List<Field> fieldList = Arrays.stream(s.getClass().getDeclaredFields())
+                    .filter(f -> f.getType().getName().equals(List.class.getName()))
+                    .collect(Collectors.toList());
+            for (Field field :
+                    fieldList) {
+                Object jsonArray = ReflectionUtils.getFieldValue(field, s);
+                if (jsonArray == null || !JSON.isValidArray(jsonArray.toString())) {
+                    continue;
+                }
+
+                Type[] types = ((ParameterizedType) field.getGenericType()).getActualTypeArguments();
+                if (types == null || types.length == IntegerConsts.ZERO) {
+                    continue;
+                }
+                Class clazz = (Class) types[IntegerConsts.ZERO];
+                Object t2 = jsonArrayToList((JSONArray) jsonArray, clazz);
+                // 递归是否存在相同值
+                resetFieldValue(t2);
+                // 设置值
+                ReflectionUtils.setFieldValue(s, field, t2);
+            }
+        } catch (Exception e) {
+            logUtil.error(e);
+        }
     }
 }

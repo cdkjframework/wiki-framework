@@ -1,6 +1,6 @@
 package com.cdkjframework.entity.pay.webchat.app;
 
-import com.alibaba.fastjson2.annotation.JSONField;
+import com.alibaba.fastjson.annotation.JSONField;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Data;
 
