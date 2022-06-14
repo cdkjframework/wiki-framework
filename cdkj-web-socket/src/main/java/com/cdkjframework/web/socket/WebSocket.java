@@ -14,6 +14,11 @@ import com.cdkjframework.entity.socket.WebSocketEntity;
 public interface WebSocket {
 
     /**
+     * 心跳类型
+     */
+    String TYPE = "heartbeat";
+
+    /**
      * 消息信息
      *
      * @param webSocketEntity 消息内容
@@ -22,6 +27,15 @@ public interface WebSocket {
 
     /**
      * 断开连接
+     *
+     * @param channelId 通道ID
      */
-    void onDisconnect();
+    void onDisconnect(String channelId);
+
+    /**
+     * 心跳包
+     *
+     * @param channelId 通道ID
+     */
+    void onHeartbeat(String channelId);
 }

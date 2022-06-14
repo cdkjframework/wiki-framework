@@ -28,6 +28,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
      * 日志
      */
     private final LogUtils logUtils = LogUtils.getLogger(WebSocketServerHandler.class);
+
     /**
      * 心跳类型
      */
@@ -125,18 +126,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
         String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
-            // 验证该通过是否已经异常
-            if (WebSocketUtils.onOffChannelsHeart.containsKey(channelId)) {
-                // 关闭通道
-                channel.close().sync();
-                WebSocketUtils.onOffChannelsHeart.remove(channelId);
-            } else {
-                // 返回心跳消息
-                WebSocketEntity heartbeat = new WebSocketEntity();
-                heartbeat.setType(TYPE);
-                heartbeat.setClientId(channelId);
-                WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
-            }
+            webSocket.onHeartbeat(channelId);
             return;
         }
         socket.setClientId(channelId);
@@ -154,11 +144,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     private void channelDisconnected(Channel channel) {
         String channelId = channel.id().asLongText();
         WebSocketUtils.clients.remove(channel);
-        WebSocketEntity socket = new WebSocketEntity();
-        socket.setClientId(channelId);
-        socket.setType("channelInactive");
-        socket.setMessage("{\"type\":\"channelInactive\"}");
-        webSocket.onMessage(socket);
-        webSocket.onDisconnect();
+        webSocket.onDisconnect(channelId);
     }
 }
