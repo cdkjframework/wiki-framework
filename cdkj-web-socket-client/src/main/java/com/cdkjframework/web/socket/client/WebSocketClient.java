@@ -94,6 +94,7 @@ public class WebSocketClient {
              */
             @Override
             public void onMessage(String message) {
+                System.out.println(message);
                 if (message.contains(HEARTBEAT)) {
                     heartbeat();
                     return;
@@ -175,25 +176,28 @@ public class WebSocketClient {
     }
 
 
-//    private static WebSocketClient client;
-//
-//    public static void main(String[] args) throws Exception {
-//        client = WebSocketClient.getInstance(new WebSocketService() {
-//            @Override
-//            public void onMessage(String message) {
-//                System.out.println(message);
-//            }
-//
-//            @Override
-//            public void connected() {
-//                System.out.println("connected");
-//            }
-//
-//            @Override
-//            public void disconnect() {
-//
-//            }
-//        },WebSocketClient.wssUri);
-//        client.connected();
-//    }
+    private static WebSocketClient client;
+
+    public static void main(String[] args) throws Exception {
+        client = WebSocketClient.getInstance(new WebSocketService() {
+            @Override
+            public void onMessage(String message) {
+            }
+
+            @Override
+            public void connected() {
+                try {
+                    client.sendMessage("{\"type\":\"real_time\",\"message\":[{\"bracelet\":\"359211415199531\",\"olderId\":\"359211415199531\"},{\"bracelet\":\"359211712996727\",\"olderId\":\"359211712996727\"}]}");
+                } catch (Exception e) {
+
+                }
+            }
+
+            @Override
+            public void disconnect() {
+                System.out.printf("disconnect");
+            }
+        },WebSocketClient.wssUri);
+        client.connected();
+    }
 }

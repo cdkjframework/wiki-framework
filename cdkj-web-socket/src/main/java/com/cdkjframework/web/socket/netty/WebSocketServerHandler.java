@@ -48,7 +48,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         this.webSocket = webSocket;
     }
 
-
     /**
      * 数据读取完毕
      *
@@ -75,7 +74,8 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         ctx.close();
         Channel channel = ctx.channel();
         String channelId = channel.id().asLongText();
-        logUtils.info("客户端【" + channelId + "】异常，关闭连接");
+        logUtils.info("客户端【" + channelId + "】异常，关闭连接，异常信息：" + cause.getMessage());
+        logUtils.error(cause.getCause(), cause.getMessage());
         channelDisconnected(channel);
         logUtils.info("连接通道数量: " + WebSocketUtils.clients.size());
     }
@@ -142,6 +142,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
      * @param channel 当前通道
      */
     private void channelDisconnected(Channel channel) {
+        logUtils.info("通道ID " + channel.id().asLongText() + " 通道状态：" + channel.isOpen());
+        if (channel.isOpen()) {
+            return;
+        }
         String channelId = channel.id().asLongText();
         WebSocketUtils.clients.remove(channel);
         webSocket.onDisconnect(channelId);
