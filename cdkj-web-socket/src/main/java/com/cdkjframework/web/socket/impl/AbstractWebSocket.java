@@ -3,6 +3,7 @@ package com.cdkjframework.web.socket.impl;
 import com.cdkjframework.entity.socket.WebSocketEntity;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
 
@@ -46,10 +47,23 @@ public abstract class AbstractWebSocket implements WebSocket {
      */
     @Override
     public void onHeartbeat(String channelId) {
+        onSendMessage(channelId, StringUtils.Empty, TYPE);
+    }
+
+    /**
+     * 发送消息
+     *
+     * @param channelId 难道ID
+     * @param message   消息内容
+     * @param type      数据类型
+     */
+    @Override
+    public void onSendMessage(String channelId, String message, String type) {
         // 返回心跳消息
-        WebSocketEntity heartbeat = new WebSocketEntity();
-        heartbeat.setType(TYPE);
-        heartbeat.setClientId(channelId);
-        WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
+        WebSocketEntity messageEntity = new WebSocketEntity();
+        messageEntity.setType(TYPE);
+        messageEntity.setClientId(channelId);
+        messageEntity.setMessage(message);
+        WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(messageEntity));
     }
 }

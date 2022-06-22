@@ -11,7 +11,7 @@ import javax.persistence.*;
 /**
  * @ProjectName: ${projectName}
  * @Package: ${packageName}
- * @ClassName: ${className}
+ * @ClassName: ${className}Service
  * @Description: ${description}
  * @Author: ${author}
  * @Version: 1.0

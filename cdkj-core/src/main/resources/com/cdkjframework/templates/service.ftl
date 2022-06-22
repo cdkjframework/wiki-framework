@@ -15,10 +15,10 @@ import ${packageName}.service.${className}Service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,13 +26,14 @@ import java.time.LocalDateTime;
 /**
  * @ProjectName: ${projectName}
  * @Package: ${packageName}
- * @ClassName: ${className}
+ * @ClassName: ${className}ServiceImpl
  * @Description: ${description}
  * @Author: ${author}
  * @Version: 1.0
  */
 
 @Service
+@RequiredArgsConstructor
 public class ${className}ServiceImpl implements ${className}Service {
 
     /**
@@ -43,15 +44,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     /**
      * ${description} mapper
      */
-    @Autowired
     private final ${className}Mapper ${classLowName}Mapper;
-
-    /**
-    * 构造函数
-    */
-    public ${className}ServiceImpl(${className}Mapper ${classLowName}Mapper){
-        this.${classLowName}Mapper = ${classLowName}Mapper
-    }
 
     /**
      * 修改数据

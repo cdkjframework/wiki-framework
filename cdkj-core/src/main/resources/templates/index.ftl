@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Code Auto Generator By cdk Framework</title>
+    <title>Code Auto Generator By Cdkj Framework</title>
     <!-- import CSS -->
     <link rel="stylesheet" href="/static/index.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">

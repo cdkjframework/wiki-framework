@@ -19,6 +19,16 @@ public interface WebSocket {
     String TYPE = "heartbeat";
 
     /**
+     * 系统错误
+     */
+    String SYSTEM_TYPE = "systemType";
+
+    /**
+     * 系统错误
+     */
+    String AUTHORITY = "authority";
+
+    /**
      * 消息信息
      *
      * @param webSocketEntity 消息内容
@@ -38,4 +48,13 @@ public interface WebSocket {
      * @param channelId 通道ID
      */
     void onHeartbeat(String channelId);
+
+    /**
+     * 发送消息
+     *
+     * @param channelId 难道ID
+     * @param message   消息内容
+     * @param type      数据类型
+     */
+    void onSendMessage(String channelId, String message, String type);
 }

@@ -259,7 +259,7 @@ public class CurrentUser {
      * @param clazz 实体
      * @return 返回用户抽象实体
      */
-    private static <T> T getCurrentUser(String token, Class<T> clazz) {
+    public static <T> T getCurrentUser(String token, Class<T> clazz) {
         T userEntity = null;
         try {
             String key = CacheConsts.USER_LOGIN + token;

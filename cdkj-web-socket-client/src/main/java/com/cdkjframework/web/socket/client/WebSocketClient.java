@@ -1,5 +1,8 @@
 package com.cdkjframework.web.socket.client;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson.JSONValidator;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -63,6 +66,11 @@ public class WebSocketClient {
     private final String HEARTBEAT = "heartbeat";
 
     /**
+     * 获取值类型
+     */
+    private final String TYPE = "type";
+
+    /**
      * 构造函数
      */
     private WebSocketClient(WebSocketService service, String url) {
@@ -94,8 +102,12 @@ public class WebSocketClient {
              */
             @Override
             public void onMessage(String message) {
-                System.out.println(message);
-                if (message.contains(HEARTBEAT)) {
+                if (message == null || !JSONValidator.from(message).validate()) {
+                    return;
+                }
+                JSONObject json = JSON.parseObject(message);
+                String type = json.getString(TYPE);
+                if (type != null && type.equals(HEARTBEAT)) {
                     heartbeat();
                     return;
                 }
@@ -182,6 +194,7 @@ public class WebSocketClient {
         client = WebSocketClient.getInstance(new WebSocketService() {
             @Override
             public void onMessage(String message) {
+                System.out.println(message);
             }
 
             @Override
@@ -197,7 +210,7 @@ public class WebSocketClient {
             public void disconnect() {
                 System.out.printf("disconnect");
             }
-        },WebSocketClient.wssUri);
+        });
         client.connected();
     }
 }

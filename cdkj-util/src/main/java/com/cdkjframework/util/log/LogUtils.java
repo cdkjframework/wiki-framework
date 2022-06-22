@@ -56,6 +56,11 @@ public class LogUtils {
     private final String TARGET = "{}";
 
     /**
+     * 替换值
+     */
+    private final String REPLACE = "%s";
+
+    /**
      * 日志级别
      */
     private final List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
@@ -115,11 +120,7 @@ public class LogUtils {
      * @param arguments 内容
      */
     public void debug(String format, Object... arguments) {
-        String replace = StringUtils.Empty;
-        for (int i = IntegerConsts.ZERO; i < arguments.length; i++) {
-            replace += "%s";
-        }
-        info(String.format(format.replace(TARGET, replace), arguments));
+        debug(String.format(format.replace(TARGET, REPLACE), arguments));
     }
 
     /**
@@ -152,8 +153,7 @@ public class LogUtils {
      * @param arguments 内容
      */
     public void info(String format, Object... arguments) {
-        String replace = "%s";
-        info(String.format(format.replace(TARGET, replace), arguments));
+        info(String.format(format.replace(TARGET, REPLACE), arguments));
     }
 
     /**
@@ -209,11 +209,7 @@ public class LogUtils {
      * @param arguments 内容
      */
     public void error(String format, Object... arguments) {
-        String replace = StringUtils.Empty;
-        for (int i = IntegerConsts.ZERO; i < arguments.length; i++) {
-            replace += "%s";
-        }
-        info(String.format(format.replace(TARGET, replace), arguments));
+        error(String.format(format.replace(TARGET, REPLACE), arguments));
     }
 
     /**
