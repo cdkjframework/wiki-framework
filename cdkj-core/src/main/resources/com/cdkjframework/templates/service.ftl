@@ -113,4 +113,36 @@ public class ${className}ServiceImpl implements ${className}Service {
         //返回分页数据
         return pageEntity;
     }
+
+    /**
+    * 查询列表数据
+    *
+    * @param ids 查询条件
+    * @return 返回列表数据实体
+    */
+    @Override
+    public List<${className}Dto> list${className}ByIds(List<String> ids){
+
+        List<${className}Entity> entitys = ${classLowName}Mapper.listFindByIds(ids);
+
+        //返回数据
+        return CopyUtils.copyProperties(entitys, ${className}Dto.class);
+    }
+
+    /**
+    * 查询列表数据
+    *
+    * @param ${classLowName}Dto 查询实体
+    * @return 返回列表数据实体
+    */
+    @Override
+    public List<${className}Dto> list${className}(${className}Dto ${classLowName}Dto){
+        //对象转换 dto -> entity
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+
+        List<${className}Entity> entitys = ${classLowName}Mapper.listFindByEntity(entity);
+
+        //返回数据
+        return CopyUtils.copyProperties(entitys, ${className}Dto.class);
+    }
 }
