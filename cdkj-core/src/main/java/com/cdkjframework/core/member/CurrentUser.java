@@ -151,8 +151,8 @@ public class CurrentUser {
      * @return 返回结果
      */
     public static List<RoleEntity> getRoleList() {
-        Object roleList = getCurrentUser().getConfigureList();
-        if (roleList.getClass().equals(JSONArray.class)) {
+        Object roleList = getCurrentUser().getRoleList();
+        if (roleList != null || roleList.getClass().equals(JSONArray.class)) {
             String jsonString = JsonUtils.objectToJsonString(roleList);
             return JsonUtils.jsonStringToList(jsonString, RoleEntity.class);
         }
