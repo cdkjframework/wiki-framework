@@ -39,7 +39,7 @@ public class BaseEntity implements Serializable {
     private Integer deleted;
 
     /**
-     * 状态
+     * 机构状态 (0-启用,1-禁用)
      */
     @Column(name = "status", nullable = false)
     private Integer status;

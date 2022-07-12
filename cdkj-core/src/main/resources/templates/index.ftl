@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Code Auto Generator By Cdkj Framework</title>
     <!-- import CSS -->
-    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/index.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
     <style type="text/css">
 
@@ -96,7 +96,7 @@
 </div>
 
 <!-- import Vue before Element -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.staticfile.org/vue/2.7.0/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>

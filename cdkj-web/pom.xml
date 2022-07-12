@@ -22,10 +22,6 @@
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-web-socket</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-swagger</artifactId>
         </dependency>
     </dependencies>

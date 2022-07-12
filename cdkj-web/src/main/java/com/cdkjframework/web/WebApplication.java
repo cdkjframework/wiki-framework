@@ -1,5 +1,6 @@
 package com.cdkjframework.web;
 
+import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -18,7 +19,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  */
 @SpringBootApplication(scanBasePackages = {
         "com.cdkjframework.web",
-        "com.cdkjframework.web.socket",
         "com.cdkjframework.center",
         "com.cdkjframework.config",
         "com.cdkjframework.core",
@@ -35,7 +35,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Configuration
 @EnableSwagger2
 @MapperScan(basePackages = "com.cdkjframework.core.business.mapper")
-//@EnableAutoGenerate(update = true, basePackage = "com.cdkjframework.web", projectName = "com.cdkjframework.web")
+@EnableAutoGenerate(update = true, basePackage = "com.cdkjframework.web", projectName = "com.cdkjframework.web")
 //@EnableApolloConfig
 public class WebApplication {
 

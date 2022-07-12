@@ -68,21 +68,21 @@ public abstract class AbstractController implements IController {
     /**
      * 获取抽象信息
      *
-     * @param clasz 实体
+     * @param clazz 实体
      * @return 返回用户抽象实体
      */
     @Override
-    public abstract <T> T getCurrentUser(Class<T> clasz);
+    public abstract <T> T getCurrentUser(Class<T> clazz);
 
     /**
      * 获取抽象信息
      *
      * @param id    主键
-     * @param clasz 实体
+     * @param clazz 实体
      * @return 返回用户抽象实体
      */
     @Override
-    public abstract <T> T getCurrentUser(String id, Class<T> clasz);
+    public abstract <T> T getCurrentUser(String id, Class<T> clazz);
 
     /**
      * 获取程序版本信息

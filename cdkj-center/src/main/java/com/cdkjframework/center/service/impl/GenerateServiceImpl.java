@@ -223,6 +223,9 @@ public class GenerateServiceImpl implements GenerateService {
             // 生成 mapper java
             template(entity, "mapper", division + "mapper" + division, "Mapper.java");
 
+            // 生成 controller java
+            template(entity, "controller", division + "controller" + division, "Controller.java");
+
             // 生成 mapper xml
             String xmlPath = division + "mapper" + division + "xml" + division;
             template(entity, "mapperXml", xmlPath, "Mapper.xml");

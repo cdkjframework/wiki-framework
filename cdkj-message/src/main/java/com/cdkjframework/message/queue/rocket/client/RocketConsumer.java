@@ -10,9 +10,11 @@ import com.aliyun.openservices.ons.api.order.OrderConsumer;
 import com.cdkjframework.config.AliCloudRocketMqConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.util.*;
 
@@ -87,11 +89,19 @@ public class RocketConsumer {
         Map<Subscription, MessageOrderListener> subscriptionTable = new HashMap<>();
         List<String> topicList = aliCloudRocketMqConfig.getTopic();
         List<String> tagList = aliCloudRocketMqConfig.getTag();
-        for (int i = IntegerConsts.ZERO; i < topicList.size(); i++) {
-            Subscription subscription = new Subscription();
-            subscription.setTopic(topicList.get(i));
-            subscription.setExpression(tagList.get(i));
-            subscriptionTable.put(subscription, abstractMessageListener);
+        if (CollectionUtils.isEmpty(tagList)) {
+            tagList = new ArrayList<>();
+            tagList.add("*");
+        }
+        for (String topic :
+                topicList) {
+            for (String tag :
+                    tagList) {
+                Subscription subscription = new Subscription();
+                subscription.setTopic(topic);
+                subscription.setExpression(tag);
+                subscriptionTable.put(subscription, abstractMessageListener);
+            }
         }
 
         orderConsumerBean.setSubscriptionTable(subscriptionTable);

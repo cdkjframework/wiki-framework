@@ -10,21 +10,21 @@
     background-color: #D3DCE6;
     color: #333;
     text-align: center;
-    line-height: 200px;
+    padding: 10px;
 }
 
-.el-main {
-    background-color: #E9EEF3;
-    color: #333;
-    text-align: left;
-    position: absolute;
-    top: 60px;
-    left: 0;
-    bottom: 0;
-    right: 0;
-}
+/*.el-main {*/
+/*    background-color: #E9EEF3;*/
+/*    color: #333;*/
+/*    text-align: left;*/
+/*    position: absolute;*/
+/*    top: 60px;*/
+/*    left: 0;*/
+/*    bottom: 0;*/
+/*    right: 0;*/
+/*}*/
 
-.el-container,
+.container,
 .is-vertical {
     position: absolute;
     top: 0;
@@ -34,17 +34,24 @@
     display: block !important;
 }
 
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
+.container:nth-child(5) .el-aside,
+.container:nth-child(6) .el-aside {
     line-height: 260px;
 }
 
-.el-container:nth-child(7) .el-aside {
+.container:nth-child(7) .el-aside {
     line-height: 320px;
 }
-.database{
+
+.container-child {
+    height: 100%;
+    background-color: #D3DCE6;
+}
+
+.database {
     float: left;
 }
+
 .custom-tree-node {
     flex: 1;
     display: flex;
@@ -52,4 +59,26 @@
     justify-content: space-between;
     font-size: 14px;
     padding-right: 8px;
+}
+
+.table {
+    border-top: 1px solid #B3C0D1;
+    border-left: 1px solid #B3C0D1;
+}
+
+.table th {
+    background: #B3C0D1;
+    text-align: center;
+}
+
+.table td.left {
+    text-align: right;
+}
+
+.table th,
+.table td {
+    height: 20px;
+    line-height: 20px;
+    border-bottom: 1px solid #B3C0D1;
+    border-right: 1px solid #B3C0D1;
 }
