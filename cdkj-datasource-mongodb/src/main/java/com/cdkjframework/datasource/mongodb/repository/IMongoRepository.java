@@ -99,12 +99,13 @@ public interface IMongoRepository {
     /**
      * 查询分页数据
      *
-     * @param <T>   返回实体
-     * @param query 查询条件
-     * @param clazz 实体类型
+     * @param <T>       返回实体
+     * @param query     查询条件
+     * @param pageIndex 页码
+     * @param clazz     实体类型
      * @return 返回结果
      */
-    <T> Page listEntityPage(Query query, Class<T> clazz);
+    <T> Page listEntityPage(Query query, Integer pageIndex, Class<T> clazz);
 
     /**
      * 查询数据

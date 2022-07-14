@@ -129,7 +129,7 @@ public class LogServiceImpl implements LogService {
         query.limit(logRecordDto.getPageSize());
 
         PageEntity pageEntity = new PageEntity();
-        Page<LogRecordEntity> pageList = mongoDbRepository.listEntityPage(query, LogRecordEntity.class);
+        Page<LogRecordEntity> pageList = mongoDbRepository.listEntityPage(query, logRecordDto.getPageIndex(), LogRecordEntity.class);
         pageEntity.setTotal(pageList.getTotalPages());
         List<LogRecordEntity> logRecordEntities = pageList.getContent();
         for (LogRecordEntity entity :

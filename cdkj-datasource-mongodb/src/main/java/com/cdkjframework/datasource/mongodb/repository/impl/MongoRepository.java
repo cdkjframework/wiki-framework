@@ -10,6 +10,7 @@ import com.mongodb.client.result.UpdateResult;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -189,19 +190,19 @@ public class MongoRepository implements IMongoRepository {
     /**
      * 查询分页数据
      *
-     * @param query 查询条件
-     * @param clazz 实体类型
+     * @param query     查询条件
+     * @param pageIndex 页码
+     * @param clazz     实体类型
      * @return 返回结果
      */
     @Override
-    public <T> Page<T> listEntityPage(Query query, Class<T> clazz) {
-        Pageable pageable = PageRequest.of((int) query.getSkip(), query.getLimit());
+    public <T> Page<T> listEntityPage(Query query, Integer pageIndex, Class<T> clazz) {
+        Pageable pageable = PageRequest.of(pageIndex - IntegerConsts.ONE, query.getLimit());
 //        query.with(pageable);
         // 查询总数
         long count = findCount(query, clazz);
         //查询数据
         List<T> list = mongoTemplate.find(query, clazz);
-
         //返结果
         return PageableExecutionUtils.getPage(list, pageable, () -> count);
     }
