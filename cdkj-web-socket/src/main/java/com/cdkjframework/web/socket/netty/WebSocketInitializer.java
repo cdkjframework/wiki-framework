@@ -64,7 +64,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = channel.pipeline();
         // 编解码http请求
         pipeline.addLast(new HttpServerCodec());
-        int maxContentLength = IntegerConsts.THIRTY_TWO * IntegerConsts.TWO * IntegerConsts.BYTE_LENGTH;
+        int maxContentLength = IntegerConsts.ONE_THOUSAND * IntegerConsts.BYTE_LENGTH;
         pipeline.addLast(new HttpObjectAggregator(maxContentLength));
         String route = webSocketConfig.getRoute() + "/socket/webSocket";
         final boolean allowExtensions = true;
