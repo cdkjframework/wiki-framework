@@ -12,322 +12,217 @@ import com.cdkjframework.enums.basics.BasicsEnum;
  */
 
 public enum MySqlDataTypeContrastEnums implements BasicsEnum {
-    VARCHAR {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
+  VARCHAR {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "String";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    CHAR {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.String";
+    }
+  },
+  KEYID {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "String";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    BLOB {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "byte[]";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.String";
+    }
+  },
+  BPCHAR {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "String";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.byte";
-        }
-    },
-    TEXT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.String";
+    }
+  },
+  CHAR {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "String";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    MEDIUMTEXT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "String";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.String";
+    }
+  },
+  BLOB {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "byte[]";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.String";
-        }
-    },
-    INTEGER {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Long";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.byte";
+    }
+  },
+  TEXT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "String";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Long";
-        }
-    },
-    TINYINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.String";
+    }
+  },
+  MEDIUMTEXT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "String";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    INT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.String";
+    }
+  },
+  INTEGER {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Long";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    SMALLINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Long";
+    }
+  },
+  TINYINT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Integer";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    MEDIUMINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Integer";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Integer";
+    }
+  },
+  INT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Integer";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Integer";
-        }
-    },
-    BIT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Boolean";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Boolean";
-        }
-    },
-    BIGINT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "BigInteger";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.math.BigInteger";
-        }
-    },
-    FLOAT {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Float";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Float";
-        }
-    },
-    DOUBLE {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Double";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Double";
-        }
-    },
-    DECIMAL {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "BigDecimal";
-        }
-
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.math.BigDecimal";
-        }
-    },
-    BOOLEAN {
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Integer";
+    }
+  },
+    INT2 {
         /**
          * 获取枚举值
          *
@@ -348,129 +243,318 @@ public enum MySqlDataTypeContrastEnums implements BasicsEnum {
             return "java.lang.Integer";
         }
     },
-    ID {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Long";
-        }
+  SMALLINT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Integer";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.lang.Long";
-        }
-    },
-    DATE {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "LocalDate";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Integer";
+    }
+  },
+  MEDIUMINT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Integer";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.time.LocalDate";
-        }
-    },
-    TIME {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "LocalTime";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Integer";
+    }
+  },
+  BIT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Boolean";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.time.LocalTime";
-        }
-    },
-    DATETIME {
-        /**f
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "LocalDateTime";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Boolean";
+    }
+  },
+  BIGINT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "BigInteger";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.time.LocalDateTime";
-        }
-    },
-    TIMESTAMP {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Instant";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.math.BigInteger";
+    }
+  },
+  FLOAT {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Float";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.time.Instant";
-        }
-    },
-    YEAR {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "Date";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Float";
+    }
+  },
+  DOUBLE {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Double";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "java.sql.Date";
-        }
-    };
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Double";
+    }
+  },
+  DECIMAL {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "BigDecimal";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.math.BigDecimal";
+    }
+  },
+  NUMERIC {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "BigDecimal";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.math.BigDecimal";
+    }
+  },
+  BOOLEAN {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Integer";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Integer";
+    }
+  },
+  ID {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Long";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.lang.Long";
+    }
+  },
+  DATE {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "LocalDate";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.time.LocalDate";
+    }
+  },
+  TIME {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "LocalTime";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.time.LocalTime";
+    }
+  },
+  DATETIME {
+    /**f
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "LocalDateTime";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.time.LocalDateTime";
+    }
+  },
+  TIMESTAMP {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Instant";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.time.Instant";
+    }
+  },
+  YEAR {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "Date";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "java.sql.Date";
+    }
+  };
 }

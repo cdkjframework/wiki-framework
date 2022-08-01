@@ -168,4 +168,9 @@ public class CustomConfig {
    * 状态码
    */
   private Integer statusCode;
+
+  /**
+   * 基础数据（0或空：mysql、1：postgreSql、2：msSQL）
+   */
+  private Integer dataBase;
 }

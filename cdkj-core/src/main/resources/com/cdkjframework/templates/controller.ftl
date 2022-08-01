@@ -1,16 +1,11 @@
-package ${packageName}.service.impl;
+package ${packageName}.web.controller;
 
-import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.core.member.CurrentUser;
-import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 
 import ${packageName}.vo.${className}Vo;
 import ${packageName}.dto.${className}Dto;
-import ${packageName}.mapper.${className}Mapper;
 import ${packageName}.service.${className}Service;
 import com.cdkjframework.core.controller.WebUiController;
 
@@ -19,9 +14,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.*;
-
-import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ProjectName: ${projectName}
@@ -41,7 +34,7 @@ public class ${className}Controller extends WebUiController{
     /**
      * 日志
      */
-    private static LogUtils logUtil = LogUtils.getLogger(${className}ServiceImpl.class);
+    private static LogUtils logUtil = LogUtils.getLogger(${className}Controller.class);
 
     /**
      * ${description} Service
@@ -71,7 +64,7 @@ public class ${className}Controller extends WebUiController{
     @PostMapping(value = "/add${className}")
     public void add${className}(@RequestBody ${className}Vo ${classLowName}Vo) {
         ${className}Dto ${classLowName} = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
-        ${classLowName}ServiceImpl.add${classLowName}(${className});
+        ${classLowName}ServiceImpl.add${className}(${classLowName});
     }
     /**
      * 删除数据
@@ -97,9 +90,9 @@ public class ${className}Controller extends WebUiController{
     @PostMapping(value = "/list${className}Page")
     public PageEntity<${className}Vo> list${className}Page(@RequestBody ${className}Vo ${classLowName}Vo) {
         // 数据转换
-        ${className}Dto stateDto = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
+        ${className}Dto ${classLowName}Dto = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
         // 查询数据
-        PageEntity<${className}Dto> page = ${classLowName}ServiceImpl.list${className}Page(stateDto);
+        PageEntity<${className}Dto> page = ${classLowName}ServiceImpl.list${className}Page(${classLowName}Dto);
 
         // 数据转换
         List<${className}Vo> dataVos = CopyUtils.copyProperties(page.getData(), ${className}Vo.class);

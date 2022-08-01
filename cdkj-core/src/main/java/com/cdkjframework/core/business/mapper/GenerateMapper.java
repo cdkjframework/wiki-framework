@@ -24,6 +24,12 @@ public interface GenerateMapper {
      * @return 返回结果
      */
     List<DatabaseEntity> findDatabase();
+    /**
+     * 获取当前用户数据库
+     *
+     * @return 返回结果
+     */
+    List<DatabaseEntity> findDatabaseByPostgre();
 
     /**
      * 获取数据库
@@ -39,6 +45,13 @@ public interface GenerateMapper {
      * @return 返回结果
      */
     List<TableEntity> findDatabaseTableList(TableEntity tableEntity);
+    /**
+     * 获取数据库表
+     *
+     * @param tableEntity 查询实体
+     * @return 返回结果
+     */
+    List<TableEntity> findDatabaseTableListByPostgre(TableEntity tableEntity);
 
     /**
      * 获取数据库表
@@ -47,4 +60,12 @@ public interface GenerateMapper {
      * @return 返回结果
      */
     List<TableColumnEntity> findTableColumnList(TableColumnEntity columnEntity);
+
+    /**
+     * 获取数据库表
+     *
+     * @param columnEntity 查询实体
+     * @return 返回结果
+     */
+    List<TableColumnEntity> findTableColumnListByPostgre(TableColumnEntity columnEntity);
 }
