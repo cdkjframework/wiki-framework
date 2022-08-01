@@ -17,11 +17,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ProjectName: ${projectName}
@@ -84,6 +83,31 @@ public class ${className}ServiceImpl implements ${className}Service {
     public void delete${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
         ${classLowName}Mapper.delete(entity);
+    }
+
+    /**
+    * 查询数据
+    *
+    * @param ${classLowName}Dto ${description} - 实体
+    * @return 返回结果
+    */
+    @Override
+    public ${className}Dto find${className}(${className}Dto ${classLowName}Dto){
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+        entity = ${classLowName}Mapper.findEntity(entity);
+        return CopyUtils.copyProperties(entity, ${className}Dto.class);
+    }
+
+    /**
+    * 添加数据
+    *
+    * @param id 查询条件
+    * @return 返回结果
+    */
+    @Override
+    public ${className}Dto find${className}ById(String id){
+        ${className}Entity entity = ${classLowName}Mapper.findEntityById(id);
+        return CopyUtils.copyProperties(entity, ${className}Dto.class);
     }
 
     /**

@@ -42,20 +42,20 @@ public interface ${className}Service extends BasicService {
     void delete${className}(${className}Dto ${classLowName}Dto);
 
     /**
-    * 添加数据
+    * 查询数据
     *
     * @param ${classLowName}Dto ${description} - 实体
     * @return 返回结果
     */
-    void find${className}(${className}Dto ${classLowName}Dto);
+    ${className}Dto find${className}(${className}Dto ${classLowName}Dto);
 
     /**
-    * 添加数据
+    * 查询指定数据
     *
     * @param id 查询条件
     * @return 返回结果
     */
-    void find${className}ById(String id);
+    ${className}Dto find${className}ById(String id);
 
     /**
      * 查询分页数据

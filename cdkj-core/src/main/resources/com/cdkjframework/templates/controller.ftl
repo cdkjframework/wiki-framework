@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/code/generate")
+@RequestMapping("/${classLowName}")
 @RequiredArgsConstructor
 @Api(tags="${description}")
 public class ${className}Controller extends WebUiController{
@@ -77,6 +77,35 @@ public class ${className}Controller extends WebUiController{
     public void delete${className}(@RequestBody ${className}Vo ${classLowName}Vo) {
         ${className}Dto ${classLowName} = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
         ${classLowName}ServiceImpl.delete${className}(${classLowName});
+    }
+
+    /**
+    * 查询数据
+    *
+    * @param ${classLowName}Vo ${description} - 实体
+    * @return 返回结果
+    */
+    @ResponseBody
+    @ApiOperation(value = "查询数据")
+    @PostMapping(value = "/find${className}")
+    public ${className}Vo find${className}(@RequestBody ${className}Vo ${classLowName}Vo){
+        ${className}Dto ${classLowName}Dto = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
+        ${classLowName}Dto = ${classLowName}ServiceImpl.find${className}(${classLowName}Dto);
+        return CopyUtils.copyProperties(${classLowName}Dto, ${className}Vo.class);
+    }
+
+    /**
+    * 查询指定数据
+    *
+    * @param id 查询条件
+    * @return 返回结果
+    */
+    @ResponseBody
+    @ApiOperation(value = "查询指定数据")
+    @PostMapping(value = "/find${className}ById")
+    public ${className}Vo find${className}ById(@RequestParam("id") String id){
+        ${className}Dto ${classLowName}Dto = ${classLowName}ServiceImpl.find${className}ById(id);
+        return CopyUtils.copyProperties(${classLowName}Dto, ${className}Vo.class);
     }
 
     /**

@@ -209,7 +209,7 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
          */
         @Override
         public String getValue() {
-            return "Integer";
+            return "int";
         }
 
         /**
@@ -219,7 +219,7 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
          */
         @Override
         public String getCode() {
-            return "java.lang.Integer";
+            return "INTEGER";
         }
     },
     MEDIUMINT {
