@@ -8,6 +8,7 @@ import com.cdkjframework.entity.center.library.TableLayoutEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
 import com.cdkjframework.util.tool.CopyUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +27,18 @@ import java.util.stream.Collectors;
  * @Version: 1.0
  */
 @Service
+@RequiredArgsConstructor
 public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
 
     /**
      * 个性数据 mapper
      */
-    @Autowired
-    private UpdateLibraryMapper updateLibraryMapper;
+    private final UpdateLibraryMapper updateLibraryMapper;
 
     /**
      * 生成服务
      */
-    @Autowired
-    private GenerateService generateServiceImpl;
+    private final GenerateService generateServiceImpl;
 
     /**
      * 更新实体表

@@ -26,24 +26,28 @@
     </resultMap>
 
     <select id="findDatabase" resultMap="dataBaseResultMap">
-        SELECT
-            database() AS table_schema;
+        SELECT database() AS table_schema;
+    </select>
+    <select id="findDatabaseByPostgre" resultMap="dataBaseResultMap">
+        SELECT current_database() AS table_schema;
     </select>
     <select id="findDatabaseByMsSql" resultMap="dataBaseResultMap">
-        SELECT TOP 1 NAME AS table_schema from sysdatabases
+        SELECT TOP 1 NAME AS table_schema
+        from sysdatabases
     </select>
 
     <select id="findDatabaseList" resultMap="dataBaseResultMap">
-        SELECT
-            table_schema
-        FROM
-            information_schema.tables
-        GROUP BY
-            table_schema
+        SELECT table_schema
+        FROM information_schema.tables
+        GROUP BY table_schema
+    </select>
+    <select id="findDatabaseListByPostgre" resultMap="dataBaseResultMap">
+        SELECT current_database() AS table_schema;
     </select>
 
     <select id="findDatabaseListByMsSql" resultMap="dataBaseResultMap">
-        SELECT NAME AS table_schema from sysdatabases
+        SELECT NAME AS table_schema
+        from sysdatabases
     </select>
 
     <select id="findDatabaseTableList" resultMap="tableResultMap"
@@ -60,9 +64,25 @@
             </if>
         </where>
     </select>
+
+    <select id="findDatabaseTableListByPostgre" resultMap="tableResultMap"
+            parameterType="com.cdkjframework.entity.generate.template.TableEntity">
+        SELECT
+            tablename AS table_name,
+            '' AS table_comment,
+            '' AS table_schema
+        FROM
+            pg_tables
+        WHERE
+            schemaname = 'public';
+    </select>
     <select id="findDatabaseTableListByMsSql" resultMap="tableResultMap"
             parameterType="com.cdkjframework.entity.generate.template.TableEntity">
-        USE ${tableSchema};SELECT NAME AS tableName,'' AS tableComment, ${tableSchema} AS tableSchema FROM sysobjects WHERE xtype = 'u'
+        USE
+        ${tableSchema};
+        SELECT NAME AS tableName, '' AS tableComment, ${tableSchema} AS tableSchema
+        FROM sysobjects
+        WHERE xtype = 'u'
     </select>
 
     <select id="findTableColumnList" resultMap="columnResultMap"
@@ -84,6 +104,28 @@
         <if test="tableSchema != null and tableSchema != ''">
             AND table_schema = #{tableSchema}
         </if>
+    </select>
+
+    <select id="findTableColumnListByPostgre" resultMap="columnResultMap"
+            parameterType="com.cdkjframework.entity.generate.template.TableColumnEntity">
+        SELECT NULL          AS column_key,
+               A.attname     AS COLUMN_NAME,
+               T.typname     AS data_type,
+               A.attlen      AS character_maximum_length,
+               A.atttypmod   AS lengthvar,
+               A.attnotnull  AS is_nullable,
+               b.description AS column_comment,
+               C.relname     AS TABLE_NAME
+        FROM pg_class C,
+             pg_attribute A
+                 LEFT OUTER JOIN pg_description b ON A.attrelid = b.objoid
+                 AND A.attnum = b.objsubid,
+             pg_type T
+        WHERE C.relname = #{tableName}
+          AND A.attnum > 0
+          AND A.attrelid = C.oid
+          AND A.atttypid = T.oid
+        ORDER BY A.attnum;
     </select>
 
     <select id="findTableColumnListByMsSql" resultMap="columnResultMap"

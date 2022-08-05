@@ -1,78 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Code Auto Generator By cdk Framework</title>
-    <!-- import CSS -->
-    <link rel="stylesheet" href="/index.css">
-    <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
+  <meta charset="UTF-8">
+  <title>Code Auto Generator By cdk Framework</title>
+  <!-- import CSS -->
+  <link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
 </head>
 <body>
 <div id="app">
-    <el-container class="container">
-        <el-header>
-            <lable class="el-form-item__label">应用程序名称：${applicationName}</lable>
-        </el-header>
-        <el-container class="container-child">
-            <el-aside width="500px">
-                <el-select @change="dataChange" popper-class="database" v-model="value" placeholder="请选择">
-                    <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-                <el-button @click="setCheckedKeys">选择</el-button>
-                <el-button @click="generate">生成</el-button>
-                <div style="padding: 10px 0">
-                    <el-tree :data="table"
-                             show-checkbox
-                             node-key="id"
-                             ref="dataTableList"
-                             accordion>
-                    </el-tree>
-                </div>
-            </el-aside>
-            <el-main>
-                <table class="table">
-                    <tr>
-                        <th>名称</th>
-                        <th>选择</th>
-                        <th>说明</th>
-                    </tr>
-                    <tr>
-                        <th class="left">controller导致文件路径：</th>
-                        <th>
-                            <el-input id="controller" type="file" webkitdirectory directory/>
-                        </th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th class="left">service导致文件路径：</th>
-                        <th>
-                            <el-input id="service" type="file" webkitdirectory directory/>
-                        </th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th class="left">mapper导致文件路径：</th>
-                        <th>
-                            <el-input id="mapper" type="file" webkitdirectory directory/>
-                        </th>
-                        <th></th>
-                    </tr>
-                    <tr>
-                        <th class="left">mapperXML导致文件路径：</th>
-                        <th>
-                            <el-input id="mapperXML" type="file" webkitdirectory directory/>
-                        </th>
-                        <th></th>
-                    </tr>
-                </table>
-            </el-main>
-        </el-container>
+  <el-container class="container">
+    <el-header>
+      <lable class="el-form-item__label">应用程序名称：${applicationName}</lable>
+    </el-header>
+    <el-container class="container-child">
+      <el-aside width="500px">
+        <el-select @change="dataChange" popper-class="database" v-model="value" placeholder="请选择">
+          <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button @click="setCheckedKeys">选择</el-button>
+        <el-button @click="generate">生成</el-button>
+        <div style="padding: 10px 0">
+          <el-tree :data="table"
+                   show-checkbox
+                   node-key="id"
+                   ref="dataTableList"
+                   accordion>
+          </el-tree>
+        </div>
+      </el-aside>
+      <el-main>
+        <table class="table">
+          <tr>
+            <th>名称</th>
+            <th>选择</th>
+            <th>说明</th>
+          </tr>
+          <tr>
+            <th class="left">controller导致文件路径：</th>
+            <th>
+              <el-input id="controller" type="file" webkitdirectory directory/>
+            </th>
+            <th></th>
+          </tr>
+          <tr>
+            <th class="left">service导致文件路径：</th>
+            <th>
+              <el-input id="service" type="file" webkitdirectory directory/>
+            </th>
+            <th></th>
+          </tr>
+          <tr>
+            <th class="left">mapper导致文件路径：</th>
+            <th>
+              <el-input id="mapper" type="file" webkitdirectory directory/>
+            </th>
+            <th></th>
+          </tr>
+          <tr>
+            <th class="left">mapperXML导致文件路径：</th>
+            <th>
+              <el-input id="mapperXML" type="file" webkitdirectory directory/>
+            </th>
+            <th></th>
+          </tr>
+        </table>
+      </el-main>
     </el-container>
+  </el-container>
 </div>
 
 <!-- import Vue before Element -->
@@ -83,146 +83,146 @@
 <script type="text/javascript" src="/aes.js"></script>
 <script type="text/javascript" src="/mode-ecb.js"></script>
 <script type="text/javascript">
-    new Vue({
-        el: '#app',
-        data: function () {
-            return {
-                options: [],
-                value: '',
-                table: [],
-                keys: []
-            }
-        },
-        mounted() {
-            this.init()
-        },
-        methods: {
-            init() {
-                this.getDatabase()
-            },
-            uploadChange(e) {
-                console.log(e)
-            },
-            dataChange(e) {
-                this.getTable()
-            },
-            getCheckedKeys() {
-                return this.$refs['dataTableList'].getCheckedKeys()
-            },
-            setCheckedKeys() {
-                let that = this
-                if (that.keys.length == 0) {
-                    for (let i = 0; i < that.table.length; i++) {
-                        let table = that.table[i]
-                        that.keys.push(table.id)
-                    }
-                } else {
-                    that.keys = []
-                }
-                that.$refs['dataTableList'].setCheckedKeys(that.keys);
-            },
-            getDatabase() {
-                let that = this
-                that.$http.post('getDatabase', {}).then(function (res) {
-                    let json = that.decrypt(res.data)
-                    let data
-                    if (typeof json === 'object') {
-                        data = json.data
-                    } else {
-                        data = JSON.parse(json.data)
-                    }
-                    that.value = data['tableSchema']
-                    for (let i = 0; i < data.children.length; i++) {
-                        let children = data.children[i]
-                        that.options.push({value: children['tableSchema'], label: children['tableSchema']})
-                    }
-
-                    that.getTable();
-                }, function (res) {
-                    console.log('失败')
-                })
-            },
-            getTable() {
-                let that = this
-                let json = this.encrypt("{\"tableSchema\": \"" + that.value + "\"}")
-                that.$http.post('getDatabaseTableList', json).then(function (res) {
-                    let json = this.decrypt(res.data)
-                    console.log(json)
-                    that.table = json.data
-                }, function (res) {
-                    console.log('失败')
-                })
-            },
-            generate() {
-                let that = this
-                let loading = that.$loading({
-                    lock: true,
-                    text: '生成中......',
-                    spinner: 'el-icon-loading',
-                    background: 'rgba(0, 0, 0, 0.5)'
-                });
-                let data = []
-                let keyList = that.getCheckedKeys();
-                for (let i = 0; i < keyList.length; i++) {
-                    let key = keyList[i]
-                    data.push({"label": key})
-                }
-                let json = this.encrypt(JSON.stringify(data))
-                that.$http.post('generate?dataBase=' + that.value, json).then(function (res) {
-                    let json = this.decrypt(res.data)
-                    let data
-                    if (typeof json === 'object') {
-                        data = json
-                    } else {
-                        data = JSON.parse(json)
-                    }
-                    if (data.code === 0) {
-                        that.$message.success('生成成功！')
-                    } else {
-                        that.$message.error('生成失败：' + res.data.message)
-                    }
-                    loading.close()
-                }, function (res) {
-                    console.log('失败')
-                    loading.close()
-                })
-            },
-            encrypt(word) {
-                return word
-                let key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
-                let iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
-                // 偏移量
-                let encryption = CryptoJS.enc.Utf8.parse(word);
-                // 算法
-                let encrypted = CryptoJS.AES.encrypt(encryption, key,
-                    {
-                        iv: iv,
-                        mode: CryptoJS.mode.CBC,
-                        padding: CryptoJS.pad.ZeroPadding
-                    });
-                return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
-            },
-            /**
-             * AES 解密 ：字符串 key iv  返回base64
-             *
-             */
-            decrypt(word) {
-                return word
-                let key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
-                let iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
-                let base64 = CryptoJS.enc.Base64.parse(word);
-                let base64Value = CryptoJS.enc.Base64.stringify(base64);
-                // AES解密
-                let decrypt = CryptoJS.AES.decrypt(base64Value, key,
-                    {
-                        iv: iv,
-                        mode: CryptoJS.mode.CBC,
-                        padding: CryptoJS.pad.ZeroPadding
-                    });
-                return CryptoJS.enc.Utf8.stringify(decrypt).toString();
-            }
+  new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        options: [],
+        value: '',
+        table: [],
+        keys: []
+      }
+    },
+    mounted() {
+      this.init()
+    },
+    methods: {
+      init() {
+        this.getDatabase()
+      },
+      uploadChange(e) {
+        console.log(e)
+      },
+      dataChange(e) {
+        this.getTable()
+      },
+      getCheckedKeys() {
+        return this.$refs['dataTableList'].getCheckedKeys()
+      },
+      setCheckedKeys() {
+        let that = this
+        if (that.keys.length == 0) {
+          for (let i = 0; i < that.table.length; i++) {
+            let table = that.table[i]
+            that.keys.push(table.id)
+          }
+        } else {
+          that.keys = []
         }
-    })
+        that.$refs['dataTableList'].setCheckedKeys(that.keys);
+      },
+      getDatabase() {
+        let that = this
+        that.$http.post('getDatabase', {}).then(function (res) {
+          let json = that.decrypt(res.data)
+          let data
+          if (typeof json === 'object') {
+            data = json.data
+          } else {
+            data = JSON.parse(json.data)
+          }
+          that.value = data['tableSchema']
+          for (let i = 0; i < data.children.length; i++) {
+            let children = data.children[i]
+            that.options.push({value: children['tableSchema'], label: children['tableSchema']})
+          }
+
+          that.getTable();
+        }, function (res) {
+          console.log('失败')
+        })
+      },
+      getTable() {
+        let that = this
+        let json = this.encrypt("{\"tableSchema\": \"" + that.value + "\"}")
+        that.$http.post('getDatabaseTableList', json).then(function (res) {
+          let json = this.decrypt(res.data)
+          console.log(json)
+          that.table = json.data
+        }, function (res) {
+          console.log('失败')
+        })
+      },
+      generate() {
+        let that = this
+        let loading = that.$loading({
+          lock: true,
+          text: '生成中......',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.5)'
+        });
+        let data = []
+        let keyList = that.getCheckedKeys();
+        for (let i = 0; i < keyList.length; i++) {
+          let key = keyList[i]
+          data.push({"label": key})
+        }
+        let json = this.encrypt(JSON.stringify(data))
+        that.$http.post('generate?dataBase=' + that.value, json).then(function (res) {
+          let json = this.decrypt(res.data)
+          let data
+          if (typeof json === 'object') {
+            data = json
+          } else {
+            data = JSON.parse(json)
+          }
+          if (data.code === 0 || data.code === 200) {
+            that.$message.success('生成成功！')
+          } else {
+            that.$message.error('生成失败：' + res.data.message)
+          }
+          loading.close()
+        }, function (res) {
+          console.log('失败')
+          loading.close()
+        })
+      },
+      encrypt(word) {
+        return word
+        let key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
+        let iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
+        // 偏移量
+        let encryption = CryptoJS.enc.Utf8.parse(word);
+        // 算法
+        let encrypted = CryptoJS.AES.encrypt(encryption, key,
+          {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.ZeroPadding
+          });
+        return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
+      },
+      /**
+       * AES 解密 ：字符串 key iv  返回base64
+       *
+       */
+      decrypt(word) {
+        return word
+        let key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
+        let iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
+        let base64 = CryptoJS.enc.Base64.parse(word);
+        let base64Value = CryptoJS.enc.Base64.stringify(base64);
+        // AES解密
+        let decrypt = CryptoJS.AES.decrypt(base64Value, key,
+          {
+            iv: iv,
+            mode: CryptoJS.mode.CBC,
+            padding: CryptoJS.pad.ZeroPadding
+          });
+        return CryptoJS.enc.Utf8.stringify(decrypt).toString();
+      }
+    }
+  })
 </script>
 </body>
 </html>

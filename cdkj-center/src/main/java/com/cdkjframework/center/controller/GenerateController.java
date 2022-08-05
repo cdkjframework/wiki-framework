@@ -7,6 +7,7 @@ import com.cdkjframework.entity.generate.template.DatabaseEntity;
 import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
 import com.cdkjframework.entity.generate.template.TreeEntity;
+import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,18 +67,9 @@ public class GenerateController extends WebUiController {
      */
     @PostMapping(value = "/getDatabase")
     @ResponseBody
-    public ResponseBuilder findDatabase() {
-        ResponseBuilder builder;
-        try {
-            DatabaseEntity databaseEntity = generateServiceImpl.findDatabase();
-            builder = ResponseBuilder.successBuilder(databaseEntity);
-        } catch (Exception ex) {
-            logUtil.error(ex.getCause(), ex.getMessage());
-            builder = new ResponseBuilder(ex.getMessage());
-        }
-
+    public DatabaseEntity findDatabase() {
         //返回结果
-        return builder;
+        return generateServiceImpl.findDatabase();
     }
 
     /**
@@ -88,18 +80,9 @@ public class GenerateController extends WebUiController {
      */
     @PostMapping(value = "/getDatabaseTableList")
     @ResponseBody
-    public ResponseBuilder findDatabaseTableList(@RequestBody TableEntity tableEntity) {
-        ResponseBuilder builder;
-        try {
-            List<TreeEntity> tableList = generateServiceImpl.findDatabaseTableList(tableEntity);
-            builder = ResponseBuilder.successBuilder(tableList);
-        } catch (Exception ex) {
-            logUtil.error(ex.getCause(), ex.getMessage());
-            builder = new ResponseBuilder(ex.getMessage());
-        }
-
+    public List<TreeEntity> findDatabaseTableList(@RequestBody TableEntity tableEntity) {
         //返回结果
-        return builder;
+        return generateServiceImpl.findDatabaseTableList(tableEntity);
     }
 
     /**
@@ -110,18 +93,9 @@ public class GenerateController extends WebUiController {
      */
     @PostMapping(value = "/getTableColumnList")
     @ResponseBody
-    public ResponseBuilder findTableColumnList(@RequestBody TableColumnEntity columnEntity) {
-        ResponseBuilder builder;
-        try {
-            List<TableColumnEntity> columnList = generateServiceImpl.findTableColumnList(columnEntity);
-            builder = ResponseBuilder.successBuilder(columnList);
-        } catch (Exception ex) {
-            logUtil.error(ex.getCause(), ex.getMessage());
-            builder = new ResponseBuilder(ex.getMessage());
-        }
-
+    public List<TableColumnEntity> findTableColumnList(@RequestBody TableColumnEntity columnEntity) {
         //返回结果
-        return builder;
+        return generateServiceImpl.findTableColumnList(columnEntity);
     }
 
     /**
@@ -133,21 +107,10 @@ public class GenerateController extends WebUiController {
      */
     @PostMapping(value = "/generate")
     @ResponseBody
-    public ResponseBuilder generate(@RequestBody List<TreeEntity> entityList, String dataBase) {
-        ResponseBuilder builder;
-        try {
-            boolean isGenerate = generateServiceImpl.generateCode(entityList, dataBase);
-            if (isGenerate) {
-                builder = ResponseBuilder.successBuilder("生成成功！");
-            } else {
-                builder = ResponseBuilder.failBuilder("生成失败！");
-            }
-        } catch (Exception ex) {
-            logUtil.error(ex.getCause(), ex.getMessage());
-            builder = ResponseBuilder.failBuilder(ex.getMessage());
+    public void generate(@RequestBody List<TreeEntity> entityList, String dataBase) throws GlobalException {
+        boolean isGenerate = generateServiceImpl.generateCode(entityList, dataBase);
+        if (!isGenerate) {
+            throw new GlobalException("生成失败！");
         }
-
-        //返回结果
-        return builder;
     }
 }
