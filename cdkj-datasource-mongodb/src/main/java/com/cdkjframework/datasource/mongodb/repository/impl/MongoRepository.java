@@ -5,12 +5,13 @@ import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.ComparisonEntity;
 import com.cdkjframework.util.tool.mapper.ComparisonUtils;
 import com.cdkjframework.util.tool.mapper.ReflectionUtils;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
-import com.mongodb.client.result.UpdateResult;
+import org.bson.Document;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -19,7 +20,6 @@ import org.springframework.data.repository.support.PageableExecutionUtils;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -149,6 +149,7 @@ public class MongoRepository implements IMongoRepository {
         return count;
     }
 
+
     /**
      * 查询一条数据
      *
@@ -205,6 +206,22 @@ public class MongoRepository implements IMongoRepository {
         List<T> list = mongoTemplate.find(query, clazz);
         //返结果
         return PageableExecutionUtils.getPage(list, pageable, () -> count);
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param t
+     * @param <T>
+     * @return
+     */
+    public <T> FindIterable<Document> listDocumentPage(T t) {
+        MongoCollection<Document> collection = mongoTemplate.getCollection(t.getClass().getName());
+
+//        Document document = new Document();
+//        document.append("_id", new Document("$gte", startId).append("$lt", endId));
+//        return collection.find(document).projection(new BasicDBObject().append("_id", 0).append("filename", 1));
+        return null;
     }
 
     /**

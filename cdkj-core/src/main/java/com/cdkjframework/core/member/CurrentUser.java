@@ -18,6 +18,7 @@ import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.util.CollectionUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,12 @@ public class CurrentUser {
      * @return 返回 token
      */
     public static String getRequestUserHeader() {
-        return HttpServletUtils.getRequest().getHeader(USER_LOGIN_TOKEN_KEY);
+        HttpServletRequest request = HttpServletUtils.getRequest();
+        if (request == null) {
+            return StringUtils.Empty;
+        } else {
+            return request.getHeader(USER_LOGIN_TOKEN_KEY);
+        }
     }
 
     /**

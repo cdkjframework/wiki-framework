@@ -3,6 +3,7 @@ package com.cdkjframework.web.socket.client;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONValidator;
+import org.java_websocket.enums.ReadyState;
 import org.java_websocket.handshake.ServerHandshake;
 
 import java.net.URI;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.logging.Logger;
 
 /**
  * @ProjectName: cdkj-framework
@@ -20,10 +22,16 @@ import java.util.concurrent.atomic.AtomicReference;
  * @Version: 1.0
  */
 public class WebSocketClient {
+
     /**
      * 请求地址
      */
     private static String wssUri = "wss://wss.langzhiyun.net:10701/pms/socket/webSocket/real_time/4673695";
+
+    /**
+     * 日志
+     */
+    private static Logger logger = Logger.getLogger(WebSocketClient.class.getName());
 
     /**
      * 获取实例
@@ -72,13 +80,17 @@ public class WebSocketClient {
     private final String TYPE = "type";
 
     /**
+     * 是否心跳
+     */
+    private boolean isHearBeat = false;
+
+    /**
      * 构造函数
      */
     private WebSocketClient(WebSocketService service, String url) {
         socketService = service;
         wsUri = url;
     }
-
 
     /**
      * 连接
@@ -107,8 +119,9 @@ public class WebSocketClient {
                 }
                 JSONObject json = JSON.parseObject(message);
                 String type = json.getString(TYPE);
-                if (type != null && type.equals(HEARTBEAT)) {
-                    System.out.println(LocalDateTime.now().toString() + " ---- " + message);
+                if (type != null && type.equals(HEARTBEAT) || !isHearBeat) {
+                    logger.info(LocalDateTime.now().toString() + " ---- " + message);
+                    isHearBeat = true;
                     heartbeat();
                     return;
                 }
@@ -157,11 +170,25 @@ public class WebSocketClient {
      * 重新连接
      */
     private void reconnected() {
+        isHearBeat = false;
         AtomicReference<Timer> timer = new AtomicReference<>(new Timer());
         timer.get().schedule(new TimerTask() {
             @Override
             public void run() {
-                webSocketClient.reconnect();
+                logger.info(LocalDateTime.now().toString() + " ---- 重新连接开始！");
+                if (webSocketClient.isOpen()) {
+                    timer.get().cancel();
+                }
+                try {
+                    if (webSocketClient.getReadyState().equals(ReadyState.NOT_YET_CONNECTED)) {
+                        webSocketClient.connect();
+                    } else if (webSocketClient.getReadyState().equals(ReadyState.CLOSING) ||
+                            webSocketClient.getReadyState().equals(ReadyState.CLOSED)) {
+                        webSocketClient.reconnect();
+                    }
+                } catch (IllegalStateException e) {
+                    logger.severe(e.getMessage());
+                }
             }
         }, 1000 * 60);
     }
@@ -170,14 +197,14 @@ public class WebSocketClient {
     /**
      * 心跳机制
      */
-    public void heartbeat() {
+    private void heartbeat() {
         try {
             AtomicReference<Timer> timer = new AtomicReference<>(new Timer());
             timer.get().schedule(new TimerTask() {
                 @Override
                 public void run() {
                     try {
-                        System.out.println(LocalDateTime.now().toString() + " ---- {\"type\": \"" + HEARTBEAT + "\"}");
+                        logger.info(LocalDateTime.now().toString() + " ---- {\"type\": \"" + HEARTBEAT + "\"}");
                         sendMessage("{\"type\": \"" + HEARTBEAT + "\"}");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -193,21 +220,16 @@ public class WebSocketClient {
     private static WebSocketClient client;
 
     public static void main(String[] args) throws Exception {
-        final boolean[] isHearBeat = {true};
         client = WebSocketClient.getInstance(new WebSocketService() {
             @Override
             public void onMessage(String message) {
-                if (isHearBeat[0]) {
-                    isHearBeat[0] = false;
-                    client.heartbeat();
-                }
-                System.out.println(LocalDateTime.now().toString() + " ---- " + message);
+                logger.info(LocalDateTime.now().toString() + " ---- " + message);
             }
 
             @Override
             public void connected() {
                 try {
-                    client.sendMessage("{\"type\":\"real_time\",\"message\":[{\"olderId\":\"cea102f8-8b91-4c07-9d02-52bd5a4dce31\",\"bracelet\":\"3562211740957370\"}]}");
+                    client.sendMessage("{\"type\":\"real_time\",\"message\":[{\"olderId\":\"cea102f8-8b91-4c07-9d02-52bd5a4dce31\",\"mattress\":\"9ca0525bdda5c\"}]}");
                 } catch (Exception e) {
 
                 }
@@ -215,7 +237,7 @@ public class WebSocketClient {
 
             @Override
             public void disconnect() {
-                System.out.println("disconnect");
+                logger.info("disconnect");
             }
         });
         client.connected();

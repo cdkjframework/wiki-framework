@@ -1,8 +1,11 @@
 package com.cdkjframework.util.network.http;
 
 import com.cdkjframework.util.tool.StringUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +33,12 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     public static HttpServletRequest getRequest() {
-        return getRequestAttributes().getRequest();
+        ServletRequestAttributes attributes = getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        } else {
+            return attributes.getRequest();
+        }
     }
 
     /**
@@ -39,7 +47,12 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     public static HttpServletResponse getResponse() {
-        return getRequestAttributes().getResponse();
+        ServletRequestAttributes attributes = getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        } else {
+            return attributes.getResponse();
+        }
     }
 
     /**
@@ -48,8 +61,11 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     private static ServletRequestAttributes getRequestAttributes() {
-        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) RequestContextHolder
-                .getRequestAttributes();
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        if (attributes == null) {
+            return null;
+        }
+        ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) attributes;
         //设置子线程共享
         RequestContextHolder.setRequestAttributes(servletRequestAttributes, true);
         return servletRequestAttributes;

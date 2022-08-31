@@ -28,6 +28,10 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAdvice {
+
+  /**
+   * 日志
+   */
   private LogUtils logUtils = LogUtils.getLogger(GlobalRequestHandler.class);
 
   /**

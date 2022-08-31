@@ -52,7 +52,6 @@ public class RestApiHeaderInterceptor implements ClientHttpRequestInterceptor {
             ClientHttpResponse response = execution.execute(request, body);
 
             if (response != null) {
-                response.getHeaders();
                 for (String key :
                         headerNameList) {
                     Object header = headers.get(key);

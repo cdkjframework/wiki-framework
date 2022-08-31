@@ -12,20 +12,20 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  @ProjectName:    cdkj-framework
- *  @Package:        com.cdkjframework.cloud.config
- *  @ClassName:      FeignBasicAuthRequestInterceptor
- *  @Description:    java类作用描述
- *  @Author:         zouDeLong
- *  @Version:        1.0
+ * @ProjectName:cdkj-framework
+ * @Package:com.cdkjframework.cloud.config
+ * @ClassName:FeignBasicAuthRequestInterceptor
+ * @Description:java类作用描述
+ * @Author:zouDeLong
+ * @Version:1.0
  */
 @Configuration
-public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
+public class FeignApiInterceptor implements RequestInterceptor {
 
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(FeignBasicAuthRequestInterceptor.class);
+    private LogUtils logUtils = LogUtils.getLogger(FeignApiInterceptor.class);
 
     /**
      * 头部内容
@@ -44,6 +44,12 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
                 logUtils.error("requestTemplate is null");
                 return;
             }
+
+            byte[] body = requestTemplate.body();
+            String url = requestTemplate.url();
+            String method = requestTemplate.method();
+            logUtils.error("通过feign请求接口, method: " + method + ", url: " + url + ", body: " + (body == null ? "" : new String(body)));
+
             HttpServletRequest request = HttpServletUtils.getRequest();
             if (request == null) {
                 logUtils.error("request is null");
@@ -52,6 +58,7 @@ public class FeignBasicAuthRequestInterceptor implements RequestInterceptor {
             for (String key :
                     headerNameList) {
                 String header = request.getHeader(key);
+                logUtils.error("request key：%s， header：%s", key, header);
                 if (StringUtils.isNullAndSpaceOrEmpty(header)) {
                     continue;
                 }
