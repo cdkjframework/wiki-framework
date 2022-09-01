@@ -61,7 +61,8 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     private static ServletRequestAttributes getRequestAttributes() {
-        RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+        RequestAttributes attributes = RequestContextHolder.getRequestAttributes() == null ?
+                RequestContextHolder.currentRequestAttributes() : RequestContextHolder.getRequestAttributes();
         if (attributes == null) {
             return null;
         }
