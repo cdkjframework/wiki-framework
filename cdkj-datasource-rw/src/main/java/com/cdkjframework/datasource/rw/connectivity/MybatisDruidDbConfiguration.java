@@ -7,6 +7,7 @@ import com.cdkjframework.datasource.rw.config.MybatisConfig;
 import com.cdkjframework.datasource.rw.config.MybatisReadConfig;
 import com.cdkjframework.datasource.rw.source.DynamicDataSource;
 import com.cdkjframework.enums.datasource.DynamicDataSourceGlobal;
+import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,9 +125,15 @@ public class MybatisDruidDbConfiguration {
         DruidDataSource datasource = setDataSource();
 
         //设置数据库连接
-        datasource.setUrl(mybatisReadConfig.getUrl());
-        datasource.setUsername(mybatisReadConfig.getUsername());
-        datasource.setPassword(mybatisReadConfig.getPassword());
+        if (dataSourceConfig.isEncryption()) {
+            datasource.setUrl(AesUtils.base64Decrypt(mybatisReadConfig.getUrl()));
+            datasource.setUsername(AesUtils.base64Decrypt(mybatisSqlConfig.getUsername()));
+            datasource.setPassword(AesUtils.base64Decrypt(mybatisSqlConfig.getPassword()));
+        } else {
+            datasource.setUrl(mybatisReadConfig.getUrl());
+            datasource.setUsername(mybatisSqlConfig.getUsername());
+            datasource.setPassword(mybatisSqlConfig.getPassword());
+        }
         if (StringUtils.isNotNullAndEmpty(mybatisReadConfig.getDriverClassName())) {
             datasource.setDriverClassName(mybatisReadConfig.getDriverClassName());
         }

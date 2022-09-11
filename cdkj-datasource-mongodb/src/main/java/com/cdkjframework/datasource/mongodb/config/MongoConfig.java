@@ -20,7 +20,7 @@ import org.springframework.stereotype.Component;
 @Data
 @Configuration
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.cdkj.datasource.mongodb")
+@ConfigurationProperties(prefix = "spring.datasource.mongodb")
 public class MongoConfig {
 
     /**
@@ -42,6 +42,11 @@ public class MongoConfig {
      * 密码
      */
     private String password;
+
+    /**
+     * 是否加密
+     */
+    private boolean encryption;
 
     /**
      * 数据库名称

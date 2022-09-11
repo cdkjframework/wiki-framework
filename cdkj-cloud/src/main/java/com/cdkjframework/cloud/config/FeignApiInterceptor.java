@@ -44,7 +44,6 @@ public class FeignApiInterceptor implements RequestInterceptor {
                 logUtils.error("requestTemplate is null");
                 return;
             }
-
             byte[] body = requestTemplate.body();
             String url = requestTemplate.url();
             String method = requestTemplate.method();

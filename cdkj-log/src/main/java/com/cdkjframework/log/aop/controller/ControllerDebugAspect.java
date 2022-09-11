@@ -18,11 +18,11 @@ import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.*;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -78,6 +78,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
     @Pointcut(value = executionControllerPoint)
     public void doPointcutController() {
     }
+
 
     /**
      * 该注解标注的方法在业务模块代码执行之前执行，其不能阻止业务模块的执行，除非抛出异常；

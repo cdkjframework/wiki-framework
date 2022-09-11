@@ -1,6 +1,7 @@
 package com.cdkjframework.datasource.mongodb.connectivity;
 
 import com.cdkjframework.datasource.mongodb.config.MongoConfig;
+import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.mongodb.*;
@@ -92,9 +93,18 @@ public class MongoConfiguration {
         String uri;
         if (StringUtils.isNotNullAndEmpty(mongodbConfig.getPassword()) &&
                 StringUtils.isNotNullAndEmpty(mongodbConfig.getUserName())) {
-            uri = String.format("mongodb://%s:%s@%s:%d/%s",
-                    mongodbConfig.getUserName(), mongodbConfig.getPassword(), mongodbConfig.getUri(),
-                    mongodbConfig.getPort(), mongodbConfig.getAdminSource());
+
+            if (mongodbConfig.isEncryption()) {
+                uri = String.format("mongodb://%s:%s@%s:%d/%s",
+                        AesUtils.base64Decrypt(mongodbConfig.getUserName()),
+                        AesUtils.base64Decrypt(mongodbConfig.getPassword()),
+                        AesUtils.base64Decrypt(mongodbConfig.getUri()),
+                        mongodbConfig.getPort(), mongodbConfig.getAdminSource());
+            } else {
+                uri = String.format("mongodb://%s:%s@%s:%d/%s",
+                        mongodbConfig.getUserName(), mongodbConfig.getPassword(), mongodbConfig.getUri(),
+                        mongodbConfig.getPort(), mongodbConfig.getAdminSource());
+            }
         } else {
             uri = String.format("mongodb://%s:%d/%s", mongodbConfig.getUri(),
                     mongodbConfig.getPort(), mongodbConfig.getDataSource());

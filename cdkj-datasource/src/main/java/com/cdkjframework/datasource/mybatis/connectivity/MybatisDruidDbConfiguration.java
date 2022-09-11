@@ -3,6 +3,7 @@ package com.cdkjframework.datasource.mybatis.connectivity;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
+import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +54,15 @@ public class MybatisDruidDbConfiguration {
         DruidDataSource datasource = new DruidDataSource();
 
         //设置数据库连接
-        datasource.setUrl(mybatisSqlConfig.getUrl());
-        datasource.setUsername(mybatisSqlConfig.getUsername());
-        datasource.setPassword(mybatisSqlConfig.getPassword());
+        if (dataSourceConfig.isEncryption()) {
+            datasource.setUrl(AesUtils.base64Decrypt(mybatisSqlConfig.getUrl()));
+            datasource.setUsername(AesUtils.base64Decrypt(mybatisSqlConfig.getUsername()));
+            datasource.setPassword(AesUtils.base64Decrypt(mybatisSqlConfig.getPassword()));
+        } else {
+            datasource.setUrl(mybatisSqlConfig.getUrl());
+            datasource.setUsername(mybatisSqlConfig.getUsername());
+            datasource.setPassword(mybatisSqlConfig.getPassword());
+        }
         if (StringUtils.isNotNullAndEmpty(mybatisSqlConfig.getDriverClassName())) {
             datasource.setDriverClassName(mybatisSqlConfig.getDriverClassName());
         }

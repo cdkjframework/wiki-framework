@@ -20,7 +20,7 @@ import java.util.concurrent.TimeUnit;
  */
 
 @Configuration
-public class FeignHystrixConfig {
+public class FeignHystrixConfig extends FeignApiInterceptor {
 
     /**
      * feign Retryer
@@ -40,7 +40,7 @@ public class FeignHystrixConfig {
     @Bean
     public Request.Options feignOption() {
         int timeoutMillis = IntegerConsts.ONE_HUNDRED * IntegerConsts.ONE_HUNDRED * IntegerConsts.SEVEN;
-        Request.Options option = new Request.Options(timeoutMillis, timeoutMillis);
+        Request.Options option = new Request.Options(timeoutMillis, TimeUnit.MILLISECONDS, timeoutMillis, TimeUnit.MILLISECONDS, true);
         return option;
     }
 
