@@ -1,14 +1,10 @@
 package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -19,9 +15,7 @@ import java.util.Date;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public abstract class AbstractUserEntity extends BaseEntity {
 
     /**

@@ -1,8 +1,6 @@
 package com.cdkjframework.entity.user;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +14,7 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class UserEntity extends AbstractUserEntity {
 
     /**

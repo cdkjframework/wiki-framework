@@ -34,6 +34,30 @@ public class ResourceEntity extends BaseEntity {
      */
     @Column(name = "name")
     private String name;
+
+    /**
+     * ICON 路径或 icon svg 图片
+     */
+    @Column(name = "icon")
+    private String icon;
+
+    /**
+     * 文件路径
+     */
+    @Column(name = "view_path")
+    private String viewPath;
+
+    /**
+     * meta 信息
+     */
+    @Column(name = "meta")
+    private String meta;
+
+    /**
+     * 是否隐藏
+     */
+    @Column(name = "hide")
+    private boolean hide;
     /**
      * 资源编码
      */
