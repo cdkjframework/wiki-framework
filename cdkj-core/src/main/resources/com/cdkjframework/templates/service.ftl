@@ -10,7 +10,13 @@ import com.cdkjframework.util.tool.CopyUtils;
 
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;
+
+<#if myBatis>
 import ${packageName}.mapper.${className}Mapper;
+</#if>
+<#if jpa>
+import ${packageName}.repository.${className}Repository;
+</#if>
 import ${packageName}.service.${className}Service;
 
 import com.github.pagehelper.Page;
@@ -40,10 +46,18 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     private static LogUtils logUtil = LogUtils.getLogger(${className}ServiceImpl.class);
 
-    /**
-     * ${description} mapper
-     */
-    private final ${className}Mapper ${classLowName}Mapper;
+    <#if myBatis>
+        /**
+        * ${description} mapper
+        */
+        private final ${className}Mapper ${classLowName}Mapper;
+    </#if>
+    <#if jpa>
+        /**
+        * ${description} repository
+        */
+        private final ${className}Repository ${classLowName}Repository;
+    </#if>
 
     /**
      * 修改数据
@@ -56,7 +70,13 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setEditUserId(CurrentUser.getUserId());
         ${classLowName}Dto.setEditUserName(CurrentUser.getUserName());
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+
+    <#if myBatis && !jpa>
         ${classLowName}Mapper.modify(entity);
+    </#if>
+    <#if jpa>
+        ${classLowName}Repository.save(entity)
+    </#if>
     }
 
     /**
@@ -72,7 +92,12 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setAddUserName(CurrentUser.getUserName());
         ${classLowName}Dto.setDeleted(IntegerConsts.ZERO);
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
-        ${classLowName}Mapper.insert(entity);
+        <#if myBatis && !jpa>
+            ${classLowName}Mapper.insert(entity);
+        </#if>
+        <#if jpa>
+            ${classLowName}Repository.save(entity)
+        </#if>
     }
     /**
      * 删除数据
@@ -82,7 +107,12 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     public void delete${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+    <#if myBatis && !jpa>
         ${classLowName}Mapper.delete(entity);
+    </#if>
+    <#if jpa>
+        ${classLowName}Repository.delete(entity)
+    </#if>
     }
 
     /**

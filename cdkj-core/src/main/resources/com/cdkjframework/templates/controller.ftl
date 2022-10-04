@@ -26,7 +26,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/${classLowName}")
+@RequestMapping("/${uri}")
 @RequiredArgsConstructor
 @Api(tags="${description}")
 public class ${className}Controller extends WebUiController{

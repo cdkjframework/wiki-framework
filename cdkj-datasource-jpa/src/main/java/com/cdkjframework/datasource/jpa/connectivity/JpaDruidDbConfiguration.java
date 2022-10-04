@@ -1,6 +1,7 @@
 package com.cdkjframework.datasource.jpa.connectivity;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.jpa.config.JpaConfig;
 import com.cdkjframework.util.encrypts.AesUtils;
@@ -44,6 +45,11 @@ public class JpaDruidDbConfiguration {
     private final DataSourceConfig dataSourceConfig;
 
     /**
+     * 自定义配置
+     */
+    private final CustomConfig customConfig;
+
+    /**
      * 加载数据源
      *
      * @return DataSource
@@ -55,9 +61,10 @@ public class JpaDruidDbConfiguration {
         DruidDataSource datasource = new DruidDataSource();
         //设置数据库连接
         if (dataSourceConfig.isEncryption()) {
-            datasource.setUrl(AesUtils.base64Decrypt(jpaReadConfig.getUrl()));
-            datasource.setUsername(AesUtils.base64Decrypt(jpaReadConfig.getUsername()));
-            datasource.setPassword(AesUtils.base64Decrypt(jpaReadConfig.getPassword()));
+            AesUtils aes = new AesUtils(customConfig);
+            datasource.setUrl(aes.base64Decrypt(jpaReadConfig.getUrl()));
+            datasource.setUsername(aes.base64Decrypt(jpaReadConfig.getUsername()));
+            datasource.setPassword(aes.base64Decrypt(jpaReadConfig.getPassword()));
         } else {
             datasource.setUrl(jpaReadConfig.getUrl());
             datasource.setUsername(jpaReadConfig.getUsername());

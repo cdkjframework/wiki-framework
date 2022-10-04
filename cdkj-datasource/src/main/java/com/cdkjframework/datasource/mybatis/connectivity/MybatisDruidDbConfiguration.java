@@ -1,11 +1,13 @@
 package com.cdkjframework.datasource.mybatis.connectivity;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +25,7 @@ import java.sql.SQLException;
  * @Version: 1.0
  */
 @Component
+@RequiredArgsConstructor
 public class MybatisDruidDbConfiguration {
 
     /**
@@ -33,14 +36,16 @@ public class MybatisDruidDbConfiguration {
     /**
      * 读取配置
      */
-    @Autowired
-    private MybatisConfig mybatisSqlConfig;
+    private final MybatisConfig mybatisSqlConfig;
 
     /**
      * 基础配置
      */
-    @Autowired
-    private DataSourceConfig dataSourceConfig;
+    private final DataSourceConfig dataSourceConfig;
+    /**
+     * 自定义配置
+     */
+    private final CustomConfig customConfig;
 
     /**
      * 加载数据源
@@ -55,9 +60,10 @@ public class MybatisDruidDbConfiguration {
 
         //设置数据库连接
         if (dataSourceConfig.isEncryption()) {
-            datasource.setUrl(AesUtils.base64Decrypt(mybatisSqlConfig.getUrl()));
-            datasource.setUsername(AesUtils.base64Decrypt(mybatisSqlConfig.getUsername()));
-            datasource.setPassword(AesUtils.base64Decrypt(mybatisSqlConfig.getPassword()));
+            AesUtils aes = new AesUtils(customConfig);
+            datasource.setUrl(aes.base64Decrypt(mybatisSqlConfig.getUrl()));
+            datasource.setUsername(aes.base64Decrypt(mybatisSqlConfig.getUsername()));
+            datasource.setPassword(aes.base64Decrypt(mybatisSqlConfig.getPassword()));
         } else {
             datasource.setUrl(mybatisSqlConfig.getUrl());
             datasource.setUsername(mybatisSqlConfig.getUsername());

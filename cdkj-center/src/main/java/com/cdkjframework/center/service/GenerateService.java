@@ -1,10 +1,10 @@
 package com.cdkjframework.center.service;
 
-import com.cdkjframework.entity.generate.template.DatabaseEntity;
-import com.cdkjframework.entity.generate.template.TableColumnEntity;
-import com.cdkjframework.entity.generate.template.TableEntity;
-import com.cdkjframework.entity.generate.template.TreeEntity;
+import com.cdkjframework.entity.generate.template.*;
+import com.cdkjframework.util.tool.HostUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -17,6 +17,43 @@ import java.util.List;
  */
 
 public interface GenerateService {
+    /**
+     * 默认值
+     */
+    List<String> DEFAULT_ACTIVE = Arrays.asList("dev", "test");
+
+    /**
+     * 分割符
+     */
+    String DIVISION = HostUtils.getOs().startsWith("win") ? "\\" : "/";
+    /**
+     * JAP 模板
+     */
+    String JPA = "repository";
+    /**
+     * JAP 模板
+     */
+    List<String> MY_BATIS = Arrays.asList("mapper", "mapperXml", "extendXml");
+
+    /**
+     * 模板默认值
+     */
+    List<TemplateEntity> TEMPLATE_LIST = new ArrayList<TemplateEntity>() {
+        {
+            add(new TemplateEntity("vo", DIVISION + "vo" + DIVISION, "Vo.java"));
+            add(new TemplateEntity("dto", DIVISION + "dto" + DIVISION, "Dto.java"));
+            add(new TemplateEntity("entity", DIVISION + "entity" + DIVISION, "Entity.java"));
+            add(new TemplateEntity("extend", DIVISION + "entity" + DIVISION + "extend" + DIVISION, "ExtendEntity.java"));
+            add(new TemplateEntity("controller", DIVISION + "web" + DIVISION + "controller" + DIVISION, "Controller.java"));
+            add(new TemplateEntity("service", DIVISION + "service" + DIVISION + "impl" + DIVISION, "ServiceImpl.java"));
+            add(new TemplateEntity("interface", DIVISION + "service" + DIVISION, "Service.java"));
+            add(new TemplateEntity("repository", DIVISION + "repository" + DIVISION, "Repository.java"));
+            add(new TemplateEntity("repositoryInt", DIVISION + "repository" + DIVISION, "Repository.java"));
+            add(new TemplateEntity("mapper", DIVISION + "mapper" + DIVISION, "Mapper.java"));
+            add(new TemplateEntity("mapperXml", DIVISION + "mapper" + DIVISION + "xml" + DIVISION, "Mapper.xml"));
+            add(new TemplateEntity("extendXml", DIVISION + "mapper" + DIVISION + "xml" + DIVISION + "extend" + DIVISION, "ExtendMapper.xml"));
+        }
+    };
 
     /**
      * 获取数据库

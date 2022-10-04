@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.generate.template;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,10 +13,7 @@ import lombok.ToString;
  * @Author: xiaLin
  * @Version: 1.0
  */
-
-@Getter
-@Setter
-@ToString
+@Data
 public class TableColumnEntity {
 
     /**
