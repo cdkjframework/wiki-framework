@@ -4,6 +4,7 @@ import com.cdkjframework.config.MailConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.exceptions.GlobalException;
 import com.sun.mail.util.MailSSLSocketFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -29,8 +30,8 @@ import java.util.Properties;
  * @Version: 1.0
  */
 @Component
-@Order(Integer.MIN_VALUE + 1)
-public class SendMailUtils implements ApplicationRunner {
+@RequiredArgsConstructor
+public class SendMailUtils {
 
     /**
      * 邮件配置
@@ -47,6 +48,7 @@ public class SendMailUtils implements ApplicationRunner {
      */
     public SendMailUtils(MailConfig config) {
         mailConfig = config;
+        run();
     }
 
     /**
@@ -127,12 +129,8 @@ public class SendMailUtils implements ApplicationRunner {
 
     /**
      * 创建引用
-     *
-     * @param args 参数
-     * @throws Exception 异常信息
      */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run() {
         if (StringUtils.isNullAndSpaceOrEmpty(mailConfig.getHost()) ||
                 StringUtils.isNullAndSpaceOrEmpty(mailConfig.getFromMail())) {
             return;
