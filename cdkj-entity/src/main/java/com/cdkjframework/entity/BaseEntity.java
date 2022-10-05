@@ -1,6 +1,7 @@
 package com.cdkjframework.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -19,9 +20,7 @@ import java.time.LocalDateTime;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
