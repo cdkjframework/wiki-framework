@@ -4,6 +4,7 @@ import com.cdkjframework.config.MailConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.util.log.LogUtils;
 import com.sun.mail.util.MailSSLSocketFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
@@ -34,6 +35,10 @@ import java.util.Properties;
 @Component
 @RequiredArgsConstructor
 public class SendMailUtils {
+    /**
+     * 日志
+     */
+    private static LogUtils logUtils = LogUtils.getLogger(SendMailUtils.class);
 
     /**
      * 邮件配置
@@ -158,7 +163,7 @@ public class SendMailUtils {
                 socketFactory = new MailSSLSocketFactory();
                 socketFactory.setTrustAllHosts(true);
             } catch (GeneralSecurityException e1) {
-                e1.printStackTrace();
+                logUtils.error(e1);
             }
             properties.put("mail.smtp.ssl.socketFactory", socketFactory);
         }
