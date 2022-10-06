@@ -2,6 +2,7 @@ package com.cdkjframework.util.tool;
 
 import com.cdkjframework.config.MailConfig;
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.sun.mail.util.MailSSLSocketFactory;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -59,7 +61,7 @@ public class SendMailUtils {
      * @param message 信息
      */
     public static void sendMail(List<String> toMail, String subject, String message) throws IOException, MessagingException, GlobalException {
-        sendMail(toMail, subject, message, null, null, null);
+        sendMail(toMail, subject, message, new ArrayList<>(), StringUtils.NullObject, null);
     }
 
     /**
@@ -70,8 +72,8 @@ public class SendMailUtils {
      * @param message 信息
      * @param ccMail  抄送邮箱
      */
-    public static void sendMail(List<String> toMail, String subject, String message, List<StringUtils> ccMail) throws IOException, MessagingException, GlobalException {
-        sendMail(toMail, subject, message, ccMail, null, null);
+    public static void sendMail(List<String> toMail, String subject, String message, List<String> ccMail) throws IOException, MessagingException, GlobalException {
+        sendMail(toMail, subject, message, ccMail, StringUtils.NullObject, null);
     }
 
     /**
@@ -85,7 +87,7 @@ public class SendMailUtils {
      * @throws GlobalException    公共异常信息
      */
     public static void sendMail(List<String> toMail, String subject, String message, String fileName, InputStream inputStream) throws IOException, MessagingException, GlobalException {
-        sendMail(toMail, subject, message, null, fileName, inputStream);
+        sendMail(toMail, subject, message, new ArrayList<>(), fileName, inputStream);
     }
 
     /**
@@ -102,7 +104,7 @@ public class SendMailUtils {
      * @throws GlobalException    公共异常信息
      */
     public static void sendMail(List<String> toMail, String subject, String message,
-                                List<StringUtils> ccMail, String fileName, InputStream inputStream) throws MessagingException, IOException, GlobalException {
+                                List<String> ccMail, String fileName, InputStream inputStream) throws MessagingException, IOException, GlobalException {
         if (mailSender == null) {
             throw new GlobalException("未配置邮件信息");
         }
@@ -116,10 +118,10 @@ public class SendMailUtils {
         messageHelper.setSubject(subject);
         messageHelper.setText(message, multipart);
         if (StringUtils.isNotNullAndEmpty(fileName) &&
-                inputStream != null && inputStream.available() > 0) {
+                inputStream != null && inputStream.available() > IntegerConsts.ZERO) {
             messageHelper.addAttachment(fileName, (InputStreamSource) inputStream);
         }
-        if (ccMail != null && ccMail.size() > 0) {
+        if (ccMail != null && ccMail.size() > IntegerConsts.ZERO) {
             messageHelper.setCc(ccMail.toArray(new String[ccMail.size()]));
         }
 
