@@ -146,6 +146,6 @@ public class RedisLettuceLock extends AbstractLettuceLock {
      * @return 返回结果
      */
     private boolean isClusterReactive() {
-        return redisReactiveCommands == null;
+        return clusterReactiveCommands.isOpen();
     }
 }
