@@ -33,11 +33,15 @@ public class HttpServletUtils {
      * @return 返回结果
      */
     public static HttpServletRequest getRequest() {
-        ServletRequestAttributes attributes = getRequestAttributes();
-        if (attributes == null) {
+        try {
+            ServletRequestAttributes attributes = getRequestAttributes();
+            if (attributes == null) {
+                return null;
+            } else {
+                return attributes.getRequest();
+            }
+        } catch (Exception e) {
             return null;
-        } else {
-            return attributes.getRequest();
         }
     }
 
