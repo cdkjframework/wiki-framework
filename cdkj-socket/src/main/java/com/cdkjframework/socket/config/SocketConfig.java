@@ -18,7 +18,7 @@ import java.util.List;
 @Data
 @Component
 @Configuration
-@ConfigurationProperties(prefix = "spring.socket")
+@ConfigurationProperties(prefix = "spring.custom.socket")
 public class SocketConfig {
 
     /**
