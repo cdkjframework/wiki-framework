@@ -54,12 +54,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return null;
             }
-            try {
-                return java.util.Base64.getDecoder().decode(inputData);
-            } catch (Exception e) {
-                logUtil.error(e.getCause(), e.getMessage());
-                return Base64.decodeBase64(inputData);
-            }
+            return new Base64().decode(inputData);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -95,12 +90,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return null;
             }
-            try {
-                return java.util.Base64.getDecoder().decode(inputData);
-            } catch (Exception e) {
-                logUtil.error(e.getCause(), e.getMessage());
-                return Base64.decodeBase64(inputData);
-            }
+            return Base64.decodeBase64(inputData);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -134,12 +124,7 @@ public class Base64Utils {
                 return null;
             }
             byte[] enBytes = inputData.getBytes(Charset.defaultCharset());
-            try {
-                bytes = java.util.Base64.getEncoder().encode(enBytes);
-            } catch (Exception e) {
-                logUtil.error(e.getCause(), e.getMessage());
-                bytes = Base64.encodeBase64(enBytes);
-            }
+            bytes = Base64.encodeBase64(enBytes);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
             bytes = null;
