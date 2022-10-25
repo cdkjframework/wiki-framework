@@ -44,10 +44,6 @@ public class FeignApiInterceptor implements RequestInterceptor {
                 logUtils.error("requestTemplate is null");
                 return;
             }
-            byte[] body = requestTemplate.body();
-            String url = requestTemplate.url();
-            String method = requestTemplate.method();
-            logUtils.error("通过feign请求接口, method: " + method + ", url: " + url + ", body: " + (body == null ? "" : new String(body)));
 
             HttpServletRequest request = HttpServletUtils.getRequest();
             if (request == null) {
@@ -57,7 +53,6 @@ public class FeignApiInterceptor implements RequestInterceptor {
             for (String key :
                     headerNameList) {
                 String header = request.getHeader(key);
-                logUtils.error("request key：%s， header：%s", key, header);
                 if (StringUtils.isNullAndSpaceOrEmpty(header)) {
                     continue;
                 }

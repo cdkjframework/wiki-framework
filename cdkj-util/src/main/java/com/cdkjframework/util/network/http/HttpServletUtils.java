@@ -71,8 +71,12 @@ public class HttpServletUtils {
             return null;
         }
         ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes) attributes;
-        //设置子线程共享
-        RequestContextHolder.setRequestAttributes(servletRequestAttributes, true);
+        try {
+            //设置子线程共享
+            RequestContextHolder.setRequestAttributes(servletRequestAttributes, true);
+        } catch (Exception e) {
+
+        }
         return servletRequestAttributes;
     }
 
