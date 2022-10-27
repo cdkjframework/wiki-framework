@@ -8,6 +8,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @ProjectName: hongtu.slps.bms
  * @Package: com.cdkjframework.core.config.api
@@ -29,6 +31,11 @@ public class SwaggerConfig {
      * 基本包
      */
     private String basePackage;
+
+    /**
+     * 决定
+     */
+    private List<String> resolve;
 
     /**
      * 头部
