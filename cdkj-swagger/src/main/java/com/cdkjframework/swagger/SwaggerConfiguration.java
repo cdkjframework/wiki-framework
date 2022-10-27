@@ -86,20 +86,20 @@ public class SwaggerConfiguration {
         }
         List<String> resolve = swaggerConfig.getResolve();
         AlternateTypeRule[] alternateTypeRules = null;
-//        if (resolve != null && resolve.size() > IntegerConsts.ZERO) {
-//            alternateTypeRules = new AlternateTypeRule[resolve.size()];
-//            for (String key :
-//                    resolve) {
-//                try {
-//                    Type type = Class.forName(key);
-//                    alternateTypeRules[resolve.indexOf(key)] = AlternateTypeRules.newRule(
-//                            typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
-//                            typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
-//                } catch (ClassNotFoundException e) {
-//
-//                }
-//            }
-//        }
+        if (resolve != null && resolve.size() > IntegerConsts.ZERO) {
+            alternateTypeRules = new AlternateTypeRule[resolve.size()];
+            for (String key :
+                    resolve) {
+                try {
+                    Type type = Class.forName(key);
+                    alternateTypeRules[resolve.indexOf(key)] = AlternateTypeRules.newRule(
+                            typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
+                            typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
+                } catch (ClassNotFoundException e) {
+
+                }
+            }
+        }
         final boolean hidden = swaggerConfig.getHidden();
         for (SwaggerApiInfoEntity entity :
                 apiInfoEntityList) {
@@ -118,14 +118,14 @@ public class SwaggerConfiguration {
                             pars.add(builderPar.build());
                         }
                         Docket result;
-                        ApiSelectorBuilder builder = new Docket(DocumentationType.SWAGGER_2)
-                                .groupName(entity.getGroupName())
-                                .select().apis(RequestHandlerSelectors
-                                        .basePackage(entity.getBasePackage()));
-
+                        ApiSelectorBuilder builder;
+                        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                                .groupName(entity.getGroupName());
                         if (finalAlternateTypeRules != null) {
-                            builder = builder.build().alternateTypeRules(finalAlternateTypeRules).select();
+                            docket = docket.alternateTypeRules(finalAlternateTypeRules);
                         }
+                        builder = docket.select().apis(RequestHandlerSelectors
+                                .basePackage(entity.getBasePackage()));
                         if (hidden) {
                             result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
                         } else {
