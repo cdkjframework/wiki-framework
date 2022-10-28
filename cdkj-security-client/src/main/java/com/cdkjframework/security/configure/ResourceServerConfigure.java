@@ -1,12 +1,16 @@
 package com.cdkjframework.security.configure;
 
 import com.cdkjframework.config.CustomConfig;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
+import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.List;
 
 @Configuration
 @EnableResourceServer
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
 
@@ -31,12 +36,45 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
     private final CustomConfig customConfig;
 
     /**
-     * 构造函数
-     *
-     * @param customConfig 配置
+     * 客户端ID
      */
-    public ResourceServerConfigure(CustomConfig customConfig) {
-        this.customConfig = customConfig;
+    @Value("${security.oauth2.client.client-id}")
+    private String clientId;
+
+    /**
+     * 受权
+     */
+    @Value("${security.oauth2.client.client-secret}")
+    private String secret;
+
+    /**
+     * 地址
+     */
+    @Value("${security.oauth2.authorization.check-token-access}")
+    private String checkTokenEndpointUrl;
+
+    /**
+     * 令牌服务
+     *
+     * @return 返回结果
+     */
+    public RemoteTokenServices tokenService() {
+        RemoteTokenServices tokenService = new RemoteTokenServices();
+        tokenService.setClientId(clientId);
+        tokenService.setClientSecret(secret);
+        tokenService.setCheckTokenEndpointUrl(checkTokenEndpointUrl);
+        return tokenService;
+    }
+
+    /**
+     * 资源配置
+     *
+     * @param resources 资源
+     * @throws Exception 异常信息
+     */
+    @Override
+    public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
+        resources.tokenServices(tokenService());
     }
 
     /**
