@@ -49,7 +49,7 @@ public class WebSocketHeartbeatHandler extends ChannelInboundHandlerAdapter {
                 // 进入读写空闲
                 case ALL_IDLE:
                     // 空闲60s之后触发 (心跳包丢失)
-                    Integer counter = WebSocketUtils.onlineChannelsHeart.get(channelId) + 1;
+                    Integer counter = WebSocketUtils.onlineChannelsHeart.get(channelId) + IntegerConsts.ONE;
                     // 重置心跳丢失次数
                     WebSocketUtils.onlineChannelsHeart.replace(channelId, counter);
                     logUtils.info("通道【" + channelId + "】丢失了第 " + counter + " 个心跳包");
