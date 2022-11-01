@@ -86,7 +86,6 @@ public class MongoConfiguration {
      *
      * @return 返回mongo客户端
      */
-    @Bean
     public MongoClient mongoDbClusterFactory() {
         String uri;
         if (StringUtils.isNotNullAndEmpty(mongodbConfig.getPassword()) &&
@@ -95,9 +94,9 @@ public class MongoConfiguration {
             if (mongodbConfig.isEncryption()) {
                 AesUtils aes = new AesUtils(customConfig);
                 uri = String.format("mongodb://%s:%s@%s:%d/%s",
-                        aes.base64Decrypt(mongodbConfig.getUserName()),
-                        aes.base64Decrypt(mongodbConfig.getPassword()),
-                        aes.base64Decrypt(mongodbConfig.getUri()),
+                        AesUtils.base64Decrypt(mongodbConfig.getUserName()),
+                        AesUtils.base64Decrypt(mongodbConfig.getPassword()),
+                        AesUtils.base64Decrypt(mongodbConfig.getUri()),
                         mongodbConfig.getPort(), mongodbConfig.getAdminSource());
             } else {
                 uri = String.format("mongodb://%s:%s@%s:%d/%s",
@@ -126,7 +125,6 @@ public class MongoConfiguration {
      *
      * @return 客户端
      */
-    @Bean
     public MongoClient mongoClient() {
         MongoClientSettings.Builder builder = MongoClientSettings.builder();
         ServerAddress serverAddress = null;
@@ -135,9 +133,9 @@ public class MongoConfiguration {
             MongoCredential credential;
             if (mongodbConfig.isEncryption()) {
                 AesUtils aes = new AesUtils(customConfig);
-                serverAddress = new ServerAddress(aes.base64Decrypt(mongodbConfig.getUri()), mongodbConfig.getPort());
-                credential = MongoCredential.createCredential(aes.base64Decrypt(mongodbConfig.getUserName()),
-                        mongodbConfig.getDataSource(), aes.base64Decrypt(mongodbConfig.getPassword()).toCharArray());
+                serverAddress = new ServerAddress(AesUtils.base64Decrypt(mongodbConfig.getUri()), mongodbConfig.getPort());
+                credential = MongoCredential.createCredential(AesUtils.base64Decrypt(mongodbConfig.getUserName()),
+                        mongodbConfig.getDataSource(), AesUtils.base64Decrypt(mongodbConfig.getPassword()).toCharArray());
             } else {
                 credential = MongoCredential.createCredential(mongodbConfig.getUserName(), mongodbConfig.getDataSource(), mongodbConfig.getPassword().toCharArray());
             }
