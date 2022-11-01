@@ -11,6 +11,7 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Component;
  **/
 @Component
 @Configuration
+@RequiredArgsConstructor
 public class WebSocketServer implements ApplicationRunner {
 
     /**
@@ -43,16 +45,6 @@ public class WebSocketServer implements ApplicationRunner {
      * 服务接口
      */
     private final WebSocket webSocket;
-
-    /**
-     * 构造函数
-     *
-     * @param webSocketConfig 配置
-     */
-    public WebSocketServer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
-        this.webSocketConfig = webSocketConfig;
-        this.webSocket = webSocket;
-    }
 
     /**
      * 启动方法
