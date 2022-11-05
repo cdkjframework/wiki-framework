@@ -30,6 +30,10 @@ public class FileEntity {
      * 压缩文件保存路径（可为空）
      */
     private String filePath;
+    /**
+     * 需要压缩文件的根目录
+     */
+    private String rootPath;
 
     /**
      * 需要压缩的文件
