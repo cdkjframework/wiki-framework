@@ -1,8 +1,6 @@
 package com.cdkjframework.security.configure;
 
-import com.cdkjframework.config.CustomConfig;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -33,25 +31,7 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
     /**
      * 配置信息
      */
-    private final CustomConfig customConfig;
-
-    /**
-     * 客户端ID
-     */
-    @Value("${security.oauth2.client.client-id}")
-    private String clientId;
-
-    /**
-     * 受权
-     */
-    @Value("${security.oauth2.client.client-secret}")
-    private String secret;
-
-    /**
-     * 地址
-     */
-    @Value("${security.oauth2.authorization.check-token-access}")
-    private String checkTokenEndpointUrl;
+    private final SecurityConfig securityConfig;
 
     /**
      * 令牌服务
@@ -60,9 +40,9 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
      */
     public RemoteTokenServices tokenService() {
         RemoteTokenServices tokenService = new RemoteTokenServices();
-        tokenService.setClientId(clientId);
-        tokenService.setClientSecret(secret);
-        tokenService.setCheckTokenEndpointUrl(checkTokenEndpointUrl);
+        tokenService.setClientId(securityConfig.getClientId());
+        tokenService.setClientSecret(securityConfig.getSecret());
+        tokenService.setCheckTokenEndpointUrl(securityConfig.getTokenEndpointUrl());
         return tokenService;
     }
 
@@ -85,7 +65,7 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
      */
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        List<String> patternsUrls = customConfig.getPatternsUrls();
+        List<String> patternsUrls = securityConfig.getFilters();
         String[] patterns = patternsUrls.toArray(new String[patternsUrls.size()]);
         http
                 .csrf().disable()
