@@ -177,4 +177,8 @@ public class CustomConfig {
      * 脱敏
      */
     private boolean desensitization;
+    /**
+     * redis 日志主题
+     */
+    private String redisLogTopic = "CHANNEL-BodyMessage-Log";
 }

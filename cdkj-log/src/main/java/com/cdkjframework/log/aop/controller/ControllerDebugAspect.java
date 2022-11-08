@@ -11,11 +11,13 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.log.aop.AbstractBaseAopAspect;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.*;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
@@ -41,17 +43,13 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class ControllerDebugAspect extends AbstractBaseAopAspect {
 
     /**
      * 日志
      */
     private LogUtils logUtils = LogUtils.getLogger(ControllerDebugAspect.class);
-
-    /**
-     * 日志服务
-     */
-    private final IMongoRepository mongoDbRepository;
 
     /**
      * 自定义配置
@@ -63,14 +61,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
      */
     @Resource(name = "cdkjExecutor")
     private Executor cdkjExecutor;
-
-    /**
-     * 构造函数
-     */
-    public ControllerDebugAspect(CustomConfig customConfig, IMongoRepository mongoDbRepository) {
-        this.customConfig = customConfig;
-        this.mongoDbRepository = mongoDbRepository;
-    }
 
     /**
      * 切入点
@@ -106,6 +96,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         //获取连接点签名的方法名
         String methodName = joinPoint.getSignature().getName();
         LogRecordDto logRecordDto = new LogRecordDto();
+        logRecordDto.setAddTime(System.currentTimeMillis());
         logRecordDto.setMethod(methodName);
         //获取连接点目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
@@ -140,18 +131,15 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
                 logRecordDto.setExecutionState(IntegerConsts.TWENTY);
                 logRecordDto.setResultErrorMessage(ex.getMessage());
             }
-            if (isLog) {
-                logRecordDto.setResultTime(System.currentTimeMillis());
-                cdkjExecutor.execute(new LogQueue(logRecordDto));
-            }
             logUtils.error(ex, logRecordDto.getId() + ":" + ex.getMessage());
             throw new GlobalRuntimeException((Exception) ex, ex.getMessage());
+        } finally {
+            if (isLog) {
+                logRecordDto.setResultTime(System.currentTimeMillis());
+                RedisUtils.publish(customConfig.getRedisLogTopic(), JsonUtils.objectToJsonString(logRecordDto));
+            }
+            return result;
         }
-        if (isLog) {
-            logRecordDto.setResultTime(System.currentTimeMillis());
-            cdkjExecutor.execute(new LogQueue(logRecordDto));
-        }
-        return result;
     }
 
     /**
@@ -175,10 +163,13 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         try {
             UserEntity user = CurrentUser.getCurrentUser();
             HttpServletRequest request = HttpServletUtils.getRequest();
-            final String servletPath = request.getServletPath();
-            logRecordDto.setServletPath(servletPath);
-            AnalysisUtils.requestHandle(logRecordDto);
-            logRecordDto.setServerHost(request.getScheme() + "://" + request.getServerName());
+            final String servletPath = request == null ? StringUtils.Empty : request.getServletPath();
+            if (request != null) {
+                logRecordDto.setServletPath(servletPath);
+                AnalysisUtils.requestHandle(logRecordDto);
+                String serverHost = request.getScheme() + StringUtils.COLON + StringUtils.BACKSLASH + StringUtils.BACKSLASH + request.getServerName();
+                logRecordDto.setServerHost(serverHost);
+            }
             if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
                 List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
                         .filter(f -> servletPath.contains(f))
@@ -196,7 +187,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
             logRecordDto.setUserName(user.getLoginName());
             logRecordDto.setClientIp(HttpServletUtils.getRemoteAddr());
 
-            String organizationCode = "-" + user.getOrganizationCode();
+            String organizationCode = StringUtils.HORIZONTAL + user.getOrganizationCode();
             final String LOG_PREFIX = "LOG" + organizationCode;
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
             logRecordDto.setSerialNumber(number.replace(organizationCode, StringUtils.Empty));
@@ -209,40 +200,5 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         }
         // 返回不需要记录日志
         return true;
-    }
-
-    /**
-     * 日志队列
-     */
-    private class LogQueue implements Runnable {
-
-        /**
-         * 日志信息
-         */
-        private LogRecordDto logRecordDto;
-
-        /**
-         * 构造函数
-         */
-        public LogQueue(LogRecordDto logRecordDto) {
-            this.logRecordDto = logRecordDto;
-        }
-
-        /**
-         * 线程执行
-         */
-        @Override
-        public void run() {
-            try {
-                AssertUtils.isEmptyMessage(logRecordDto, "断言空日志信息");
-                logRecordDto.setParameter(GzipUtils.compress(logRecordDto.getParameter()));
-                logRecordDto.setResult(GzipUtils.compress(logRecordDto.getResult()));
-                logRecordDto.setResultErrorMessage(GzipUtils.compress(logRecordDto.getResultErrorMessage()));
-                mongoDbRepository.save(logRecordDto);
-            } catch (Exception ex) {
-                logUtils.error("写入日志出错：");
-                logUtils.error(ex.getStackTrace(), ex.getMessage());
-            }
-        }
     }
 }
