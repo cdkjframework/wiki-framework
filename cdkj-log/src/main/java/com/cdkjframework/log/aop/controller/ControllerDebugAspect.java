@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
-import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.entity.user.UserEntity;
@@ -23,8 +22,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -96,7 +93,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         //获取连接点签名的方法名
         String methodName = joinPoint.getSignature().getName();
         LogRecordDto logRecordDto = new LogRecordDto();
-        logRecordDto.setAddTime(System.currentTimeMillis());
         logRecordDto.setMethod(methodName);
         //获取连接点目标类名
         String targetName = joinPoint.getTarget().getClass().getName();
