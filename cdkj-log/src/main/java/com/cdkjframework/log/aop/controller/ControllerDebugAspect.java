@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.member.CurrentUser;
+import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.log.aop.AbstractBaseAopAspect;
-import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.number.RedisNumbersUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
@@ -58,6 +58,11 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
      */
     @Resource(name = "cdkjExecutor")
     private Executor cdkjExecutor;
+
+    /**
+     * 日志服务
+     */
+    private final IMongoRepository mongoDbRepository;
 
     /**
      * 切入点
@@ -132,7 +137,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         } finally {
             if (isLog) {
                 logRecordDto.setResultTime(System.currentTimeMillis());
-                RedisUtils.publish(customConfig.getRedisLogTopic(), JsonUtils.objectToJsonString(logRecordDto));
+                cdkjExecutor.execute(new LogQueue(logRecordDto));
             }
             return result;
         }
@@ -196,5 +201,40 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         }
         // 返回不需要记录日志
         return true;
+    }
+
+    /**
+     * 日志队列
+     */
+    private class LogQueue implements Runnable {
+
+        /**
+         * 日志信息
+         */
+        private LogRecordDto logRecordDto;
+
+        /**
+         * 构造函数
+         */
+        public LogQueue(LogRecordDto logRecordDto) {
+            this.logRecordDto = logRecordDto;
+        }
+
+        /**
+         * 线程执行
+         */
+        @Override
+        public void run() {
+            try {
+                AssertUtils.isEmptyMessage(logRecordDto, "断言空日志信息");
+                logRecordDto.setParameter(GzipUtils.compress(logRecordDto.getParameter()));
+                logRecordDto.setResult(GzipUtils.compress(logRecordDto.getResult()));
+                logRecordDto.setResultErrorMessage(GzipUtils.compress(logRecordDto.getResultErrorMessage()));
+                mongoDbRepository.save(logRecordDto);
+            } catch (Exception ex) {
+                logUtils.error("写入日志出错：");
+                logUtils.error(ex.getStackTrace(), ex.getMessage());
+            }
+        }
     }
 }
