@@ -31,9 +31,14 @@ public class WebSocketConfig {
     private int port;
 
     /**
-     * 路径
+     * 路由
      */
     private String route;
+
+    /**
+     * 路径
+     */
+    private String path = "/socket/webSocket";
 
     /**
      * nginx IP地址

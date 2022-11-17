@@ -73,7 +73,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
             maxContentLength = webSocketConfig.getContentLength();
         }
         pipeline.addLast(new HttpObjectAggregator(maxContentLength));
-        String route = webSocketConfig.getRoute() + "/socket/webSocket";
+        String route = webSocketConfig.getRoute() + webSocketConfig.getPath();
         final boolean allowExtensions = true;
         final boolean allowMaskMismatch = false;
         final boolean checkStartsWith = true;
