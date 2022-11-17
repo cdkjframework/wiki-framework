@@ -1,5 +1,6 @@
 package com.cdkjframework.web.socket.config;
 
+import com.cdkjframework.constant.IntegerConsts;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -38,4 +39,9 @@ public class WebSocketConfig {
      * nginx IP地址
      */
     private List<String> nginxIp;
+
+    /**
+     * 内容长度
+     */
+    private Integer contentLength = IntegerConsts.ONE_THOUSAND * IntegerConsts.BYTE_LENGTH;
 }
