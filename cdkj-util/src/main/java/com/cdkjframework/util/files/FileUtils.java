@@ -690,7 +690,7 @@ public class FileUtils {
      * @param quality 图片质量（0-1）
      * @return byte[] 返回数据结果
      */
-    public byte[] compressPictures(String filePath, float quality) {
+    public static byte[] compressPictures(String filePath, float quality) {
         File file = new File(filePath);
         FileInputStream inputStream = null;
         try {
@@ -711,7 +711,7 @@ public class FileUtils {
      * @param quality 图片质量（0-1）
      * @return byte[] 返回数据结果
      */
-    public byte[] compressPictures(byte[] bytes, float quality) {
+    public static byte[] compressPictures(byte[] bytes, float quality) {
         ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         return compressPictures(inputStream, quality);
     }
@@ -722,7 +722,7 @@ public class FileUtils {
      * @param quality 图片质量（0-1）
      * @return byte[] 返回数据结果
      */
-    public byte[] compressPictures(InputStream byteInput, float quality) {
+    public static byte[] compressPictures(InputStream byteInput, float quality) {
         byte[] imgBytes = null;
         try {
             BufferedImage image = ImageIO.read(byteInput);
