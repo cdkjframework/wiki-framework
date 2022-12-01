@@ -285,6 +285,10 @@
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-template</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.github.f4b6a3</groupId>
+            <artifactId>ulid-creator</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

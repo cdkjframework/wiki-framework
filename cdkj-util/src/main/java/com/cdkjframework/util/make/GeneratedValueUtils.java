@@ -2,6 +2,8 @@ package com.cdkjframework.util.make;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.StringUtils;
+import com.github.f4b6a3.ulid.Ulid;
+import com.github.f4b6a3.ulid.UlidCreator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +25,86 @@ public class GeneratedValueUtils extends AbstractUUIDGenerator {
      * 使用到Algerian字体，系统里没有的话需要安装字体，字体只显示大写，去掉了1,0,i,o几个容易混淆的字符
      */
     public static final String VERIFY_CODES = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+
+    /**
+     * 获取ULID字符串
+     *
+     * @return 返回结果
+     */
+    public static String getUlidString() {
+        return getUlid().toString();
+    }
+    /**
+     * 获取ULID字符串
+     *
+     * @return 返回结果
+     */
+    public static String getUlidByTimeString() {
+        return getUlid(System.currentTimeMillis()).toString();
+    }
+
+    /**
+     * 获取 ULID
+     *
+     * @return 返回结果
+     */
+    public static Ulid getUlid() {
+        return UlidCreator.getUlid();
+    }
+
+    /**
+     * 获取 ULID
+     *
+     * @return 返回结果
+     */
+    public static Ulid getUlid(long time) {
+        return UlidCreator.getUlid(time);
+    }
+
+    /**
+     * 获取Monotonic ULID字符串
+     *
+     * @return 返回结果
+     */
+    public static String getMonotonicUlidString() {
+        return getMonotonicUlid().toString();
+    }
+
+    /**
+     * 获取Monotonic ULID
+     *
+     * @return 返回结果
+     */
+    public static Ulid getMonotonicUlid() {
+        return UlidCreator.getMonotonicUlid();
+    }
+
+    /**
+     * 获取Monotonic ULID字符串
+     *
+     * @return 返回结果
+     */
+    public static String getMonotonicUlidString(long time) {
+        return getMonotonicUlid(time).toString();
+    }
+
+    /**
+     * 获取Monotonic ULID字符串
+     *
+     * @return 返回结果
+     */
+    public static String getMonotonicUlidByTimeString() {
+        return getMonotonicUlid(System.currentTimeMillis()).toString();
+    }
+
+    /**
+     * 获取Monotonic ULID
+     *
+     * @return 返回结果
+     */
+    public static Ulid getMonotonicUlid(long time) {
+        return UlidCreator.getMonotonicUlid(time);
+    }
 
     /**
      * 获取有序UUID
