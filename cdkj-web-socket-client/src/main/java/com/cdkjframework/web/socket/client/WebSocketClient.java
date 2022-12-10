@@ -229,7 +229,7 @@ public class WebSocketClient {
             @Override
             public void connected() {
                 try {
-                    client.sendMessage("{\"type\":\"real-time\",\"authorization\":\"nZAp2fz+j4FMQMHMdvZ5GvKuLzwDGtQo0EMsj2y9Yaty4k2lgiPpde2RKieF1rX0\",\"message\":[{\"olderId\":\"cea102f8-8b91-4c07-9d02-52bd5a4dce31\",\"mattress\":\"9ca0525bdda5c\"}]}");
+                    client.sendMessage("{\"type\":\"real-time\",\"authorization\":\"nZAp2fz+j4FMQMHMdvZ5GvKuLzwDGtQo0EMsj2y9Yaty4k2lgiPpde2RKieF1rX0\",\"message\":[{\"olderId\":\"cea102f8-8b91-4c07-9d02-52bd5a4dce31\",\"mattress\":\"9ca525da43c1\"}]}");
                 } catch (Exception e) {
 
                 }
