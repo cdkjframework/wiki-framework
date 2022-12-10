@@ -130,6 +130,7 @@
 
         <apache.mina.version>3.0.0-M2</apache.mina.version>
         <java.jwt.version>3.8.1</java.jwt.version>
+        <bcprov-jdk15on.version>1.58</bcprov-jdk15on.version>
         <jjwt.version>0.9.1</jjwt.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <io.netty.version>4.1.52.Final</io.netty.version>
@@ -690,6 +691,11 @@
             </dependency>
             <!-- jwt end -->
             <!-- 加密工具 -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov-jdk15on.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.github.core-lib</groupId>
                 <artifactId>xjar</artifactId>

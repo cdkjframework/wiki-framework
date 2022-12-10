@@ -643,7 +643,7 @@ public class FileUtils {
    * @param fileName    图片文件名称
    * @throws IOException 异常信息
    */
-  public static OutputStream resizeImage(InputStream inputStream, int percent, String fileName) throws IOException {
+  public static OutputStream resizeImage(InputStream inputStream, float percent, String fileName) throws IOException {
     return resizeImage(inputStream, percent, fileName, null);
   }
 
@@ -656,7 +656,7 @@ public class FileUtils {
    * @param bgColor     背景色
    * @throws IOException 异常信息
    */
-  public static OutputStream resizeImage(InputStream inputStream, int percent, String fileName, Color bgColor) throws IOException {
+  public static OutputStream resizeImage(InputStream inputStream, float percent, String fileName, Color bgColor) throws IOException {
     // 改变了图片的大小后，把图片的流输出到目标 OutputStream
     OutputStream os = new ByteArrayOutputStream();
     BufferedImage prevImage = ImageIO.read(inputStream);

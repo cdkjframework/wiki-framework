@@ -32,7 +32,7 @@ public class HttpServletUtils {
      *
      * @return 返回结果
      */
-    public static HttpServletRequest getRequest() {
+    public static HttpServletRequest getContext() {
         try {
             ServletRequestAttributes attributes = getRequestAttributes();
             if (attributes == null) {
@@ -45,6 +45,23 @@ public class HttpServletUtils {
         }
     }
 
+    /**
+     * HttpServletRequest
+     *
+     * @return 返回结果
+     */
+    public static HttpServletRequest getRequest() {
+        try {
+            ServletRequestAttributes attributes = getRequestAttributes();
+            if (attributes == null) {
+                return null;
+            } else {
+                return attributes.getRequest();
+            }
+        } catch (Exception e) {
+            return null;
+        }
+    }
     /**
      * HttpServletResponse
      *
