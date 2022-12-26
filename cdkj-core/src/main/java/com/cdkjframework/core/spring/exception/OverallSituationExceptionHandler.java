@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
@@ -44,7 +45,7 @@ import java.util.Map;
 @ControllerAdvice
 @RestControllerAdvice
 @ResponseBody
-public class OverallSituationExceptionHandler {
+public class OverallSituationExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * 日志
