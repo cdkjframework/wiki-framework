@@ -84,7 +84,7 @@ public class RedisLettuceLock extends AbstractLettuceLock {
                 } finally {
                     --retryTimes;
                 }
-                lock(key, expire, retryTimes, sleepMillis);
+                return lock(key, expire, retryTimes, sleepMillis);
             }
         }
 
