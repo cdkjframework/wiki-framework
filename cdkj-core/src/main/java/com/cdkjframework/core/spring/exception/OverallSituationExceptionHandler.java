@@ -43,9 +43,8 @@ import java.util.Map;
 
 @SuppressWarnings("all")
 @ControllerAdvice
-@RestControllerAdvice
 @ResponseBody
-public class OverallSituationExceptionHandler extends ResponseEntityExceptionHandler {
+public class OverallSituationExceptionHandler {
 
     /**
      * 日志

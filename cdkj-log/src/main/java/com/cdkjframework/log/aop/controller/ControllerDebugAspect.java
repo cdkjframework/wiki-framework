@@ -109,6 +109,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
                 logRecordDto.setParameter(jsonObject.toJSONString());
             }
         }
+
         Object result = null;
         try {
             result = joinPoint.proceed(args);
@@ -131,16 +132,17 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
             if (isLog) {
                 logRecordDto.setExecutionState(IntegerConsts.TWENTY);
                 logRecordDto.setResultErrorMessage(ex.getMessage());
-            }
-            logUtils.error(ex, logRecordDto.getId() + ":" + ex.getMessage());
-            throw new GlobalRuntimeException((Exception) ex, ex.getMessage());
-        } finally {
-            if (isLog) {
                 logRecordDto.setResultTime(System.currentTimeMillis());
                 cdkjExecutor.execute(new LogQueue(logRecordDto));
             }
-            return result;
+            logUtils.error(ex, logRecordDto.getId() + ":" + ex.getMessage());
+            throw new GlobalRuntimeException((Exception) ex, ex.getMessage());
         }
+        if (isLog) {
+            logRecordDto.setResultTime(System.currentTimeMillis());
+            cdkjExecutor.execute(new LogQueue(logRecordDto));
+        }
+        return result;
     }
 
     /**
