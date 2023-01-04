@@ -59,9 +59,12 @@ public abstract class AbstractWebSocket implements WebSocket {
      */
     @Override
     public void onSendMessage(String channelId, String message, String type) {
-        // 返回心跳消息
+        if (StringUtils.isNullAndSpaceOrEmpty(type)) {
+            type = TYPE;
+        }
+        // 返回消息
         WebSocketEntity messageEntity = new WebSocketEntity();
-        messageEntity.setType(TYPE);
+        messageEntity.setType(type);
         messageEntity.setClientId(channelId);
         messageEntity.setMessage(message);
         WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(messageEntity));
