@@ -113,7 +113,7 @@ public class JwtUtils {
      * @return 返回 redis token
      * @throws Exception 异常信息
      */
-    public static String checkToken(String jwtToken, String base64Security, String userAgent) throws Exception {
+    public static String checkToken(String jwtToken, String base64Security, String userAgent) throws GlobalException {
         String token;
         try {
             Claims claims = parseJwt(jwtToken, base64Security);

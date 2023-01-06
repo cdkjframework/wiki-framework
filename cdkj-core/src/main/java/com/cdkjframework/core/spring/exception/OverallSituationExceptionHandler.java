@@ -62,7 +62,7 @@ public class OverallSituationExceptionHandler {
         String message = e.getMessage();
         Integer code = ResponseBuilderEnums.Error.getValue();
         if (StringUtils.isNotNullAndEmpty(message)) {
-            String[] messageList = message.split(BusinessConsts.errorKey);
+            String[] messageList = message.split(BusinessConsts.ERROR_KEY);
             if (messageList.length == IntegerConsts.TWO) {
                 code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
                 message = messageList[IntegerConsts.ONE];
@@ -91,7 +91,7 @@ public class OverallSituationExceptionHandler {
         String message = e.getMessage();
         Integer code = ResponseBuilderEnums.Error.getValue();
         if (StringUtils.isNotNullAndEmpty(message)) {
-            String[] messageList = message.split(BusinessConsts.errorKey);
+            String[] messageList = message.split(BusinessConsts.ERROR_KEY);
             if (messageList.length == IntegerConsts.TWO) {
                 code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
                 message = messageList[IntegerConsts.ONE];

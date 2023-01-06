@@ -54,6 +54,7 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
   @Override
   public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
     resources.tokenServices(tokenService());
+    super.configure(resources);
   }
 
   /**
@@ -80,5 +81,6 @@ public class ResourceServerConfigure extends ResourceServerConfigurerAdapter {
         .authenticated()
         .and()
         .httpBasic();
+    super.configure(http);
   }
 }

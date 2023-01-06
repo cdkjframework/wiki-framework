@@ -39,7 +39,7 @@ public class GlobalRuntimeException extends RuntimeException {
      * 构造函数
      */
     public GlobalRuntimeException(Integer code, final String message) {
-        super(code + BusinessConsts.errorKey + message);
+        super(code + BusinessConsts.ERROR_KEY + message);
     }
 
     /**
