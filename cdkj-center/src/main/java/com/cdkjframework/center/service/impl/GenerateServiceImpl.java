@@ -258,13 +258,16 @@ public class GenerateServiceImpl implements GenerateService {
                 if (StringUtils.isNotNullAndEmpty(path)) {
                     switch (temp.getTemplateName()) {
                         case "vo":
+                            path.append("entity/");
                             path.append(pathList.get(IntegerConsts.ZERO));
                             break;
                         case "dto":
+                            path.append("entity/");
                             path.append(pathList.get(IntegerConsts.ONE));
                             break;
                         case "entity":
                         case "extend":
+                            path.append("entity/");
                             path.append(pathList.get(IntegerConsts.TWO));
                             break;
                         case "controller":
@@ -291,6 +294,7 @@ public class GenerateServiceImpl implements GenerateService {
                             isXml = true;
                             break;
                     }
+                    path.append("/src/main/java/");
                 }
                 if (!entity.getIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
                     continue;

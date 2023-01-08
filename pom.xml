@@ -14,7 +14,7 @@
         <module>cdkj-core</module>
         <module>cdkj-datasource</module>
         <module>cdkj-message</module>
-        <module>cdkj-pay</module>
+        <module>cdkj-wechat</module>
         <module>cdkj-pom</module>
         <module>cdkj-entity</module>
         <module>cdkj-constant</module>
