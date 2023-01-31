@@ -78,7 +78,7 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
             throw new BadCredentialsException("用户名或密码不正确");
         }
         // 还可以加一些其他信息的判断，比如用户账号已停用等判断
-        if (userInfo.getStatus().equals(IntegerConsts.ONE) ||
+        if (userInfo.getStatus().equals(IntegerConsts.ZERO) ||
                 userInfo.getDeleted().equals(IntegerConsts.ONE)) {
             throw new LockedException("该用户已被冻结");
         }

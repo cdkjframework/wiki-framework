@@ -99,4 +99,26 @@ public interface MpService {
    * @param draftDto 发布内容
    */
   void deletePublishDraft(MpDraftDto draftDto);
+
+  /**
+   * 上传图片
+   *
+   * @param filePath 文件路径
+   */
+  MpResultDto uploadImage(String filePath);
+
+  /**
+   * 上传素材
+   *
+   * @param filePath 文件路径
+   * @param type 文件类型
+   */
+  MpResultDto addMaterial(String filePath, String type);
+
+  /**
+   * 删除素材
+   *
+   * @param draftDto 删除条件
+   */
+  void deleteMaterial(MpDraftDto draftDto);
 }

@@ -5,6 +5,7 @@ import com.cdkjframework.entity.log.LogRecordDto;
 import com.cdkjframework.entity.user.UserEntity;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 
@@ -40,7 +41,7 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect, Applicati
     /**
      * 映射器执行切入点值
      */
-    protected final String executionMapperPoint = "execution(public * com.*.*.mapper.*.*(..))";
+    protected final String executionMapperPoint = "execution(public * com.*.*.mapper.*.*(..)) || execution(public * com.*.*.jpa.repository.*.*(..))";
 
     /**
      * 接口服务

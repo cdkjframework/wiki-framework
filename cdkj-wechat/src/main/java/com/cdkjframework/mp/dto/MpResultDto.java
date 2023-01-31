@@ -63,4 +63,9 @@ public class MpResultDto {
    */
   @JSONField(name = "news_item")
   private List<MpDraftDto> newsItem;
+
+  /**
+   * 图片地址
+   */
+  private String url;
 }

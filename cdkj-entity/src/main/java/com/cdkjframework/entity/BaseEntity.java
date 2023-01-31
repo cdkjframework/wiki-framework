@@ -9,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -90,13 +91,15 @@ public class BaseEntity implements Serializable {
     /**
      * 所在机构编码
      */
-    @Column(name = "organization_code", length = 100)
+    @Transient
+//    @Column(name = "organization_code", length = 100)
     private String organizationCode;
 
     /**
      * 所在机构名称
      */
-    @Column(name = "organization_name", length = 500)
+    @Transient
+//    @Column(name = "organization_name", length = 500)
     private String organizationName;
 
     /**
@@ -108,12 +111,14 @@ public class BaseEntity implements Serializable {
     /**
      * 所在机构上级编码
      */
-    @Column(name = "top_organization_code", length = 100)
+    @Transient
+//    @Column(name = "top_organization_code", length = 100)
     private String topOrganizationCode;
 
     /**
      * 所在机构上级名称
      */
-    @Column(name = "top_organization_name", length = 500)
+    @Transient
+//    @Column(name = "top_organization_name", length = 500)
     private String topOrganizationName;
 }

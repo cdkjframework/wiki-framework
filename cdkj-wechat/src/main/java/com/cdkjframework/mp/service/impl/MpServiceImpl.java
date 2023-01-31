@@ -17,12 +17,17 @@ import com.cdkjframework.mp.dto.MpResultDto;
 import com.cdkjframework.mp.enums.MpEnum;
 import com.cdkjframework.mp.service.MpService;
 import com.cdkjframework.redis.RedisUtils;
+import com.cdkjframework.util.files.FileUtils;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpRequestUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +43,11 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class MpServiceImpl implements MpService {
+
+  /**
+   * 日志
+   */
+  private LogUtils logUtils = LogUtils.getLogger(MpServiceImpl.class);
 
   /**
    * 配置文件
@@ -239,7 +249,14 @@ public class MpServiceImpl implements MpService {
    */
   @Override
   public void publishDraft(MpDraftDto draftDto) {
-
+    MpResultDto token = readyAccessToken();
+    // 发布草稿
+    String url = String.format(MpAddressConfig.freePublishDraft, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setData(draftDto);
+    // 请求数据
+    MpResultDto resultDto = HttpRequest(request);
   }
 
   /**
@@ -249,7 +266,87 @@ public class MpServiceImpl implements MpService {
    */
   @Override
   public void deletePublishDraft(MpDraftDto draftDto) {
+    MpResultDto token = readyAccessToken();
+    // 发布草稿
+    String url = String.format(MpAddressConfig.deletePublishDraft, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setData(draftDto);
+    // 请求数据
+    MpResultDto resultDto = HttpRequest(request);
+  }
 
+  /**
+   * 上传图片
+   *
+   * @param filePath 文件路径
+   */
+  @Override
+  public MpResultDto uploadImage(String filePath) {
+    // 请求数据
+    return uploadMaterial(filePath, StringUtils.Empty);
+  }
+
+  /**
+   * 上传素材
+   *
+   * @param filePath 文件路径
+   * @param type     文件类型
+   */
+  @Override
+  public MpResultDto addMaterial(String filePath, String type) {
+    // 请求数据
+    return uploadMaterial(filePath, type);
+  }
+
+  /**
+   * 删除素材
+   *
+   * @param draftDto 删除条件
+   */
+  @Override
+  public void deleteMaterial(MpDraftDto draftDto) {
+    MpResultDto token = readyAccessToken();
+    // 发布草稿
+    String url = String.format(MpAddressConfig.delMaterial, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setData(draftDto);
+    // 请求数据
+    MpResultDto resultDto = HttpRequest(request);
+  }
+
+  /**
+   * 上传文件
+   *
+   * @param filePath 文件路径
+   * @param type     类型
+   * @return 返回结果
+   */
+  private MpResultDto uploadMaterial(String filePath, String type) {
+    MpResultDto token = readyAccessToken();
+    String url;
+    if (StringUtils.isNullAndSpaceOrEmpty(type)) {
+      url = String.format(MpAddressConfig.uploadImage, token.getAccessToken());
+    } else {
+      url = String.format(MpAddressConfig.addMaterial, token.getAccessToken(), type);
+    }
+    // 获取文件名称
+    String fileName = FileUtils.getFileName(filePath);
+
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setName(fileName);
+    // 读取文件
+    File file = new File(filePath);
+    try {
+      FileInputStream inputStream = new FileInputStream(file);
+      request.setData(inputStream);
+    } catch (FileNotFoundException e) {
+      logUtils.error(e);
+    }
+    // 请求数据
+    return HttpRequest(request);
   }
 
   /**

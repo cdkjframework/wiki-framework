@@ -10,6 +10,27 @@ package com.cdkjframework.enums;
  */
 
 public enum HttpMethodEnums {
+    FILE {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "POST";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getName() {
+            return "文件上传";
+        }
+    },
     GET {
         /**
          * 获取枚举值

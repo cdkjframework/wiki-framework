@@ -1,6 +1,7 @@
 package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,13 +18,21 @@ import javax.persistence.Table;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
 @Table(name = "bms_configure", catalog = "")
 public class BmsConfigureEntity extends BaseEntity {
 
+    /**
+     * 配置名称
+     */
+    @Column(name = "group_code")
+    private String groupCode;
+    /**
+     * 配置名称
+     */
+    @Column(name = "group_name")
+    private String groupName;
     /**
      * 配置名称
      */

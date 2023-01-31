@@ -3,23 +3,21 @@ package com.cdkjframework.util.network.http;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.cdkjframework.constant.EncodingConsts;
 import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.enums.HttpMethodEnums;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -77,6 +75,9 @@ public class HttpRequestUtils {
       case GET:
         result = get(httpRequestEntity);
         break;
+      case FILE:
+        result = postFile(httpRequestEntity);
+        break;
       default:
         result = post(httpRequestEntity);
         break;
@@ -84,6 +85,85 @@ public class HttpRequestUtils {
 
     //返回结果
     return result;
+  }
+
+  /**
+   * 上传文件
+   *
+   * @param request 请求类型
+   * @return 返回结果
+   */
+  private static StringBuilder postFile(HttpRequestEntity request) {
+    StringBuilder builder;
+    try {
+      String fileName = request.getName();
+      if (StringUtils.isNullAndSpaceOrEmpty(fileName)) {
+        throw new GlobalRuntimeException("文件名称不能为空！");
+      }
+      InputStream inputStream = (InputStream) request.getData();
+      URL url = new URL(request.getRequestAddress());
+      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      conn.setDoOutput(true);
+      conn.setDoInput(true);
+      conn.setUseCaches(false);
+      conn.setRequestMethod(request.getMethod().getValue());
+      // 添加 header
+      conn.setRequestProperty("Connection", "Keep-Alive");
+      conn.setRequestProperty("Charset", EncodingConsts.UTF8);
+      // 设置边界
+      String BOUNDARY = "----------" + System.currentTimeMillis();
+      conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + BOUNDARY);
+      Map<String, String> headerMap = request.getHeaderMap();
+      if (headerMap != null) {
+        Set<Map.Entry<String, String>> entrySet = headerMap.entrySet();
+        for (Map.Entry<String, String> entry :
+            entrySet) {
+          conn.setRequestProperty(entry.getKey(), entry.getValue());
+        }
+      }
+      // 请求正文信息
+      //    第一部分：
+      StringBuilder sb = new StringBuilder();
+      // 必须多两道线
+      sb.append("--");
+      sb.append(BOUNDARY);
+      sb.append("\r\n");
+      sb.append("Content-Disposition: form-data;name=\"media\";filelength=\"" +
+          inputStream.available() + "\";filename=\"" + fileName + "\"\r\n");
+      sb.append("Content-Type:application/octet-stream\r\n\r\n");
+
+      byte[] head = sb.toString().getBytes(EncodingConsts.UTF8);
+      OutputStream out = new DataOutputStream(conn.getOutputStream());
+      // 输出表头
+      out.write(head);
+      // 文件正文部分
+      // 把文件已流文件的方式 推入到url中
+      DataInputStream in = new DataInputStream(inputStream);
+      int bytes;
+      byte[] bufferOut = new byte[IntegerConsts.BYTE_LENGTH];
+      while ((bytes = in.read(bufferOut)) != IntegerConsts.MINUS_ONE) {
+        out.write(bufferOut, IntegerConsts.ZERO, bytes);
+      }
+      in.close();
+      // 结尾部分
+      // 定义最后数据分隔线
+      byte[] foot = ("\r\n--" + BOUNDARY + "--\r\n").getBytes(EncodingConsts.UTF8);
+      out.write(foot);
+      out.flush();
+      out.close();
+      // 读取返回结果
+      BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      String line = null;
+      builder = new StringBuilder();
+      while ((line = reader.readLine()) != null) {
+        builder.append(line);
+      }
+    } catch (Exception e) {
+      logUtil.error(e);
+      builder = new StringBuilder();
+    }
+    // 返回结果
+    return builder;
   }
 
   /**

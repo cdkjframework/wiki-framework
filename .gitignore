@@ -10,7 +10,7 @@
 /cdkj-datasource-jpa/target
 /cdkj-datasource-mongodb/target
 /cdkj-log/target
-/cdkj-pay/target
+/cdkj-wechat/target
 /cdkj-redis/target
 /cdkj-pom/target
 /cdkj-message/target
@@ -19,7 +19,7 @@
 /cdkj-constant/*.iml
 /cdkj-web/*.iml
 /cdkj-util/*.iml
-/cdkj-pay/*.iml
+/cdkj-wechat/*.iml
 /cdkj-message/*.iml
 /cdkj-datasource/*.iml
 /cdkj-core/*.iml
@@ -44,7 +44,7 @@
 /cdkj-util/cdkj-util.iml
 /cdkj-message/cdkj-message.iml
 /cdkj-redis/cdkj-redis.iml
-/cdkj-pay/cdkj-pay.iml
+/cdkj-wechat/cdkj-wechat.iml
 /cdkj-log/cdkj-log.iml
 /cdkj-datasource-mongodb/cdkj-datasource-mongodb.iml
 /cdkj-entity/cdkj-entity.iml

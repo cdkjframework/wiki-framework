@@ -79,4 +79,33 @@ public class MpAddressConfig {
    */
   public final static String deletePublishDraft = "https://api.weixin.qq.com/cgi-bin/freepublish/delete?access_token=%s";
 
+  /**
+   * 上传图片
+   */
+  public final static String uploadImage = "https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=%s";
+
+  /**
+   * 上传素材
+   */
+  public final static String addMaterial = "https://api.weixin.qq.com/cgi-bin/material/add_material?access_token=%s&type=%s";
+
+  /**
+   * 删除素材
+   */
+  public final static String delMaterial = "https://api.weixin.qq.com/cgi-bin/material/del_material?access_token=%s";
+
+  /**
+   * 获取素材
+   */
+  public final static String getMaterial = "https://api.weixin.qq.com/cgi-bin/material/get_material?access_token=%s";
+
+  /**
+   * 批量获取素材
+   */
+  public final static String batchGetMaterial = "https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token=%s";
+
+  /**
+   * 获取素材总量
+   */
+  public final static String getMaterialCount = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token=%s";
 }

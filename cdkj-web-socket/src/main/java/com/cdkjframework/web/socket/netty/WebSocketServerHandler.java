@@ -126,7 +126,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
         String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
-            webSocket.onHeartbeat(channelId);
             return;
         }
         socket.setClientId(channelId);

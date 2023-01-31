@@ -27,7 +27,7 @@
         <cdkj-redis.version>1.0.2</cdkj-redis.version>
         <cdkj-redisJson.version>1.0.2</cdkj-redisJson.version>
         <cdkj-swagger.version>1.0.2</cdkj-swagger.version>
-        <cdkj-pay.version>1.0.2</cdkj-pay.version>
+        <cdkj-wechat.version>1.0.2</cdkj-wechat.version>
         <cdkj-entity.version>1.0.2</cdkj-entity.version>
         <cdkj-center.version>1.0.2</cdkj-center.version>
         <cdkj-center.version>1.0.2</cdkj-center.version>
@@ -221,8 +221,8 @@
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
-                <artifactId>cdkj-pay</artifactId>
-                <version>${cdkj-pay.version}</version>
+                <artifactId>cdkj-wechat</artifactId>
+                <version>${cdkj-wechat.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
