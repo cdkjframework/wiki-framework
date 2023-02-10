@@ -24,6 +24,11 @@ import java.util.List;
 public class CustomConfig {
 
     /**
+     * 时间格式
+     */
+    private String dateFormat;
+
+    /**
      * jwt Key
      */
     private String jwtKey = "cdkj-framework-jwt";
