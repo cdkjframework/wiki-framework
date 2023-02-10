@@ -29,6 +29,11 @@ public class CustomConfig {
     private String dateFormat;
 
     /**
+     * 时区
+     */
+    private String timeZone = "GMT+8";
+
+    /**
      * jwt Key
      */
     private String jwtKey = "cdkj-framework-jwt";
