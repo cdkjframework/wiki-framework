@@ -59,13 +59,48 @@ public class MpResultDto {
   private Integer totalCount;
 
   /**
+   * 音频总数
+   */
+  @JSONField(name = "voice_count")
+  private Integer voiceCount;
+
+  /**
+   * 新闻总数
+   */
+  @JSONField(name = "news_count")
+  private Integer newsCount;
+
+  /**
+   * 图片总数
+   */
+  @JSONField(name = "image_count")
+  private Integer imageCount;
+
+  /**
+   * 视频总数
+   */
+  @JSONField(name = "video_count")
+  private Integer videoCount;
+
+  /**
    * 上传后的获取标志，长度不固定，但不会超过 128 字符
    */
   @JSONField(name = "news_item")
   private List<MpDraftDto> newsItem;
 
   /**
+   * 素材列表
+   */
+  private List<MpDraftDto> item;
+
+  /**
    * 图片地址
    */
   private String url;
+
+  /**
+   * 图片地址
+   */
+  @JSONField(name = "cover_url")
+  private String coverUrl;
 }

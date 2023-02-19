@@ -19,6 +19,7 @@ import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.encrypts.Md5Utils;
 import com.cdkjframework.util.network.ResponseUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,7 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Component
+@RequiredArgsConstructor
 public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
   /**
@@ -72,23 +74,6 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
    * 有效时间
    */
   private final long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
-
-  /**
-   * 构造函数
-   *
-   * @param customConfig         自定义配置
-   * @param configureServiceImpl 配置服务
-   * @param resourceServiceImpl  资源服务
-   * @param userRoleServiceImpl  角色服务
-   * @param workflowServiceImpl  工作流服务
-   */
-  public UserLoginSuccessHandler(CustomConfig customConfig, ConfigureService configureServiceImpl, ResourceService resourceServiceImpl, UserRoleService userRoleServiceImpl, WorkflowService workflowServiceImpl) {
-    this.customConfig = customConfig;
-    this.configureServiceImpl = configureServiceImpl;
-    this.resourceServiceImpl = resourceServiceImpl;
-    this.userRoleServiceImpl = userRoleServiceImpl;
-    this.workflowServiceImpl = workflowServiceImpl;
-  }
 
   /**
    * 权限认证成功

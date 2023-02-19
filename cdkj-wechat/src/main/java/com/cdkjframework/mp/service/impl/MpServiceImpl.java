@@ -17,7 +17,6 @@ import com.cdkjframework.mp.dto.MpResultDto;
 import com.cdkjframework.mp.enums.MpEnum;
 import com.cdkjframework.mp.service.MpService;
 import com.cdkjframework.redis.RedisUtils;
-import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpRequestUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -25,11 +24,11 @@ import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: common-core
@@ -279,24 +278,26 @@ public class MpServiceImpl implements MpService {
   /**
    * 上传图片
    *
-   * @param filePath 文件路径
+   * @param inputStream 文件数据
+   * @param fileName    文件名称
    */
   @Override
-  public MpResultDto uploadImage(String filePath) {
+  public MpResultDto uploadImage(InputStream inputStream, String fileName) {
     // 请求数据
-    return uploadMaterial(filePath, StringUtils.Empty);
+    return uploadMaterial(inputStream, fileName, null);
   }
 
   /**
    * 上传素材
    *
-   * @param filePath 文件路径
-   * @param type     文件类型
+   * @param inputStream 文件数据
+   * @param fileName    文件名称
+   * @param draftDto    参数
    */
   @Override
-  public MpResultDto addMaterial(String filePath, String type) {
+  public MpResultDto addMaterial(InputStream inputStream, String fileName, MpDraftDto draftDto) {
     // 请求数据
-    return uploadMaterial(filePath, type);
+    return uploadMaterial(inputStream, fileName, draftDto);
   }
 
   /**
@@ -317,34 +318,94 @@ public class MpServiceImpl implements MpService {
   }
 
   /**
-   * 上传文件
+   * 查询素材
    *
-   * @param filePath 文件路径
-   * @param type     类型
    * @return 返回结果
    */
-  private MpResultDto uploadMaterial(String filePath, String type) {
+  @Override
+  public MpResultDto findMaterialCount() {
     MpResultDto token = readyAccessToken();
-    String url;
-    if (StringUtils.isNullAndSpaceOrEmpty(type)) {
-      url = String.format(MpAddressConfig.uploadImage, token.getAccessToken());
-    } else {
-      url = String.format(MpAddressConfig.addMaterial, token.getAccessToken(), type);
-    }
-    // 获取文件名称
-    String fileName = FileUtils.getFileName(filePath);
-
+    // 发布草稿
+    String url = String.format(MpAddressConfig.delMaterial, token.getAccessToken());
     HttpRequestEntity request = new HttpRequestEntity();
     request.setRequestAddress(url);
-    request.setName(fileName);
-    // 读取文件
-    File file = new File(filePath);
-    try {
-      FileInputStream inputStream = new FileInputStream(file);
-      request.setData(inputStream);
-    } catch (FileNotFoundException e) {
-      logUtils.error(e);
+    // 请求数据
+    return HttpRequest(request);
+  }
+
+  /**
+   * 查询素材
+   *
+   * @param materialId 素材ID
+   * @return 返回结果
+   */
+  @Override
+  public MpResultDto findMaterial(String materialId) {
+    MpResultDto token = readyAccessToken();
+    // 发布草稿
+    String url = String.format(MpAddressConfig.delMaterial, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    MpDraftDto draftDto = new MpDraftDto();
+    draftDto.setMediaId(materialId);
+    request.setData(draftDto);
+    // 请求数据
+    return HttpRequest(request);
+  }
+
+  /**
+   * 查询分页素材数据
+   *
+   * @param draftDto 查询条件
+   * @return 返回结果
+   */
+  @Override
+  public PageEntity<MpDraftDto> listMaterialPage(MpDraftDto draftDto) {
+    MpResultDto token = readyAccessToken();
+    // 查询总数据
+    String url = String.format(MpAddressConfig.batchGetMaterial, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setData(draftDto);
+    // 获取数据
+    MpResultDto resultDto = HttpRequest(request);
+
+    // 返回结果
+    return PageEntity.build(draftDto.getOffset(), resultDto.getTotalCount(), resultDto.getItem());
+  }
+
+  /**
+   * 上传文件
+   *
+   * @param inputStream 文件数据
+   * @param fileName    文件名称
+   * @param draftDto    类型
+   * @return 返回结果
+   */
+  private MpResultDto uploadMaterial(InputStream inputStream, String fileName, MpDraftDto draftDto) {
+    MpResultDto token = readyAccessToken();
+    String url;
+
+    HttpRequestEntity request = new HttpRequestEntity();
+    if (draftDto == null) {
+      url = String.format(MpAddressConfig.uploadImage, token.getAccessToken());
+    } else {
+      url = String.format(MpAddressConfig.addMaterial, token.getAccessToken(), draftDto.getType());
+      // 添加参数
+      if (StringUtils.isNotNullAndEmpty(draftDto.getTitle())) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("title", draftDto.getTitle());
+        paramsMap.put("introduction", draftDto.getContent());
+        request.setParamsMap(new HashMap<>());
+        request.getParamsMap().put("description",JsonUtils.objectToJsonString(paramsMap));
+      }
     }
+    request.setRequestAddress(url);
+    request.setName(fileName);
+    request.setMethod(HttpMethodEnums.FILE);
+    // 读取文件
+    request.setData(inputStream);
+
     // 请求数据
     return HttpRequest(request);
   }
@@ -359,6 +420,9 @@ public class MpServiceImpl implements MpService {
     // 请求数据
     StringBuilder builder = HttpRequestUtils.httpRequest(request);
     MpResultDto resultDto = JsonUtils.jsonStringToBean(builder.toString(), MpResultDto.class);
+    if (resultDto.getErrorCode() == null) {
+      resultDto.setErrorCode(IntegerConsts.ZERO);
+    }
     MpEnum mpEnum = MpEnum.getInstance(String.valueOf(resultDto.getErrorCode()));
     if (mpEnum != MpEnum.E0) {
       throw new GlobalRuntimeException(mpEnum.getText() + StringUtils.COMMA + resultDto.getErrorMsg());

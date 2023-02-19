@@ -1,15 +1,17 @@
 package com.cdkjframework.core.spring.filter;
 
+import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.lock.impl.RedisLettuceLock;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.network.ResponseUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 
 /**
  * @ProjectName: cdkj-framework
@@ -22,111 +24,130 @@ import java.io.PrintWriter;
  */
 public class FilterHandlerInterceptor implements HandlerInterceptor {
 
-    /**
-     * 日志
-     */
-    private LogUtils logUtils = LogUtils.getLogger(FilterHandlerInterceptor.class);
+  /**
+   * 日志
+   */
+  private LogUtils logUtils = LogUtils.getLogger(FilterHandlerInterceptor.class);
 
-    /**
-     * redis锁
-     */
-    private final RedisLettuceLock redisLettuceLock;
+  /**
+   * redis锁
+   */
+  private final RedisLettuceLock redisLettuceLock;
 
-    private static final String LOCK_IP_URL_KEY = "lock_ip_";
+  /**
+   * IP头部变量(可能通过Nginx代理后)
+   */
+  private static final String HEADER_IP = "X-Real-IP";
 
-    private static final String IP_URL_REQ_TIME = "ip_url_times_";
+  /**
+   * 锁IP请求URL地址KEY
+   */
+  private static final String LOCK_IP_URL_KEY = "lock_ip_";
 
-    private static final long LIMIT_TIMES = 5;
+  /**
+   * IP请求URL地址时间
+   */
+  private static final String IP_URL_REQ_TIME = "ip_url_times_";
 
-    private static final int IP_LOCK_TIME = 60;
+  /**
+   * 极限时间
+   */
+  private static final long LIMIT_TIMES = 5;
 
-    public FilterHandlerInterceptor(RedisLettuceLock redisLettuceLock) {
-        this.redisLettuceLock = redisLettuceLock;
+  /**
+   * IP锁定时间 秒
+   */
+  private static final int IP_LOCK_TIME = 60;
+
+  /**
+   * 构建函数
+   */
+  public FilterHandlerInterceptor(RedisLettuceLock redisLettuceLock) {
+    this.redisLettuceLock = redisLettuceLock;
+  }
+
+  /**
+   * 预处理
+   *
+   * @param request  请求
+   * @param response 响应
+   * @param o        参数
+   * @return 返回结果
+   * @throws Exception 异常信息
+   */
+  @Override
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+    String ip = request.getHeader(HEADER_IP);
+    if (StringUtils.isNullAndSpaceOrEmpty(ip)) {
+      ip = request.getRemoteAddr();
     }
-
-    @Override
-    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
-//        log.info("request请求地址uri={},ip={}", httpServletRequest.getRequestURI(), IpAdrressUtil.getIpAdrress(httpServletRequest));
-//        if (ipIsLock(IpAdrressUtil.getIpAdrress(httpServletRequest))){
-//            log.info("ip访问被禁止={}",IpAdrressUtil.getIpAdrress(httpServletRequest));
-//            ApiResult result = new ApiResult(ResultEnum.LOCK_IP);
-//            returnJson(httpServletResponse, JSON.toJSONString(result));
-//            return false;
-//        }
-//        if(!addRequestTime(IpAdrressUtil.getIpAdrress(httpServletRequest),httpServletRequest.getRequestURI())){
-//            ApiResult result = new ApiResult(ResultEnum.LOCK_IP);
-//            returnJson(httpServletResponse, JSON.toJSONString(result));
-//            return false;
-//        }
-        return true;
+    logUtils.info("request 请求地址 Uri={}，ip={}", request.getRequestURI(), ip);
+    if (ipIsLock(ip)) {
+      logUtils.info("ip访问被禁止={}", ip);
+      ResponseBuilder builder = ResponseBuilder.failBuilder("ip访问被禁止");
+      returnJson(response, builder);
+      return false;
     }
-
-    @Override
-    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
-
+    if (!addRequest(ip, request.getRequestURI())) {
+      ResponseBuilder builder = ResponseBuilder.failBuilder("ip访问被禁止");
+      returnJson(response, builder);
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+  @Override
+  public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
 
+  }
+
+  @Override
+  public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+  }
+
+  /**
+   * IP 是否已锁
+   *
+   * @param ip IP 地址
+   * @return 返回是否成功
+   */
+  private Boolean ipIsLock(String ip) {
+    if (redisLettuceLock.lock(LOCK_IP_URL_KEY + ip)) {
+      return true;
     }
+    return false;
+  }
 
-    /**
-     * @param ip
-     * @return java.lang.Boolean
-     * @Description: 判断ip是否被禁用
-     * @author: shuyu.wang
-     * @date: 2019-10-12 13:08
-     */
-    private Boolean ipIsLock(String ip) {
-        if (redisLettuceLock.lock(LOCK_IP_URL_KEY + ip)) {
-            return true;
-        }
+  /**
+   * 添加请求信息
+   *
+   * @param ip  IP 地址
+   * @param uri 请求路径
+   * @return 返回是否成功
+   */
+  private Boolean addRequest(String ip, String uri) {
+    String key = IP_URL_REQ_TIME + ip + uri;
+    if (RedisUtils.syncExists(key)) {
+      long time = RedisUtils.syncIncr(key, IntegerConsts.ONE);
+      if (time >= LIMIT_TIMES) {
+        redisLettuceLock.lock(LOCK_IP_URL_KEY + ip, IP_LOCK_TIME, ip);
         return false;
+      }
+    } else {
+      redisLettuceLock.lock(key, (long) IntegerConsts.ONE, IntegerConsts.ONE);
     }
+    return true;
+  }
 
-    /**
-     * @param ip
-     * @param uri
-     * @return java.lang.Boolean
-     * @Description: 记录请求次数
-     * @author: shuyu.wang
-     * @date: 2019-10-12 17:18
-     */
-    private Boolean addRequestTime(String ip, String uri) {
-        String key = IP_URL_REQ_TIME + ip + uri;
-        if (redisLettuceLock.lock(key)) {
-            long time = RedisUtils.syncIncr(key, 1);
-            if (time >= LIMIT_TIMES) {
-//                redisLettuceLock.lock(LOCK_IP_URL_KEY + ip, ip, IP_LOCK_TIME);
-                return false;
-            }
-        } else {
-            redisLettuceLock.lock(key, (long) 1, 1);
-        }
-        return true;
-    }
-
-    /**
-     * 返回结果
-     *
-     * @param response 响应
-     * @param json     JSON对象
-     * @throws Exception 异常信息
-     */
-    private void returnJson(HttpServletResponse response, String json) throws Exception {
-        PrintWriter writer = null;
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("text/json; charset=utf-8");
-        try {
-            writer = response.getWriter();
-            writer.print(json);
-        } catch (IOException e) {
-            logUtils.error("LoginInterceptor response error ---> {}", e.getMessage(), e);
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
-    }
+  /**
+   * 返回结果
+   *
+   * @param response 响应
+   * @param builder  返回结果
+   * @throws Exception 异常信息
+   */
+  private void returnJson(HttpServletResponse response, ResponseBuilder builder) throws Exception {
+    ResponseUtils.out(response, builder);
+  }
 }
