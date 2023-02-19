@@ -34,6 +34,8 @@
         <module>cdkj-cache</module>
         <module>cdkj-web-socket-client</module>
         <module>cdkj-redisJson</module>
+        <module>cdkj-socket</module>
+        <module>cdkj-security-client</module>
         <module>cdkj-datasource-mybatis-plus</module>
     </modules>
 
