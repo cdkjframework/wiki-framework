@@ -209,7 +209,7 @@ public class EasyExcelUtils {
     public static <T, S> InputStream listExportInputStream(List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData, int type) {
         Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
         //创建 inputStream 流
-        return listExportInputStream(data, columnWidth, clazz);
+        return listExportInputStream(data, columnWidth, clazz, mergeData, type);
     }
 
     /**
