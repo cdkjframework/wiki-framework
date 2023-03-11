@@ -1,11 +1,13 @@
 package com.cdkjframework.core.spring.body;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.mapper.ReflectionUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -122,9 +124,14 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
                 .filter(f -> returnTypeName.contains(f))
                 .collect(Collectors.toList());
         if (!list.isEmpty()) {
-            if (customConfig.getStatusCode() != null) {
-                Field field = ReflectionUtils.getDeclaredField(clazz, FIELD_VALUE);
+            Field field = ReflectionUtils.getDeclaredField(clazz, FIELD_VALUE);
+            Object value = ReflectionUtils.getFieldValue(field, o);
+            ResponseBuilderEnums enums = ResponseBuilderEnums.Error;
+            int v = ConvertUtils.convertInt(value);
+            if (IntegerConsts.ZERO.equals(v) && customConfig.getStatusCode() != null) {
                 ReflectionUtils.setFieldValue(o, field, customConfig.getStatusCode());
+            } else if (customConfig.getErrorCode() != null && enums.getValue() == v) {
+                ReflectionUtils.setFieldValue(o, field, customConfig.getErrorCode());
             }
             return encryptHandle(o, encryption);
         }

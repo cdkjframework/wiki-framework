@@ -99,7 +99,8 @@ public class OverallSituationExceptionHandler {
             }
         }
         response(code);
-        ResponseBuilder builder = ResponseBuilder.failBuilder(message, code);
+        ResponseBuilder builder = ResponseBuilder.failBuilder(message);
+        builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", message);
         builder.setData(params);
@@ -356,7 +357,7 @@ public class OverallSituationExceptionHandler {
      */
     private void response(int code) {
         HttpServletResponse response = HttpServletUtils.getResponse();
-        if (response != null) {
+        if (response == null) {
             return;
         }
         response.setStatus(code);
