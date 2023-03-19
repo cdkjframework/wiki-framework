@@ -56,6 +56,11 @@ public class EasyExcelUtils {
     private static final Map<Integer, List<Object>> MERGE_DATA = null;
 
     /**
+     * 表头
+     */
+    private static final List<List<String>> HEAD = null;
+
+    /**
      * 读取 Excel 文件流转换为 list
      *
      * @param inputStream 文件流
@@ -106,7 +111,23 @@ public class EasyExcelUtils {
     public static <T, S> OutputStream listExportOutputStream(List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData) {
         // 返回数据
         Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
-        return listExportOutputStream(data, columnWidth, clazz, mergeData, IntegerConsts.ZERO);
+        return listExportOutputStream(data, columnWidth, clazz, mergeData, IntegerConsts.ZERO, HEAD);
+    }
+
+    /**
+     * 将 list 转换为 OutputStream
+     *
+     * @param data      数据集
+     * @param clazz     类
+     * @param mergeData 合并数据
+     * @param <T>
+     * @return 返回 OutputStream
+     * @throws GlobalException 异常信息
+     */
+    public static <T, S> OutputStream listExportOutputStream(List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData, List<List<String>> head) {
+        // 返回数据
+        Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
+        return listExportOutputStream(data, columnWidth, clazz, mergeData, IntegerConsts.ZERO, head);
     }
 
     /**
@@ -123,7 +144,24 @@ public class EasyExcelUtils {
     public static <T, S> OutputStream listExportOutputStream(List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData, int type) {
         // 返回数据
         Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
-        return listExportOutputStream(data, columnWidth, clazz, mergeData, type);
+        return listExportOutputStream(data, columnWidth, clazz, mergeData, type, HEAD);
+    }
+
+    /**
+     * 将 list 转换为 OutputStream
+     *
+     * @param data      数据集
+     * @param clazz     类
+     * @param mergeData 合并数据
+     * @param type      合并类型（0 自动计算合并列，1 指定合并列）
+     * @param <T>
+     * @return 返回 OutputStream
+     * @throws GlobalException 异常信息
+     */
+    public static <T, S> OutputStream listExportOutputStream(List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData, int type, List<List<String>> head) {
+        // 返回数据
+        Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
+        return listExportOutputStream(data, columnWidth, clazz, mergeData, type, head);
     }
 
     /**
@@ -149,7 +187,7 @@ public class EasyExcelUtils {
      * @throws GlobalException 异常信息
      */
     public static <T, S> void listExportOutputStream(OutputStream outputStream, List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData) throws IOException {
-        listExportOutputStream(outputStream, data, clazz, MERGE_DATA, IntegerConsts.ZERO);
+        listExportOutputStream(outputStream, data, clazz, mergeData, IntegerConsts.ZERO);
     }
 
     /**
@@ -164,7 +202,7 @@ public class EasyExcelUtils {
     public static <T, S> void listExportOutputStream(OutputStream outputStream, List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData, int type) throws IOException {
         // 返回数据
         Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
-        ByteArrayOutputStream output = (ByteArrayOutputStream) listExportOutputStream(data, columnWidth, clazz, mergeData, type);
+        ByteArrayOutputStream output = (ByteArrayOutputStream) listExportOutputStream(data, columnWidth, clazz, mergeData, type, HEAD);
         outputStream.write(output.toByteArray());
     }
 
@@ -215,6 +253,22 @@ public class EasyExcelUtils {
     /**
      * 将 list 转换为 InputStream
      *
+     * @param data      数据集
+     * @param clazz     类
+     * @param mergeData 合并数据
+     * @param type      合并类型（0 自动计算合并列，1 指定合并列）
+     * @param <T>
+     * @return 返回 InputStream
+     */
+    public static <T, S> InputStream listExportInputStream(List<T> data, Class<T> clazz, Map<Integer, List<S>> mergeData, int type, List<List<String>> head) {
+        Map<Integer, Integer> columnWidth = new HashMap<>(IntegerConsts.ONE);
+        //创建 inputStream 流
+        return listExportInputStream(data, columnWidth, clazz, mergeData, type, head);
+    }
+
+    /**
+     * 将 list 转换为 InputStream
+     *
      * @param data        数据集
      * @param columnWidth 列宽度
      * @param clazz       类
@@ -222,7 +276,24 @@ public class EasyExcelUtils {
      * @return 返回 InputStream
      */
     public static <T, S> InputStream listExportInputStream(List<T> data, Map<Integer, Integer> columnWidth, Class<T> clazz, Map<Integer, List<S>> mergeData, int type) {
-        OutputStream outputStream = listExportOutputStream(data, columnWidth, clazz, mergeData, type);
+        OutputStream outputStream = listExportOutputStream(data, columnWidth, clazz, mergeData, type, HEAD);
+        ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
+
+        //创建 inputStream 流
+        return new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
+    }
+
+    /**
+     * 将 list 转换为 InputStream
+     *
+     * @param data        数据集
+     * @param columnWidth 列宽度
+     * @param clazz       类
+     * @param <T>
+     * @return 返回 InputStream
+     */
+    public static <T, S> InputStream listExportInputStream(List<T> data, Map<Integer, Integer> columnWidth, Class<T> clazz, Map<Integer, List<S>> mergeData, int type, List<List<String>> head) {
+        OutputStream outputStream = listExportOutputStream(data, columnWidth, clazz, mergeData, type, head);
         ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
 
         //创建 inputStream 流
@@ -239,7 +310,7 @@ public class EasyExcelUtils {
      * @return 返回 InputStream
      */
     public static <T> InputStream listExportInputStream(List<T> data, Map<Integer, Integer> columnWidth, Class<T> clazz) {
-        OutputStream outputStream = listExportOutputStream(data, columnWidth, clazz, MERGE_DATA, IntegerConsts.ZERO);
+        OutputStream outputStream = listExportOutputStream(data, columnWidth, clazz, MERGE_DATA, IntegerConsts.ZERO, HEAD);
         ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
 
         //创建 inputStream 流
@@ -256,7 +327,8 @@ public class EasyExcelUtils {
      * @return 返回 OutputStream
      * @throws GlobalException 异常信息
      */
-    private static <T, S> OutputStream listExportOutputStream(List<T> data, Map<Integer, Integer> columnWidth, Class<T> clazz, Map<Integer, List<S>> mergeData, int type) {
+    private static <T, S> OutputStream listExportOutputStream(List<T> data, Map<Integer, Integer> columnWidth, Class<T> clazz,
+                                                              Map<Integer, List<S>> mergeData, int type, List<List<String>> head) {
         //创建 OutputStream 流
         OutputStream outputStream = new ByteArrayOutputStream();
         ExcelWriterBuilder writerBuilder = EasyExcel.write(outputStream, clazz)
@@ -294,6 +366,9 @@ public class EasyExcelUtils {
             writeSheet.setSheetName("Sheet" + (i + IntegerConsts.ONE));
             if (columnWidth != null) {
                 writeSheet.setColumnWidthMap(columnWidth);
+            }
+            if (!CollectionUtils.isEmpty(head)) {
+                writeSheet.setHead(head);
             }
             writeSheet.setClazz(clazz);
             excelWriter.write(dataList, writeSheet);
