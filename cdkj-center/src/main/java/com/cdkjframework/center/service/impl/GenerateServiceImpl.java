@@ -296,7 +296,7 @@ public class GenerateServiceImpl implements GenerateService {
                     }
                     path.append("/src/main/java/");
                 }
-                if (!entity.getIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
+                if (!entity.isIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
                     continue;
                 }
                 if (!isXml && path.length() > IntegerConsts.ZERO) {
