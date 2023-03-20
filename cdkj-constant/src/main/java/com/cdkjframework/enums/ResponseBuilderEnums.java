@@ -45,12 +45,26 @@ public enum ResponseBuilderEnums {
     Error {
         @Override
         public int getValue() {
-            return 999;
+            return 500;
         }
 
         @Override
         public String getName() {
             return "失败！";
+        }
+    },
+    /**
+     * 错误信息
+     */
+    Authority {
+        @Override
+        public int getValue() {
+            return 401;
+        }
+
+        @Override
+        public String getName() {
+            return "权限验证失败！";
         }
     },
     /**

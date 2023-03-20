@@ -3,8 +3,6 @@ package com.cdkjframework.mp.dto;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * @ProjectName: common-core
  * @Package: com.cdkjframework.mp.dto
@@ -15,12 +13,16 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-public class MpDraftDto {
+public class MpDraftDto extends MpBaseDto {
 
   /**
    * 标题
    */
   private String title;
+  /**
+   * 名称
+   */
+  private String name;
   /**
    * 作者
    */
@@ -74,20 +76,17 @@ public class MpDraftDto {
    * 文章
    */
   private MpDraftDto articles;
-
-  /**
-   * 从全部素材的该偏移位置开始返回，0表示从第一个素材返回
-   */
-  private Integer offset;
-  /**
-   * 返回素材的数量，取值在1到20之间
-   */
-  private Integer count;
   /**
    * 1 表示不返回 content 字段，0 表示正常返回，默认为 0
    */
   @JSONField(name = "no_content")
   private Integer noContent;
+
+  /**
+   * 更新时间
+   */
+  @JSONField(name = "update_time")
+  private String updateTime;
 
   /**
    * 发布

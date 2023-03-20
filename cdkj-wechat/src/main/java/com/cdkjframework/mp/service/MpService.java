@@ -5,6 +5,7 @@ import com.cdkjframework.mp.dto.MpDraftDto;
 import com.cdkjframework.mp.dto.MpMenusDto;
 import com.cdkjframework.mp.dto.MpResultDto;
 
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -103,17 +104,21 @@ public interface MpService {
   /**
    * 上传图片
    *
-   * @param filePath 文件路径
+   * @param inputStream 文件数据
+   * @param fileName    文件名称
+   * @return 返回结果
    */
-  MpResultDto uploadImage(String filePath);
+  MpResultDto uploadImage(InputStream inputStream, String fileName);
 
   /**
    * 上传素材
    *
-   * @param filePath 文件路径
-   * @param type 文件类型
+   * @param inputStream 文件数据
+   * @param fileName    文件名称
+   * @param draftDto    参数
+   * @return 返回结果
    */
-  MpResultDto addMaterial(String filePath, String type);
+  MpResultDto addMaterial(InputStream inputStream, String fileName, MpDraftDto draftDto);
 
   /**
    * 删除素材
@@ -121,4 +126,27 @@ public interface MpService {
    * @param draftDto 删除条件
    */
   void deleteMaterial(MpDraftDto draftDto);
+
+  /**
+   * 查询素材
+   *
+   * @return 返回结果
+   */
+  MpResultDto findMaterialCount();
+
+  /**
+   * 查询素材
+   *
+   * @param materialId 素材ID
+   * @return 返回结果
+   */
+  MpResultDto findMaterial(String materialId);
+
+  /**
+   * 查询分页素材数据
+   *
+   * @param draftDto 查询条件
+   * @return 返回结果
+   */
+  PageEntity<MpDraftDto> listMaterialPage(MpDraftDto draftDto);
 }

@@ -60,7 +60,7 @@ public class GenerateEntity {
     /**
      * 是否整形模板
      */
-    private Boolean intTemplate;
+    private boolean intTemplate;
 
     /**
      * 类名称

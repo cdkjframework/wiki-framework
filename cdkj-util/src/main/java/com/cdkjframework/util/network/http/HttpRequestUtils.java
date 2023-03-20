@@ -124,6 +124,21 @@ public class HttpRequestUtils {
       // 请求正文信息
       //    第一部分：
       StringBuilder sb = new StringBuilder();
+      // 添加参数
+      Map<String, Object> paramsMap = request.getParamsMap();
+      if (!CollectionUtils.isEmpty(paramsMap)) {
+        Set<Map.Entry<String, Object>> entrySet = paramsMap.entrySet();
+        for (Map.Entry<String, Object> entry :
+            entrySet) {
+          sb.append("--");
+          sb.append(BOUNDARY);
+          sb.append("\r\n");
+          sb.append(String.format("Content-Disposition: form-data; name=\"%s\";\r\n\r\n", entry.getKey()));
+          sb.append(entry.getValue());
+          sb.append("\r\n");
+        }
+      }
+
       // 必须多两道线
       sb.append("--");
       sb.append(BOUNDARY);
@@ -131,7 +146,6 @@ public class HttpRequestUtils {
       sb.append("Content-Disposition: form-data;name=\"media\";filelength=\"" +
           inputStream.available() + "\";filename=\"" + fileName + "\"\r\n");
       sb.append("Content-Type:application/octet-stream\r\n\r\n");
-
       byte[] head = sb.toString().getBytes(EncodingConsts.UTF8);
       OutputStream out = new DataOutputStream(conn.getOutputStream());
       // 输出表头
