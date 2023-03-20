@@ -17,27 +17,7 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0.2</cdkj-cloud.version>
-        <cdkj-config.version>1.0.2</cdkj-config.version>
-        <cdkj-util.version>1.0.2</cdkj-util.version>
-        <cdkj-constant.version>1.0.2</cdkj-constant.version>
-        <cdkj-core.version>1.0.2</cdkj-core.version>
-        <cdkj-datasource.version>1.0.2</cdkj-datasource.version>
-        <cdkj-message.version>1.0.2</cdkj-message.version>
-        <cdkj-redis.version>1.0.2</cdkj-redis.version>
-        <cdkj-redisJson.version>1.0.2</cdkj-redisJson.version>
-        <cdkj-swagger.version>1.0.2</cdkj-swagger.version>
-        <cdkj-wechat.version>1.0.2</cdkj-wechat.version>
-        <cdkj-entity.version>1.0.2</cdkj-entity.version>
-        <cdkj-center.version>1.0.2</cdkj-center.version>
-        <cdkj-center.version>1.0.2</cdkj-center.version>
-        <cdkj-log.version>1.0.2</cdkj-log.version>
-        <cdkj-web-socket.version>1.0.2</cdkj-web-socket.version>
-        <cdkj-security.version>1.0.2</cdkj-security.version>
-        <cdkj-security-client.version>1.0.2</cdkj-security-client.version>
-        <cdkj-datasource-jpa.version>1.0.2</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0.2</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0.2</cdkj-datasource-elasticsearch.version>
+        <cdkj.version>1.0.2</cdkj.version>
 
 
         <java.version>1.8</java.version>
@@ -54,6 +34,7 @@
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
         <swagger2markup.version>1.3.3</swagger2markup.version>
+        <truelicense-core.version>1.33</truelicense-core.version>
         <swagger2markup-builder.version>1.1.2</swagger2markup-builder.version>
         <jworks.version>1.1</jworks.version>
         <asciidoctor.version>1.5.4</asciidoctor.version>
@@ -147,102 +128,107 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-center</artifactId>
-                <version>${cdkj-center.version}</version>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-license</artifactId>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-cloud</artifactId>
-                <version>${cdkj-cloud.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-config</artifactId>
-                <version>${cdkj-config.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-constant</artifactId>
-                <version>${cdkj-constant.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-core</artifactId>
-                <version>${cdkj-core.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-log</artifactId>
-                <version>${cdkj-log.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-web-socket</artifactId>
-                <version>${cdkj-web-socket.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource</artifactId>
-                <version>${cdkj-datasource.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-security-client</artifactId>
-                <version>${cdkj-security-client.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-security</artifactId>
-                <version>${cdkj-security.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource-elasticsearch</artifactId>
-                <version>${cdkj-datasource-elasticsearch.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource-jpa</artifactId>
-                <version>${cdkj-datasource-jpa.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource-mongodb</artifactId>
-                <version>${cdkj-datasource-mongodb.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-entity</artifactId>
-                <version>${cdkj-entity.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-message</artifactId>
-                <version>${cdkj-message.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-wechat</artifactId>
-                <version>${cdkj-wechat.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-redis</artifactId>
-                <version>${cdkj-redis.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-redisJson</artifactId>
-                <version>${cdkj-redisJson.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-swagger</artifactId>
-                <version>${cdkj-swagger.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-util</artifactId>
-                <version>${cdkj-util.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
 
             <dependency>
@@ -555,6 +541,13 @@
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger-models.version}</version>
             </dependency>
+            <!--begin license-->
+            <dependency>
+                <groupId>de.schlichtherle.truelicense</groupId>
+                <artifactId>truelicense-core</artifactId>
+                <version>${truelicense-core.version}</version>
+            </dependency>
+            <!--end license-->
 
             <dependency>
                 <groupId>io.github.swagger2markup</groupId>

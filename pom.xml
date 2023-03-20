@@ -37,6 +37,7 @@
         <module>cdkj-socket</module>
         <module>cdkj-security-client</module>
         <module>cdkj-datasource-mybatis-plus</module>
+        <module>cdkj-license</module>
     </modules>
 
     <parent>
