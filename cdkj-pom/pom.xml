@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,7 +17,7 @@
     </parent>
 
     <properties>
-        <cdkj.version>1.0.2</cdkj.version>
+        <cdkj.version>1.0.3</cdkj.version>
 
 
         <java.version>1.8</java.version>
@@ -133,6 +133,16 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-license</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-license-core</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-license-verify</artifactId>
                 <version>${cdkj.version}</version>
             </dependency>
             <dependency>
