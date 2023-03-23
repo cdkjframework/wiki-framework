@@ -1,6 +1,7 @@
 package com.cdkjframework.license.util;
 
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.license.entity.LicenseCreatorEntity;
 import com.cdkjframework.license.entity.LicenseResultEntity;
 import com.cdkjframework.license.entity.ResponseResultEntity;
@@ -70,6 +71,9 @@ public class LicenseCreatorUtils {
      * @return 返回生成结果
      */
     public static ResponseResultEntity generateLicense(LicenseCreatorEntity param) {
+        if (param.getYear() == null && param.getMonth() == null) {
+            throw new GlobalRuntimeException("年或月不能为空！");
+        }
         if (param.getIssuedTime() == null) {
             param.setIssuedTime(new Date());
         }
@@ -78,7 +82,12 @@ public class LicenseCreatorUtils {
 
             Calendar rightNow = Calendar.getInstance();
             rightNow.setTime(issuedTime);
-            rightNow.add(Calendar.MONTH, param.getYear());
+            if (param.getYear() != null) {
+                rightNow.add(Calendar.YEAR, param.getYear());
+            }
+            if (param.getMonth() != null) {
+                rightNow.add(Calendar.MONTH, param.getMonth());
+            }
             param.setExpiryTime(rightNow.getTime());
         }
         LicenseCreatorManager licenseCreator = new LicenseCreatorManager(param);

@@ -75,8 +75,13 @@ public class LicenseCreatorEntity implements Serializable {
     /**
      * 有效期年限
      */
-    @ApiModelProperty(value = "有效期年限（默认为 1 年）")
-    private Integer year = 1;
+    @ApiModelProperty(value = "有效期年限（默认为 0 年）")
+    private Integer year;
+    /**
+     * 有效期限（月）
+     */
+    @ApiModelProperty(value = "有效期年限（默认为 0 月）")
+    private Integer month;
 
     /**
      * 用户类型
