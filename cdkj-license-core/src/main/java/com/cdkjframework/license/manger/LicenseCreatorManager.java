@@ -5,6 +5,7 @@ import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.license.entity.LicenseCreatorEntity;
 import com.cdkjframework.license.entity.LicenseResultEntity;
 import com.cdkjframework.license.helper.ParamInitHelper;
+import com.cdkjframework.license.manager.LicenseCustomManager;
 import com.cdkjframework.util.log.LogUtils;
 import de.schlichtherle.license.LicenseContent;
 import de.schlichtherle.license.LicenseManager;

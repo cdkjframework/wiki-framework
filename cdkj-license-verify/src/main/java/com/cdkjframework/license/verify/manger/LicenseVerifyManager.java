@@ -3,6 +3,7 @@ package com.cdkjframework.license.verify.manger;
 import com.cdkjframework.license.entity.LicenseResultEntity;
 import com.cdkjframework.license.entity.LicenseVerifyEntity;
 import com.cdkjframework.license.helper.ParamInitHelper;
+import com.cdkjframework.license.manager.LicenseCustomManager;
 import com.cdkjframework.license.util.DateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import de.schlichtherle.license.*;

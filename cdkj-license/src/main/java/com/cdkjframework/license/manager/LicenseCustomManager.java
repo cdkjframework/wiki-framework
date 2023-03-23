@@ -1,8 +1,8 @@
-package com.cdkjframework.license.verify.manger;
+package com.cdkjframework.license.manager;
 
-import com.cdkjframework.license.verify.entity.LicenseExtraEntity;
-import com.cdkjframework.license.verify.service.AServerInfos;
-import com.cdkjframework.license.verify.util.DateUtils;
+import com.cdkjframework.license.entity.LicenseExtraEntity;
+import com.cdkjframework.license.service.AServerInfos;
+import com.cdkjframework.license.util.DateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import de.schlichtherle.license.*;
