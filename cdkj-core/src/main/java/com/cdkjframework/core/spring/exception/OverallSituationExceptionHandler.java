@@ -6,7 +6,9 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
+import com.cdkjframework.exceptions.UserRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.apache.ibatis.exceptions.PersistenceException;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
@@ -60,19 +63,44 @@ public class OverallSituationExceptionHandler {
         String message = e.getMessage();
         Integer code = ResponseBuilderEnums.Error.getValue();
         if (StringUtils.isNotNullAndEmpty(message)) {
-            String[] messageList = message.split(BusinessConsts.errorKey);
+            String[] messageList = message.split(BusinessConsts.ERROR_KEY);
             if (messageList.length == IntegerConsts.TWO) {
                 code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
                 message = messageList[IntegerConsts.ONE];
             }
         }
+        response(code);
         ResponseBuilder builder = ResponseBuilder.failBuilder(message);
         builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", message);
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
+        builder.setData(params);
+        return builder;
+    }
 
+    /**
+     * 用户权限公共异常
+     *
+     * @param e 公共异常数据
+     * @return 返回公共异常结果
+     */
+    @ExceptionHandler(UserRuntimeException.class)
+    public ResponseBuilder UserRuntimeException(UserRuntimeException e) {
+        String message = e.getMessage();
+        Integer code = ResponseBuilderEnums.Authority.getValue();
+        if (StringUtils.isNotNullAndEmpty(message)) {
+            String[] messageList = message.split(BusinessConsts.ERROR_KEY);
+            if (messageList.length == IntegerConsts.TWO) {
+                code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
+                message = messageList[IntegerConsts.ONE];
+            }
+        }
+        response(code);
+        ResponseBuilder builder = ResponseBuilder.failBuilder(message);
+        builder.setCode(code);
+        Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
+        params.put("error", message);
         builder.setData(params);
         return builder;
     }
@@ -89,12 +117,13 @@ public class OverallSituationExceptionHandler {
         String message = e.getMessage();
         Integer code = ResponseBuilderEnums.Error.getValue();
         if (StringUtils.isNotNullAndEmpty(message)) {
-            String[] messageList = message.split(BusinessConsts.errorKey);
+            String[] messageList = message.split(BusinessConsts.ERROR_KEY);
             if (messageList.length == IntegerConsts.TWO) {
                 code = Integer.valueOf(messageList[IntegerConsts.ZERO]);
                 message = messageList[IntegerConsts.ONE];
             }
         }
+        response(code);
         ResponseBuilder builder = ResponseBuilder.failBuilder(message);
         builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
@@ -118,8 +147,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
         builder.setData(params);
-
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
+        response(builder.getCode());
 
         return builder;
     }
@@ -137,7 +165,7 @@ public class OverallSituationExceptionHandler {
         params.put("error", e.getMessage());
         builder.setData(params);
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
+        response(builder.getCode());
 
         return builder;
     }
@@ -164,9 +192,7 @@ public class OverallSituationExceptionHandler {
                 }
             }
         }
-
-        logUtil.error(e, String.join(StringUtils.SEMICOLON, errorList));
-
+        response(builder.getCode());
         builder.setData(errorList);
         return builder;
     }
@@ -185,8 +211,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
+        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -205,8 +230,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
+        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -225,8 +249,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
+        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -245,8 +268,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
+        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -265,8 +287,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
+        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -285,8 +306,7 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        logUtil.error(e, JsonUtils.objectToJsonString(params));
-
+        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -307,8 +327,9 @@ public class OverallSituationExceptionHandler {
         } else {
             message = message.substring(begin);
         }
-        logUtil.error(e, message);
-        return ResponseBuilder.failBuilder(message);
+        ResponseBuilder builder = ResponseBuilder.failBuilder(message);
+        response(builder.getCode());
+        return builder;
     }
 
     /**
@@ -325,5 +346,18 @@ public class OverallSituationExceptionHandler {
         logUtil.error(e, info);
 
         return ResponseBuilder.failBuilder(info);
+    }
+
+    /**
+     * 响应值
+     *
+     * @param code 值
+     */
+    private void response(int code) {
+        HttpServletResponse response = HttpServletUtils.getResponse();
+        if (response == null) {
+            return;
+        }
+        response.setStatus(code);
     }
 }

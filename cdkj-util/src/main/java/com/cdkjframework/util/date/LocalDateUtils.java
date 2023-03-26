@@ -4,10 +4,14 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * @ProjectName: cdkj-framework
@@ -148,6 +152,63 @@ public class LocalDateUtils {
             return 0;
         }
         return localDateTime.toInstant(ZoneOffset.ofHours(8)).toEpochMilli();
+    }
+
+    /**
+     * 将 LocalDateTime 时间转换为 Date
+     *
+     * @return 返回结果
+     */
+    public static Date dateTimeToDate() {
+        return dateTimeToDate();
+    }
+
+    /**
+     * 将 LocalDateTime 时间转换为 Date
+     *
+     * @param localDateTime 时间
+     * @return 返回结果
+     */
+    public static Date dateTimeToDate(LocalDateTime localDateTime) {
+        return dateTimeToDate(localDateTime, DATE_HH_MM_SS);
+    }
+
+    /**
+     * 将 LocalDateTime 时间转换为 Date
+     *
+     * @param localDateTime 时间
+     * @return 返回结果
+     */
+    public static Date dateTimeToDate(String localDateTime) {
+        return dateTimeToDate(localDateTime, DATE_HH_MM_SS);
+    }
+
+    /**
+     * 将 LocalDateTime 时间转换为 Date
+     *
+     * @param localDateTime 时间
+     * @param pattern       时间格式化
+     * @return 返回结果
+     */
+    public static Date dateTimeToDate(LocalDateTime localDateTime, String pattern) {
+        return dateTimeToDate(dateTimeFormatter(localDateTime), pattern);
+    }
+
+    /**
+     * 将 LocalDateTime 时间转换为 Date
+     *
+     * @param localDateTime 时间
+     * @param pattern       时间格式化
+     * @return 返回结果
+     */
+    public static Date dateTimeToDate(String localDateTime, String pattern) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT+8:00"));
+        try {
+            return dateFormat.parse(localDateTime);
+        } catch (ParseException e) {
+            return null;
+        }
     }
 
     /**

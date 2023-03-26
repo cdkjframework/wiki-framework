@@ -171,4 +171,5 @@ public class RegexConsts {
      * safari
      */
     public static final String SAFARI = "version/([\\d.]+).*safari";
+
 }

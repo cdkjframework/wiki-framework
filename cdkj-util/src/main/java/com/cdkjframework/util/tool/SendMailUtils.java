@@ -2,8 +2,11 @@ package com.cdkjframework.util.tool;
 
 import com.cdkjframework.config.MailConfig;
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.util.log.LogUtils;
 import com.sun.mail.util.MailSSLSocketFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -17,6 +20,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -29,8 +33,12 @@ import java.util.Properties;
  * @Version: 1.0
  */
 @Component
-@Order(Integer.MIN_VALUE + 1)
-public class SendMailUtils implements ApplicationRunner {
+@RequiredArgsConstructor
+public class SendMailUtils {
+    /**
+     * 日志
+     */
+    private static LogUtils logUtils = LogUtils.getLogger(SendMailUtils.class);
 
     /**
      * 邮件配置
@@ -47,6 +55,7 @@ public class SendMailUtils implements ApplicationRunner {
      */
     public SendMailUtils(MailConfig config) {
         mailConfig = config;
+        run();
     }
 
     /**
@@ -57,7 +66,7 @@ public class SendMailUtils implements ApplicationRunner {
      * @param message 信息
      */
     public static void sendMail(List<String> toMail, String subject, String message) throws IOException, MessagingException, GlobalException {
-        sendMail(toMail, subject, message, null, null, null);
+        sendMail(toMail, subject, message, new ArrayList<>(), StringUtils.NullObject, null);
     }
 
     /**
@@ -68,8 +77,8 @@ public class SendMailUtils implements ApplicationRunner {
      * @param message 信息
      * @param ccMail  抄送邮箱
      */
-    public static void sendMail(List<String> toMail, String subject, String message, List<StringUtils> ccMail) throws IOException, MessagingException, GlobalException {
-        sendMail(toMail, subject, message, ccMail, null, null);
+    public static void sendMail(List<String> toMail, String subject, String message, List<String> ccMail) throws IOException, MessagingException, GlobalException {
+        sendMail(toMail, subject, message, ccMail, StringUtils.NullObject, null);
     }
 
     /**
@@ -83,7 +92,7 @@ public class SendMailUtils implements ApplicationRunner {
      * @throws GlobalException    公共异常信息
      */
     public static void sendMail(List<String> toMail, String subject, String message, String fileName, InputStream inputStream) throws IOException, MessagingException, GlobalException {
-        sendMail(toMail, subject, message, null, fileName, inputStream);
+        sendMail(toMail, subject, message, new ArrayList<>(), fileName, inputStream);
     }
 
     /**
@@ -100,7 +109,7 @@ public class SendMailUtils implements ApplicationRunner {
      * @throws GlobalException    公共异常信息
      */
     public static void sendMail(List<String> toMail, String subject, String message,
-                                List<StringUtils> ccMail, String fileName, InputStream inputStream) throws MessagingException, IOException, GlobalException {
+                                List<String> ccMail, String fileName, InputStream inputStream) throws MessagingException, IOException, GlobalException {
         if (mailSender == null) {
             throw new GlobalException("未配置邮件信息");
         }
@@ -114,10 +123,10 @@ public class SendMailUtils implements ApplicationRunner {
         messageHelper.setSubject(subject);
         messageHelper.setText(message, multipart);
         if (StringUtils.isNotNullAndEmpty(fileName) &&
-                inputStream != null && inputStream.available() > 0) {
+                inputStream != null && inputStream.available() > IntegerConsts.ZERO) {
             messageHelper.addAttachment(fileName, (InputStreamSource) inputStream);
         }
-        if (ccMail != null && ccMail.size() > 0) {
+        if (ccMail != null && ccMail.size() > IntegerConsts.ZERO) {
             messageHelper.setCc(ccMail.toArray(new String[ccMail.size()]));
         }
 
@@ -127,12 +136,8 @@ public class SendMailUtils implements ApplicationRunner {
 
     /**
      * 创建引用
-     *
-     * @param args 参数
-     * @throws Exception 异常信息
      */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run() {
         if (StringUtils.isNullAndSpaceOrEmpty(mailConfig.getHost()) ||
                 StringUtils.isNullAndSpaceOrEmpty(mailConfig.getFromMail())) {
             return;
@@ -158,7 +163,7 @@ public class SendMailUtils implements ApplicationRunner {
                 socketFactory = new MailSSLSocketFactory();
                 socketFactory.setTrustAllHosts(true);
             } catch (GeneralSecurityException e1) {
-                e1.printStackTrace();
+                logUtils.error(e1);
             }
             properties.put("mail.smtp.ssl.socketFactory", socketFactory);
         }

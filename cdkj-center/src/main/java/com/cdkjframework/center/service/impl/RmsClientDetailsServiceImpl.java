@@ -11,6 +11,7 @@ import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +27,7 @@ import java.time.LocalDateTime;
  */
 
 @Service
+@RequiredArgsConstructor
 public class RmsClientDetailsServiceImpl implements RmsClientDetailsService {
 
     /**
@@ -36,8 +38,7 @@ public class RmsClientDetailsServiceImpl implements RmsClientDetailsService {
     /**
      *  mapper
      */
-    @Autowired
-    private RmsClientDetailsMapper rmsClientDetailsMapper;
+    private final RmsClientDetailsMapper rmsClientDetailsMapper;
 
     /**
      * 查找一条客户详情

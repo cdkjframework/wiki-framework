@@ -4,99 +4,44 @@
     <meta charset="UTF-8">
     <title>Code Auto Generator By cdk Framework</title>
     <!-- import CSS -->
-    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/index.css">
     <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
-    <style type="text/css">
-
-        .el-header, .el-footer {
-            background-color: #B3C0D1;
-            color: #333;
-            text-align: center;
-            line-height: 60px;
-        }
-
-        .el-aside {
-            background-color: #D3DCE6;
-            color: #333;
-            text-align: center;
-            line-height: 200px;
-        }
-
-        .el-main {
-            background-color: #E9EEF3;
-            color: #333;
-            text-align: left;
-            position: absolute;
-            top: 60px;
-            left: 0;
-            bottom: 0;
-            right: 0;
-        }
-
-        .el-container,
-        .is-vertical {
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            width: 100%;
-            display: block !important;
-        }
-
-        .el-container:nth-child(5) .el-aside,
-        .el-container:nth-child(6) .el-aside {
-            line-height: 260px;
-        }
-
-        .el-container:nth-child(7) .el-aside {
-            line-height: 320px;
-        }
-
-        .database {
-            float: left;
-        }
-
-        .custom-tree-node {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-size: 14px;
-            padding-right: 8px;
-        }
-    </style>
 </head>
 <body>
 <div id="app">
-    <el-container>
+    <el-container class="container">
         <el-header>
             <lable class="el-form-item__label">应用程序名称：${applicationName}</lable>
         </el-header>
-        <el-main>
-            <el-select @change="dataChange" popper-class="database" v-model="value" placeholder="请选择">
-                <el-option
-                        v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
-                </el-option>
-            </el-select>
-            <el-button @click="setCheckedKeys">选择</el-button>
-            <el-button @click="generate">生成</el-button>
-            <div style="padding: 10px 0">
-                <el-tree :data="table"
-                         show-checkbox
-                         node-key="id"
-                         ref="dataTableList"
-                         accordion>
-                </el-tree>
-            </div>
-        </el-main>
+        <el-container class="container-child">
+            <el-aside width="500px">
+                <el-select @change="dataChange" popper-class="database" v-model="value" placeholder="请选择">
+                    <el-option
+                            v-for="item in options"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+                <el-button @click="setCheckedKeys">选择</el-button>
+                <el-button @click="generate">生成</el-button>
+                <div style="padding: 10px 0">
+                    <el-tree :data="table"
+                             show-checkbox
+                             node-key="id"
+                             ref="dataTableList"
+                             accordion>
+                    </el-tree>
+                </div>
+            </el-aside>
+            <el-main>
+            </el-main>
+        </el-container>
     </el-container>
 </div>
 
 <!-- import Vue before Element -->
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.staticfile.org/vue/2.7.0/vue.js"></script>
 <!-- import JavaScript -->
 <script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
@@ -110,7 +55,8 @@
                 options: [],
                 value: '',
                 table: [],
-                keys: []
+                keys: [],
+                fileList: []
             }
         },
         mounted() {
@@ -119,6 +65,18 @@
         methods: {
             init() {
                 this.getDatabase()
+            },
+            uploadChange(file, fileLists) {
+                console.log('uploadChange', file)
+                console.log(file);
+                console.log(fileLists);
+                // 本地服务器路径
+                console.log(URL.createObjectURL(file.raw));
+                // 本地电脑路径
+                console.log(document.getElementsByClassName("el-upload__input")[0].value);
+            },
+            handlePreview(e) {
+                console.log('handlePreview', e)
             },
             dataChange(e) {
                 this.getTable()
@@ -193,7 +151,7 @@
                     } else {
                         data = JSON.parse(json)
                     }
-                    if (data.code === 0) {
+                    if (data.code === 0 || data.code === 200) {
                         that.$message.success('生成成功！')
                     } else {
                         that.$message.error('生成失败：' + res.data.message)
@@ -205,18 +163,18 @@
                 })
             },
             encrypt(word) {
-              return  word
+                return word
                 let key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
                 let iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
                 // 偏移量
                 let encryption = CryptoJS.enc.Utf8.parse(word);
                 // 算法
                 let encrypted = CryptoJS.AES.encrypt(encryption, key,
-                        {
-                            iv: iv,
-                            mode: CryptoJS.mode.CBC,
-                            padding: CryptoJS.pad.ZeroPadding
-                        });
+                    {
+                        iv: iv,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.ZeroPadding
+                    });
                 return CryptoJS.enc.Base64.stringify(encrypted.ciphertext);
             },
             /**
@@ -224,18 +182,18 @@
              *
              */
             decrypt(word) {
-              return  word
+                return word
                 let key = CryptoJS.enc.Utf8.parse('cn.framewiki.com')
                 let iv = CryptoJS.enc.Utf8.parse('hk.framewiki.com')
                 let base64 = CryptoJS.enc.Base64.parse(word);
                 let base64Value = CryptoJS.enc.Base64.stringify(base64);
                 // AES解密
                 let decrypt = CryptoJS.AES.decrypt(base64Value, key,
-                        {
-                            iv: iv,
-                            mode: CryptoJS.mode.CBC,
-                            padding: CryptoJS.pad.ZeroPadding
-                        });
+                    {
+                        iv: iv,
+                        mode: CryptoJS.mode.CBC,
+                        padding: CryptoJS.pad.ZeroPadding
+                    });
                 return CryptoJS.enc.Utf8.stringify(decrypt).toString();
             }
         }

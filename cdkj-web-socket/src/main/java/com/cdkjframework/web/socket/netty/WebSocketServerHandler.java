@@ -7,7 +7,6 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
-import com.cdkjframework.web.socket.config.WebSocketConfig;
 import io.netty.channel.*;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.stereotype.Component;
@@ -29,15 +28,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
      * 日志
      */
     private final LogUtils logUtils = LogUtils.getLogger(WebSocketServerHandler.class);
+
     /**
      * 心跳类型
      */
     private final String TYPE = "heartbeat";
-
-    /**
-     * 配置
-     */
-    private final WebSocketConfig webSocketConfig;
 
     /**
      * 接口
@@ -47,14 +42,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     /**
      * 构造函数
      *
-     * @param webSocketConfig 配置信息
-     * @param webSocket       接口
+     * @param webSocket 接口
      */
-    public WebSocketServerHandler(WebSocketConfig webSocketConfig, WebSocket webSocket) {
-        this.webSocketConfig = webSocketConfig;
+    public WebSocketServerHandler(WebSocket webSocket) {
         this.webSocket = webSocket;
     }
-
 
     /**
      * 数据读取完毕
@@ -80,9 +72,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         ctx.close();
-        String channelId = ctx.channel().id().asLongText();
-        logUtils.info("客户端【" + channelId + "】异常，关闭连接");
-        WebSocketUtils.clients.remove(ctx.channel());
+        Channel channel = ctx.channel();
+        String channelId = channel.id().asLongText();
+        logUtils.info("客户端【" + channelId + "】异常，关闭连接，异常信息：" + cause.getMessage());
+        logUtils.error(cause.getCause(), cause.getMessage());
+        channelDisconnected(channel);
         logUtils.info("连接通道数量: " + WebSocketUtils.clients.size());
     }
 
@@ -111,15 +105,10 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
      */
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        String channelId = ctx.channel().id().asLongText();
+        Channel channel = ctx.channel();
+        String channelId = channel.id().asLongText();
         logUtils.info("客户端【" + channelId + "】断开连接，连接通道数量: " + WebSocketUtils.clients.size());
-        WebSocketUtils.clients.remove(ctx.channel());
-        WebSocketEntity socket = new WebSocketEntity();
-        socket.setClientId(channelId);
-        socket.setType("channelInactive");
-        socket.setMessage("{\"type\":\"channelInactive\"}");
-        webSocket.onMessage(socket);
-        webSocket.onDisconnect();
+        channelDisconnected(channel);
     }
 
     /**
@@ -137,11 +126,6 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
         String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
-            // 返回心跳消息
-            WebSocketEntity heartbeat = new WebSocketEntity();
-            heartbeat.setType(TYPE);
-            heartbeat.setClientId(channelId);
-            WebSocketUtils.sendMessage(channelId, JsonUtils.objectToJsonString(heartbeat));
             return;
         }
         socket.setClientId(channelId);
@@ -151,4 +135,18 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         webSocket.onMessage(socket);
     }
 
+    /**
+     * 通道断开处理
+     *
+     * @param channel 当前通道
+     */
+    private void channelDisconnected(Channel channel) {
+        logUtils.info("通道ID " + channel.id().asLongText() + " 通道状态：" + channel.isOpen());
+        if (channel.isOpen()) {
+            return;
+        }
+        String channelId = channel.id().asLongText();
+        WebSocketUtils.clients.remove(channel);
+        webSocket.onDisconnect(channelId);
+    }
 }

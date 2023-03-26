@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-framework</artifactId>
-        <version>1.0-220422</version>
+        <version>1.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -90,6 +90,11 @@
             <artifactId>fastjson</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
         <!-- jwt begin -->
         <dependency>
             <groupId>com.auth0</groupId>
@@ -110,6 +115,12 @@
             <artifactId>gson</artifactId>
         </dependency>
         <!-- jwt end -->
+        <!-- 加密 start-->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk15on</artifactId>
+        </dependency>
+        <!-- 加密 end-->
 
         <!-- 加载 freemarker -->
         <dependency>
@@ -130,6 +141,19 @@
             <artifactId>aliyun-sdk-oss</artifactId>
         </dependency>
         <!-- end aliYun-sdk-oss -->
+
+        <!--log4j2 begin-->
+<!--        <dependency>-->
+<!--            <groupId>org.springframework.boot</groupId>-->
+<!--            <artifactId>spring-boot-starter-log4j2</artifactId>-->
+<!--        </dependency>-->
+
+<!--        <dependency>-->
+<!--            <groupId>com.lmax</groupId>-->
+<!--            <artifactId>disruptor</artifactId>-->
+<!--            <version>3.4.2</version>-->
+<!--        </dependency>-->
+        <!--log4j2   end-->
 
         <dependency>
             <groupId>commons-fileupload</groupId>
@@ -235,10 +259,6 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-context</artifactId>
         </dependency>
-        <!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-log4j2</artifactId>-->
-<!--        </dependency>-->
 
         <!-- 极光推送 -->
         <dependency>
@@ -270,6 +290,10 @@
         <dependency>
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-template</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.f4b6a3</groupId>
+            <artifactId>ulid-creator</artifactId>
         </dependency>
     </dependencies>
 
@@ -321,9 +345,9 @@
 
     <distributionManagement>
         <repository>
-            <id>lesmarthome Maven Respository</id>
+            <id>cdkj Maven Repository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
         </repository>
     </distributionManagement>
 </project>

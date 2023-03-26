@@ -1,20 +1,20 @@
 package com.cdkjframework.util.push;
 
-import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.entity.message.PushEntity;
-import com.cdkjframework.entity.message.TransmissionContentEntity;
-import com.cdkjframework.util.tool.JsonUtils;
-import com.cdkjframework.util.tool.StringUtils;
-import com.gexin.rp.sdk.base.IPushResult;
-import com.gexin.rp.sdk.base.impl.AppMessage;
-import com.gexin.rp.sdk.base.impl.Message;
-import com.gexin.rp.sdk.base.impl.SingleMessage;
-import com.gexin.rp.sdk.base.impl.Target;
-import com.gexin.rp.sdk.base.uitls.AppConditions;
-import com.gexin.rp.sdk.http.Constants;
-import com.gexin.rp.sdk.http.IGtPush;
-import com.gexin.rp.sdk.template.NotificationTemplate;
-import com.gexin.rp.sdk.template.style.Style0;
+//import com.cdkjframework.constant.IntegerConsts;
+//import com.cdkjframework.entity.message.PushEntity;
+//import com.cdkjframework.entity.message.TransmissionContentEntity;
+//import com.cdkjframework.util.tool.JsonUtils;
+//import com.cdkjframework.util.tool.StringUtils;
+//import com.gexin.rp.sdk.base.IPushResult;
+//import com.gexin.rp.sdk.base.impl.AppMessage;
+//import com.gexin.rp.sdk.base.impl.Message;
+//import com.gexin.rp.sdk.base.impl.SingleMessage;
+//import com.gexin.rp.sdk.base.impl.Target;
+//import com.gexin.rp.sdk.base.uitls.AppConditions;
+//import com.gexin.rp.sdk.http.Constants;
+//import com.gexin.rp.sdk.http.IGtPush;
+//import com.gexin.rp.sdk.template.NotificationTemplate;
+//import com.gexin.rp.sdk.template.style.Style0;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;

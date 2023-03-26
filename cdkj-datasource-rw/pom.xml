@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cdkj-framework</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <version>1.0-220422</version>
+        <version>1.0.3</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -129,9 +129,9 @@
 
     <distributionManagement>
         <repository>
-            <id>lesmarthome Maven Respository</id>
+            <id>cdkj Maven Repository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
         </repository>
     </distributionManagement>
 </project>

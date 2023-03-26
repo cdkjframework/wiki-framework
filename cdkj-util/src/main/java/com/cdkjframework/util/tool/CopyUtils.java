@@ -10,6 +10,8 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -75,15 +77,16 @@ public class CopyUtils {
     @Deprecated
     public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
         List<T> result = new ArrayList();
-        if (list != null) {
-            for (S o : list) {
-                try {
-                    T d = target.newInstance();
-                    copyProperties(o, d, false);
-                    result.add(d);
-                } catch (Exception e) {
-                    logUtil.error(e.getMessage());
-                }
+        if (list == null) {
+            return result;
+        }
+        for (S o : list) {
+            try {
+                T d = target.newInstance();
+                copyProperties(o, d, false);
+                result.add(d);
+            } catch (Exception e) {
+                logUtil.error(e.getMessage());
             }
         }
         return result;
@@ -102,7 +105,6 @@ public class CopyUtils {
         if (list != null) {
             for (S o : list) {
                 try {
-
                     T d = target.newInstance();
                     copyProperties(o, d, true);
                     result.add(d);
@@ -166,6 +168,9 @@ public class CopyUtils {
     public static <S, T> T copyProperties(S source, Class<T> target) {
         T t;
         try {
+            if (source == null) {
+                return null;
+            }
             t = target.newInstance();
             copyProperties(source, t, false);
             return t;
@@ -183,16 +188,17 @@ public class CopyUtils {
      */
     public static <S, T> List<T> copyNoNullProperties(List<S> sourceList, Class<T> targetList) {
         List<T> result = new ArrayList();
-        if (sourceList != null) {
-            for (S o : sourceList) {
-                try {
+        if (sourceList == null) {
+            return result;
+        }
+        for (S o : sourceList) {
+            try {
 
-                    T d = targetList.newInstance();
-                    copyProperties(o, d, true);
-                    result.add(d);
-                } catch (Exception e) {
-                    logUtil.error(e.getMessage());
-                }
+                T d = targetList.newInstance();
+                copyProperties(o, d, true);
+                result.add(d);
+            } catch (Exception e) {
+                logUtil.error(e.getMessage());
             }
         }
         return result;
@@ -207,6 +213,9 @@ public class CopyUtils {
     public static <S, T> T copyNoNullProperties(S source, Class<T> target) {
         T t;
         try {
+            if (source == null) {
+                return null;
+            }
             t = target.newInstance();
             copyProperties(source, t, true);
             return t;
@@ -268,6 +277,10 @@ public class CopyUtils {
                 Object clazz;
                 if (targetField.getType().equals(Integer.class)) {
                     clazz = targetField.getType().getConstructor(int.class).newInstance(IntegerConsts.ZERO);
+                } else if ((targetField.getType().equals(LocalDateTime.class))) {
+                    clazz = LocalDateTime.parse((CharSequence) value);
+                } else if ((targetField.getType().equals(LocalDate.class))) {
+                    clazz = LocalDate.parse((CharSequence) value);
                 } else {
                     clazz = targetField.getType().newInstance();
                 }

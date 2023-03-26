@@ -1,9 +1,7 @@
 package com.cdkjframework.entity.file;
 
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.List;
 
@@ -16,9 +14,7 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class FileEntity {
 
     /**
@@ -30,6 +26,10 @@ public class FileEntity {
      * 压缩文件保存路径（可为空）
      */
     private String filePath;
+    /**
+     * 需要压缩文件的根目录
+     */
+    private String rootPath;
 
     /**
      * 需要压缩的文件

@@ -3,10 +3,11 @@ package com.cdkjframework.datasource.jpa.connectivity;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.jpa.config.JpaConfig;
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.jpa.HibernatePersistenceProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -28,9 +29,10 @@ import java.util.Map;
  * @Author: xiaLin
  * @Version: 1.0
  */
-
 @Component
+@Configuration
 @EnableTransactionManagement
+@RequiredArgsConstructor
 public class JpaConfiguration {
 
     /**
@@ -43,8 +45,7 @@ public class JpaConfiguration {
     /**
      * 配置
      */
-    @Autowired
-    private JpaConfig jpaReadConfig;
+    private final JpaConfig jpaReadConfig;
 
     /**
      * JAP 管理工厂
@@ -64,7 +65,7 @@ public class JpaConfiguration {
         factory.setPackagesToScan(jpaReadConfig.getPackagesToScan().toArray(new String[jpaReadConfig.getPackagesToScan().size()]));
         factory.setDataSource(jpaDataSource);
         // 其它参数
-        Map<String, Object> jpaProperties = new HashMap<String, Object>(IntegerConsts.SEVEN);
+        Map<String, Object> jpaProperties = new HashMap<>(IntegerConsts.SEVEN);
         jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
         jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
         jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());

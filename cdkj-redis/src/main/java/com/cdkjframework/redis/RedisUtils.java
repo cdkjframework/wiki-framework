@@ -1,5 +1,6 @@
 package com.cdkjframework.redis;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.redis.config.RedisConfig;
@@ -670,7 +671,7 @@ public class RedisUtils {
         if (value == null) {
             return false;
         }
-        return syncSet(key, value.toJSONString());
+        return syncSet(key, JSON.toJSONString(value));
     }
 
     /**
@@ -686,7 +687,7 @@ public class RedisUtils {
         if (value == null) {
             return false;
         }
-        return syncSet(key, value.toJSONString(), time);
+        return syncSet(key, JSON.toJSONString(value), time);
     }
 
     /**

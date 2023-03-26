@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 @Component
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.custom.redis")
+@ConfigurationProperties(prefix = "spring.datasource.redis")
 public class RedisConfig {
 
     /**
@@ -98,10 +98,15 @@ public class RedisConfig {
     /**
      * 是否启动集群
      */
-    private boolean cluster = false;
+    private boolean cluster;
 
     /**
      * 是否启用redis锁
      */
-    private boolean lock = false;
+    private boolean lock;
+
+    /**
+     * 是否开启搜索
+     */
+    private boolean search;
 }

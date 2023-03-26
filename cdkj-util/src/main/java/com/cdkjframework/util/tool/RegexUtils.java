@@ -220,6 +220,18 @@ public class RegexUtils {
     }
 
     /**
+     * 验证是否为UUID
+     *
+     * @param character 值
+     * @return
+     */
+    public static boolean isUuidCharacter(String character) {
+        return isPattern(character, RegexConsts.REGEX_UUID);
+    }
+
+    /**
+     * 验证是否为指定类型
+     *
      * @param character 字符
      * @param regex     正则
      * @return 返回布值

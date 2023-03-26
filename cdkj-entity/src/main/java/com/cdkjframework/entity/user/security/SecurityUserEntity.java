@@ -98,10 +98,12 @@ public class SecurityUserEntity extends UserEntity implements Serializable, User
         this.password = password;
     }
 
+    @Override
     public Integer getStatus() {
         return status;
     }
 
+    @Override
     public void setStatus(Integer status) {
         this.status = status;
     }

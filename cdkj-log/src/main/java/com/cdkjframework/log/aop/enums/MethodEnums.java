@@ -10,23 +10,32 @@ package com.cdkjframework.log.aop.enums;
  */
 public enum MethodEnums {
 
-    /**
-     * 插入
-     */
-    insert,
+  /**
+   * 插入
+   */
+  insert,
 
-    /**
-     * 批量插入
-     */
-    insertBatch,
+  /**
+   * 批量插入
+   */
+  insertBatch,
 
-    /**
-     * 修改
-     */
-    modify,
+  /**
+   * 修改
+   */
+  modify,
 
-    /**
-     * 批量修改
-     */
-    modifyBatch,
+  /**
+   * 批量修改
+   */
+  modifyBatch,
+
+  /**
+   * JAP 保存
+   */
+  save,
+  /**
+   * JAP 批量保存
+   */
+  saveAll
 }

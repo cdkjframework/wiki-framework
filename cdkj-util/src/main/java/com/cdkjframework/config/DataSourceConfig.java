@@ -1,5 +1,6 @@
 package com.cdkjframework.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,15 +17,17 @@ import org.springframework.stereotype.Component;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Component
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "spring.datasource")
 public class DataSourceConfig {
 
+    /**
+     * 是否加密
+     */
+    private boolean encryption;
     private int minIdle;
     private int maxWait;
     private int maxActive;

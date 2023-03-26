@@ -11,24 +11,40 @@ package com.cdkjframework.constant;
 
 public class CacheConsts {
 
-    /**
-     * 用户登录缓存
-     */
-    public static final String USER_LOGIN = "user:userLogin";
 
-    /**
-     * 支付配置
-     */
-    public static final String PAY_CONFIG = "payConfig";
+  /**
+   * 用户缓存前缀
+   */
+  public static final String USER_PREFIX = "user:";
 
-    /**
-     * 验证码缓存
-     */
-    public static final String VERIFY_CODE = "verifyCode";
+  /**
+   * 用户登录缓存
+   */
+  public static final String USER_LOGIN = USER_PREFIX + "userLogin-";
 
-    /**
-     * 登录验证码
-     */
-    public static final String LOGIN_VERIFY_CODE = "loginVerifyCode";
+  /**
+   * 用户资源
+   */
+  public static final String USER_RESOURCE = USER_PREFIX + "resource-";
+
+  /**
+   * 用户资源
+   */
+  public static final String USER_WECHAT_MP = USER_PREFIX + "mp-%s";
+
+  /**
+   * 支付配置
+   */
+  public static final String PAY_CONFIG = "payConfig";
+
+  /**
+   * 验证码缓存
+   */
+  public static final String VERIFY_CODE = "verifyCode";
+
+  /**
+   * 登录验证码
+   */
+  public static final String LOGIN_VERIFY_CODE = "loginVerifyCode";
 
 }

@@ -2,7 +2,7 @@ package com.cdkjframework.util.encrypts;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.constant.WebChatPayConsts;
-import com.cdkjframework.enums.AutographTypeEnums;
+import com.cdkjframework.enums.AlgorithmTypeEnums;
 import com.cdkjframework.util.tool.StringUtils;
 
 import javax.crypto.Mac;
@@ -33,7 +33,7 @@ public class WebChatPayAutographUtils {
      * @return 签名
      */
     public static String generateSignature(final Map<String, String> data, String key) throws Exception {
-        return generateSignature(data, key, StringUtils.Empty, AutographTypeEnums.MD5);
+        return generateSignature(data, key, StringUtils.Empty, AlgorithmTypeEnums.MD5);
     }
 
     /**
@@ -44,7 +44,7 @@ public class WebChatPayAutographUtils {
      * @param signType 签名方式
      * @return 签名
      */
-    public static String generateSignature(final Map<String, String> data, String key, String privateKey, AutographTypeEnums signType) throws Exception {
+    public static String generateSignature(final Map<String, String> data, String key, String privateKey, AlgorithmTypeEnums signType) throws Exception {
         Set<String> keySet = data.keySet();
         String[] keyArray = keySet.toArray(new String[keySet.size()]);
         Arrays.sort(keyArray);
@@ -62,10 +62,10 @@ public class WebChatPayAutographUtils {
         // 签名加密
         String signString;
         switch (signType) {
-            case HMACSHA256:
+            case HMAC_SHA256:
                 signString = hmacSha256(builder.toString(), key);
                 break;
-            case SHA256WITHRSA:
+            case SHA256withRSA:
                 signString = sha256withrsa(builder.toString(), privateKey);
                 break;
             case MD5:

@@ -33,6 +33,69 @@ public enum MySqlDataTypeContrastEnums implements BasicsEnum {
             return "java.lang.String";
         }
     },
+    LONGTEXT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "String";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.lang.String";
+        }
+    },
+    KEYID {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "String";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.lang.String";
+        }
+    },
+    BPCHAR {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "String";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.lang.String";
+        }
+    },
     CHAR {
         /**
          * 获取枚举值
@@ -180,6 +243,27 @@ public enum MySqlDataTypeContrastEnums implements BasicsEnum {
             return "java.lang.Integer";
         }
     },
+    INT2 {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "Integer";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.lang.Integer";
+        }
+    },
     SMALLINT {
         /**
          * 获取枚举值
@@ -307,6 +391,27 @@ public enum MySqlDataTypeContrastEnums implements BasicsEnum {
         }
     },
     DECIMAL {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "BigDecimal";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.math.BigDecimal";
+        }
+    },
+    NUMERIC {
         /**
          * 获取枚举值
          *

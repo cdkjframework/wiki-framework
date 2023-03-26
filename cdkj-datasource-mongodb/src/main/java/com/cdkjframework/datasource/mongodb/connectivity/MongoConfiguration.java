@@ -1,14 +1,16 @@
 package com.cdkjframework.datasource.mongodb.connectivity;
 
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.datasource.mongodb.config.MongoConfig;
+import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.mongodb.*;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.connection.ClusterConnectionMode;
-import com.mongodb.connection.ClusterSettings;
 import com.mongodb.connection.ClusterType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -26,6 +28,7 @@ import java.util.Arrays;
  * @Version: 1.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class MongoConfiguration {
 
     /**
@@ -33,18 +36,14 @@ public class MongoConfiguration {
      */
     private final MongoConfig mongodbConfig;
     /**
+     * 自定义配置
+     */
+    private final CustomConfig customConfig;
+
+    /**
      * 日志
      */
     private LogUtils logUtil = LogUtils.getLogger(MongoConfiguration.class);
-
-    /**
-     * 构造函数
-     *
-     * @param mongodbConfig mongo配置
-     */
-    public MongoConfiguration(MongoConfig mongodbConfig) {
-        this.mongodbConfig = mongodbConfig;
-    }
 
     /**
      * mongo模板
@@ -87,14 +86,23 @@ public class MongoConfiguration {
      *
      * @return 返回mongo客户端
      */
-    @Bean
     public MongoClient mongoDbClusterFactory() {
         String uri;
         if (StringUtils.isNotNullAndEmpty(mongodbConfig.getPassword()) &&
                 StringUtils.isNotNullAndEmpty(mongodbConfig.getUserName())) {
-            uri = String.format("mongodb://%s:%s@%s:%d/%s",
-                    mongodbConfig.getUserName(), mongodbConfig.getPassword(), mongodbConfig.getUri(),
-                    mongodbConfig.getPort(), mongodbConfig.getAdminSource());
+
+            if (mongodbConfig.isEncryption()) {
+                AesUtils aes = new AesUtils(customConfig);
+                uri = String.format("mongodb://%s:%s@%s:%d/%s",
+                        AesUtils.base64Decrypt(mongodbConfig.getUserName()),
+                        AesUtils.base64Decrypt(mongodbConfig.getPassword()),
+                        AesUtils.base64Decrypt(mongodbConfig.getUri()),
+                        mongodbConfig.getPort(), mongodbConfig.getAdminSource());
+            } else {
+                uri = String.format("mongodb://%s:%s@%s:%d/%s",
+                        mongodbConfig.getUserName(), mongodbConfig.getPassword(), mongodbConfig.getUri(),
+                        mongodbConfig.getPort(), mongodbConfig.getAdminSource());
+            }
         } else {
             uri = String.format("mongodb://%s:%d/%s", mongodbConfig.getUri(),
                     mongodbConfig.getPort(), mongodbConfig.getDataSource());
@@ -117,17 +125,29 @@ public class MongoConfiguration {
      *
      * @return 客户端
      */
-    @Bean
     public MongoClient mongoClient() {
         MongoClientSettings.Builder builder = MongoClientSettings.builder();
+        ServerAddress serverAddress = null;
         if (StringUtils.isNotNullAndEmpty(mongodbConfig.getUserName()) &&
                 StringUtils.isNotNullAndEmpty(mongodbConfig.getPassword())) {
-            MongoCredential credential = MongoCredential.createCredential(mongodbConfig.getUserName(), mongodbConfig.getDataSource(), mongodbConfig.getPassword().toCharArray());
+            MongoCredential credential;
+            if (mongodbConfig.isEncryption()) {
+                AesUtils aes = new AesUtils(customConfig);
+                serverAddress = new ServerAddress(AesUtils.base64Decrypt(mongodbConfig.getUri()), mongodbConfig.getPort());
+                credential = MongoCredential.createCredential(AesUtils.base64Decrypt(mongodbConfig.getUserName()),
+                        mongodbConfig.getDataSource(), AesUtils.base64Decrypt(mongodbConfig.getPassword()).toCharArray());
+            } else {
+                credential = MongoCredential.createCredential(mongodbConfig.getUserName(), mongodbConfig.getDataSource(), mongodbConfig.getPassword().toCharArray());
+            }
             builder = builder.credential(credential);
         }
+        if (serverAddress == null) {
+            serverAddress = new ServerAddress(mongodbConfig.getUri(), mongodbConfig.getPort());
+        }
 
+        final ServerAddress finalServerAddress = serverAddress;
         MongoClientSettings setting = builder.applyToClusterSettings(cluster ->
-                cluster.hosts(Arrays.asList(new ServerAddress(mongodbConfig.getUri(), mongodbConfig.getPort())))
+                cluster.hosts(Arrays.asList(finalServerAddress))
                         .mode(ClusterConnectionMode.SINGLE)
                         .requiredClusterType(ClusterType.STANDALONE)
         ).build();

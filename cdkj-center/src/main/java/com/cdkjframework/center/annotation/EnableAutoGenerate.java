@@ -35,11 +35,43 @@ public @interface EnableAutoGenerate {
     boolean jpa() default false;
 
     /**
+     * 是否生成 myBatis 模板
+     *
+     * @return 返回结果
+     */
+    boolean myBatis() default true;
+
+    /**
      * 对接查询那些表
      *
      * @return 返回结果
      */
     String[] notTables() default {};
+
+    /**
+     * 根目录
+     *
+     * @return 返回结果
+     */
+    String basePath() default "";
+
+    /**
+     * 路径 (jpa 为:1、2、3、4、5、8，myBatis 为:1、2、3、4、5、6、7)
+     * 当 jpa myBatis 都为 true 是则全部为必填写
+     * 当 jpa 为 true 长度为 6，vo、dto、entity、controller、service、repository
+     * 当 myBatis 为 true 长度为 7，vo、dto、entity、controller、service、mapper、mapperXml
+     * (1) vo
+     * (2) dto
+     * (3) entity
+     * (4) controller
+     * (5) service
+     * (6) mapper
+     * (7) mapperXml
+     * (8) repository
+     *
+     * @return 返回路径
+     */
+    String[] path() default "";
 
     /**
      * 目录结构

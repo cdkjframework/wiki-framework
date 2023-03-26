@@ -1,10 +1,7 @@
 package com.cdkjframework.entity.http;
 
-
 import com.cdkjframework.enums.HttpMethodEnums;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,58 +17,61 @@ import java.util.Map;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class HttpRequestEntity {
 
-    /**
-     * 请求地址
-     */
-    private String requestAddress;
+  /**
+   * 请求地址
+   */
+  private String requestAddress;
 
-    /**
-     * 是否压缩数据
-     */
-    private boolean compress;
+  /**
+   * 是否压缩数据
+   */
+  private boolean compress;
 
-    /**
-     * 编码
-     */
-    private String charset = "UTF-8";
+  /**
+   * 编码
+   */
+  private String charset = "UTF-8";
 
-    /**
-     * 内容类型
-     */
-    private String contentType = "application/json; charset=utf-8";
+  /**
+   * 内容类型
+   */
+  private String contentType = "application/json; charset=utf-8";
 
-    /**
-     * 是否为 JSON 对象
-     */
-    private boolean json = true;
+  /**
+   * 是否为 JSON 对象
+   */
+  private boolean json = true;
 
-    /**
-     * 参数 POST 或者 GET 用
-     */
-    private Object data = null;
+  /**
+   * 参数 POST 或者 GET 用
+   */
+  private Object data = null;
 
-    /**
-     * 参数 POST 或者 GET 用
-     */
-    private Map<String, Object> paramsMap = new HashMap<>();
+  /**
+   * 名称（上传文件名称）
+   */
+  private String name;
 
-    /**
-     * 只限 POST 使用(优先级大于 map 参数)
-     */
-    private List<Object> objectList = new ArrayList<>();
+  /**
+   * 参数 POST 或者 GET 用
+   */
+  private Map<String, Object> paramsMap = new HashMap<>();
 
-    /**
-     * 请求头
-     */
-    private Map<String, String> headerMap = new HashMap<>();
+  /**
+   * 只限 POST 使用(优先级大于 map 参数)
+   */
+  private List<Object> objectList = new ArrayList<>();
 
-    /**
-     * 请求类型
-     */
-    private HttpMethodEnums method = HttpMethodEnums.POST;
+  /**
+   * 请求头
+   */
+  private Map<String, String> headerMap = new HashMap<>();
+
+  /**
+   * 请求类型
+   */
+  private HttpMethodEnums method = HttpMethodEnums.POST;
 }

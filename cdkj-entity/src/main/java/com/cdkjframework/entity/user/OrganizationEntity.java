@@ -84,9 +84,10 @@ public class OrganizationEntity extends BaseEntity implements Serializable {
      */
     @Column(name = "phone")
     private String phone;
+
     /**
-     * 机构状态 (0-启用,1-禁用)
+     * 是否中台
      */
-    @Column(name = "status")
-    private Integer status;
+    @Column(name = "middle")
+    private Integer middle;
 }

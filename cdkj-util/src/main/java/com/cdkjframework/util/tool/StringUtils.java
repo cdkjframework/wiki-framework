@@ -27,17 +27,37 @@ public class StringUtils {
     public final static String HORIZONTAL = "-";
 
     /**
+     * 连接符
+     */
+    public final static String CONNECTOR = "&";
+
+    /**
+     * 下划线
+     */
+    public final static String UNDERLINE = "_";
+
+    /**
+     * 等于
+     */
+    public final static String EQUAL = "=";
+
+    /**
+     * 问号
+     */
+    public final static String QUESTION_MARK= "?";
+
+    /**
      * 冒号
      */
     public final static String COLON = ":";
 
     /**
-     * 横线变量
+     * 斜线
      */
     public final static String DIAGONAL_LINE = "\\";
 
     /**
-     * 横线变量
+     * 反斜线
      */
     public final static String BACKSLASH = "/";
 

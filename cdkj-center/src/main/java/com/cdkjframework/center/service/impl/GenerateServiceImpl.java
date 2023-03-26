@@ -2,6 +2,8 @@ package com.cdkjframework.center.service.impl;
 
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.center.service.GenerateService;
+import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.business.mapper.GenerateMapper;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.generate.template.*;
@@ -12,19 +14,20 @@ import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.files.freemarker.FreemarkerUtil;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.meta.ClassMetadataUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import freemarker.template.TemplateException;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +40,18 @@ import java.util.stream.Collectors;
  */
 
 @Service
+@RequiredArgsConstructor
 public class GenerateServiceImpl implements GenerateService {
+    /**
+     * 环境
+     */
+    @Value("${spring.application.name}")
+    private String active;
+
+    /**
+     * 配置
+     */
+    private final CustomConfig customConfig;
 
     /**
      * 替换值
@@ -52,8 +66,7 @@ public class GenerateServiceImpl implements GenerateService {
     /**
      * 生成 mapper
      */
-    @Autowired
-    private GenerateMapper generateMapper;
+    private final GenerateMapper generateMapper;
 
     /**
      * 获取数据库
@@ -62,8 +75,18 @@ public class GenerateServiceImpl implements GenerateService {
      */
     @Override
     public DatabaseEntity findDatabase() {
+        if (StringUtils.isNullAndSpaceOrEmpty(active) && !DEFAULT_ACTIVE.equals(active.toLowerCase())) {
+            return new DatabaseEntity();
+        }
+
         // 获取当前用户数据库
-        List<DatabaseEntity> myDataBase = generateMapper.findDatabase();
+        List<DatabaseEntity> myDataBase;
+        int data = ConvertUtils.convertInt(customConfig.getDataBase());
+        if (data == IntegerConsts.ONE) {
+            myDataBase = generateMapper.findDatabaseByPostgre();
+        } else {
+            myDataBase = generateMapper.findDatabase();
+        }
         if (myDataBase == null || myDataBase.size() == 0) {
             return new DatabaseEntity();
         }
@@ -71,9 +94,13 @@ public class GenerateServiceImpl implements GenerateService {
         // 获取到数据
         DatabaseEntity entity = myDataBase.get(0);
         // 获取到全部数据
-        List<DatabaseEntity> entityList = generateMapper.findDatabaseList();
-        if (entityList != null) {
-            entity.getChildren().addAll(entityList);
+        if (data == IntegerConsts.ONE) {
+            entity.getChildren().add(CopyUtils.copyProperties(entity, DatabaseEntity.class));
+        } else {
+            List<DatabaseEntity> entityList = generateMapper.findDatabaseList();
+            if (entityList != null) {
+                entity.getChildren().addAll(entityList);
+            }
         }
 
         // 返回结果
@@ -88,7 +115,12 @@ public class GenerateServiceImpl implements GenerateService {
      */
     @Override
     public List<TableEntity> findTableList(TableEntity tableEntity) {
-        return generateMapper.findDatabaseTableList(tableEntity);
+        int data = ConvertUtils.convertInt(customConfig.getDataBase());
+        if (data == IntegerConsts.ONE) {
+            return generateMapper.findDatabaseTableListByPostgre(tableEntity);
+        } else {
+            return generateMapper.findDatabaseTableList(tableEntity);
+        }
     }
 
     /**
@@ -118,7 +150,7 @@ public class GenerateServiceImpl implements GenerateService {
                 TreeEntity treeColumn = new TreeEntity();
                 treeColumn.setId(column.getColumnName());
                 treeColumn.setLabel(column.getColumnName());
-                treeColumn.setExplain(column.getColumnComment()
+                treeColumn.setExplain(ConvertUtils.convertString(column.getColumnComment())
                         .replace("\\n", REPLACEMENT)
                         .replace("\\t", REPLACEMENT)
                         .replace("\\s", REPLACEMENT)
@@ -144,7 +176,13 @@ public class GenerateServiceImpl implements GenerateService {
      */
     @Override
     public List<TableColumnEntity> findTableColumnList(TableColumnEntity columnEntity) {
-        return generateMapper.findTableColumnList(columnEntity);
+
+        int data = ConvertUtils.convertInt(customConfig.getDataBase());
+        if (data == IntegerConsts.ONE) {
+            return generateMapper.findTableColumnListByPostgre(columnEntity);
+        } else {
+            return generateMapper.findTableColumnList(columnEntity);
+        }
     }
 
     /**
@@ -178,8 +216,12 @@ public class GenerateServiceImpl implements GenerateService {
                 // 找到表
                 TreeEntity treeEntity = optional.get();
 
-                // 模板生成
-                templateGeneration(treeEntity, dataBase, fields);
+                try {
+                    // 模板生成
+                    templateGeneration(treeEntity, dataBase, fields);
+                } catch (Exception ex) {
+                    logUtil.error(ex.getStackTrace(), ex.getMessage());
+                }
             }
             isGenerate = true;
         } catch (Exception ex) {
@@ -202,34 +244,71 @@ public class GenerateServiceImpl implements GenerateService {
 
         loadData(entity, treeEntity, dataBase, fields);
         try {
-
-            final String os = HostUtils.getOs();
-            String division = os.startsWith("win") ? "\\" : "/";
-            // 生成 entity
-            template(entity, "entity", division + "entity" + division, "Entity.java");
-            template(entity, "extend", division + "entity" + division + "extend" + division, "ExtendEntity.java");
-
-            // 生成 dto
-            template(entity, "dto", division + "dto" + division, "Dto.java");
-            // 生成 vo
-            template(entity, "vo", division + "vo" + division, "Vo.java");
-
-            // 生成 service
-            template(entity, "service", division + "service" + division + "impl" + division, "ServiceImpl.java");
-
-            // 生成 service Interface
-            template(entity, "interface", division + "service" + division, "Service.java");
-
-            // 生成 mapper java
-            template(entity, "mapper", division + "mapper" + division, "Mapper.java");
-
-            // 生成 mapper xml
-            String xmlPath = division + "mapper" + division + "xml" + division;
-            template(entity, "mapperXml", xmlPath, "Mapper.xml");
-
-            // 生成 mapper extend xml
-            xmlPath += "extend" + division;
-            template(entity, "extendXml", xmlPath, "ExtendMapper.xml");
+            List<String> pathList = entity.getPath();
+            boolean isXml = false;
+            for (TemplateEntity temp :
+                    TEMPLATE_LIST) {
+                StringBuffer path = new StringBuffer(entity.getBasePath());
+                if (temp.getTemplateName().contains(JPA) && !entity.getJpa()) {
+                    continue;
+                }
+                if (MY_BATIS.contains(temp.getTemplateName()) && !entity.getMyBatis()) {
+                    continue;
+                }
+                if (StringUtils.isNotNullAndEmpty(path)) {
+                    switch (temp.getTemplateName()) {
+                        case "vo":
+                            path.append("entity/");
+                            path.append(pathList.get(IntegerConsts.ZERO));
+                            break;
+                        case "dto":
+                            path.append("entity/");
+                            path.append(pathList.get(IntegerConsts.ONE));
+                            break;
+                        case "entity":
+                        case "extend":
+                            path.append("entity/");
+                            path.append(pathList.get(IntegerConsts.TWO));
+                            break;
+                        case "controller":
+                            path.append(pathList.get(IntegerConsts.THREE));
+                            break;
+                        case "service":
+                        case "interface":
+                            path.append(pathList.get(IntegerConsts.FOUR));
+                            break;
+                        case "repository":
+                        case "repositoryInt":
+                            if (entity.getMyBatis()) {
+                                path.append(pathList.get(IntegerConsts.SEVEN));
+                            } else {
+                                path.append(pathList.get(IntegerConsts.FIVE));
+                            }
+                            break;
+                        case "mapper":
+                            path.append(pathList.get(IntegerConsts.FIVE));
+                            break;
+                        case "mapperXml":
+                        case "extendXml":
+                            path.append(pathList.get(IntegerConsts.SIX));
+                            isXml = true;
+                            break;
+                    }
+                    path.append("/src/main/");
+                    if (isXml) {
+                        path.append("resources/");
+                    } else {
+                        path.append("java/");
+                    }
+                }
+                if (!entity.isIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
+                    continue;
+                }
+                if (!isXml && path.length() > IntegerConsts.ZERO) {
+                    path.append(entity.getPackageName().replace(StringUtils.POINT, DIVISION));
+                }
+                template(entity, temp.getTemplateName(), path.toString(), temp.getCateLog(), temp.getSuffix());
+            }
         } catch (IOException e) {
             logUtil.error(e.getCause(), e.getMessage());
         } catch (TemplateException e) {
@@ -244,14 +323,17 @@ public class GenerateServiceImpl implements GenerateService {
      *
      * @param entity       数据实体
      * @param templateName 模板名称
+     * @param path         路径
      * @param cateLog      目录
      * @param suffix       后缀
      * @throws IOException       IO异常信息
      * @throws TemplateException 模板异常信息
      * @throws GlobalException   公共异常信息
      */
-    private void template(GenerateEntity entity, String templateName, String cateLog, String suffix) throws IOException, TemplateException, GlobalException {
-        String path = FileUtils.getPath(entity.getPackageName());
+    private void template(GenerateEntity entity, String templateName, String path, String cateLog, String suffix) throws IOException, TemplateException, GlobalException {
+        if (StringUtils.isNullAndSpaceOrEmpty(path)) {
+            path = FileUtils.getPath(entity.getPackageName());
+        }
         // 生成 解析模板
         // 读取模板
         String html = FreemarkerUtil.analyticalTemplate(templateName, entity);
@@ -279,14 +361,38 @@ public class GenerateServiceImpl implements GenerateService {
 
         entity.setClassName(StringUtils.classFormat(treeEntity.getLabel()));
         entity.setClassLowName(StringUtils.attributeNameFormat(treeEntity.getLabel()));
+        entity.setUri(treeEntity.getLabel().replace(StringUtils.UNDERLINE, StringUtils.BACKSLASH));
 
         // 读取配置信息
-        entity.setProjectName(ClassMetadataUtils.getAttributeString(EnableAutoGenerate.class, "projectName")
-                .replace("[", "")
-                .replace("]", ""));
-        entity.setPackageName(ClassMetadataUtils.getAttributeString(EnableAutoGenerate.class, "basePackage")
-                .replace("[", "")
-                .replace("]", ""));
+        Map<String, Object> map = ClassMetadataUtils.getAttribute(EnableAutoGenerate.class);
+        for (Map.Entry<String, Object> entry :
+                map.entrySet()) {
+            LinkedList<Object> linkedList = (LinkedList) entry.getValue();
+            if (CollectionUtils.isEmpty(linkedList)) {
+                continue;
+            }
+            switch (entry.getKey()) {
+                case "projectName":
+                    entity.setProjectName(linkedList.element().toString());
+                    break;
+                case "basePackage":
+                    entity.setPackageName(linkedList.element().toString());
+                    break;
+                case "basePath":
+                    entity.setBasePath(linkedList.element().toString());
+                    break;
+                case "path":
+                    String[] element = (String[]) linkedList.element();
+                    entity.setPath(Arrays.asList(element));
+                    break;
+                case "jpa":
+                    entity.setJpa(ConvertUtils.convertBoolean(linkedList.element()));
+                    break;
+                case "myBatis":
+                    entity.setMyBatis(ConvertUtils.convertBoolean(linkedList.element()));
+                    break;
+            }
+        }
         entity.setDescription(treeEntity.getExplain());
         entity.setAuthor(HostUtils.getHostName());
 
@@ -315,10 +421,14 @@ public class GenerateServiceImpl implements GenerateService {
             }
 
             childrenEntity.setColumnName(columnName);
-            childrenEntity.setColumnDescription(column.getColumnComment());
-            final String value = "fk";
+            if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+                childrenEntity.setColumnDescription(column.getColumnComment());
+            } else {
+                childrenEntity.setColumnDescription(StringUtils.Empty);
+            }
+            final List<String> value = Arrays.asList("fk", "pri");
             boolean keyIsShow = StringUtils.isNotNullAndEmpty(column.getColumnKey()) &&
-                    column.getColumnKey().toLowerCase().equals(value);
+                    value.contains(column.getColumnKey().toLowerCase());
             childrenEntity.setColumnKey(keyIsShow);
 
             // 数据类型
@@ -327,11 +437,29 @@ public class GenerateServiceImpl implements GenerateService {
             // 验证是否为空
             if (!StringUtils.isNullAndSpaceOrEmpty(dataType)) {
                 // MyBatis类型
-                MySqlJdbcTypeContrastEnums jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums.valueOf(dataType.toUpperCase());
+                MySqlJdbcTypeContrastEnums jdbcTypeContrastEnum;
+                if (columnName.equals(dataType.toUpperCase())) {
+                    jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums.VARCHAR;
+                } else {
+                    jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums
+                            .valueOf(dataType.toUpperCase());
+                }
                 childrenEntity.setColumnType(jdbcTypeContrastEnum.getCode());
 
                 // Java 数据类型
-                MySqlDataTypeContrastEnums contrastEnum = MySqlDataTypeContrastEnums.valueOf(dataType.toUpperCase());
+                MySqlDataTypeContrastEnums contrastEnum;
+                if (columnName.equals(dataType.toUpperCase())) {
+                    contrastEnum = MySqlDataTypeContrastEnums.VARCHAR;
+                } else {
+                    contrastEnum = MySqlDataTypeContrastEnums
+                            .valueOf(dataType.toUpperCase());
+                }
+                if (keyIsShow) {
+                    entity.setIntTemplate(contrastEnum.equals(MySqlDataTypeContrastEnums.BIGINT) ||
+                            contrastEnum.equals(MySqlDataTypeContrastEnums.INT) ||
+                            contrastEnum.equals(MySqlDataTypeContrastEnums.ID) ||
+                            contrastEnum.equals(MySqlDataTypeContrastEnums.INT2));
+                }
                 childrenEntity.setDataType(contrastEnum.getValue());
                 String code = contrastEnum.getCode();
                 if (!entity.getLeading().contains(code) && StringUtils.isNotNullAndEmpty(code)) {
@@ -368,7 +496,11 @@ public class GenerateServiceImpl implements GenerateService {
         // 扩展字段开始
         ChildrenEntity childrenEntity = new ChildrenEntity();
         childrenEntity.setIsExtension(1);
-        childrenEntity.setColumnDescription(column.getColumnComment());
+        if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+            childrenEntity.setColumnDescription(column.getColumnComment());
+        } else {
+            childrenEntity.setColumnDescription(StringUtils.Empty);
+        }
         childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "Start");
         childrenEntity.setDataType(contrastEnum.getValue());
 
@@ -377,7 +509,11 @@ public class GenerateServiceImpl implements GenerateService {
         // 扩展字段结束
         ChildrenEntity entity = new ChildrenEntity();
         entity.setIsExtension(1);
-        entity.setColumnDescription(column.getColumnComment());
+        if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+            entity.setColumnDescription(column.getColumnComment());
+        } else {
+            entity.setColumnDescription(StringUtils.Empty);
+        }
         entity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "End");
         entity.setDataType(contrastEnum.getValue());
 

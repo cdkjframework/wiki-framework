@@ -1,6 +1,7 @@
 package com.cdkjframework.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +9,7 @@ import lombok.ToString;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -19,9 +21,7 @@ import java.time.LocalDateTime;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @MappedSuperclass
 public class BaseEntity implements Serializable {
 
@@ -39,7 +39,7 @@ public class BaseEntity implements Serializable {
     private Integer deleted;
 
     /**
-     * 状态
+     * 机构状态 (0-启用,1-禁用)
      */
     @Column(name = "status", nullable = false)
     private Integer status;
@@ -91,13 +91,15 @@ public class BaseEntity implements Serializable {
     /**
      * 所在机构编码
      */
-    @Column(name = "organization_code", length = 100)
+    @Transient
+//    @Column(name = "organization_code", length = 100)
     private String organizationCode;
 
     /**
      * 所在机构名称
      */
-    @Column(name = "organization_name", length = 500)
+    @Transient
+//    @Column(name = "organization_name", length = 500)
     private String organizationName;
 
     /**
@@ -109,12 +111,14 @@ public class BaseEntity implements Serializable {
     /**
      * 所在机构上级编码
      */
-    @Column(name = "top_organization_code", length = 100)
+    @Transient
+//    @Column(name = "top_organization_code", length = 100)
     private String topOrganizationCode;
 
     /**
      * 所在机构上级名称
      */
-    @Column(name = "top_organization_name", length = 500)
+    @Transient
+//    @Column(name = "top_organization_name", length = 500)
     private String topOrganizationName;
 }

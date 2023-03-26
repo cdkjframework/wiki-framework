@@ -10,29 +10,45 @@ import com.cdkjframework.util.tool.CopyUtils;
 
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;
-import ${packageName}.mapper.${className}Mapper;
-import ${packageName}.service.${className}Service;
 
+<#if myBatis>
+import ${packageName}.mapper.${className}Mapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import org.springframework.beans.factory.annotation.Autowired;
+</#if>
+<#if jpa>
+import ${packageName}.repository.${className}Repository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.Optional;
+</#if>
+import ${packageName}.service.${className}Service;
+
 import org.springframework.stereotype.Service;
 
-import javax.persistence.*;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @ProjectName: ${projectName}
  * @Package: ${packageName}
- * @ClassName: ${className}
+ * @ClassName: ${className}ServiceImpl
  * @Description: ${description}
  * @Author: ${author}
  * @Version: 1.0
  */
 
 @Service
+@RequiredArgsConstructor
 public class ${className}ServiceImpl implements ${className}Service {
 
     /**
@@ -40,18 +56,18 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     private static LogUtils logUtil = LogUtils.getLogger(${className}ServiceImpl.class);
 
-    /**
-     * ${description} mapper
-     */
-    @Autowired
-    private final ${className}Mapper ${classLowName}Mapper;
-
-    /**
-    * 构造函数
-    */
-    public ${className}ServiceImpl(${className}Mapper ${classLowName}Mapper){
-        this.${classLowName}Mapper = ${classLowName}Mapper
-    }
+    <#if myBatis>
+        /**
+        * ${description} mapper
+        */
+        private final ${className}Mapper ${classLowName}Mapper;
+    </#if>
+    <#if jpa>
+        /**
+        * ${description} repository
+        */
+        private final ${className}Repository ${classLowName}Repository;
+    </#if>
 
     /**
      * 修改数据
@@ -64,11 +80,17 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setEditUserId(CurrentUser.getUserId());
         ${classLowName}Dto.setEditUserName(CurrentUser.getUserName());
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+
+    <#if myBatis && !jpa>
         ${classLowName}Mapper.modify(entity);
+    </#if>
+    <#if jpa>
+        ${classLowName}Repository.save(entity);
+    </#if>
     }
 
     /**
-     * 添加数据
+     *
      *
      * @param ${classLowName}Dto ${description} - 实体
      */
@@ -80,7 +102,12 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setAddUserName(CurrentUser.getUserName());
         ${classLowName}Dto.setDeleted(IntegerConsts.ZERO);
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
-        ${classLowName}Mapper.insert(entity);
+        <#if myBatis && !jpa>
+            ${classLowName}Mapper.insert(entity);
+        </#if>
+        <#if jpa>
+            ${classLowName}Repository.save(entity);
+        </#if>
     }
     /**
      * 删除数据
@@ -90,7 +117,53 @@ public class ${className}ServiceImpl implements ${className}Service {
     @Override
     public void delete${className}(${className}Dto ${classLowName}Dto) {
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+    <#if myBatis && !jpa>
         ${classLowName}Mapper.delete(entity);
+    </#if>
+    <#if jpa>
+        ${classLowName}Repository.delete(entity);
+    </#if>
+    }
+
+    /**
+    * 查询数据
+    *
+    * @param ${classLowName}Dto ${description} - 实体
+    * @return 返回结果
+    */
+    @Override
+    public ${className}Dto find${className}(${className}Dto ${classLowName}Dto){
+        <#if myBatis && !jpa>
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+        entity = ${classLowName}Mapper.findEntity(entity);
+        return CopyUtils.copyProperties(entity, ${className}Dto.class);
+        </#if>
+        <#if jpa>
+        Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
+        Optional<${className}Entity> optional = ${classLowName}Repository.findOne(specification);
+        if (optional.isPresent()) {
+            return CopyUtils.copyProperties(optional.get(), ${className}Dto.class);
+        } else {
+            return null;
+        }
+        </#if>
+    }
+
+    /**
+    * 添加数据
+    *
+    * @param id 查询条件
+    * @return 返回结果
+    */
+    @Override
+    public ${className}Dto find${className}ById(String id){
+        <#if myBatis && !jpa>
+        ${className}Entity entity = ${classLowName}Mapper.findEntityById(id);
+        </#if>
+        <#if jpa>
+        ${className}Entity entity = ${classLowName}Repository.getOne(id);
+        </#if>
+        return CopyUtils.copyProperties(entity, ${className}Dto.class);
     }
 
     /**
@@ -101,23 +174,80 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     @Override
     public PageEntity list${className}Page(${className}Dto ${classLowName}Dto) {
-
-        //返回对象
-        PageEntity pageEntity = new PageEntity();
-
         //分页查询角色信息
+        <#if myBatis && !jpa>
         Page page = PageHelper.startPage(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize());
-
         //对象转换 dto -> entity
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
 
         ${classLowName}Mapper.listFindByEntity(entity);
 
-        pageEntity.setPageIndex(${classLowName}Dto.getPageIndex());
-        pageEntity.setTotal(page.getTotal());
-        pageEntity.setData(page.getResult());
-
-        //返回分页数据
-        return pageEntity;
+        return PageEntity.build(${classLowName}Dto.getPageIndex(), page.getTotal(), page.getResult());
+        </#if>
+        <#if jpa>
+        Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
+        Sort sort = Sort.by(Sort.Direction.DESC, "addTime");
+        Pageable pageable = PageRequest.of(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize(), sort);
+        Page<${className}Entity> page = ${classLowName}Repository.findAll(specification, pageable);
+        return PageEntity.build(${classLowName}Dto.getPageIndex(), page.getTotalElements(), page.getContent());
+        </#if>
     }
+
+    /**
+    * 查询列表数据
+    *
+    * @param ids 查询条件
+    * @return 返回列表数据实体
+    */
+    @Override
+    public List<${className}Dto> list${className}ByIds(List<String> ids){
+        <#if myBatis && !jpa>
+        List<${className}Entity> entitys = ${classLowName}Mapper.listFindByIds(ids);
+        </#if>
+        <#if jpa>
+        List<${className}Entity> entitys = ${classLowName}Repository.findAllById(ids);
+        </#if>
+        //返回数据
+        return CopyUtils.copyProperties(entitys, ${className}Dto.class);
+    }
+
+    /**
+    * 查询列表数据
+    *
+    * @param ${classLowName}Dto 查询实体
+    * @return 返回列表数据实体
+    */
+    @Override
+    public List<${className}Dto> list${className}(${className}Dto ${classLowName}Dto){
+        <#if myBatis && !jpa>
+        //对象转换 dto -> entity
+        ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
+        List<${className}Entity> entitys = ${classLowName}Mapper.listFindByEntity(entity);
+        </#if>
+        <#if jpa>
+        Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
+        List<${className}Entity> entitys = ${classLowName}Repository.findAll(specification);
+        </#if>
+
+        //返回数据
+        return CopyUtils.copyProperties(entitys, ${className}Dto.class);
+    }
+
+    <#if jpa>
+    /**
+    * 构建查询条件
+    *
+    * @param ${classLowName}Dto 查询实体
+    * @return 返回结果
+    */
+    private Specification<${className}Entity> buildSpecification(${className}Dto ${classLowName}Dto) {
+        return new Specification<${className}Entity>() {
+            @Override
+            public Predicate toPredicate(Root<${className}Entity> root, CriteriaQuery<?> criteriaQuery,
+                                                            CriteriaBuilder criteriaBuilder) {
+                return null;
+            }
+        };
+    }
+    </#if>
 }

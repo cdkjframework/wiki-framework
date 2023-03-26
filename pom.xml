@@ -7,18 +7,18 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-framework</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-220422</version>
+    <version>1.0.3</version>
     <modules>
         <module>cdkj-cloud</module>
         <module>cdkj-util</module>
         <module>cdkj-core</module>
         <module>cdkj-datasource</module>
         <module>cdkj-message</module>
-        <module>cdkj-pay</module>
+        <module>cdkj-wechat</module>
         <module>cdkj-pom</module>
         <module>cdkj-entity</module>
         <module>cdkj-constant</module>
-<!--        <module>cdkj-web</module>-->
+        <!--        <module>cdkj-web</module>-->
         <module>cdkj-center</module>
         <module>cdkj-redis</module>
         <module>cdkj-datasource-jpa</module>
@@ -34,6 +34,12 @@
         <module>cdkj-cache</module>
         <module>cdkj-web-socket-client</module>
         <module>cdkj-redisJson</module>
+        <module>cdkj-socket</module>
+        <module>cdkj-security-client</module>
+        <module>cdkj-datasource-mybatis-plus</module>
+        <module>cdkj-license</module>
+        <module>cdkj-license-verify</module>
+        <module>cdkj-license-core</module>
     </modules>
 
     <parent>
@@ -47,7 +53,7 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-pom</artifactId>
-                <version>1.0-220422</version>
+                <version>1.0.3</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -55,9 +61,13 @@
     </dependencyManagement>
     <repositories>
         <repository>
-            <id>lesmarthome Maven Respository</id>
-            <name>lesmarthome Maven Respository</name>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <id>cdkj Maven Repository</id>
+            <name>cdkj Maven Repository</name>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
         </repository>
 
         <repository>
@@ -65,10 +75,11 @@
             就会覆盖中央仓库的配置 -->
             <id>mvnRepository</id>
             <name>mvnRepository</name>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/central/</url>
+            <url>https://maven.aliyun.com/repository/central</url>
             <layout>default</layout>
             <releases>
                 <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
             </releases>
             <snapshots>
                 <enabled>false</enabled>
@@ -78,9 +89,9 @@
 
     <distributionManagement>
         <repository>
-            <id>lesmarthome Maven Respository</id>
+            <id>cdkj Maven Repository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
         </repository>
     </distributionManagement>
 </project>

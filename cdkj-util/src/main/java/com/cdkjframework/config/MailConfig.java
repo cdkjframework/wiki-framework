@@ -1,5 +1,6 @@
 package com.cdkjframework.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,9 +17,7 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "spring.mail")

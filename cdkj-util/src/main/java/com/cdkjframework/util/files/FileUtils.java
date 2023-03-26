@@ -14,9 +14,13 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
+import javax.imageio.ImageWriteParam;
+import javax.imageio.ImageWriter;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -28,6 +32,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -546,18 +551,42 @@ public class FileUtils {
         return item;
     }
 
-
     /**
      * 删除日志
      *
      * @param catalog 日志路径
-     * @param day     删除几天前的
      */
-    public static void deleteCatalogFile(String catalog, int day) {
-        day = Math.abs(day) * IntegerConsts.MINUS_ONE;
-        LocalDate localDate = LocalDate.now().plusDays(day);
-        long deleteTime = localDate.atStartOfDay(ZoneOffset
-                .ofHours(IntegerConsts.EIGHT)).toInstant().toEpochMilli();
+    public static void deleteCatalogFile(String catalog) {
+        deleteCatalogFile(catalog, true);
+    }
+
+    /**
+     * 删除日志
+     *
+     * @param catalog     日志路径
+     * @param isDirectory 是否删除根目录(默认为true)
+     */
+    public static void deleteCatalogFile(String catalog, boolean isDirectory) {
+        deleteCatalogFile(catalog, isDirectory, IntegerConsts.ZERO);
+    }
+
+    /**
+     * 删除日志
+     *
+     * @param catalog     日志路径
+     * @param isDirectory 是否删除根目录(默认为true)
+     * @param day         删除几天前的
+     */
+    public static void deleteCatalogFile(String catalog, boolean isDirectory, int day) {
+        Long deleteTime;
+        if (day == IntegerConsts.ZERO) {
+            deleteTime = System.currentTimeMillis();
+        } else {
+            day = Math.abs(day) * IntegerConsts.MINUS_ONE;
+            LocalDate localDate = LocalDate.now().plusDays(day);
+            deleteTime = localDate.atStartOfDay(ZoneOffset
+                    .ofHours(IntegerConsts.EIGHT)).toInstant().toEpochMilli();
+        }
         try {
             File file = new File(catalog);
             if (file.isDirectory()) {
@@ -565,10 +594,14 @@ public class FileUtils {
                 for (File f : files) {
                     // 若是文件夹且在设定日期之前
                     if (f.isDirectory()) {
-                        deleteCatalogFile(f.getPath(), day);
+                        deleteCatalogFile(f.getPath(), true, day);
+                        f.delete();
                     } else {
                         deleteFile(f, deleteTime);
                     }
+                }
+                if (isDirectory) {
+                    file.delete();
                 }
             } else {
                 deleteFile(file, deleteTime);
@@ -649,5 +682,87 @@ public class FileUtils {
         inputStream.close();
         os.close();
         return os;
+    }
+
+    /**
+     * 压缩图片（通过降低图片质量）
+     *
+     * @param quality 图片质量（0-1）
+     * @return byte[] 返回数据结果
+     */
+    public static byte[] compressPictures(String filePath, float quality) {
+        File file = new File(filePath);
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            logUtil.error(e);
+        }
+        if (inputStream != null) {
+            return compressPictures(inputStream, quality);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 压缩图片（通过降低图片质量）
+     *
+     * @param quality 图片质量（0-1）
+     * @return byte[] 返回数据结果
+     */
+    public static byte[] compressPictures(byte[] bytes, float quality) {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
+        return compressPictures(inputStream, quality);
+    }
+
+    /**
+     * 压缩图片（通过降低图片质量）
+     *
+     * @param quality 图片质量（0-1）
+     * @return byte[] 返回数据结果
+     */
+    public static byte[] compressPictures(InputStream byteInput, float quality) {
+        byte[] imgBytes = null;
+        try {
+            BufferedImage image = ImageIO.read(byteInput);
+
+            // 如果图片空，返回空
+            if (image == null) {
+                return null;
+            }
+            // 得到指定Format图片的writer（迭代器）
+            Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
+            // 得到writer
+            ImageWriter writer = (ImageWriter) iter.next();
+            // 得到指定writer的输出参数设置(ImageWriteParam )
+            ImageWriteParam iwp = writer.getDefaultWriteParam();
+            // 设置可否压缩
+            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+            // 设置压缩质量参数
+            iwp.setCompressionQuality(quality);
+
+            iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
+
+            ColorModel colorModel = ColorModel.getRGBdefault();
+            // 指定压缩时使用的色彩模式
+            iwp.setDestinationType(
+                    new javax.imageio.ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(16, 16)));
+
+            // 开始打包图片，写入byte[]
+            // 取得内存输出流
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            IIOImage iioImage = new IIOImage(image, null, null);
+
+            // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput
+            // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput
+            writer.setOutput(ImageIO.createImageOutputStream(byteArrayOutputStream));
+            writer.write(null, iioImage, iwp);
+            imgBytes = byteArrayOutputStream.toByteArray();
+        } catch (IOException e) {
+            logUtil.error(e);
+        } finally {
+            return imgBytes;
+        }
     }
 }

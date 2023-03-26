@@ -2,20 +2,28 @@ package com.cdkjframework.swagger;
 
 import com.cdkjframework.config.SwaggerConfig;
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.fasterxml.classmate.ResolvedType;
+import com.fasterxml.classmate.TypeResolver;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.AlternateTypeRule;
+import springfox.documentation.schema.AlternateTypeRules;
 import springfox.documentation.schema.ModelRef;
+import springfox.documentation.schema.WildcardType;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.service.Parameter;
@@ -24,8 +32,10 @@ import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ProjectName: hongtu.slps.bms
@@ -38,6 +48,7 @@ import java.util.List;
 //@Component
 @Configuration
 @EnableSwagger2
+@RequiredArgsConstructor
 public class SwaggerConfiguration {
 
     /**
@@ -46,14 +57,9 @@ public class SwaggerConfiguration {
     private final SwaggerConfig swaggerConfig;
 
     /**
-     * 构造函数
-     *
-     * @param swaggerConfig 配置
+     * 类型解析程序
      */
-    public SwaggerConfiguration(SwaggerConfig swaggerConfig) {
-        this.swaggerConfig = swaggerConfig;
-    }
-
+    private final TypeResolver typeResolver;
 
     /**
      * 创建API应用
@@ -78,9 +84,26 @@ public class SwaggerConfiguration {
         } else {
             headerEntityList = new ArrayList<>();
         }
+        List<String> resolve = swaggerConfig.getResolve();
+        AlternateTypeRule[] alternateTypeRules = null;
+        if (resolve != null && resolve.size() > IntegerConsts.ZERO) {
+            alternateTypeRules = new AlternateTypeRule[resolve.size()];
+            for (String key :
+                    resolve) {
+                try {
+                    Type type = Class.forName(key);
+                    alternateTypeRules[resolve.indexOf(key)] = AlternateTypeRules.newRule(
+                            typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
+                            typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
+                } catch (ClassNotFoundException e) {
+
+                }
+            }
+        }
         final boolean hidden = swaggerConfig.getHidden();
         for (SwaggerApiInfoEntity entity :
                 apiInfoEntityList) {
+            AlternateTypeRule[] finalAlternateTypeRules = alternateTypeRules;
             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Docket.class,
                     () -> {
                         //设置 header
@@ -95,10 +118,14 @@ public class SwaggerConfiguration {
                             pars.add(builderPar.build());
                         }
                         Docket result;
-                        ApiSelectorBuilder builder = new Docket(DocumentationType.SWAGGER_2)
-                                .groupName(entity.getGroupName())
-                                .select().apis(RequestHandlerSelectors
-                                        .basePackage(entity.getBasePackage()));
+                        ApiSelectorBuilder builder;
+                        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                                .groupName(entity.getGroupName());
+                        if (finalAlternateTypeRules != null) {
+                            docket = docket.alternateTypeRules(finalAlternateTypeRules);
+                        }
+                        builder = docket.select().apis(RequestHandlerSelectors
+                                .basePackage(entity.getBasePackage()));
                         if (hidden) {
                             result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
                         } else {

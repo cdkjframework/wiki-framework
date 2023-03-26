@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0-220422</version>
+    <version>1.0.3</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,27 +17,7 @@
     </parent>
 
     <properties>
-        <cdkj-cloud.version>1.0-220422</cdkj-cloud.version>
-        <cdkj-config.version>1.0-220422</cdkj-config.version>
-        <cdkj-util.version>1.0-220422</cdkj-util.version>
-        <cdkj-constant.version>1.0-220422</cdkj-constant.version>
-        <cdkj-core.version>1.0-220422</cdkj-core.version>
-        <cdkj-datasource.version>1.0-220422</cdkj-datasource.version>
-        <cdkj-message.version>1.0-220422</cdkj-message.version>
-        <cdkj-redis.version>1.0-220422</cdkj-redis.version>
-        <cdkj-redisJson.version>1.0-220422</cdkj-redisJson.version>
-        <cdkj-swagger.version>1.0-220422</cdkj-swagger.version>
-        <cdkj-pay.version>1.0-220422</cdkj-pay.version>
-        <cdkj-entity.version>1.0-220422</cdkj-entity.version>
-        <cdkj-center.version>1.0-220422</cdkj-center.version>
-        <cdkj-center.version>1.0-220422</cdkj-center.version>
-        <cdkj-log.version>1.0-220422</cdkj-log.version>
-        <cdkj-web-socket.version>1.0-220422</cdkj-web-socket.version>
-        <cdkj-security.version>1.0-220422</cdkj-security.version>
-        <cdkj-security-client.version>1.0-220422</cdkj-security-client.version>
-        <cdkj-datasource-jpa.version>1.0-220422</cdkj-datasource-jpa.version>
-        <cdkj-datasource-mongodb.version>1.0-220422</cdkj-datasource-mongodb.version>
-        <cdkj-datasource-elasticsearch.version>1.0-220422</cdkj-datasource-elasticsearch.version>
+        <cdkj.version>1.0.3</cdkj.version>
 
 
         <java.version>1.8</java.version>
@@ -45,6 +25,7 @@
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
+        <disruptor.version>3.4.2</disruptor.version>
         <spring.eureka.version>1.4.6.RELEASE</spring.eureka.version>
         <spring.cloud.version>Hoxton.SR9</spring.cloud.version>
         <spring.platform.version>Cairo-SR8</spring.platform.version>
@@ -53,6 +34,7 @@
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
         <swagger2markup.version>1.3.3</swagger2markup.version>
+        <truelicense-core.version>1.33</truelicense-core.version>
         <swagger2markup-builder.version>1.1.2</swagger2markup-builder.version>
         <jworks.version>1.1</jworks.version>
         <asciidoctor.version>1.5.4</asciidoctor.version>
@@ -71,7 +53,7 @@
         <elasticsearch.version>7.2.1</elasticsearch.version>
         <!--alibaba -->
         <druid.version>1.1.24</druid.version>
-        <alibaba.fastjson.version>2.0.1</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
         <mq-http.version>1.0.3.2</mq-http.version>
         <ons.client.version>1.8.4.Final</ons.client.version>
         <sms.alicloud.version>2.0.5</sms.alicloud.version>
@@ -98,13 +80,14 @@
         <google.gson.version>2.8.5</google.gson.version>
         <google-collect.version>1.0-rc1</google-collect.version>
         <xjar.version>2.0.9</xjar.version>
-        <loadkit.version>v1.0.1</loadkit.version>
+        <loadkit.version>v1.0.2</loadkit.version>
 
         <itextpdf.version>5.5.13.1</itextpdf.version>
         <easyexcel.version>2.2.6</easyexcel.version>
         <flowable.version>6.5.0</flowable.version>
         <logback.version>1.2.3</logback.version>
-        <lettuce-core.version>6.1.6.RELEASE</lettuce-core.version>
+        <lettuce-core.version>6.1.8.RELEASE</lettuce-core.version>
+        <lettuce-search.version>3.1.2</lettuce-search.version>
         <redis-json.version>4.0.0</redis-json.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
 
@@ -128,9 +111,11 @@
 
         <apache.mina.version>3.0.0-M2</apache.mina.version>
         <java.jwt.version>3.8.1</java.jwt.version>
+        <bcprov-jdk15on.version>1.58</bcprov-jdk15on.version>
         <jjwt.version>0.9.1</jjwt.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <io.netty.version>4.1.52.Final</io.netty.version>
+        <ulid-creator.version>5.1.0</ulid-creator.version>
 
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
         <maven-assembly-plugin.version>3.1.1</maven-assembly-plugin.version>
@@ -143,102 +128,117 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-center</artifactId>
-                <version>${cdkj-center.version}</version>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-license</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-license-core</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-license-verify</artifactId>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-cloud</artifactId>
-                <version>${cdkj-cloud.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-config</artifactId>
-                <version>${cdkj-config.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-constant</artifactId>
-                <version>${cdkj-constant.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-core</artifactId>
-                <version>${cdkj-core.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-log</artifactId>
-                <version>${cdkj-log.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-web-socket</artifactId>
-                <version>${cdkj-web-socket.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource</artifactId>
-                <version>${cdkj-datasource.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-security-client</artifactId>
-                <version>${cdkj-security-client.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-security</artifactId>
-                <version>${cdkj-security.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource-elasticsearch</artifactId>
-                <version>${cdkj-datasource-elasticsearch.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource-jpa</artifactId>
-                <version>${cdkj-datasource-jpa.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-datasource-mongodb</artifactId>
-                <version>${cdkj-datasource-mongodb.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-entity</artifactId>
-                <version>${cdkj-entity.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-message</artifactId>
-                <version>${cdkj-message.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
-                <artifactId>cdkj-pay</artifactId>
-                <version>${cdkj-pay.version}</version>
+                <artifactId>cdkj-wechat</artifactId>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-redis</artifactId>
-                <version>${cdkj-redis.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-redisJson</artifactId>
-                <version>${cdkj-redisJson.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-swagger</artifactId>
-                <version>${cdkj-swagger.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-util</artifactId>
-                <version>${cdkj-util.version}</version>
+                <version>${cdkj.version}</version>
             </dependency>
 
             <dependency>
@@ -282,6 +282,11 @@
                 <version>${spring.boot.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.spring.platform</groupId>
@@ -361,8 +366,8 @@
                 <version>${druid.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.alibaba.fastjson2</groupId>
-                <artifactId>fastjson2</artifactId>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
                 <version>${alibaba.fastjson.version}</version>
             </dependency>
             <dependency>
@@ -546,6 +551,13 @@
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger-models.version}</version>
             </dependency>
+            <!--begin license-->
+            <dependency>
+                <groupId>de.schlichtherle.truelicense</groupId>
+                <artifactId>truelicense-core</artifactId>
+                <version>${truelicense-core.version}</version>
+            </dependency>
+            <!--end license-->
 
             <dependency>
                 <groupId>io.github.swagger2markup</groupId>
@@ -610,6 +622,11 @@
                 <groupId>io.lettuce</groupId>
                 <artifactId>lettuce-core</artifactId>
                 <version>${lettuce-core.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.redislabs</groupId>
+                <artifactId>lettusearch</artifactId>
+                <version>${lettuce-search.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
@@ -678,6 +695,11 @@
             </dependency>
             <!-- jwt end -->
             <!-- 加密工具 -->
+            <dependency>
+                <groupId>org.bouncycastle</groupId>
+                <artifactId>bcprov-jdk15on</artifactId>
+                <version>${bcprov-jdk15on.version}</version>
+            </dependency>
             <dependency>
                 <groupId>com.github.core-lib</groupId>
                 <artifactId>xjar</artifactId>
@@ -789,7 +811,11 @@
                 <artifactId>netty-common</artifactId>
                 <version>${io.netty.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>com.github.f4b6a3</groupId>
+                <artifactId>ulid-creator</artifactId>
+                <version>${ulid-creator.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -842,9 +868,9 @@
 
     <distributionManagement>
         <repository>
-            <id>lesmarthome Maven Respository</id>
+            <id>cdkj Maven Repository</id>
             <layout>default</layout>
-            <url>http://192.168.1.94:8081/nexus/content/repositories/thirdparty/</url>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
         </repository>
     </distributionManagement>
 </project>

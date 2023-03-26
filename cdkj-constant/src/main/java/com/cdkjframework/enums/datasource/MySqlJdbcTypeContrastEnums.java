@@ -33,6 +33,48 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
             return "VARCHAR";
         }
     },
+    KEYID {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "varchar";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "VARCHAR";
+        }
+    },
+    BPCHAR {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "varchar";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "VARCHAR";
+        }
+    },
     DECIMAL {
         /**
          * 获取枚举值
@@ -52,6 +94,27 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
         @Override
         public String getCode() {
             return "DECIMAL";
+        }
+    },
+    NUMERIC {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "numeric";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "NUMERIC";
         }
     },
     CHAR {
@@ -118,6 +181,27 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
         }
     },
     INT {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "int";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "INTEGER";
+        }
+    },
+    INT2 {
         /**
          * 获取枚举值
          *

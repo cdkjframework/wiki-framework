@@ -1,21 +1,22 @@
 package com.cdkjframework.core.spring.body;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.cdkjframework.util.tool.mapper.ReflectionUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,12 +32,25 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAdvice {
+
+    /**
+     * 日志
+     */
     private LogUtils logUtils = LogUtils.getLogger(GlobalRequestHandler.class);
 
     /**
      * 参数列表
      */
     private static List<String> parameterList;
+    /**
+     * 参数列表
+     */
+    private static List<String> parameterCdkjList;
+
+    /**
+     * 字段值
+     */
+    private final String FIELD_VALUE = "code";
 
     /**
      * 结束进程常量
@@ -50,9 +64,10 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
 
     static {
         parameterList = new ArrayList<>();
+        parameterCdkjList = new ArrayList<>();
+        parameterCdkjList.add("ResponseBuilder");
+        parameterCdkjList.add("PageEntity");
         parameterList.add("java.lang");
-        parameterList.add("ResponseBuilder");
-        parameterList.add("PageEntity");
         parameterList.add("org.springframework.http.ResponseEntity");
     }
 
@@ -97,18 +112,39 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
             return encryptHandle(o, encryption);
         }
 
-        final String returnTypeName = methodParameter.getParameterType().getName();
+        Class clazz = methodParameter.getParameterType();
+        final String returnTypeName = clazz.getName();
         List<String> list = parameterList.stream()
                 .filter(f -> returnTypeName.contains(f))
                 .collect(Collectors.toList());
         if (!list.isEmpty()) {
             return encryptHandle(o, encryption);
         }
+        list = parameterCdkjList.stream()
+                .filter(f -> returnTypeName.contains(f))
+                .collect(Collectors.toList());
+        if (!list.isEmpty()) {
+            Field field = ReflectionUtils.getDeclaredField(clazz, FIELD_VALUE);
+            Object value = ReflectionUtils.getFieldValue(field, o);
+            ResponseBuilderEnums enums = ResponseBuilderEnums.Error;
+            int v = ConvertUtils.convertInt(value);
+            if (IntegerConsts.ZERO.equals(v) && customConfig.getStatusCode() != null) {
+                ReflectionUtils.setFieldValue(o, field, customConfig.getStatusCode());
+            } else if (customConfig.getErrorCode() != null && enums.getValue() == v) {
+                ReflectionUtils.setFieldValue(o, field, customConfig.getErrorCode());
+            }
+            return encryptHandle(o, encryption);
+        }
 
         //封装对象
         ResponseBuilder builder = new ResponseBuilder();
         builder.setRequestTime(serverHttpRequest.getHeaders().getDate());
-        builder.setCode(ResponseBuilderEnums.Success.getValue());
+
+        if (customConfig.getStatusCode() == null) {
+            builder.setCode(ResponseBuilderEnums.Success.getValue());
+        } else {
+            builder.setCode(customConfig.getStatusCode());
+        }
         builder.setMessage(ResponseBuilderEnums.Success.getName());
         builder.setData(o);
 

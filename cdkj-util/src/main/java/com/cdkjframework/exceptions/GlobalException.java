@@ -32,7 +32,7 @@ public class GlobalException extends GeneralSecurityException {
      * 构造函数
      */
     public GlobalException(Integer code, final String message) {
-        super(code + BusinessConsts.errorKey + message);
+        super(code + BusinessConsts.ERROR_KEY + message);
     }
 
     /**

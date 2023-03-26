@@ -2,8 +2,8 @@ package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.CacheConsts;
-import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.redis.RedisUtils;
@@ -22,90 +22,90 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class WebUiController extends AbstractController {
 
-    /**
-     * 自定义配置信息
-     */
-    @Autowired
-    private CustomConfig customConfig;
+  /**
+   * 自定义配置信息
+   */
+  @Autowired
+  private CustomConfig customConfig;
 
-    /**
-     * 登出登录
-     *
-     * @param id 主键
-     * @return 返回结果
-     */
-    @Override
-    public ResponseBuilder quit(String id) {
-        ResponseBuilder builder = new ResponseBuilder();
-        try {
-            final String key = CacheConsts.USER_LOGIN + id;
-            RedisUtils.syncDel(key);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+  /**
+   * 登出登录
+   *
+   * @param id 主键
+   * @return 返回结果
+   */
+  @Override
+  public ResponseBuilder quit(String id) {
+    ResponseBuilder builder = new ResponseBuilder();
+    try {
+      final String key = CacheConsts.USER_LOGIN + id;
+      RedisUtils.syncDel(key);
+    } catch (Exception ex) {
+      ex.printStackTrace();
 
-            builder.setCode(ResponseBuilderEnums.Error.getValue());
-            builder.setMessage(ResponseBuilderEnums.Error.getName());
-        }
-
-        //返回结果
-        return builder;
+      builder.setCode(ResponseBuilderEnums.Error.getValue());
+      builder.setMessage(ResponseBuilderEnums.Error.getName());
     }
 
-    /**
-     * 获取抽象信息
-     *
-     * @return 返回用户抽象实体
-     */
-    @Override
-    public UserEntity getCurrentUser() {
-        UserEntity entity = getCurrentUser(UserEntity.class);
-        if (entity == null) {
-            entity = new UserEntity();
-        }
+    //返回结果
+    return builder;
+  }
 
-        //返回结果
-        return entity;
+  /**
+   * 获取抽象信息
+   *
+   * @return 返回用户抽象实体
+   */
+  @Override
+  public UserEntity getCurrentUser() {
+    UserEntity entity = getCurrentUser(UserEntity.class);
+    if (entity == null) {
+      entity = new UserEntity();
     }
 
-    /**
-     * 获取抽象信息
-     *
-     * @param clazz 实体
-     * @return 返回用户抽象实体
-     */
-    @Override
-    public <T> T getCurrentUser(Class<T> clazz) {
-        T userEntity = null;
-        try {
-            String key = getRequestHeader(CurrentUser.USER_LOGIN_TOKEN_KEY);
-            Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
-            String token = claims.get(CurrentUser.USER_LOGIN_TOKEN_KEY).toString();
-            return getCurrentUser(token, clazz);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    //返回结果
+    return entity;
+  }
 
-        //返回结果
-        return userEntity;
+  /**
+   * 获取抽象信息
+   *
+   * @param clazz 实体
+   * @return 返回用户抽象实体
+   */
+  @Override
+  public <T> T getCurrentUser(Class<T> clazz) {
+    T userEntity = null;
+    try {
+      String key = getRequestHeader(BusinessConsts.HEADER_TOKEN);
+      Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
+      String token = claims.get(BusinessConsts.HEADER_TOKEN).toString();
+      return getCurrentUser(token, clazz);
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
 
-    /**
-     * 获取抽象信息
-     *
-     * @param id    主键
-     * @param clazz 实体
-     * @return 返回用户抽象实体
-     */
-    @Override
-    public <T> T getCurrentUser(String id, Class<T> clazz) {
-        T userEntity = null;
-        try {
-            userEntity = RedisUtils.syncGetEntity(CacheConsts.USER_LOGIN + id, clazz);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    //返回结果
+    return userEntity;
+  }
 
-        //返回结果
-        return userEntity;
+  /**
+   * 获取抽象信息
+   *
+   * @param id    主键
+   * @param clazz 实体
+   * @return 返回用户抽象实体
+   */
+  @Override
+  public <T> T getCurrentUser(String id, Class<T> clazz) {
+    T userEntity = null;
+    try {
+      userEntity = RedisUtils.syncGetEntity(CacheConsts.USER_LOGIN + id, clazz);
+    } catch (Exception ex) {
+      ex.printStackTrace();
     }
+
+    //返回结果
+    return userEntity;
+  }
 }

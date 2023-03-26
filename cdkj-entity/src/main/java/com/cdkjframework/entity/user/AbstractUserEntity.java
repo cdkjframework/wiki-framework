@@ -1,14 +1,10 @@
 package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -19,9 +15,7 @@ import java.util.Date;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public abstract class AbstractUserEntity extends BaseEntity {
 
     /**
@@ -36,7 +30,7 @@ public abstract class AbstractUserEntity extends BaseEntity {
     /**
      * 账户类型(1：老人；2：雇员；3、家属；4：志愿者)
      */
-    private String userTypeId;
+    private String userType;
     /**
      * 账户类型(1：老人；2：雇员；3、家属；4：志愿者)
      */
@@ -85,14 +79,7 @@ public abstract class AbstractUserEntity extends BaseEntity {
      * 生日
      */
     private LocalDate birthday;
-    /**
-     * 居住详细地址
-     */
-    private String addressDetails;
-    /**
-     * 是否可用
-     */
-    private Integer enabled;
+
     /**
      * 当前所在组织ID
      */

@@ -7,6 +7,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.nio.charset.Charset;
 
 /**
  * 将String进行base64编码解码，使用utf-8
@@ -23,35 +24,37 @@ public class Base64Utils {
     private static LogUtils logUtil = LogUtils.getLogger(Base64Utils.class);
 
     /**
-     * 默认编码
-     */
-    private static final String UTF_8 = "UTF-8";
-
-    /**
      * 对给定的字符串进行base64解码操作
      */
     public static String decodeData(String inputData) {
         try {
             if (null == inputData) {
-                return "";
+                return StringUtils.Empty;
             }
-            return new String(Base64.decodeBase64(inputData.getBytes(UTF_8)), UTF_8);
-        } catch (UnsupportedEncodingException e) {
+            byte[] bytes = decodeDataToByte(inputData);
+            if (bytes == null) {
+                return StringUtils.Empty;
+            }
+            return new String(bytes, Charset.defaultCharset());
+        } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
 
-        return "";
+        return StringUtils.Empty;
     }
 
     /**
      * 对给定的字符串进行base64解码操作
+     *
+     * @param inputData 加密字符串
+     * @return 返回结果
      */
     public static byte[] decodeDataToByte(String inputData) {
         try {
             if (null == inputData) {
                 return null;
             }
-            return Base64.decodeBase64(inputData);
+            return new Base64().decode(inputData);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -67,12 +70,16 @@ public class Base64Utils {
             if (null == inputData) {
                 return StringUtils.Empty;
             }
-            return new String(Base64.decodeBase64(inputData), UTF_8);
+            byte[] bytes = decodeDataToByte(inputData);
+            if (bytes == null) {
+                return StringUtils.Empty;
+            }
+            return new String(bytes, Charset.defaultCharset());
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
 
-        return "";
+        return StringUtils.Empty;
     }
 
     /**
@@ -99,8 +106,8 @@ public class Base64Utils {
             if (null == inputData) {
                 return StringUtils.Empty;
             }
-            return encode(inputData.getBytes(UTF_8));
-        } catch (UnsupportedEncodingException e) {
+            return encode(inputData.getBytes(Charset.defaultCharset()));
+        } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
 
@@ -111,16 +118,19 @@ public class Base64Utils {
      * 对给定的字符串进行base64加密操作
      */
     public static byte[] encodeDataToByte(String inputData) {
+        byte[] bytes;
         try {
             if (null == inputData) {
                 return null;
             }
-            return Base64.encodeBase64(inputData.getBytes(UTF_8));
-        } catch (UnsupportedEncodingException e) {
+            byte[] enBytes = inputData.getBytes(Charset.defaultCharset());
+            bytes = Base64.encodeBase64(enBytes);
+        } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
+            bytes = null;
         }
 
-        return null;
+        return bytes;
     }
 
     /**
@@ -134,8 +144,15 @@ public class Base64Utils {
             if (null == dataList || dataList.length == 0) {
                 return StringUtils.Empty;
             }
-            return new String(Base64.encodeBase64(dataList), UTF_8);
-        } catch (UnsupportedEncodingException e) {
+            byte[] bytes;
+            try {
+                bytes = java.util.Base64.getEncoder().encode(dataList);
+            } catch (Exception e) {
+                logUtil.error(e.getCause(), e.getMessage());
+                bytes = Base64.encodeBase64(dataList);
+            }
+            return new String(bytes, Charset.defaultCharset());
+        } catch (Exception e) {
             logUtil.error("将字节转换为字符串");
             logUtil.error(e.getCause(), e.getMessage());
         }

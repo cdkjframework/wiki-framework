@@ -145,6 +145,31 @@ public class ReflectionUtils {
         return field;
     }
 
+
+    /**
+     * 获取字段
+     *
+     * @param clazz     类型
+     * @param fieldName 字段
+     * @return
+     */
+    public static Field getDeclaredField(Class clazz, String fieldName) {
+        Field field = null;
+        List<Field> fieldList = getDeclaredFields(clazz);
+        try {
+            Optional<Field> optional = fieldList
+                    .stream()
+                    .filter(f -> fieldName.equals(f.getName()))
+                    .findFirst();
+            if (optional.isPresent()) {
+                field = optional.get();
+            }
+        } catch (Exception e) {
+            logUtil.error(e.getCause(), e.getMessage());
+        }
+        return field;
+    }
+
     /**
      * 获取到全部实体属性
      * 包括父类

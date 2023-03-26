@@ -1,9 +1,12 @@
 package com.cdkjframework.datasource.jpa.connectivity;
 
 import com.alibaba.druid.pool.DruidDataSource;
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.jpa.config.JpaConfig;
+import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -23,6 +26,7 @@ import java.sql.SQLException;
  */
 
 @Component
+@RequiredArgsConstructor
 public class JpaDruidDbConfiguration {
 
     /**
@@ -33,14 +37,17 @@ public class JpaDruidDbConfiguration {
     /**
      * 读取配置
      */
-    @Autowired
-    private JpaConfig jpaReadConfig;
+    private final JpaConfig jpaReadConfig;
 
     /**
      * 基础配置
      */
-    @Autowired
-    private DataSourceConfig dataSourceConfig;
+    private final DataSourceConfig dataSourceConfig;
+
+    /**
+     * 自定义配置
+     */
+    private final CustomConfig customConfig;
 
     /**
      * 加载数据源
@@ -53,10 +60,18 @@ public class JpaDruidDbConfiguration {
     public DataSource jpaDataSource() {
         DruidDataSource datasource = new DruidDataSource();
         //设置数据库连接
-        datasource.setUrl(jpaReadConfig.getUrl());
-        datasource.setUsername(jpaReadConfig.getUsername());
-        datasource.setPassword(jpaReadConfig.getPassword());
+        if (dataSourceConfig.isEncryption()) {
+            AesUtils aes = new AesUtils(customConfig);
+            datasource.setUrl(aes.base64Decrypt(jpaReadConfig.getUrl()));
+            datasource.setUsername(aes.base64Decrypt(jpaReadConfig.getUsername()));
+            datasource.setPassword(aes.base64Decrypt(jpaReadConfig.getPassword()));
+        } else {
+            datasource.setUrl(jpaReadConfig.getUrl());
+            datasource.setUsername(jpaReadConfig.getUsername());
+            datasource.setPassword(jpaReadConfig.getPassword());
+        }
         datasource.setDriverClassName(jpaReadConfig.getDriverClassName());
+
         //configuration
         datasource.setMinIdle(dataSourceConfig.getMinIdle());
         datasource.setMaxWait(dataSourceConfig.getMaxWait());

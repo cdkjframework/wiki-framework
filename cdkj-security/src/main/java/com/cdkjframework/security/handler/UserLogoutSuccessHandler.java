@@ -20,16 +20,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Component
 public class UserLogoutSuccessHandler implements LogoutSuccessHandler {
-    /**
-     * 用户登出返回结果
-     * 这里应该让前端清除掉Token
-     *
-     * @Author youcong
-     */
-    @Override
-    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        ResponseBuilder builder = ResponseBuilder.successBuilder();
-        SecurityContextHolder.clearContext();
-        ResponseUtils.out(response, builder);
-    }
+  /**
+   * 用户登出返回结果
+   * 这里应该让前端清除掉Token
+   */
+  @Override
+  public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
+    ResponseBuilder builder = ResponseBuilder.successBuilder();
+    SecurityContextHolder.clearContext();
+    ResponseUtils.out(response, builder);
+  }
 }

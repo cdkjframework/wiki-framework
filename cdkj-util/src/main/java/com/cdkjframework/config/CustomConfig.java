@@ -1,8 +1,6 @@
 package com.cdkjframework.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -19,13 +17,21 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "spring.custom")
 public class CustomConfig {
+
+    /**
+     * 时间格式
+     */
+    private String dateFormat;
+
+    /**
+     * 时区
+     */
+    private String timeZone = "GMT+8";
 
     /**
      * jwt Key
@@ -167,4 +173,27 @@ public class CustomConfig {
      * Security 资源过滤地址
      */
     private List<String> patternsUrls = Arrays.asList("/security/**", "/configure/**");
+
+    /**
+     * 状态码
+     */
+    private Integer statusCode;
+
+    /**
+     * 错误状态码
+     */
+    private Integer errorCode;
+
+    /**
+     * 基础数据（0或空：mysql、1：postgreSql、2：msSQL）
+     */
+    private Integer dataBase;
+    /**
+     * 脱敏
+     */
+    private boolean desensitization;
+    /**
+     * redis 日志主题
+     */
+    private String redisLogTopic = "CHANNEL-BodyMessage-Log";
 }

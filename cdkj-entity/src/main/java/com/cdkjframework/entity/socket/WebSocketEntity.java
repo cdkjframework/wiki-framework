@@ -31,4 +31,14 @@ public class WebSocketEntity {
      * 消息类型
      */
     private String type;
+
+    /**
+     * 权限值
+     */
+    private String token;
+
+    /**
+     * 三方权限
+     */
+    private String authorization;
 }

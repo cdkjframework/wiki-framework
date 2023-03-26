@@ -16,13 +16,10 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.*;
+import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
+import org.aspectj.lang.annotation.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -30,9 +27,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -46,17 +40,13 @@ import java.util.stream.Collectors;
 
 @Aspect
 @Component
+@RequiredArgsConstructor
 public class ControllerDebugAspect extends AbstractBaseAopAspect {
 
     /**
      * 日志
      */
     private LogUtils logUtils = LogUtils.getLogger(ControllerDebugAspect.class);
-
-    /**
-     * 日志服务
-     */
-    private final IMongoRepository mongoDbRepository;
 
     /**
      * 自定义配置
@@ -70,12 +60,9 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
     private Executor cdkjExecutor;
 
     /**
-     * 构造函数
+     * 日志服务
      */
-    public ControllerDebugAspect(CustomConfig customConfig, IMongoRepository mongoDbRepository) {
-        this.customConfig = customConfig;
-        this.mongoDbRepository = mongoDbRepository;
-    }
+    private final IMongoRepository mongoDbRepository;
 
     /**
      * 切入点
@@ -83,6 +70,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
     @Pointcut(value = executionControllerPoint)
     public void doPointcutController() {
     }
+
 
     /**
      * 该注解标注的方法在业务模块代码执行之前执行，其不能阻止业务模块的执行，除非抛出异常；
@@ -121,6 +109,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
                 logRecordDto.setParameter(jsonObject.toJSONString());
             }
         }
+
         Object result = null;
         try {
             result = joinPoint.proceed(args);
@@ -143,8 +132,6 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
             if (isLog) {
                 logRecordDto.setExecutionState(IntegerConsts.TWENTY);
                 logRecordDto.setResultErrorMessage(ex.getMessage());
-            }
-            if (isLog) {
                 logRecordDto.setResultTime(System.currentTimeMillis());
                 cdkjExecutor.execute(new LogQueue(logRecordDto));
             }
@@ -179,10 +166,13 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         try {
             UserEntity user = CurrentUser.getCurrentUser();
             HttpServletRequest request = HttpServletUtils.getRequest();
-            final String servletPath = request.getServletPath();
-            logRecordDto.setServletPath(servletPath);
-            AnalysisUtils.requestHandle(logRecordDto);
-            logRecordDto.setServerHost(request.getScheme() + "://" + request.getServerName());
+            final String servletPath = request == null ? StringUtils.Empty : request.getServletPath();
+            if (request != null) {
+                logRecordDto.setServletPath(servletPath);
+                AnalysisUtils.requestHandle(logRecordDto);
+                String serverHost = request.getScheme() + StringUtils.COLON + StringUtils.BACKSLASH + StringUtils.BACKSLASH + request.getServerName();
+                logRecordDto.setServerHost(serverHost);
+            }
             if (!CollectionUtils.isEmpty(customConfig.getIgnoreAopUrls())) {
                 List<String> aopUrls = customConfig.getIgnoreAopUrls().stream()
                         .filter(f -> servletPath.contains(f))
@@ -200,7 +190,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
             logRecordDto.setUserName(user.getLoginName());
             logRecordDto.setClientIp(HttpServletUtils.getRemoteAddr());
 
-            String organizationCode = "-" + user.getOrganizationCode();
+            String organizationCode = StringUtils.HORIZONTAL + user.getOrganizationCode();
             final String LOG_PREFIX = "LOG" + organizationCode;
             String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
             logRecordDto.setSerialNumber(number.replace(organizationCode, StringUtils.Empty));

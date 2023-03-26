@@ -10,43 +10,58 @@ package com.cdkjframework.constant;
  */
 public class BusinessConsts {
 
-    /**
-     * 用户 TOKEN
-     */
-    public static final String HEADER_TOKEN = "token";
+  /**
+   * 用户 TOKEN
+   */
+  public static final String HEADER_TOKEN = "token";
 
-    /**
-     * 用户登录名称
-     */
-    public static final String LOGIN_NAME = "loginName";
+  /**
+   * 用户登录名称
+   */
+  public static final String LOGIN_NAME = "loginName";
 
-    /**
-     * 用户密码
-     */
-    public static final String PASSWORD = "password";
+  /**
+   * 主键
+   */
+  public static final String ID = "id";
 
-    /**
-     * 用户名称
-     */
-    public static final String USER_NAME = "username";
+  /**
+   * 用户类型
+   */
+  public static final String USER_TYPE = "userType";
 
-    /**
-     * 时间
-     */
-    public static final String TIME = "time";
+  /**
+   * 姓名
+   */
+  public static final String DISPLAY_NAME = "displayName";
 
-    /**
-     * 验证码
-     */
-    public static final String IMAGE_CODE = "verifyCode";
+  /**
+   * 用户密码
+   */
+  public static final String PASSWORD = "password";
 
-    /**
-     * 登录地址
-     */
-    public static final String LOGIN = "/security/user/login";
+  /**
+   * 用户名称
+   */
+  public static final String USER_NAME = "username";
 
-    /**
-     * 错误分割符号
-     */
-    public static final String errorKey = "global";
+  /**
+   * 时间
+   */
+  public static final String TIME = "time";
+
+  /**
+   * 验证码
+   */
+  public static final String IMAGE_CODE = "verifyCode";
+
+  /**
+   * 登录地址
+   */
+  public static final String LOGIN = "/security/user/login";
+
+  /**
+   * 错误分割符号
+   */
+  public static final String ERROR_KEY = "global";
 }

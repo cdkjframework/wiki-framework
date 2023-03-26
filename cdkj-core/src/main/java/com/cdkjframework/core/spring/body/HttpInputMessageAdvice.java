@@ -4,6 +4,8 @@ import com.cdkjframework.constant.EncodingConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpInputMessage;
 
@@ -78,7 +80,7 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
      * @return 返回解密数据
      * @throws IOException IO异常
      */
-    private InputStream getBody(InputStream stream) throws IOException {
+    private synchronized InputStream getBody(InputStream stream) throws IOException {
         ByteArrayOutputStream swapStream = new ByteArrayOutputStream();
         byte[] buff = new byte[IntegerConsts.BYTE_LENGTH];
         int read;
@@ -89,9 +91,20 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
             return new ByteArrayInputStream(swapStream.toByteArray());
         }
         byte[] bytes = swapStream.toByteArray();
-        String context = new String(bytes, StandardCharsets.UTF_8).trim();
-        context = AesUtils.base64Decrypt(context);
-        context = URLDecoder.decode(context, EncodingConsts.UTF8);
+        String streamString = new String(bytes, StandardCharsets.UTF_8);
+        LOG_UTILS.info(streamString);
+        String context = AesUtils.base64Decrypt(streamString.trim()
+                .replace("\n", StringUtils.Empty).replace("\r", StringUtils.Empty));
+        LOG_UTILS.info(context);
+        if (!JsonUtils.isValid(context)) {
+            try {
+                Thread.sleep(IntegerConsts.ONE_HUNDRED);
+            } catch (InterruptedException e) {
+
+            }
+            context = AesUtils.base64Decrypt(bytes);
+            LOG_UTILS.info(context);
+        }
         return new ByteArrayInputStream(context.getBytes(StandardCharsets.UTF_8));
     }
 }
