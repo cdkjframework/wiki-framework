@@ -165,6 +165,16 @@ public class CustomConfig {
     private String loginUrl = "/security/user/login";
 
     /**
+     * Security 登录成功后跳转地址
+     */
+    private String loginSuccess = "/callback/redirect";
+
+    /**
+     * Security 登录页面设置
+     */
+    private String loginPage = "/login.html";
+
+    /**
      * Security 退出地址
      */
     private String logoutUrl = "/security/user/logout";
@@ -172,7 +182,7 @@ public class CustomConfig {
     /**
      * Security 资源过滤地址
      */
-    private List<String> patternsUrls = Arrays.asList("/security/**", "/configure/**");
+    private List<String> patternsUrls = Arrays.asList("/security/**", "/configure/**", "/login.html");
 
     /**
      * 状态码
