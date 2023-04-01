@@ -131,7 +131,9 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
                 .and()
                 // 配置登录地址
                 .formLogin()
+                .loginPage(customConfig.getLoginPage())
                 .loginProcessingUrl(customConfig.getLoginUrl())
+                .defaultSuccessUrl(customConfig.getLoginSuccess())
                 // 配置登录成功自定义处理类
                 .successHandler(userLoginSuccessHandler)
                 // 配置登录失败自定义处理类
