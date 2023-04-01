@@ -264,6 +264,48 @@ public enum MySqlDataTypeContrastEnums implements BasicsEnum {
             return "java.lang.Integer";
         }
     },
+    INT4 {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "Integer";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.lang.Integer";
+        }
+    },
+    INT8 {
+        /**
+         * 获取枚举值
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getValue() {
+            return "Integer";
+        }
+
+        /**
+         * 获取枚举名称
+         *
+         * @return 返回结果
+         */
+        @Override
+        public String getCode() {
+            return "java.lang.Integer";
+        }
+    },
     SMALLINT {
         /**
          * 获取枚举值
