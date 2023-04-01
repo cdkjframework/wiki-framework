@@ -257,7 +257,7 @@ public class CopyUtils {
                 if (typeName.contains(DATA_TYPE)) {
                     buildArrayList((ArrayList) value, target, targetField);
                 }
-                if (value != "") {
+                if (StringUtils.isNotNullAndEmpty(value)) {
                     continue;
                 }
                 // 验证是否有相同字段
@@ -271,7 +271,7 @@ public class CopyUtils {
                 field.setAccessible(true);
                 // 读取值
                 value = ReflectionUtils.getFieldValue(field, source);
-                if (value == "") {
+                if (StringUtils.isNullAndSpaceOrEmpty(value)) {
                     continue;
                 }
                 Object clazz;
