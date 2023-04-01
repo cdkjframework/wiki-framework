@@ -44,4 +44,23 @@ public class AutoGenerateConsts {
      * @return 返回结果
      */
     public static final String PROJECT_NAME = "projectName";
+
+    /**
+     * 跟路径
+     *
+     * @return 返回结果
+     */
+    public static final String BASE_PATH = "basePath";
+
+    /**
+     * 路径
+     *
+     * @return 返回结果
+     */
+    public static final String PATH = "path";
+
+    /**
+     * myBatis
+     */
+    public static final String MY_BATIS = "myBatis";
 }
