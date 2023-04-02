@@ -41,7 +41,7 @@ public class DateFormatConfiguration {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
         return builder -> {
-            TimeZone tz = TimeZone.getTimeZone("GMT+8");
+            TimeZone tz = TimeZone.getTimeZone(customConfig.getTimeZone());
             DateFormat dateFormat = new SimpleDateFormat(customConfig.getDateFormat());
             dateFormat.setTimeZone(tz);
             builder.failOnEmptyBeans(false)
