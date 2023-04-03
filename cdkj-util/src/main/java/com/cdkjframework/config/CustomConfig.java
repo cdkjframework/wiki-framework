@@ -26,7 +26,7 @@ public class CustomConfig {
     /**
      * 时间格式
      */
-    private String dateFormat;
+    private String dateFormat = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * 时区

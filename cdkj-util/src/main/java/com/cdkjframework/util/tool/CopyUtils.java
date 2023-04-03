@@ -10,6 +10,7 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -57,11 +58,15 @@ public class CopyUtils {
 
         //记录信息
         Set<String> emptyNames = new HashSet<String>();
-        for (PropertyDescriptor property : propertyList) {
-            Object srcValue = wrapper.getPropertyValue(property.getName());
-            if (srcValue == null) {
-                emptyNames.add(property.getName());
+        try {
+            for (PropertyDescriptor property : propertyList) {
+                Object srcValue = wrapper.getPropertyValue(property.getName());
+                if (srcValue == null) {
+                    emptyNames.add(property.getName());
+                }
             }
+        } catch (Exception e) {
+
         }
         String[] result = new String[emptyNames.size()];
         return emptyNames.toArray(result);
@@ -257,7 +262,7 @@ public class CopyUtils {
                 if (typeName.contains(DATA_TYPE)) {
                     buildArrayList((ArrayList) value, target, targetField);
                 }
-                if (value != "") {
+                if (StringUtils.isNotNullAndEmpty(value)) {
                     continue;
                 }
                 // 验证是否有相同字段
@@ -271,7 +276,7 @@ public class CopyUtils {
                 field.setAccessible(true);
                 // 读取值
                 value = ReflectionUtils.getFieldValue(field, source);
-                if (value == "") {
+                if (StringUtils.isNullAndSpaceOrEmpty(value)) {
                     continue;
                 }
                 Object clazz;
@@ -281,10 +286,14 @@ public class CopyUtils {
                     clazz = LocalDateTime.parse((CharSequence) value);
                 } else if ((targetField.getType().equals(LocalDate.class))) {
                     clazz = LocalDate.parse((CharSequence) value);
+                } else if (targetField.getType().equals(BigDecimal.class)) {
+                    clazz = BigDecimal.valueOf(Double.valueOf(value.toString()));
                 } else {
                     clazz = targetField.getType().newInstance();
                 }
-                copyProperties(value, clazz);
+                if (!clazz.getClass().getName().contains("java.")) {
+                    copyProperties(value, clazz);
+                }
                 ReflectionUtils.setFieldValue(target, targetField, clazz);
             }
         } catch (Exception ex) {

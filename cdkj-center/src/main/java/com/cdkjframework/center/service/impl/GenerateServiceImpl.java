@@ -3,6 +3,7 @@ package com.cdkjframework.center.service.impl;
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.center.service.GenerateService;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.AutoGenerateConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.business.mapper.GenerateMapper;
 import com.cdkjframework.entity.BaseEntity;
@@ -372,23 +373,24 @@ public class GenerateServiceImpl implements GenerateService {
                 continue;
             }
             switch (entry.getKey()) {
-                case "projectName":
+                case AutoGenerateConsts
+                        .PROJECT_NAME:
                     entity.setProjectName(linkedList.element().toString());
                     break;
-                case "basePackage":
+                case AutoGenerateConsts.BASE_PACKAGE:
                     entity.setPackageName(linkedList.element().toString());
                     break;
-                case "basePath":
+                case AutoGenerateConsts.BASE_PATH:
                     entity.setBasePath(linkedList.element().toString());
                     break;
-                case "path":
+                case AutoGenerateConsts.PATH:
                     String[] element = (String[]) linkedList.element();
                     entity.setPath(Arrays.asList(element));
                     break;
-                case "jpa":
+                case AutoGenerateConsts.JPA:
                     entity.setJpa(ConvertUtils.convertBoolean(linkedList.element()));
                     break;
-                case "myBatis":
+                case AutoGenerateConsts.MY_BATIS:
                     entity.setMyBatis(ConvertUtils.convertBoolean(linkedList.element()));
                     break;
             }
