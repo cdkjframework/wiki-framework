@@ -9,9 +9,7 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.files.excel.converter.CustomMergeStrategy;
-import com.cdkjframework.util.files.excel.converter.LocalDateConverter;
-import com.cdkjframework.util.files.excel.converter.LocalDateTimeConverter;
+import com.cdkjframework.util.files.excel.converter.*;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
@@ -334,6 +332,9 @@ public class EasyExcelUtils {
         ExcelWriterBuilder writerBuilder = EasyExcel.write(outputStream, clazz)
                 .registerConverter(new LocalDateTimeConverter())
                 .registerConverter(new LocalDateConverter());
+        //自适应高度、宽度
+        writerBuilder.registerWriteHandler(new CustomCellWriteWeightStrategy())
+                .registerWriteHandler(new CustomCellWriteHeightStrategy());
 
         // 设置合并列
         if (!CollectionUtils.isEmpty(mergeData)) {
@@ -367,6 +368,7 @@ public class EasyExcelUtils {
             if (columnWidth != null) {
                 writeSheet.setColumnWidthMap(columnWidth);
             }
+
             if (!CollectionUtils.isEmpty(head)) {
                 writeSheet.setHead(head);
             }
