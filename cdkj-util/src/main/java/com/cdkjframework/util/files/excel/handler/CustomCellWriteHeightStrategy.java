@@ -1,6 +1,7 @@
-package com.cdkjframework.util.files.excel.converter;
+package com.cdkjframework.util.files.excel.handler;
 
 import com.alibaba.excel.write.style.row.AbstractRowHeightStyleStrategy;
+import com.cdkjframework.constant.IntegerConsts;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -23,6 +24,7 @@ public class CustomCellWriteHeightStrategy extends AbstractRowHeightStyleStrateg
 
     @Override
     protected void setHeadColumnHeight(Row row, int relativeRowIndex) {
+        row.setHeight((short) (IntegerConsts.TWO * DEFAULT_HEIGHT));
     }
 
     @Override
@@ -32,8 +34,9 @@ public class CustomCellWriteHeightStrategy extends AbstractRowHeightStyleStrateg
             return;
         }
 
+
         // 默认为 1行高度
-        Integer maxHeight = 1;
+        Integer maxHeight = IntegerConsts.ONE;
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
             switch (cell.getCellTypeEnum()) {

@@ -283,11 +283,11 @@ public class CopyUtils {
                 if (targetField.getType().equals(Integer.class)) {
                     clazz = targetField.getType().getConstructor(int.class).newInstance(IntegerConsts.ZERO);
                 } else if ((targetField.getType().equals(LocalDateTime.class))) {
-                    clazz = LocalDateTime.parse((CharSequence) value);
+                    clazz = LocalDateTime.parse(String.valueOf(value));
                 } else if ((targetField.getType().equals(LocalDate.class))) {
-                    clazz = LocalDate.parse((CharSequence) value);
+                    clazz = LocalDate.parse(String.valueOf(value));
                 } else if (targetField.getType().equals(BigDecimal.class)) {
-                    clazz = BigDecimal.valueOf(Double.valueOf(value.toString()));
+                    clazz = BigDecimal.valueOf(Double.valueOf(String.valueOf(value) ));
                 } else {
                     clazz = targetField.getType().newInstance();
                 }
