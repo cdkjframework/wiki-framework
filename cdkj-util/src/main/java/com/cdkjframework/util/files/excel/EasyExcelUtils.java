@@ -48,7 +48,7 @@ public class EasyExcelUtils {
     /**
      * 工作薄大小
      */
-    private static final int SHEET_LIST_SIZE = 50000;
+    private static final int SHEET_LIST_SIZE = 49490;
 
     /**
      * 默认值
