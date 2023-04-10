@@ -4,6 +4,7 @@ import com.cdkjframework.config.MqttConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -15,6 +16,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @ProjectName: ec-icm
@@ -27,6 +29,7 @@ import java.util.Date;
 
 @Component
 @Order(2)
+@RequiredArgsConstructor
 public class MqttClientRunner implements ApplicationRunner {
 
     /**
@@ -37,19 +40,17 @@ public class MqttClientRunner implements ApplicationRunner {
     /**
      * 配置信息
      */
-    @Autowired
-    private MqttConfig mqttConfig;
+    private final MqttConfig mqttConfig;
+
+    /**
+     * 回调
+     */
+    private final CdkjMqttCallback mqttCallback;
 
     /**
      * 消息客户端
      */
     private MqttClient client;
-
-    /**
-     * 回调
-     */
-    @Autowired
-    private CdkjMqttCallback mqttCallback;
 
     /**
      * MQTT的连接设置
@@ -64,6 +65,9 @@ public class MqttClientRunner implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
+        if (!mqttConfig.isConnect()) {
+            return;
+        }
         logUtil.info("MqttClientRunner 初始化 ：" + new Date());
         start();
         logUtil.info("MqttClientRunner 初始化完成 ：" + new Date());
@@ -79,7 +83,7 @@ public class MqttClientRunner implements ApplicationRunner {
             }
         } catch (MqttException e) {
             logUtil.error("重新连接失败");
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         }
     }
 
@@ -127,15 +131,16 @@ public class MqttClientRunner implements ApplicationRunner {
             mqttCallback.setClient(this);
             client.connect(options);
             //订阅消息
-            String[] topicArray = mqttConfig.getToPicList().split(",");
-            int[] qOs = new int[topicArray.length];
-            for (int k = 0; k < topicArray.length; k++) {
+            List<String> toPicList = mqttConfig.getToPicList();
+            String[] topicArray = new String[toPicList.size()];
+            int[] qOs = new int[toPicList.size()];
+            for (int k = 0; k < toPicList.size(); k++) {
                 qOs[k] = 1;
-                topicArray[k] = mqttConfig.getRegion() + topicArray[k];
+                topicArray[k] = mqttConfig.getRegion() + toPicList.get(k);
             }
             client.subscribe(topicArray, qOs);
         } catch (Exception e) {
-            logUtil.error(e.getCause(),e.getMessage());
+            logUtil.error(e.getCause(), e.getMessage());
         }
     }
 }

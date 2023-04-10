@@ -1,11 +1,14 @@
 package com.cdkjframework.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * @ProjectName: ec-icm
@@ -16,12 +19,10 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.mq.message.mqtt")
+@ConfigurationProperties(prefix = "spring.custom.mqtt")
 public class MqttConfig {
 
     /**
@@ -42,7 +43,7 @@ public class MqttConfig {
     /**
      * 客服端主题
      */
-    private String toPicList;
+    private List<String> toPicList;
 
     /**
      * 定义MQTT的ID，可以在MQTT服务配置中指定
@@ -70,12 +71,7 @@ public class MqttConfig {
     private int keepAliveInterval = 20;
 
     /**
-     * 调用类名
+     * 是否自动连接
      */
-    private String className = "";
-
-    /**
-     * 方法名称
-     */
-    private String methodName = "";
+    private boolean connect;
 }

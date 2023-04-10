@@ -1,10 +1,12 @@
 package com.cdkjframework.message.queue.eclipse.server;
 
 import com.cdkjframework.config.MqttConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.message.queue.eclipse.MqttCdkjMessageHandler;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -33,6 +35,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 @IntegrationComponentScan
+@RequiredArgsConstructor
 public class MqttServer {
 
     /**
@@ -43,14 +46,7 @@ public class MqttServer {
     /**
      * 配置信息
      */
-    @Autowired
-    private MqttConfig mqttConfig;
-
-    /**
-     * 构造函数
-     */
-    public MqttServer() {
-    }
+    private final MqttConfig mqttConfig;
 
     /**
      * 构造函数
@@ -75,7 +71,7 @@ public class MqttServer {
         options.setKeepAliveInterval(mqttConfig.getKeepAliveInterval());
         options.setAutomaticReconnect(true);
         options.setCleanSession(false);
-        options.setKeepAliveInterval(2);
+        options.setKeepAliveInterval(IntegerConsts.TWO);
         return options;
     }
 
@@ -106,7 +102,7 @@ public class MqttServer {
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
-        String clientId = mqttConfig.getClientId() + GeneratedValueUtils.getRandom(5);
+        String clientId = mqttConfig.getClientId() + GeneratedValueUtils.getRandom(IntegerConsts.FIVE);
         MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(clientId, mqttClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic(mqttConfig.getToPic());
