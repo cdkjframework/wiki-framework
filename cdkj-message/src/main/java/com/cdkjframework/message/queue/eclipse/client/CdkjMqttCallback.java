@@ -158,31 +158,6 @@ public class CdkjMqttCallback implements MqttCallback {
     }
 
     /**
-     * 获取 bean
-     */
-    private void getBean() {
-        try {
-            Class clazz = Class.forName(mqttConfig.getClassName());
-            // 使用spring content 获取类的实例 必须在 application 注册 applicationContext 变量
-            ApplicationContext context = Application.applicationContext;
-            bean = context.getBean(clazz);
-            /*
-             给实例化的类注入需要的bean (@Autowired)
-             如果不注入，被 @Autowired 注解的变量会报空指针
-              */
-            context.getAutowireCapableBeanFactory().autowireBean(bean);
-
-            method = clazz.getDeclaredMethod(mqttConfig.getMethodName(), MqttCallbackEntity.class);
-            // 设置访问权限
-            method.setAccessible(true);
-        } catch (ClassNotFoundException e) {
-            logUtil.error(e.getMessage());
-        } catch (NoSuchMethodException e) {
-            logUtil.error(e.getMessage());
-        }
-    }
-
-    /**
      * 回调数据
      *
      * @param entity 数据信息
@@ -191,7 +166,7 @@ public class CdkjMqttCallback implements MqttCallback {
         try {
             //获取 bean
             if (this.bean == null) {
-                getBean();
+//                getBean();
             }
             //调用参数
             method.invoke(bean, entity);

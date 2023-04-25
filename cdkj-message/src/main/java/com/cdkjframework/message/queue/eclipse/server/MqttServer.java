@@ -102,7 +102,7 @@ public class MqttServer {
     @Bean
     @ServiceActivator(inputChannel = "mqttOutboundChannel")
     public MessageHandler mqttOutbound() {
-        String clientId = mqttConfig.getClientId() + GeneratedValueUtils.getRandom(IntegerConsts.FIVE);
+        String clientId = mqttConfig.getClientId();
         MqttPahoMessageHandler messageHandler = new MqttPahoMessageHandler(clientId, mqttClientFactory());
         messageHandler.setAsync(true);
         messageHandler.setDefaultTopic(mqttConfig.getToPic());

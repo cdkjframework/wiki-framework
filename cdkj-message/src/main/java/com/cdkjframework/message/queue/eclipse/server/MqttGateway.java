@@ -3,6 +3,7 @@ package com.cdkjframework.message.queue.eclipse.server;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.mqtt.support.MqttHeaders;
 import org.springframework.messaging.handler.annotation.Header;
+import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: cdkjframework
@@ -12,6 +13,7 @@ import org.springframework.messaging.handler.annotation.Header;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Component
 @MessagingGateway(defaultRequestChannel = "mqttOutboundChannel")
 public interface MqttGateway {
 

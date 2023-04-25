@@ -67,9 +67,6 @@ public class AliCloudOssUtils {
         // 创建OSSClient实例。
         OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
-        //获取文件名
-        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtils.getFileSuffix(fileName);
-
         // 上传文件流。
         ossClient.putObject(config.getBucketName(), fileName, inputStream);
 
