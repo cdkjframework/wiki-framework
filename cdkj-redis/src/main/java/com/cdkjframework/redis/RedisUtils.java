@@ -377,6 +377,27 @@ public class RedisUtils {
         return false;
     }
 
+    /**
+     * 删除数据
+     *
+     * @param key   键
+     * @param field 字段
+     * @return 返回是否成功
+     */
+    public static Long hDel(String key, String field) {
+        key = getNamespaces(key);
+        RedisFuture<Long> redisFuture = redisAsyncCommands == null ? commands.hdel(key, field) :
+                redisAsyncCommands.hdel(key, field);
+        try {
+            return redisFuture.get();
+        } catch (InterruptedException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        } catch (ExecutionException e) {
+            logUtils.error(e.getStackTrace(), e.getMessage());
+        }
+        return Long.valueOf(IntegerConsts.ZERO);
+    }
+
     // ============================String=============================
 
     /**
