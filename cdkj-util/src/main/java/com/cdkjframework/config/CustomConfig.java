@@ -160,6 +160,11 @@ public class CustomConfig {
     private String application;
 
     /**
+     * 登录页面
+     */
+    private String loginPage = "/index.html";
+
+    /**
      * Security 登录地址
      */
     private String loginUrl = "/security/user/login";
@@ -172,7 +177,7 @@ public class CustomConfig {
     /**
      * Security 资源过滤地址
      */
-    private List<String> patternsUrls = Arrays.asList("/security/**", "/configure/**");
+    private List<String> patternsUrls = Arrays.asList("/security/**", "/configure/**","/index.html");
 
     /**
      * 状态码
