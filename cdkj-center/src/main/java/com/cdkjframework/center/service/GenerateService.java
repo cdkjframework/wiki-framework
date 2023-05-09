@@ -50,8 +50,8 @@ public interface GenerateService {
             add(new TemplateEntity("repository", DIVISION + "repository" + DIVISION, "Repository.java"));
             add(new TemplateEntity("repositoryInt", DIVISION + "repository" + DIVISION, "Repository.java"));
             add(new TemplateEntity("mapper", DIVISION + "mapper" + DIVISION, "Mapper.java"));
-            add(new TemplateEntity("mapperXml", DIVISION + "mapper" + DIVISION + "xml" + DIVISION, "Mapper.xml"));
-            add(new TemplateEntity("extendXml", DIVISION + "mapper" + DIVISION + "xml" + DIVISION + "extend" + DIVISION, "ExtendMapper.xml"));
+            add(new TemplateEntity("mapperXml", DIVISION + "mybatis" + DIVISION, "Mapper.xml"));
+            add(new TemplateEntity("extendXml", DIVISION + "mybatis" + DIVISION + "extend" + DIVISION, "ExtendMapper.xml"));
         }
     };
 

@@ -10,6 +10,8 @@ import org.springframework.beans.BeanWrapperImpl;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -275,6 +277,10 @@ public class CopyUtils {
                 Object clazz;
                 if (targetField.getType().equals(Integer.class)) {
                     clazz = targetField.getType().getConstructor(int.class).newInstance(IntegerConsts.ZERO);
+                } else if ((targetField.getType().equals(LocalDateTime.class))) {
+                    clazz = LocalDateTime.parse((CharSequence) value);
+                } else if ((targetField.getType().equals(LocalDate.class))) {
+                    clazz = LocalDate.parse((CharSequence) value);
                 } else {
                     clazz = targetField.getType().newInstance();
                 }

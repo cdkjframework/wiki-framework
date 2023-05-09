@@ -185,6 +185,11 @@ public class CustomConfig {
     private Integer statusCode;
 
     /**
+     * 错误状态码
+     */
+    private Integer errorCode;
+
+    /**
      * 基础数据（0或空：mysql、1：postgreSql、2：msSQL）
      */
     private Integer dataBase;

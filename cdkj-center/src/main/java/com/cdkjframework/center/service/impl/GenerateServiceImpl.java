@@ -294,9 +294,14 @@ public class GenerateServiceImpl implements GenerateService {
                             isXml = true;
                             break;
                     }
-                    path.append("/src/main/java/");
+                    path.append("/src/main/");
+                    if (isXml) {
+                        path.append("resources/");
+                    } else {
+                        path.append("java/");
+                    }
                 }
-                if (!entity.getIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
+                if (!entity.isIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
                     continue;
                 }
                 if (!isXml && path.length() > IntegerConsts.ZERO) {
@@ -416,7 +421,11 @@ public class GenerateServiceImpl implements GenerateService {
             }
 
             childrenEntity.setColumnName(columnName);
-            childrenEntity.setColumnDescription(column.getColumnComment());
+            if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+                childrenEntity.setColumnDescription(column.getColumnComment());
+            } else {
+                childrenEntity.setColumnDescription(StringUtils.Empty);
+            }
             final List<String> value = Arrays.asList("fk", "pri");
             boolean keyIsShow = StringUtils.isNotNullAndEmpty(column.getColumnKey()) &&
                     value.contains(column.getColumnKey().toLowerCase());
@@ -487,7 +496,11 @@ public class GenerateServiceImpl implements GenerateService {
         // 扩展字段开始
         ChildrenEntity childrenEntity = new ChildrenEntity();
         childrenEntity.setIsExtension(1);
-        childrenEntity.setColumnDescription(column.getColumnComment());
+        if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+            childrenEntity.setColumnDescription(column.getColumnComment());
+        } else {
+            childrenEntity.setColumnDescription(StringUtils.Empty);
+        }
         childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "Start");
         childrenEntity.setDataType(contrastEnum.getValue());
 
@@ -496,7 +509,11 @@ public class GenerateServiceImpl implements GenerateService {
         // 扩展字段结束
         ChildrenEntity entity = new ChildrenEntity();
         entity.setIsExtension(1);
-        entity.setColumnDescription(column.getColumnComment());
+        if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+            entity.setColumnDescription(column.getColumnComment());
+        } else {
+            entity.setColumnDescription(StringUtils.Empty);
+        }
         entity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "End");
         entity.setDataType(contrastEnum.getValue());
 
