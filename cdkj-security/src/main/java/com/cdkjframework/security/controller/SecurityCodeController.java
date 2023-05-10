@@ -45,7 +45,7 @@ public class SecurityCodeController {
         // 创建 session
         HttpSession session = request.getSession();
         // 生成二维码
-        String code = VerifyCodeUtils.outputVerifyImage(IntegerConsts.ONE_HUNDRED, IntegerConsts.THIRTY,
+        String code = VerifyCodeUtils.outputVerifyImage(IntegerConsts.ONE_HUNDRED, IntegerConsts.THIRTY_FIVE,
                 outputStream, IntegerConsts.FOUR);
         // 将图形验证码存入到session中
         session.setAttribute(BusinessConsts.IMAGE_CODE, code);

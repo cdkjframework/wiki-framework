@@ -31,83 +31,83 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfigure extends WebSecurityConfigurerAdapter {
-    /**
-     * 自定义登录成功处理器
-     */
-    private final UserLoginSuccessHandler userLoginSuccessHandler;
-    /**
-     * 自定义登录失败处理器
-     */
-    private final UserLoginFailureHandler userLoginFailureHandler;
-    /**
-     * 自定义注销成功处理器
-     */
-    private final UserLogoutSuccessHandler userLogoutSuccessHandler;
-    /**
-     * 自定义暂无权限处理器
-     */
-    private final UserAuthAccessDeniedHandler userAuthAccessDeniedHandler;
-    /**
-     * 自定义未登录的处理器
-     */
-    private final UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler;
-    /**
-     * 自定义登录逻辑验证器
-     */
-    private final UserAuthenticationProvider userAuthenticationProvider;
+  /**
+   * 自定义登录成功处理器
+   */
+  private final UserLoginSuccessHandler userLoginSuccessHandler;
+  /**
+   * 自定义登录失败处理器
+   */
+  private final UserLoginFailureHandler userLoginFailureHandler;
+  /**
+   * 自定义注销成功处理器
+   */
+  private final UserLogoutSuccessHandler userLogoutSuccessHandler;
+  /**
+   * 自定义暂无权限处理器
+   */
+  private final UserAuthAccessDeniedHandler userAuthAccessDeniedHandler;
+  /**
+   * 自定义未登录的处理器
+   */
+  private final UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler;
+  /**
+   * 自定义登录逻辑验证器
+   */
+  private final UserAuthenticationProvider userAuthenticationProvider;
 
-    /**
-     * 读取配置文件
-     */
-    private final CustomConfig customConfig;
+  /**
+   * 读取配置文件
+   */
+  private final CustomConfig customConfig;
 
-    /**
-     * 构造函数
-     *
-     * @param userLoginSuccessHandler
-     * @param userLoginFailureHandler
-     * @param userLogoutSuccessHandler
-     * @param userAuthAccessDeniedHandler
-     * @param userAuthenticationEntryPointHandler
-     * @param userAuthenticationProvider
-     * @param customConfig
-     */
-    public SecurityConfigure(UserLoginSuccessHandler userLoginSuccessHandler, UserLoginFailureHandler userLoginFailureHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, UserAuthAccessDeniedHandler userAuthAccessDeniedHandler, UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler, UserAuthenticationProvider userAuthenticationProvider, CustomConfig customConfig) {
-        this.userLoginSuccessHandler = userLoginSuccessHandler;
-        this.userLoginFailureHandler = userLoginFailureHandler;
-        this.userLogoutSuccessHandler = userLogoutSuccessHandler;
-        this.userAuthAccessDeniedHandler = userAuthAccessDeniedHandler;
-        this.userAuthenticationEntryPointHandler = userAuthenticationEntryPointHandler;
-        this.userAuthenticationProvider = userAuthenticationProvider;
-        this.customConfig = customConfig;
-    }
+  /**
+   * 构造函数
+   *
+   * @param userLoginSuccessHandler
+   * @param userLoginFailureHandler
+   * @param userLogoutSuccessHandler
+   * @param userAuthAccessDeniedHandler
+   * @param userAuthenticationEntryPointHandler
+   * @param userAuthenticationProvider
+   * @param customConfig
+   */
+  public SecurityConfigure(UserLoginSuccessHandler userLoginSuccessHandler, UserLoginFailureHandler userLoginFailureHandler, UserLogoutSuccessHandler userLogoutSuccessHandler, UserAuthAccessDeniedHandler userAuthAccessDeniedHandler, UserAuthenticationEntryPointHandler userAuthenticationEntryPointHandler, UserAuthenticationProvider userAuthenticationProvider, CustomConfig customConfig) {
+    this.userLoginSuccessHandler = userLoginSuccessHandler;
+    this.userLoginFailureHandler = userLoginFailureHandler;
+    this.userLogoutSuccessHandler = userLogoutSuccessHandler;
+    this.userAuthAccessDeniedHandler = userAuthAccessDeniedHandler;
+    this.userAuthenticationEntryPointHandler = userAuthenticationEntryPointHandler;
+    this.userAuthenticationProvider = userAuthenticationProvider;
+    this.customConfig = customConfig;
+  }
 
-    /**
-     * 加密方式
-     */
-    @Bean
-    public Md5PasswordEncoder md5PasswordEncoder() {
-        return new Md5PasswordEncoder();
-    }
+  /**
+   * 加密方式
+   */
+  @Bean
+  public Md5PasswordEncoder md5PasswordEncoder() {
+    return new Md5PasswordEncoder();
+  }
 
-    /**
-     * 注入自定义PermissionEvaluator
-     */
-    @Bean
-    public DefaultWebSecurityExpressionHandler userSecurityExpressionHandler() {
-        DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
-        handler.setPermissionEvaluator(new UserPermissionEvaluator());
-        return handler;
-    }
+  /**
+   * 注入自定义PermissionEvaluator
+   */
+  @Bean
+  public DefaultWebSecurityExpressionHandler userSecurityExpressionHandler() {
+    DefaultWebSecurityExpressionHandler handler = new DefaultWebSecurityExpressionHandler();
+    handler.setPermissionEvaluator(new UserPermissionEvaluator());
+    return handler;
+  }
 
-    /**
-     * 配置登录验证逻辑
-     */
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        //这里可启用我们自己的登陆验证逻辑
-        auth.authenticationProvider(userAuthenticationProvider);
-    }
+  /**
+   * 配置登录验证逻辑
+   */
+  @Override
+  protected void configure(AuthenticationManagerBuilder auth) {
+    //这里可启用我们自己的登陆验证逻辑
+    auth.authenticationProvider(userAuthenticationProvider);
+  }
 
     /**
      * 配置security的控制逻辑
@@ -167,20 +167,20 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
         http.addFilter(new JwtAuthenticationFilter(authenticationManager(), customConfig));
     }
 
-    /**
-     * 身份验证筛选器
-     *
-     * @return 返回 身份验证筛选器
-     * @throws Exception 异常信息
-     */
-    private AuthenticationFilter authenticationFilter() throws Exception {
-        AuthenticationFilter filter = new AuthenticationFilter();
-        filter.setAuthenticationManager(super.authenticationManagerBean());
-        filter.setFilterProcessesUrl(customConfig.getLoginUrl());
-        // 处理登录成功
-        filter.setAuthenticationSuccessHandler(userLoginSuccessHandler);
-        // 处理登录失败
-        filter.setAuthenticationFailureHandler(userLoginFailureHandler);
-        return filter;
-    }
+  /**
+   * 身份验证筛选器
+   *
+   * @return 返回 身份验证筛选器
+   * @throws Exception 异常信息
+   */
+  private AuthenticationFilter authenticationFilter() throws Exception {
+    AuthenticationFilter filter = new AuthenticationFilter();
+    filter.setAuthenticationManager(super.authenticationManagerBean());
+    filter.setFilterProcessesUrl(customConfig.getLoginUrl());
+    // 处理登录成功
+    filter.setAuthenticationSuccessHandler(userLoginSuccessHandler);
+    // 处理登录失败
+    filter.setAuthenticationFailureHandler(userLoginFailureHandler);
+    return filter;
+  }
 }

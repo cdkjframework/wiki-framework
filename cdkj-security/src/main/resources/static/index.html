@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <link rel="icon" href="favicon.ico">
+  <link rel="stylesheet" href="https://unpkg.com/element-ui@2.7.2/lib/theme-chalk/index.css">
+  <title>cdkjFw 后台管理中心 - 登录</title>
+  <style type="text/css">
+      body {
+          padding: 0 !important;
+          margin: 0 !important;
+      }
+
+      .login {
+          position: absolute;
+          width: calc(100%);
+          height: calc(100%);
+          overflow: hidden;
+      }
+
+      .login-component {
+          width: calc(100%);
+          height: calc(100%);
+          background: #484848;
+          overflow: hidden;
+      }
+
+      .component {
+          margin: 0 auto;
+          display: table;
+          width: 1100px;
+          height: calc(100%);
+          overflow: hidden;
+      }
+
+      .login-container {
+          width: 100%;
+          height: 476px;
+          opacity: 1;
+          border-radius: 17px;
+          display: table-cell;
+          overflow: hidden;
+          vertical-align: middle;
+      }
+
+      .container-left {
+          width: 600px;
+          height: 476px;
+          display: table;
+          float: left;
+          border-radius: 17px 0 0 17px;
+      }
+
+      .logoBox {
+          text-align: center;
+          margin: 0;
+          padding: 0;
+          display: table-cell;
+          vertical-align: middle;
+      }
+
+      > div:first-of-type {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+      }
+
+      .logo-title {
+          margin-left: 30px;
+          font-size: 30px;
+          font-weight: bold;
+          color: #ebebeb;
+      }
+
+      .container-right {
+          width: 476px;
+          height: 476px;
+          background: rgba(0, 0, 0, 0.3);
+          opacity: 1;
+          float: right;
+          display: table;
+      }
+
+      .login-form {
+          width: 400px;
+          height: 350px;
+          display: table-cell;
+          vertical-align: middle;
+          margin: 0 auto;
+      }
+
+      .login-text {
+          width: 100%;
+          height: 29px;
+          font-size: 18px;
+          font-weight: bold;
+          line-height: 29px;
+          color: #c7c7c7;
+          text-align: center;
+      }
+
+      .el-form {
+          margin: 0 auto;
+          width: 296px;
+      }
+
+      .el-input__wrapper {
+          background: #3E3E3E;
+          border-color: #707070;
+      }
+
+      .Verification_code_box {
+          width: 100%;
+      }
+
+      .input-with-code {
+          width: 100%;
+      }
+
+      .el-input-group__append {
+          width: 100px;
+          padding: 0;
+      }
+
+      .login-submit {
+          width: 100%;
+          background: #3E8FFF !important;
+          border: #3E8FFF !important;
+          color: #FFFFFF !important;
+      }
+
+      /* 登录表单样式 */
+      .nlogo_logo {
+          margin: 0 auto;
+      }
+
+      .company_name {
+          width: 100%;
+          bottom: 40px;
+          text-align: center;
+          position: absolute;
+          color: #111;
+          font-size: 12px;
+      }
+
+      .copyright {
+          overflow: hidden;
+          width: 100%;
+          display: inline-block;
+      }
+
+  </style>
+</head>
+<body>
+<div id="app">
+  <div class="login">
+    <div class="login-component">
+      <div class="component">
+        <div class="login-container">
+          <div class="container-left">
+            <div class="logoBox">
+              <div>
+                <img style="width: 175px" src="logo.png"/>
+                <div class="logo-title">cdkjFw 后台管理中心</div>
+              </div>
+              <img
+                  src="login.png"
+                  style="width: 400px"
+                  class="nlogo_logo"
+              />
+            </div>
+          </div>
+          <div class="container-right">
+            <div class="login-form">
+              <p class="login-text mb-30px f_w_normal">欢迎登录</p>
+              <el-form
+                  ref="loginFormRef"
+                  layout="horizontal"
+                  :model="LoginForm"
+                  :rules="rules"
+                  @submit.native.prevent="handleSubmit"
+              >
+                <el-form-item>
+                  <el-input
+                      v-model="LoginForm.username"
+                      @keyup.enter.native="handleSubmit"
+                      placeholder="请输入账号"
+                  />
+                </el-form-item>
+                <el-form-item>
+                  <el-input
+                      v-model="LoginForm.password"
+                      type="password"
+                      @keyup.enter.native="handleSubmit"
+                      placeholder="请输入密码"
+                      autocomplete="new-password"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <div class="Verification_code_box">
+                    <el-input
+                        v-model="LoginForm.verifyCode"
+                        placeholder="请输入验证码"
+                        @keyup.enter.native="handleSubmit"
+                        class="input-with-code"
+                        :maxlength="4"
+                    >
+                      <template #append>
+                        <img
+                            :src="captcha"
+                            class="absolute right-0 h-full cursor-pointer"
+                            @click="setCaptcha"
+                        />
+                      </template>
+                    </el-input>
+                  </div>
+                </el-form-item>
+                <el-form-item>
+                  <el-button
+                      type="submit"
+                      :loading="loading"
+                      class="login-submit"
+                      @click="handleSubmit"
+                  > 登录
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="company_name">
+        <a href="https://beian.miit.gov.cn/" class="company_name" style="text-decoration: none" target="_blank">蜀ICP备09010417号-8</a>
+        <span class="copyright">{{ platformInfo.keepOnRecord }}</span>
+      </p>
+      <p
+          v-if="platformInfo.technicalSupport.length > 0"
+          class="company_name"
+      >
+      </p>
+    </div>
+  </div>
+</div>
+<!-- import Vue before Element -->
+<script src="https://cdn.staticfile.org/vue/2.7.0/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+<script type="text/javascript" src="aes.js"></script>
+<script type="text/javascript" src="mode-ecb.js"></script>
+<script type="text/javascript">
+  new Vue({
+    el: '#app',
+    data: function () {
+      return {
+        loading: false,
+        captcha: "",
+        code: "",
+        /* 平台基础信息 */
+        platformInfo: {
+          chineseName: "cdkjFw 后台管理中心",
+          englishName: "cdkjFw Background management center",
+          /* 备案 */
+          keepOnRecord:
+            "成都译成科技有限公司 Copyright @2017-" +
+            new Date().getFullYear(),
+          /* 备案号 */
+          keepOnRecordNum: "蜀ICP备09010417号-8",
+          /* 技术支持 */
+          technicalSupport: "成都译成科技有限公司",
+        },
+        LoginForm: {
+          username: "test.test",
+          password: "123456",
+          verifyCode: "",
+        },
+        rules: {
+          username: [{required: true, message: "账号不能为空", trigger: "change"}],
+          password: [
+            {required: true, message: "密码不能为空", trigger: "change"},
+            {min: 6, max: 16, message: "请输入6-16位密码", trigger: "change"},
+          ],
+          verifyCode: [
+            {required: true, message: "验证码不能为空", trigger: "change"},
+            {min: 4, max: 4, message: "请输入4位验证码", trigger: "change"},
+          ],
+        },
+      }
+    },
+    mounted() {
+      this.init()
+      this.setCaptcha()
+    },
+    methods: {
+      init() {
+      },
+      handleSubmit() {
+        const that = this
+        const {username, password, verifyCode} = this.LoginForm;
+        if (!username || !password) {
+          that.$message.warning("账号或密码不能为空！");
+          return;
+        }
+        if (!verifyCode || verifyCode.length != 4) {
+          that.$message.warning("验证码不能为空！");
+          return;
+        }
+        this.$refs['loginFormRef'].validate((valid) => {
+          if (valid) {
+            const params = this.LoginForm;
+            params["number"] = this.code.toString();
+            this.$http.post('/configure/security/user/login', params)
+              .then((response) => {
+                if (response.status !== 200) {
+                  that.$message.error('服务器错误，请稍后在试！')
+                  return false
+                }
+                const {headers, data} = response
+                if (data.code === 0 || data.code === 200) {
+                  const token = headers['token']
+                  const redirect = that.query.redirect
+                  const domain = that.query.domain
+                  window.postMessage(token, domain);
+                  window.postMessage(data.data, domain);
+                  that.$message.success(data.messages)
+                  window.location.href = redirect
+                } else {
+                  that.setCaptcha()
+                  that.$message.error(data.messages)
+                }
+              })
+          }
+        })
+      },
+      setCaptcha() {
+        this.code = Math.random().toString().trim();
+        let randomCode = Math.random();
+        this.captcha = `/configure/security/verify/code?number=${this.code}&randomCode=${randomCode}`;
+      }
+    }
+  })
+</script>
+</body>
+</html>
