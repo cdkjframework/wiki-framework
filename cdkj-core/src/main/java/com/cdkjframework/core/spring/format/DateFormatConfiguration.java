@@ -28,46 +28,46 @@ import java.util.TimeZone;
 @JsonComponent
 @RequiredArgsConstructor
 public class DateFormatConfiguration {
-    /**
-     * 配置
-     */
-    private final CustomConfig customConfig;
-
-    /**
-     * jackson2对象映射器生成器
-     *
-     * @description date 类型全局时间格式化
-     */
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
-        return builder -> {
-            TimeZone tz = TimeZone.getTimeZone(customConfig.getTimeZone());
-            DateFormat dateFormat = new SimpleDateFormat(customConfig.getDateFormat());
-            dateFormat.setTimeZone(tz);
-            builder.failOnEmptyBeans(false)
-                    .failOnUnknownProperties(false)
-                    .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-                    .dateFormat(dateFormat);
-        };
-    }
-
-    /**
-     * 反序列化程序
-     *
-     * @description LocalDate 类型全局时间格式化
-     */
-    @Bean
-    public LocalDateTimeSerializer localDateTimeDeserializer() {
-        return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(customConfig.getDateFormat()));
-    }
-
-    /**
-     * jackson2对象映射器生成器自定义程序
-     *
-     * @return 返回结果
-     */
-    @Bean
-    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
-        return builder -> builder.serializerByType(LocalDateTime.class, localDateTimeDeserializer());
-    }
+//    /**
+//     * 配置
+//     */
+//    private final CustomConfig customConfig;
+//
+//    /**
+//     * jackson2对象映射器生成器
+//     *
+//     * @description date 类型全局时间格式化
+//     */
+//    @Bean
+//    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilder() {
+//        return builder -> {
+//            TimeZone tz = TimeZone.getTimeZone(customConfig.getTimeZone());
+//            DateFormat dateFormat = new SimpleDateFormat(customConfig.getDateFormat());
+//            dateFormat.setTimeZone(tz);
+//            builder.failOnEmptyBeans(false)
+//                    .failOnUnknownProperties(false)
+//                    .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+//                    .dateFormat(dateFormat);
+//        };
+//    }
+//
+//    /**
+//     * 反序列化程序
+//     *
+//     * @description LocalDate 类型全局时间格式化
+//     */
+//    @Bean
+//    public LocalDateTimeSerializer localDateTimeDeserializer() {
+//        return new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(customConfig.getDateFormat()));
+//    }
+//
+//    /**
+//     * jackson2对象映射器生成器自定义程序
+//     *
+//     * @return 返回结果
+//     */
+//    @Bean
+//    public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
+//        return builder -> builder.serializerByType(LocalDateTime.class, localDateTimeDeserializer());
+//    }
 }
