@@ -5,6 +5,7 @@ import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.message.baidu.MqttCallbackEntity;
 import com.cdkjframework.enums.QueueMessageTypeEnums;
 import com.cdkjframework.util.log.LogUtils;
+import lombok.RequiredArgsConstructor;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttException;
@@ -27,18 +28,13 @@ import java.util.concurrent.ScheduledExecutorService;
  */
 
 @Component
+@RequiredArgsConstructor
 public class CdkjMqttCallback implements MqttCallback {
 
     /**
      * 日志
      */
     private LogUtils logUtil = LogUtils.getLogger(CdkjMqttCallback.class);
-
-    /**
-     * 配置
-     */
-    @Autowired
-    private MqttConfig mqttConfig;
 
     /**
      * 消息客户端
@@ -51,19 +47,9 @@ public class CdkjMqttCallback implements MqttCallback {
     private ScheduledExecutorService scheduler;
 
     /**
-     * 队列大小
+     * 消息服务
      */
-    private final int capacity = 100000;
-
-    /**
-     * 方法
-     */
-    private Method method;
-
-    /**
-     * bean
-     */
-    private Object bean;
+    private final CallbackService callbackService;
 
     public MqttClientRunner getClient() {
         return client;
@@ -71,12 +57,6 @@ public class CdkjMqttCallback implements MqttCallback {
 
     public void setClient(MqttClientRunner client) {
         this.client = client;
-    }
-
-    /**
-     * 构造函数
-     */
-    public CdkjMqttCallback() {
     }
 
     /**
@@ -163,15 +143,6 @@ public class CdkjMqttCallback implements MqttCallback {
      * @param entity 数据信息
      */
     private void invokeMethod(MqttCallbackEntity entity) {
-        try {
-            //获取 bean
-            if (this.bean == null) {
-//                getBean();
-            }
-            //调用参数
-            method.invoke(bean, entity);
-        } catch (Exception ex) {
-            logUtil.error(ex.getMessage());
-        }
+        callbackService.onMessage(entity);
     }
 }
