@@ -1,5 +1,6 @@
 package com.cdkjframework.config;
 
+import com.cdkjframework.constant.IntegerConsts;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -142,6 +143,16 @@ public class CustomConfig {
      * 算法 PKCS5 Padding
      */
     private String aesCbcNoPadding = "AES/CBC/NoPadding";
+
+    /**
+     * 算法 PKCS5 Padding
+     */
+    private String aesEcbNoPadding = "AES/ECB/NoPadding";
+
+    /**
+     * 加密类型 (AES加密类型 0：CBC，1：ECB)
+     */
+    private Integer aesType= IntegerConsts.ZERO;
 
     /**
      * 密码类型

@@ -1,6 +1,7 @@
 package com.cdkjframework.util.encrypts;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
@@ -82,7 +83,11 @@ public class AesUtils {
         Cipher cipher = initKey();
 
         // 初始化
-        cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
+        if (customConfig.getAesType().equals(IntegerConsts.ZERO)) {
+            cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec(), getIvParameterSpec());
+        } else {
+            cipher.init(Cipher.ENCRYPT_MODE, getSecretKeySpec());
+        }
         byte[] dataBytes = content.getBytes(customConfig.getCharsetName());
         byte[] plainText = byteLengthCompletion(cipher.getBlockSize(), dataBytes);
 
@@ -175,7 +180,11 @@ public class AesUtils {
         if (cipher == null) {
             synchronized (AesUtils.class) {
                 if (cipher == null) {
-                    cipher = Cipher.getInstance(customConfig.getAesCbcNoPadding());
+                    if (customConfig.getAesType().equals(IntegerConsts.ZERO)) {
+                        cipher = Cipher.getInstance(customConfig.getAesCbcNoPadding());
+                    } else {
+                        cipher = Cipher.getInstance(customConfig.getAesEcbNoPadding());
+                    }
                 }
             }
         }
@@ -204,8 +213,6 @@ public class AesUtils {
         // 返回结果
         return plainText;
     }
-
-
 
 
     /**
