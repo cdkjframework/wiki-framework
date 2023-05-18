@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,7 +17,7 @@
     </parent>
 
     <properties>
-        <cdkj.version>1.0.3</cdkj.version>
+        <cdkj.version>1.0.4</cdkj.version>
 
 
         <java.version>1.8</java.version>
@@ -54,7 +54,7 @@
         <!--alibaba -->
         <druid.version>1.1.24</druid.version>
         <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
-        <mq-http.version>1.0.3.2</mq-http.version>
+        <mq-http.version>1.0.4.2</mq-http.version>
         <ons.client.version>1.8.4.Final</ons.client.version>
         <sms.alicloud.version>2.0.5</sms.alicloud.version>
         <call.alicloud.version>4.5.6</call.alicloud.version>

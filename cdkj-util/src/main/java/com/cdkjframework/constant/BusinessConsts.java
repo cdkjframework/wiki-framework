@@ -16,6 +16,16 @@ public class BusinessConsts {
   public static final String HEADER_TOKEN = "token";
 
   /**
+   * 票据
+   */
+  public static final String TICKET = "ticket";
+
+  /**
+   * 票据后缀
+   */
+  public static final String TICKET_SUFFIX = ".txt";
+
+  /**
    * 用户登录名称
    */
   public static final String LOGIN_NAME = "loginName";
@@ -49,6 +59,11 @@ public class BusinessConsts {
    * 时间
    */
   public static final String TIME = "time";
+
+  /**
+   * 状态
+   */
+  public static final String STATUS = "status";
 
   /**
    * 验证码

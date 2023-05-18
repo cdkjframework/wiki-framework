@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Set;
@@ -342,5 +343,17 @@ public class HttpRequestUtils {
     if (httpRequestEntity.isCompress()) {
       connection.setRequestProperty(HttpHeaderConsts.CONTENT_ENCODING, "gzip");
     }
+  }
+
+  /**
+   * 读取图片
+   *
+   * @return 返回结果
+   */
+  public static InputStream readImages(String uri) throws IOException {
+    URL realUrl = new URL(uri);
+    // 打开和URL之间的连接
+    HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
+    return connection.getInputStream();
   }
 }

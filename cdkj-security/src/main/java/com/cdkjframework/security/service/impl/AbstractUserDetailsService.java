@@ -1,8 +1,9 @@
-package com.cdkjframework.security.service;
+package com.cdkjframework.security.service.impl;
 
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: cdkj-framework
@@ -12,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Component
 public abstract class AbstractUserDetailsService implements UserDetailsService {
 
     /**

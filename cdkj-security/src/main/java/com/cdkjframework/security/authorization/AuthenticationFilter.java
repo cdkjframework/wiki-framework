@@ -1,7 +1,6 @@
 package com.cdkjframework.security.authorization;
 
 import com.cdkjframework.constant.BusinessConsts;
-import com.cdkjframework.util.log.LogUtils;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,7 +26,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     /**
      * 请求类型
      */
-    private List<String> contentTypeList = Arrays.asList(MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_JSON_VALUE);
+    private List<String> CONTENT_TYPE_LIST = Arrays.asList(MediaType.APPLICATION_JSON_UTF8_VALUE, MediaType.APPLICATION_JSON_VALUE);
 
     /**
      * 尝试身份验证
@@ -40,7 +39,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //attempt Authentication when Content-Type is json
-        if (contentTypeList.contains(request.getContentType())) {
+        if (CONTENT_TYPE_LIST.contains(request.getContentType())) {
             Object userName = request.getAttribute(BusinessConsts.USER_NAME);
             Object password = request.getAttribute(BusinessConsts.PASSWORD);
             UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(userName, password);

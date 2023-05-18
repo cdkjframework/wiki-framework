@@ -1,4 +1,4 @@
-package com.cdkjframework.security.handler;
+package com.cdkjframework.security.service.impl;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
@@ -11,10 +11,7 @@ import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.WorkflowEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.redis.RedisUtils;
-import com.cdkjframework.security.service.ConfigureService;
-import com.cdkjframework.security.service.ResourceService;
-import com.cdkjframework.security.service.UserRoleService;
-import com.cdkjframework.security.service.WorkflowService;
+import com.cdkjframework.security.service.*;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.encrypts.Md5Utils;
@@ -22,7 +19,6 @@ import com.cdkjframework.util.network.ResponseUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -34,19 +30,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
-
 /**
- * @ProjectName: cdkjframework-cloud
- * @Package: com.cdkjframework.cloud.handler
- * @ClassName: UserLoginSuccessHandler
- * @Description: 用户登录成功
+ * @ProjectName: cdkj-framework
+ * @Package: com.cdkjframework.security.service.impl
+ * @ClassName: UserLoginSuccessServiceImpl
+ * @Description: java类作用描述
  * @Author: xiaLin
+ * @Date: 2023/5/16 22:52
  * @Version: 1.0
  */
 @Component
 @RequiredArgsConstructor
-public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
+public class UserLoginSuccessServiceImpl implements UserLoginSuccessService {
 
   /**
    * 自定义配置
@@ -81,19 +76,16 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
   /**
    * 权限认证成功
    *
-   * @param request        请求
-   * @param response       响应
+   * @param sessionId      会话id
    * @param authentication 权限
    * @throws IOException      异常信息
    * @throws ServletException 异常信息
    */
   @Override
-  public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+  public void onAuthenticationSuccess(String sessionId, Authentication authentication) throws IOException, ServletException {
     SecurityUserEntity user = (SecurityUserEntity) authentication.getPrincipal();
-    ResponseBuilder builder = ResponseBuilder.successBuilder();
-    builder.setData(user);
     // 构建 token
-    buildJwtToken(request, response, user);
+    buildJwtToken(user, sessionId);
 
     // 获取配置信息
     BmsConfigureEntity configure = new BmsConfigureEntity();
@@ -117,19 +109,15 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     workflow.setOrganizationId(user.getOrganizationId());
     workflow.setTopOrganizationId(user.getTopOrganizationId());
     workflowServiceImpl.listWorkflow(workflow);
-
-    // 返回登录结果
-    ResponseUtils.out(response, builder);
   }
 
   /**
    * 生成 jwt token
    *
-   * @param user     用户实体
-   * @param request  请求
-   * @param response 响应
+   * @param user      用户实体
+   * @param sessionId 会话id
    */
-  private void buildJwtToken(HttpServletRequest request, HttpServletResponse response, SecurityUserEntity user) {
+  private void buildJwtToken(SecurityUserEntity user, String sessionId) {
     // 生成 JWT token
     Map<String, Object> map = new HashMap<>(IntegerConsts.FOUR);
     map.put(BusinessConsts.LOGIN_NAME, user.getUsername());
@@ -147,15 +135,12 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     String token = Md5Utils.getMd5(builder.toString());
     map.put(BusinessConsts.HEADER_TOKEN, token);
     String jwtToken = JwtUtils.createJwt(map, customConfig.getJwtKey());
-    response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
-    // 票据添加到响应中
-    String ticket = AesUtils.base64Encode(token) + TICKET_SUFFIX;
-    response.setHeader(BusinessConsts.TICKET, ticket);
+    String tokenKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + sessionId;
+    RedisUtils.syncSet(tokenKey, jwtToken, IntegerConsts.SIXTY);
 
     // 票据 token 关系
     String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + token;
-    RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.FIVE);
-
+    RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.SIXTY);
 
     // 用户信息写入缓存
     String key = CacheConsts.USER_LOGIN + token;
