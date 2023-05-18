@@ -153,7 +153,7 @@ public class SecurityCodeController {
         }
         break;
       case 2:
-        String tokenKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN+ StringUtils.HORIZONTAL + id;
+        String tokenKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + id;
         String token = RedisUtils.syncGet(tokenKey);
         if (StringUtils.isNotNullAndEmpty(token)) {
           message = "successful";
@@ -179,28 +179,24 @@ public class SecurityCodeController {
   /**
    * 票据认证
    *
-   * @param request 请求
    * @throws IOException IO异常信息
    */
   @ResponseBody
   @ApiOperation(value = "票据认证")
   @GetMapping(value = "/ticket.html")
-  public SecurityUserEntity ticket(HttpServletRequest request, HttpServletResponse response) throws Exception {
-    String ticket = request.getParameter(BusinessConsts.TICKET);
+  public SecurityUserEntity ticket(@RequestParam("ticket") String ticket, HttpServletResponse response) throws Exception {
     return userAuthenticationServiceImpl.ticket(ticket, response);
   }
 
   /**
    * 扫码确认接口
    *
-   * @param request 请求
    * @throws IOException IO异常信息
    */
   @ResponseBody
   @ApiOperation(value = "验证二维码是否已被扫码")
   @GetMapping(value = "/confirm.html")
-  public void confirm(HttpServletRequest request) throws Exception {
-    String id = request.getParameter(BusinessConsts.ID);
+  public void confirm(@RequestParam("id") String id) throws Exception {
     String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
     RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.ONE));
   }
@@ -208,24 +204,24 @@ public class SecurityCodeController {
   /**
    * 扫码完成接口
    *
-   * @param request 请求
+   * @param username 用户名
+   * @param id       ID
    * @throws IOException IO异常信息
    */
   @ResponseBody
   @ApiOperation(value = "扫码完成接口【即登录】")
   @PostMapping(value = "/completed.html")
-  public void completed(HttpServletRequest request) throws Exception {
-    String id = request.getParameter(BusinessConsts.ID);
-    String userName = request.getParameter(BusinessConsts.USER_NAME);
+  public void completed(@RequestParam("username") String username, @RequestParam("id") String id) throws Exception {
 
     String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
     Integer status = ConvertUtils.convertInt(RedisUtils.hGet(statusKey, id));
     if (!status.equals(IntegerConsts.ONE)) {
       throw new GlobalException("二维码已过期，请刷新重试！");
     }
+    RedisUtils.syncDel(statusKey);
 
     // 受权信息
-    userAuthenticationServiceImpl.authenticate(userName, id);
+    userAuthenticationServiceImpl.authenticate(username, id);
     RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.TWO));
   }
 }
