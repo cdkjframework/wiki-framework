@@ -22,6 +22,16 @@ public class StringUtils {
     public final static String Empty = "";
 
     /**
+     * 空格
+     */
+    public final static String BLANK_SPACE = " ";
+
+    /**
+     * 加号
+     */
+    public final static String PLUS = "+";
+
+    /**
      * 横线变量
      */
     public final static String HORIZONTAL = "-";

@@ -30,6 +30,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -129,7 +132,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
    * @param request  请求
    * @param response 响应
    */
-  private void buildJwtToken(HttpServletRequest request, HttpServletResponse response, SecurityUserEntity user) {
+  private void buildJwtToken(HttpServletRequest request, HttpServletResponse response, SecurityUserEntity user) throws UnsupportedEncodingException {
     // 生成 JWT token
     Map<String, Object> map = new HashMap<>(IntegerConsts.FOUR);
     map.put(BusinessConsts.LOGIN_NAME, user.getUsername());
@@ -149,12 +152,12 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     String jwtToken = JwtUtils.createJwt(map, customConfig.getJwtKey());
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
     // 票据添加到响应中
-    String ticket = AesUtils.base64Encode(token) + TICKET_SUFFIX;
+    String ticket = URLEncoder.encode(AesUtils.base64Encode(token), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
     response.setHeader(BusinessConsts.TICKET, ticket);
 
     // 票据 token 关系
     String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + token;
-    RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.FIVE);
+    RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.SIXTY);
 
 
     // 用户信息写入缓存

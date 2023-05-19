@@ -32,9 +32,14 @@ import org.springframework.stereotype.Component;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 
 /**
  * @ProjectName: cdkj-framework
@@ -119,15 +124,22 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     if (StringUtils.isNullAndSpaceOrEmpty(ticket)) {
       throw new GlobalException("票据错误！");
     }
-    String token = AesUtils.base64Decrypt(ticket.replace(BusinessConsts.TICKET_SUFFIX, StringUtils.Empty));
+    ticket = URLDecoder.decode(ticket, StandardCharsets.UTF_8.toString());
+    String token = AesUtils.base64Decrypt(ticket
+        .replace(BLANK_SPACE, PLUS)
+        .replace(BusinessConsts.TICKET_SUFFIX, StringUtils.Empty));
     // 读取用户信息
     String key = CacheConsts.USER_LOGIN + token;
     SecurityUserEntity user = RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
     if (user == null) {
       throw new GlobalException("用户信息错误！");
     }
+
+    // 票据 token 关系
     String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + token;
     String jwtToken = RedisUtils.syncGet(ticketKey);
+    RedisUtils.syncDel(ticketKey);
+
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
 
     // 读取用户资源

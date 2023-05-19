@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 /**
  * 将String进行base64编码解码，使用utf-8
@@ -35,7 +36,7 @@ public class Base64Utils {
             if (bytes == null) {
                 return StringUtils.Empty;
             }
-            return new String(bytes, Charset.defaultCharset());
+            return new String(bytes, StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -74,7 +75,7 @@ public class Base64Utils {
             if (bytes == null) {
                 return StringUtils.Empty;
             }
-            return new String(bytes, Charset.defaultCharset());
+            return new String(bytes, StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -106,7 +107,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return StringUtils.Empty;
             }
-            return encode(inputData.getBytes(Charset.defaultCharset()));
+            return encode(inputData.getBytes(StandardCharsets.UTF_8.toString()));
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
         }
@@ -123,7 +124,7 @@ public class Base64Utils {
             if (null == inputData) {
                 return null;
             }
-            byte[] enBytes = inputData.getBytes(Charset.defaultCharset());
+            byte[] enBytes = inputData.getBytes(StandardCharsets.UTF_8.toString());
             bytes = Base64.encodeBase64(enBytes);
         } catch (Exception e) {
             logUtil.error(e.getCause(), e.getMessage());
@@ -151,7 +152,7 @@ public class Base64Utils {
                 logUtil.error(e.getCause(), e.getMessage());
                 bytes = Base64.encodeBase64(dataList);
             }
-            return new String(bytes, Charset.defaultCharset());
+            return new String(bytes, StandardCharsets.UTF_8.toString());
         } catch (Exception e) {
             logUtil.error("将字节转换为字符串");
             logUtil.error(e.getCause(), e.getMessage());

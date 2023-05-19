@@ -30,6 +30,8 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 
@@ -160,7 +162,7 @@ public class SecurityCodeController {
           Claims claims = JwtUtils.parseJwt(token, customConfig.getJwtKey());
           // 生成 ticket 票据
           token = ConvertUtils.convertString(claims.get(BusinessConsts.HEADER_TOKEN));
-          String ticket = AesUtils.base64Encode(token) + TICKET_SUFFIX;
+          String ticket = URLEncoder.encode(AesUtils.base64Encode(token), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
           response.setHeader(BusinessConsts.TICKET, ticket);
           String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN;
           RedisUtils.hSet(ticketKey, token, ticket);
