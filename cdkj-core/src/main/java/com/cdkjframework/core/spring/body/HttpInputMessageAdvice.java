@@ -93,19 +93,7 @@ public class HttpInputMessageAdvice implements HttpInputMessage {
         byte[] bytes = swapStream.toByteArray();
         String streamString = new String(bytes, StandardCharsets.UTF_8)
             .replace(StringUtils.BLANK_SPACE, StringUtils.PLUS);
-        LOG_UTILS.info(streamString);
-        String context = AesUtils.base64Decrypt(streamString.trim()
-                .replace("\n", StringUtils.Empty).replace("\r", StringUtils.Empty));
-        LOG_UTILS.info(context);
-        if (!JsonUtils.isValid(context)) {
-            try {
-                Thread.sleep(IntegerConsts.ONE_HUNDRED);
-            } catch (InterruptedException e) {
-
-            }
-            context = AesUtils.base64Decrypt(bytes);
-            LOG_UTILS.info(context);
-        }
+        String context = AesUtils.base64Decrypt(streamString.trim());
         return new ByteArrayInputStream(context.getBytes(StandardCharsets.UTF_8));
     }
 }
