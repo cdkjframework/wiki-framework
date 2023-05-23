@@ -48,5 +48,5 @@ public class WebSocketConfig {
     /**
      * 内容长度
      */
-    private Integer contentLength = IntegerConsts.ONE_THOUSAND * IntegerConsts.BYTE_LENGTH;
+    private Integer contentLength = Integer.MAX_VALUE;
 }
