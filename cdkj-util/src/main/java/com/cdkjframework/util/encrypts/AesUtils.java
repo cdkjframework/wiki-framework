@@ -104,9 +104,7 @@ public class AesUtils {
     public static String base64Decrypt(String content) {
         String decryptString = StringUtils.Empty;
         try {
-            final String BLANK_SPACE = " ";
-            final String PLUS = "+";
-            content = content.replace(BLANK_SPACE, PLUS);
+            content = content.replace(StringUtils.BLANK_SPACE, StringUtils.PLUS);
             byte[] decodeDataToByte = Base64Utils.decodeDataToByte(content);
             decryptString = decrypt(decodeDataToByte);
         } catch (Exception ex) {
