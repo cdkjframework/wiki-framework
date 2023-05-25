@@ -157,6 +157,11 @@
             </dependency>
             <dependency>
                 <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-socket</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-constant</artifactId>
                 <version>${cdkj.version}</version>
             </dependency>
