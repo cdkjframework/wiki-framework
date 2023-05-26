@@ -12,8 +12,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +25,9 @@ import java.util.List;
  * @Version: 1.0
  * @Description: Netty服务端初始化
  */
-@Order(Integer.MIN_VALUE)
 @Component
-public class NettySocketServer implements ApplicationRunner {
+@Order(Integer.MIN_VALUE)
+public class NettySocketServer {
 
     /**
      * 日志
@@ -47,10 +45,7 @@ public class NettySocketServer implements ApplicationRunner {
     private final SocketListener socketListener;
 
     /**
-     * 构造函数
-     *
-     * @param customConfig            配置
-     * @param socketListener
+     * 构建函数
      */
     public NettySocketServer(SocketConfig customConfig, SocketListener socketListener) {
         this.customConfig = customConfig;
@@ -60,8 +55,7 @@ public class NettySocketServer implements ApplicationRunner {
     /**
      * 线程启动
      */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void init() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {
