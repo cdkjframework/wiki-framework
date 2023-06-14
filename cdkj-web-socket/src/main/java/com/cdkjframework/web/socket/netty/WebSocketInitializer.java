@@ -67,7 +67,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
     // 最大内容长度
     int maxContentLength;
     if (webSocketConfig.getContentLength() == null) {
-      maxContentLength = IntegerConsts.ONE_THOUSAND * IntegerConsts.BYTE_LENGTH * IntegerConsts.ONE_HUNDRED;
+      maxContentLength = Integer.MAX_VALUE;
     } else {
       maxContentLength = webSocketConfig.getContentLength();
     }

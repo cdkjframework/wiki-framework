@@ -124,6 +124,15 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         Channel channel = ctx.channel();
         String message = textWebSocketFrame.text();
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
+        if (socket == null) {
+            socket = new WebSocketEntity();
+            socket.setType(TYPE);
+            socket.setMessage("数据错误！");
+            socket.setMessage(message);
+            // 并关闭通道
+            channel.close();
+            return;
+        }
         String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
             return;

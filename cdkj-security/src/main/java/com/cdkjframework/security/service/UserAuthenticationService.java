@@ -20,16 +20,6 @@ import java.io.IOException;
 public interface UserAuthenticationService {
 
   /**
-   * 空格
-   */
-  String BLANK_SPACE = " ";
-
-  /**
-   * 加号
-   */
-  String PLUS = "+";
-
-  /**
    * 身份权限验证
    *
    * @param userName  用户名

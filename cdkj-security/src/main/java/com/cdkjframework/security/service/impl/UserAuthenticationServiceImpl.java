@@ -126,7 +126,6 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     }
     ticket = URLDecoder.decode(ticket, StandardCharsets.UTF_8.toString());
     String token = AesUtils.base64Decrypt(ticket
-        .replace(BLANK_SPACE, PLUS)
         .replace(BusinessConsts.TICKET_SUFFIX, StringUtils.Empty));
     // 读取用户信息
     String key = CacheConsts.USER_LOGIN + token;
