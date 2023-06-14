@@ -19,6 +19,7 @@ import com.cdkjframework.mp.service.MpService;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpRequestUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -91,7 +92,7 @@ public class MpServiceImpl implements MpService {
    * @param mpMenusDtos 参数
    */
   @Override
-  public void addMenus(List<MpMenusDto> mpMenusDtos) {
+  public void addMenusList(List<MpMenusDto> mpMenusDtos) {
     MpResultDto token = readyAccessToken();
     JSONArray json = JsonUtils.listToJsonArray(mpMenusDtos);
     JSONObject button = new JSONObject();
@@ -375,6 +376,43 @@ public class MpServiceImpl implements MpService {
   }
 
   /**
+   * 添加菜单
+   *
+   * @param mpMenusDto 菜单信息
+   */
+  @Override
+  public void addMenus(MpMenusDto mpMenusDto) {
+    MpResultDto token = readyAccessToken();
+    // 查询总数据
+    String url = String.format(MpAddressConfig.addMenus, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setData(mpMenusDto);
+    // 获取数据
+    MpResultDto resultDto = HttpRequest(request);
+  }
+
+  /**
+   * 查询菜单
+   *
+   * @param mpMenusDto 菜单信息
+   */
+  @Override
+  public MpMenusDto findMenus(MpMenusDto mpMenusDto) {
+    MpResultDto token = readyAccessToken();
+    // 查询总数据
+    String url = String.format(MpAddressConfig.findMenus, token.getAccessToken());
+    HttpRequestEntity request = new HttpRequestEntity();
+    request.setRequestAddress(url);
+    request.setData(mpMenusDto);
+    // 获取数据
+    MpResultDto resultDto = HttpRequest(request);
+
+    // 返回结果
+    return CopyUtils.copyNoNullProperties(resultDto.getSelfMenuInfo(), MpMenusDto.class);
+  }
+
+  /**
    * 上传文件
    *
    * @param inputStream 文件数据
@@ -397,7 +435,7 @@ public class MpServiceImpl implements MpService {
         paramsMap.put("title", draftDto.getTitle());
         paramsMap.put("introduction", draftDto.getContent());
         request.setParamsMap(new HashMap<>());
-        request.getParamsMap().put("description",JsonUtils.objectToJsonString(paramsMap));
+        request.getParamsMap().put("description", JsonUtils.objectToJsonString(paramsMap));
       }
     }
     request.setRequestAddress(url);

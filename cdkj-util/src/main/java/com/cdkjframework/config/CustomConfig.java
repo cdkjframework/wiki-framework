@@ -211,4 +211,14 @@ public class CustomConfig {
    * 二维码LOGO（URI地址）
    */
   private String qrlogo;
+
+  /**
+   * 程序模板
+   */
+  private String classTemplate = "/com/cdkjframework/templates/";
+
+  /**
+   * 目录模板
+   */
+  private String templatePath;
 }

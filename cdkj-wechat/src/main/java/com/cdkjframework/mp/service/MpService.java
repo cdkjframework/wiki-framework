@@ -36,7 +36,7 @@ public interface MpService {
    *
    * @param mpMenusDtos 参数
    */
-  void addMenus(List<MpMenusDto> mpMenusDtos);
+  void addMenusList(List<MpMenusDto> mpMenusDtos);
 
   /**
    * 创建菜单
@@ -149,4 +149,18 @@ public interface MpService {
    * @return 返回结果
    */
   PageEntity<MpDraftDto> listMaterialPage(MpDraftDto draftDto);
+
+  /**
+   * 添加菜单
+   *
+   * @param mpMenusDto 菜单信息
+   */
+  void addMenus(MpMenusDto mpMenusDto);
+
+  /**
+   * 查询菜单
+   *
+   * @param mpMenusDto 菜单信息
+   */
+  MpMenusDto findMenus(MpMenusDto mpMenusDto);
 }
