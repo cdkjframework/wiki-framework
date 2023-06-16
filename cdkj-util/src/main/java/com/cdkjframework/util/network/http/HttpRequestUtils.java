@@ -103,7 +103,12 @@ public class HttpRequestUtils {
       }
       InputStream inputStream = (InputStream) request.getData();
       URL url = new URL(request.getRequestAddress());
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      HttpURLConnection conn;
+      if (request.getProxy() != null) {
+        conn = (HttpURLConnection) url.openConnection(request.getProxy());
+      } else {
+        conn = (HttpURLConnection) url.openConnection();
+      }
       conn.setDoOutput(true);
       conn.setDoInput(true);
       conn.setUseCaches(false);
@@ -194,7 +199,12 @@ public class HttpRequestUtils {
     try {
       URL realUrl = new URL(httpRequestEntity.getRequestAddress());
       // 打开和URL之间的连接
-      HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
+      HttpURLConnection connection;
+      if (httpRequestEntity.getProxy() != null) {
+        connection = (HttpURLConnection) realUrl.openConnection(httpRequestEntity.getProxy());
+      } else {
+        connection = (HttpURLConnection) realUrl.openConnection();
+      }
       connection.setRequestProperty(HttpHeaderConsts.CONTENT_TYPE, httpRequestEntity.getContentType());
       // 设置通用的请求属性
       //设置 http 请求头
@@ -296,7 +306,12 @@ public class HttpRequestUtils {
       }
       URL realUrl = new URL(urlString.toString());
       // 打开和URL之间的连接
-      HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
+      HttpURLConnection connection;
+      if (httpRequestEntity.getProxy() != null) {
+        connection = (HttpURLConnection) realUrl.openConnection(httpRequestEntity.getProxy());
+      } else {
+        connection = (HttpURLConnection) realUrl.openConnection();
+      }
       //设置 http 请求头
       setHeader(connection, httpRequestEntity);
       // 建立实际的连接

@@ -3,6 +3,7 @@ package com.cdkjframework.entity.http;
 import com.cdkjframework.enums.HttpMethodEnums;
 import lombok.Data;
 
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,6 +55,11 @@ public class HttpRequestEntity {
    * 名称（上传文件名称）
    */
   private String name;
+
+  /**
+   * 代理
+   */
+  private Proxy proxy;
 
   /**
    * 参数 POST 或者 GET 用
