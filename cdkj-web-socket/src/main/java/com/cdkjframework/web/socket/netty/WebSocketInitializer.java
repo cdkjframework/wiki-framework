@@ -90,7 +90,7 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
     // byte编码
     pipeline.addLast(new ByteArrayEncoder());
     // 心跳
-    pipeline.addLast(new IdleStateHandler(IntegerConsts.ZERO, IntegerConsts.ZERO, IntegerConsts.SIXTY, TimeUnit.SECONDS));
+    pipeline.addLast(new IdleStateHandler(IntegerConsts.ZERO, IntegerConsts.ZERO, IntegerConsts.FIVE, TimeUnit.SECONDS));
     // 添加心跳检测类
     pipeline.addLast(new WebSocketHeartbeatHandler(webSocket));
   }

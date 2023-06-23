@@ -25,9 +25,14 @@ public interface WebSocket {
     String SYSTEM_TYPE = "systemType";
 
     /**
-     * 系统错误
+     * 权限
      */
     String AUTHORITY = "authority";
+
+    /**
+     * 系统错误
+     */
+    String AUTHORITY_FAILED = "authority_failed";
 
     /**
      * 消息信息

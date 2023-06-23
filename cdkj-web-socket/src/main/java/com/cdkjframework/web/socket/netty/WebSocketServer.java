@@ -24,13 +24,12 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  **/
 @Component
-@Configuration
 public class WebSocketServer {
 
   /**
    * 日志
    */
-  private final LogUtils logUtils = LogUtils.getLogger(WebSocketServerHandler.class);
+  private final LogUtils logUtils = LogUtils.getLogger(WebSocketServer.class);
 
   /**
    * 配置
@@ -95,7 +94,7 @@ public class WebSocketServer {
           } else {
             message = "失败!";
           }
-          logUtils.error(String.format("监听端口[%d]%s!", port, message));
+          logUtils.info(String.format("监听端口[%d]%s!", port, message));
         }
       });
       //对关闭通道进行监听
