@@ -1,6 +1,6 @@
 package com.cdkjframework.swagger.document;
 
-import com.cdkjframework.config.SwaggerConfig;
+import com.cdkjframework.swagger.SwaggerConfig;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
-import org.springframework.util.ResourceUtils;
 
 import java.net.URL;
 import java.nio.file.Paths;

@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cdkjframework.datasource.mybatis.config.JpaConfig,\
+  com.cdkjframework.datasource.mybatis.connectivity.MybatisConfiguration,\
+  com.cdkjframework.datasource.mybatis.connectivity.MybatisDruidDbConfiguration
