@@ -1,28 +1,24 @@
-package com.cdkjframework.socket;
+package com.cdkjframework.socket.config;
 
-import com.cdkjframework.socket.config.SocketConfig;
+import com.cdkjframework.socket.NettySocketServer;
 import com.cdkjframework.socket.listener.SocketListener;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.socket.client
- * @ClassName: NettySocketClient
- * @Description: Netty套接字客户端
+ * @Package: com.cdkjframework.socket.config
+ * @ClassName: SocketAutoConfiguration
+ * @Description: java类作用描述
  * @Author: xiaLin
- * @Date: 2023/5/26 10:01
+ * @Date: 2023/7/18 9:26
  * @Version: 1.0
  */
-@Component
 @Configuration
 @RequiredArgsConstructor
-@ConditionalOnClass(NettySocketServer.class)
-public class NettySocketBean {
+public class SocketAutoConfiguration {
 
     /**
      * 读取配置

@@ -11,7 +11,7 @@ import com.cdkjframework.enums.basics.BasicsEnum;
  * @Version: 1.0
  */
 
-public enum BLOBMySqlDataTypeContrastEnums implements BasicsEnum {
+public enum MySqlDataTypeContrastEnums implements BasicsEnum {
     VARCHAR {
         /**
          * 获取枚举值

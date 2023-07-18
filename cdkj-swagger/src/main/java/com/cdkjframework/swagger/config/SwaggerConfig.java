@@ -1,4 +1,4 @@
-package com.cdkjframework.swagger;
+package com.cdkjframework.swagger.config;
 
 import lombok.Getter;
 import lombok.Setter;

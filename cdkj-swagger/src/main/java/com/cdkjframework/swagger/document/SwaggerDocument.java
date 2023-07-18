@@ -1,6 +1,6 @@
 package com.cdkjframework.swagger.document;
 
-import com.cdkjframework.swagger.SwaggerConfig;
+import com.cdkjframework.swagger.config.SwaggerConfig;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
