@@ -17,9 +17,7 @@
     </parent>
 
     <properties>
-        <cdkj.version>1.0.4</cdkj.version>
-
-
+        <cdkj.version>1.0.5</cdkj.version>
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
