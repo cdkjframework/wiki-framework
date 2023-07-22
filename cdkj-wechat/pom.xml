@@ -26,10 +26,6 @@
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-datasource-mongodb</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-constant</artifactId>
         </dependency>
         <dependency>
