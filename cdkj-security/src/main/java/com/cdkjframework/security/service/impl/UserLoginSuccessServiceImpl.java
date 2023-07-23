@@ -1,6 +1,5 @@
 package com.cdkjframework.security.service.impl;
 
-import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.CacheConsts;
@@ -12,10 +11,8 @@ import com.cdkjframework.entity.user.WorkflowEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.*;
-import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.encrypts.Md5Utils;
-import com.cdkjframework.util.network.ResponseUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -23,8 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +130,7 @@ public class UserLoginSuccessServiceImpl implements UserLoginSuccessService {
     String token = Md5Utils.getMd5(builder.toString());
     map.put(BusinessConsts.HEADER_TOKEN, token);
     String jwtToken = JwtUtils.createJwt(map, customConfig.getJwtKey());
+    user.setToken(jwtToken);
     String tokenKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + sessionId;
     RedisUtils.syncSet(tokenKey, jwtToken, IntegerConsts.SIXTY);
 

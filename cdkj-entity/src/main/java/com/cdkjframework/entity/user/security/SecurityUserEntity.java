@@ -3,6 +3,7 @@ package com.cdkjframework.entity.user.security;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.user.ResourceEntity;
 import com.cdkjframework.entity.user.UserEntity;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +19,7 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Data
 public class SecurityUserEntity extends UserEntity implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -41,6 +43,11 @@ public class SecurityUserEntity extends UserEntity implements Serializable, User
      * 状态:NORMAL正常  PROHIBIT禁用
      */
     private Integer status;
+
+    /**
+     * token 信息
+     */
+    private String token;
 
     /**
      * 资源信息

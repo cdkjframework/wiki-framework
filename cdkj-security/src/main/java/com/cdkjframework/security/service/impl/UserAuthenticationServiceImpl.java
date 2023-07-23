@@ -138,7 +138,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + token;
     String jwtToken = RedisUtils.syncGet(ticketKey);
     RedisUtils.syncDel(ticketKey);
-
+    user.setToken(jwtToken);
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
 
     // 读取用户资源
