@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2023/6/17 19:24
  * @Version: 1.0
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 @RequiredArgsConstructor
 public class WebsocketAutoConfiguration {
 

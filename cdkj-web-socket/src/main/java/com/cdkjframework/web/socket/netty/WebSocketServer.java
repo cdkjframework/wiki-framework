@@ -13,6 +13,8 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +28,7 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  **/
 @Component
-public class WebSocketServer {
+public class WebSocketServer implements ApplicationRunner {
 
     /**
      * 日志
@@ -50,7 +52,7 @@ public class WebSocketServer {
         this.webSocketConfig = webSocketConfig;
         this.webSocket = webSocket;
         // 注册服务
-        run();
+//        run();
     }
 
     /**
@@ -108,5 +110,10 @@ public class WebSocketServer {
                 workerGroup.shutdownGracefully();
             }
         }
+    }
+
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        run();
     }
 }
