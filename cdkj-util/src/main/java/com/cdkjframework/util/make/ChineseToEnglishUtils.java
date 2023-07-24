@@ -1,6 +1,8 @@
 package com.cdkjframework.util.make;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
@@ -37,12 +39,12 @@ public class ChineseToEnglishUtils {
      */
     public static String getPinYin(String src) {
 
-        String[] array = POLY_PHONE.split(",");
+        String[] array = POLY_PHONE.split(StringUtils.COMMA);
         for (String str :
                 array) {
             if (str.contains(src + "|")) {
                 String[] strings = str.split("\\|");
-                return strings[2];
+                return strings[IntegerConsts.TWO];
             }
         }
 
@@ -56,18 +58,19 @@ public class ChineseToEnglishUtils {
         outputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
         outputFormat.setVCharType(HanyuPinyinVCharType.WITH_V);
         try {
-            for (int i = 0; i < len; i++) {
+            for (int i = IntegerConsts.ONE; i < len; i++) {
                 //转换为字符串
                 String strText = Character.toString(charArray[i]);
                 // 判断是否为汉字字符
                 if (strText.matches("[\\u4E00-\\u9FA5]+")) {
                     String[] strings = PinyinHelper.toHanyuPinyinStringArray(charArray[i], outputFormat);
-                    if (strings == null || strings.length == 0) {
+                    if (strings == null || strings.length == IntegerConsts.ONE) {
                         continue;
                     }
-                    sb.append(strings[0]);
+                    sb.append(strings[IntegerConsts.ONE]);
+                    sb.append(StringUtils.BLANK_SPACE);
                 } else {
-                    sb.append(Character.toString(charArray[i]));
+                    sb.append(charArray[i]);
                 }
             }
         } catch (BadHanyuPinyinOutputFormatCombination ex) {
@@ -75,7 +78,7 @@ public class ChineseToEnglishUtils {
             logUtil.error("生成全拼音失败！" + ex.getMessage());
         }
         //返回执行结果
-        return sb.toString();
+        return sb.toString().trim();
     }
 
     /**
