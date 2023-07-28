@@ -6,7 +6,6 @@ import com.cdkjframework.redis.realize.RedisClusterPubSubConnection;
 import com.cdkjframework.redis.realize.RedisPubSubConnection;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
-import com.redislabs.lettusearch.RediSearchClient;
 import io.lettuce.core.AbstractRedisClient;
 import io.lettuce.core.RedisClient;
 import io.lettuce.core.cluster.RedisClusterClient;
@@ -30,12 +29,12 @@ import javax.annotation.Resource;
 @Configuration
 @Component
 @AutoConfigureOrder(value = 3)
-public class RedisPubSubConfiguration extends BaseRedisConfiguration {
+public class RedisSubscribeConfiguration extends BaseRedisConfiguration {
 
     /**
      * 日志
      */
-    private LogUtils logUtils = LogUtils.getLogger(RedisPubSubConfiguration.class);
+    private LogUtils logUtils = LogUtils.getLogger(RedisSubscribeConfiguration.class);
 
     /**
      * redis请求
@@ -48,7 +47,7 @@ public class RedisPubSubConfiguration extends BaseRedisConfiguration {
      *
      * @param redisConfig
      */
-    public RedisPubSubConfiguration(RedisConfig redisConfig) {
+    public RedisSubscribeConfiguration(RedisConfig redisConfig) {
         this.redisConfig = redisConfig;
     }
 
@@ -57,7 +56,7 @@ public class RedisPubSubConfiguration extends BaseRedisConfiguration {
      *
      * @return 返回结果
      */
-    @Bean(name = "clusterPubSubConnection")
+    @Bean(name = "clusterSubscribeConnection")
     public StatefulRedisClusterPubSubConnection<String, String> clusterPubSubConnection() throws GlobalException {
         StatefulRedisClusterPubSubConnection<String, String> connection;
         if (!redisConfig.isSubscribe() || redisClient instanceof RedisClient) {
@@ -76,7 +75,7 @@ public class RedisPubSubConfiguration extends BaseRedisConfiguration {
      *
      * @return 返回结果
      */
-    @Bean(name = "redisPubSubConnection")
+    @Bean(name = "redisSubscribeConnection")
     public StatefulRedisPubSubConnection<String, String> redisPubSubConnection() throws GlobalException {
         StatefulRedisPubSubConnection<String, String> commands;
         if (!redisConfig.isSubscribe() || redisClient instanceof RedisClusterClient) {
