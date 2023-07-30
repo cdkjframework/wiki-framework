@@ -61,6 +61,11 @@ public class BusinessConsts {
   public static final String TIME = "time";
 
   /**
+   * 时间
+   */
+  public static final String EXP = "exp";
+
+  /**
    * 状态
    */
   public static final String STATUS = "status";
