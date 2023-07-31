@@ -14,6 +14,7 @@ import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -66,7 +67,7 @@ public class RedisSubscribeConfiguration extends BaseRedisConfiguration {
             logUtils.info("Redis 集群订阅配置结束：" + LocalDateUtils.dateTimeCurrentFormatter());
         }
 
-        // 返回结果
+        // 返回结果1
         return connection;
     }
 

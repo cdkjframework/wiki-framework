@@ -67,15 +67,15 @@ public class RedisUtils {
      *
      * @param clusterAsyncCommands         集群模式
      * @param asyncCommands                单点模式
-     * @param redisPublishConnection        单点订阅
-     * @param redisClusterPublishConnection 集群订阅
+     * @param redisSubscribeConnection        单点订阅
+     * @param clusterSubscribeConnection 集群订阅
      * @param redisConfig                  配置
      */
     @Autowired
     public RedisUtils(RedisAdvancedClusterAsyncCommands<String, String> clusterAsyncCommands,
                       RedisAsyncCommands<String, String> asyncCommands,
-                      StatefulRedisPubSubConnection<String, String> redisPublishConnection,
-                      StatefulRedisClusterPubSubConnection<String, String> redisClusterPublishConnection,
+                      StatefulRedisPubSubConnection<String, String> redisSubscribeConnection,
+                      StatefulRedisClusterPubSubConnection<String, String> clusterSubscribeConnection,
                       RedisConfig redisConfig) {
         config = redisConfig;
         if (clusterAsyncCommands.getStatefulConnection() != null) {
@@ -84,10 +84,10 @@ public class RedisUtils {
         if (asyncCommands.getStatefulConnection() != null) {
             redisAsyncCommands = asyncCommands;
         }
-        pubSubAsyncCommands = redisPublishConnection.async();
+        pubSubAsyncCommands = redisSubscribeConnection.async();
         if (pubSubAsyncCommands == null || pubSubAsyncCommands.getStatefulConnection() == null) {
             pubSubAsyncCommands = null;
-            clusterPubSubCommands = redisClusterPublishConnection.async();
+            clusterPubSubCommands = clusterSubscribeConnection.async();
         }
     }
 
