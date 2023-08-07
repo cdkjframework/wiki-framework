@@ -1,5 +1,8 @@
 package com.cdkjframework.enums;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.enums
@@ -10,6 +13,11 @@ package com.cdkjframework.enums;
  * @Version: 1.0
  */
 public enum UserTypeEnums implements InterfaceEnum {
+
+  /**
+   * 未知类型
+   */
+  UNKNOWN("unknown", "未知类型"),
 
   /**
    * 超级管理员
@@ -132,5 +140,25 @@ public enum UserTypeEnums implements InterfaceEnum {
   @Override
   public String getNode() {
     return null;
+  }
+
+  /**
+   * 获取
+   *
+   * @param userType 用户类型
+   * @return 返回结果
+   */
+  public static UserTypeEnums formUserType(String userType) {
+    if (userType == null) {
+      return UserTypeEnums.UNKNOWN;
+    }
+    UserTypeEnums[] userTypes = UserTypeEnums.values();
+    Optional<UserTypeEnums> optional = Arrays.stream(userTypes).filter(f -> f.getValue().equals(userType))
+        .findFirst();
+    if (optional.isPresent()) {
+      return optional.get();
+    } else {
+      return UserTypeEnums.UNKNOWN;
+    }
   }
 }
