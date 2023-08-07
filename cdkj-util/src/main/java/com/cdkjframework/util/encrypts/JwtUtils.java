@@ -4,6 +4,7 @@ import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
@@ -28,6 +29,11 @@ import java.util.Map;
  */
 @Component
 public class JwtUtils {
+
+  /**
+   * 日志
+   */
+  private static LogUtils logUtils = LogUtils.getLogger(JwtUtils.class);
 
   /**
    * 签名算法
@@ -122,6 +128,7 @@ public class JwtUtils {
       if (time <= IntegerConsts.ZERO) {
         time = ConvertUtils.convertLong(claims.get(BusinessConsts.TIME));
       }
+
       // 验证 token 是否过期
       LocalDateTime localDateTime = LocalDateUtils.timestampToLocalDateTime(time)
           .plusSeconds(effective);
