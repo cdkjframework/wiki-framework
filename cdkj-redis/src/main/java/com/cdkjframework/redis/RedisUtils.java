@@ -579,6 +579,30 @@ public class RedisUtils {
         return JsonUtils.jsonStringToMap(value);
     }
 
+  /**
+   * 获取指定hash键全部值
+   *
+   * @param key   键
+   * @param value 值
+   * @return 返回结果
+   */
+  public static Map<String, String> hGetAll(String key, String value) {
+    key = getNamespaces(key);
+    if (!syncExists(key)) {
+      return null;
+    }
+    RedisFuture<Map<String, String>> redisFuture = redisAsyncCommands == null ? commands.hgetall(key) :
+            redisAsyncCommands.hgetall(key);
+    try {
+      return redisFuture.get();
+    } catch (InterruptedException e) {
+      logUtils.error(e.getStackTrace(), e.getMessage());
+    } catch (ExecutionException e) {
+      logUtils.error(e.getStackTrace(), e.getMessage());
+    }
+    return null;
+  }
+
     // ================================ Map =================================
 
     /**
