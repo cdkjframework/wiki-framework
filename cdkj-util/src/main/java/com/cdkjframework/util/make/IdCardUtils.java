@@ -26,12 +26,10 @@ public class IdCardUtils {
    *
    * @return 返回结果
    */
-  public static String generateIdCard(String areaId, String gender, String year, String month, String day) {
+  public static String generateIdCard(String areaId, String gender, String birthday) {
     // 生成身份证前17位
     StringBuilder idBuilder = new StringBuilder(areaId);
-    idBuilder.append(year);
-    idBuilder.append(month);
-    idBuilder.append(day);
+    idBuilder.append(birthday);
     Random random = new Random();
     for (int i = IntegerConsts.ZERO; i < IntegerConsts.TWO; i++) {
       int num = random.nextInt(IntegerConsts.TEN);
