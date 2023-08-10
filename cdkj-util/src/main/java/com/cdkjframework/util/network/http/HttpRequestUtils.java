@@ -51,12 +51,12 @@ public class HttpRequestUtils {
 
     //http 请求
     StringBuilder result = httpRequest(httpRequestEntity);
-
+    Object obj = JSON.parse(result.toString());
     if (clazz.getName().contains(name)) {
-      JSONArray jsonArray = JSON.parseArray(result.toString());
+      JSONArray jsonArray = JSON.parseArray(obj.toString());
       t = (T) jsonArray.toJavaList(clazz);
     } else {
-      JSONObject jsonObject = JSON.parseObject(result.toString());
+      JSONObject jsonObject = JSON.parseObject(obj.toString());
       t = jsonObject.toJavaObject(clazz);
     }
 
