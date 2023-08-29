@@ -32,74 +32,63 @@ import java.io.InputStream;
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter {
 
-    /**
-     * 日志
-     */
-    private LogUtils logUtils = LogUtils.getLogger(ValidateCodeFilter.class);
+  /**
+   * 日志
+   */
+  private LogUtils logUtils = LogUtils.getLogger(ValidateCodeFilter.class);
 
-    /**
-     * 过虑权限验证
-     *
-     * @param request     请求
-     * @param response    响应
-     * @param filterChain 过滤链
-     */
-    @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String uri = request.getRequestURI();
-        // 如果为get请求并且请求uri为/login（也就是我们登录表单的form的action地址）
-        if (BusinessConsts.LOGIN.contains(uri) && !validateCode(request, response)) {
-            return;
-        }
-
-        filterChain.doFilter(request, response);
+  /**
+   * 过虑权限验证
+   *
+   * @param request     请求
+   * @param response    响应
+   * @param filterChain 过滤链
+   */
+  @Override
+  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    String uri = request.getRequestURI();
+    // 如果为get请求并且请求uri为/login（也就是我们登录表单的form的action地址）
+    if (uri.contains(BusinessConsts.LOGIN) && !validateCode(request, response)) {
+      return;
     }
 
-    /**
-     * 验证用户输入的验证码和session中存的是否一致
-     *
-     * @param request  请求
-     * @param response 响应
-     */
-    private boolean validateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession httpSession = request.getSession();
-        String validateValue = ConvertUtils.convertString(httpSession.getAttribute(BusinessConsts.IMAGE_CODE));
-        //这里需要验证前端传过来的验证码是否和session里面存的一致，并且要判断是否过期
-        if (StringUtils.isNullAndSpaceOrEmpty(validateValue)) {
-            return true;
-        }
-        // 时间效验
-        long time = ConvertUtils.convertLong(httpSession.getAttribute(BusinessConsts.TIME));
-        final long EXPIRATION_TIME = IntegerConsts.FIVE * IntegerConsts.SIXTY * IntegerConsts.ONE_THOUSAND;
-        if (EXPIRATION_TIME < (System.currentTimeMillis() - time)) {
-            ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码过期！"));
-            return false;
-        }
-        validateValue = validateValue.toLowerCase();
+    filterChain.doFilter(request, response);
+  }
 
-        // 获取数据
-        AuthenticationEntity authentication;
-        try (InputStream inputStream = request.getInputStream()) {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            byte[] buffer = new byte[IntegerConsts.BYTE_LENGTH];
-            while (inputStream.read(buffer) > IntegerConsts.ZERO) {
-                output.write(buffer);
-            }
-            String jsonString = new String(output.toByteArray());
-            authentication = JsonUtils
-                    .jsonStringToBean(jsonString, AuthenticationEntity.class);
-            request.setAttribute(BusinessConsts.USER_NAME, authentication.getUserName());
-            request.setAttribute(BusinessConsts.PASSWORD, authentication.getPassword());
-        } catch (Exception e) {
-            logUtils.info(e.getMessage());
-            authentication = new AuthenticationEntity();
-        }
-
-        if (StringUtils.isNullAndSpaceOrEmpty(authentication.getVerifyCode()) ||
-                !validateValue.equals(authentication.getVerifyCode())) {
-            ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码错误！"));
-            return false;
-        }
-        return true;
+  /**
+   * 验证用户输入的验证码和session中存的是否一致
+   *
+   * @param request  请求
+   * @param response 响应
+   */
+  private boolean validateCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    HttpSession httpSession = request.getSession();
+    String validateValue = ConvertUtils.convertString(httpSession.getAttribute(BusinessConsts.IMAGE_CODE));
+    //这里需要验证前端传过来的验证码是否和session里面存的一致，并且要判断是否过期
+    if (StringUtils.isNullAndSpaceOrEmpty(validateValue)) {
+      return true;
     }
+    // 时间效验
+    long time = ConvertUtils.convertLong(httpSession.getAttribute(BusinessConsts.TIME));
+    final long EXPIRATION_TIME = IntegerConsts.FIVE * IntegerConsts.SIXTY * IntegerConsts.ONE_THOUSAND;
+    if (EXPIRATION_TIME < (System.currentTimeMillis() - time)) {
+      ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码过期！"));
+      return false;
+    }
+    validateValue = validateValue.toLowerCase();
+
+    // 获取数据
+    String[] values = request.getParameterValues(BusinessConsts.IMAGE_CODE);
+    if (values == null || values.length == IntegerConsts.ZERO) {
+      ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码错误！"));
+    }
+    String verifyCode = values[IntegerConsts.ZERO];
+
+    if (StringUtils.isNullAndSpaceOrEmpty(verifyCode) ||
+        !validateValue.equals(verifyCode)) {
+      ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码错误！"));
+      return false;
+    }
+    return true;
+  }
 }
