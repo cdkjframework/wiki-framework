@@ -25,53 +25,58 @@ import java.util.List;
 @ConfigurationProperties(prefix = "spring.custom.mqtt")
 public class MqttConfig {
 
-    /**
-     * 区域
-     */
-    private String region;
-    /**
-     * tcp://MQTT安装的服务器地址:MQTT定义的端口号
-     * tcp://192.168.1.102:1883
-     */
-    private String host;
+  /**
+   * 区域
+   */
+  private String region;
+  /**
+   * tcp://MQTT安装的服务器地址:MQTT定义的端口号
+   * tcp://192.168.1.102:1883
+   */
+  private String host;
 
-    /**
-     * 定义一个主题
-     */
-    private String toPic;
+  /**
+   * QOS值
+   */
+  private Integer qos;
 
-    /**
-     * 客服端主题
-     */
-    private List<String> toPicList;
+  /**
+   * 定义一个主题
+   */
+  private String toPic;
 
-    /**
-     * 定义MQTT的ID，可以在MQTT服务配置中指定
-     */
-    private String clientId;
+  /**
+   * 客服端主题
+   */
+  private List<String> toPicList;
 
-    /**
-     * 用户名
-     * paho
-     */
-    private String userName;
+  /**
+   * 定义MQTT的ID，可以在MQTT服务配置中指定
+   */
+  private String clientId;
 
-    /**
-     * 密码
-     */
-    private String password;
+  /**
+   * 用户名
+   * paho
+   */
+  private String userName;
 
-    /**
-     * 连接超时时间
-     */
-    private int connectionTimeout = 10;
-    /**
-     * 设置会话心跳时间
-     */
-    private int keepAliveInterval = 20;
+  /**
+   * 密码
+   */
+  private String password;
 
-    /**
-     * 是否自动连接
-     */
-    private boolean connect;
+  /**
+   * 连接超时时间
+   */
+  private int connectionTimeout = 10;
+  /**
+   * 设置会话心跳时间
+   */
+  private int keepAliveInterval = 20;
+
+  /**
+   * 是否自动连接
+   */
+  private boolean connect;
 }
