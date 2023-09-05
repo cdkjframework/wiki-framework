@@ -15,6 +15,11 @@ import lombok.Data;
 public class ManufacturerEntity {
 
   /**
+   * 文件名称
+   */
+  private String fileName = "xg_ring";
+
+  /**
    * 工厂类型  xm hw oppo vivo
    */
   private String factoryType;

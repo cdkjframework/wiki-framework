@@ -128,11 +128,6 @@ public class TencentPushUtils {
     // 类型
     MessageAndroid messageAndroid = new MessageAndroid();
     pushAppRequest.getMessage().setAndroid(messageAndroid);
-    messageAndroid.setRing_raw("ding");
-    messageAndroid.setRing(IntegerConsts.ONE);
-    messageAndroid.setVibrate(IntegerConsts.ONE);
-    messageAndroid.setRing(IntegerConsts.ONE);
-    messageAndroid.setLights(IntegerConsts.ONE);
     ManufacturerEntity manufacturer = push.getManufacturer();
     // 构建消息内容
     buildMessageAndroid(manufacturer, messageAndroid);
@@ -157,6 +152,11 @@ public class TencentPushUtils {
     if (manufacturer == null) {
       return;
     }
+    messageAndroid.setRing_raw(manufacturer.getFileName());
+    messageAndroid.setRing(IntegerConsts.ONE);
+    messageAndroid.setVibrate(IntegerConsts.ONE);
+    messageAndroid.setRing(IntegerConsts.ONE);
+    messageAndroid.setLights(IntegerConsts.ONE);
     // 腾讯通道
     messageAndroid.setnChId(manufacturer.getChId());
     switch (manufacturer.getFactoryType()) {
