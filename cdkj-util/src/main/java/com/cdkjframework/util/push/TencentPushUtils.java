@@ -327,6 +327,7 @@ public class TencentPushUtils {
       aps.setSound(manufacturer.getFileName());
       messageIos.setAps(aps);
     }
+    messageIos.setCustom(push.getExtras());
 
     pushAppRequest.getMessage().setIos(messageIos);
     // 设备token
@@ -350,6 +351,14 @@ public class TencentPushUtils {
     buildPushRequest(pushAppRequest, AudienceType.account, Platform.ios, push);
     // 类型
     MessageIOS messageIos = new MessageIOS();
+    ManufacturerEntity manufacturer = push.getManufacturer();
+    if (manufacturer != null) {
+      Aps aps = new Aps();
+      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+      aps.setSound(manufacturer.getFileName());
+      messageIos.setAps(aps);
+    }
+    messageIos.setCustom(push.getExtras());
     pushAppRequest.getMessage().setIos(messageIos);
 
     // 设备在推送的账户信息
@@ -374,6 +383,14 @@ public class TencentPushUtils {
     buildPushRequest(pushAppRequest, AudienceType.tag, Platform.ios, push);
     // 类型
     MessageIOS messageIos = new MessageIOS();
+    ManufacturerEntity manufacturer = push.getManufacturer();
+    if (manufacturer != null) {
+      Aps aps = new Aps();
+      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+      aps.setSound(manufacturer.getFileName());
+      messageIos.setAps(aps);
+    }
+    messageIos.setCustom(push.getExtras());
     pushAppRequest.getMessage().setIos(messageIos);
 
     ArrayList<String> tagList = new ArrayList();
@@ -399,6 +416,14 @@ public class TencentPushUtils {
     buildPushRequest(pushAppRequest, AudienceType.all, Platform.ios, push);
     // 类型
     MessageIOS messageIos = new MessageIOS();
+    ManufacturerEntity manufacturer = push.getManufacturer();
+    if (manufacturer != null) {
+      Aps aps = new Aps();
+      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+      aps.setSound(manufacturer.getFileName());
+      messageIos.setAps(aps);
+    }
+    messageIos.setCustom(push.getExtras());
     pushAppRequest.getMessage().setIos(messageIos);
     // 返回请求
     return pushAppRequest;
