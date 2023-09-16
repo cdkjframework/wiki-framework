@@ -71,6 +71,7 @@ public class MqttServer {
         options.setKeepAliveInterval(mqttConfig.getKeepAliveInterval());
         options.setAutomaticReconnect(true);
         options.setCleanSession(false);
+        options.setMaxInflight(IntegerConsts.FIFTY);
         options.setKeepAliveInterval(IntegerConsts.TWO);
         return options;
     }
