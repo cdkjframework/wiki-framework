@@ -2,11 +2,10 @@ package com.cdkjframework.util.push;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.message.PushEntity;
-import com.cdkjframework.entity.message.tencent.XinGeEntity;
+import com.cdkjframework.entity.message.tencent.ManufacturerEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
-import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.tencent.xinge.XingeApp;
 import com.tencent.xinge.bean.*;
@@ -129,6 +128,10 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        ManufacturerEntity manufacturer = push.getManufacturer();
+        // 构建消息内容
+        buildMessageAndroid(manufacturer, messageAndroid);
+
         messageAndroid.setCustom_content(push.getExtras());
         // 设备token
         ArrayList<String> tokenList = new ArrayList();
@@ -140,7 +143,44 @@ public class TencentPushUtils {
     }
 
     /**
+     * 构建安卓消息
      *
+     * @param manufacturer   厂商信息
+     * @param messageAndroid 安卓消息
+     */
+    private static void buildMessageAndroid(ManufacturerEntity manufacturer, MessageAndroid messageAndroid) {
+        if (manufacturer == null) {
+            return;
+        }
+        messageAndroid.setRing_raw(manufacturer.getFileName());
+        messageAndroid.setRing(IntegerConsts.ONE);
+        messageAndroid.setVibrate(IntegerConsts.ONE);
+        messageAndroid.setRing(IntegerConsts.ONE);
+        messageAndroid.setLights(IntegerConsts.ONE);
+        // 腾讯通道
+        messageAndroid.setnChId(manufacturer.getChId());
+        switch (manufacturer.getFactoryType()) {
+            case "xm":
+                // 小米
+                messageAndroid.setXmChId(manufacturer.getFactoryChId());
+                break;
+            case "hw":
+                // 华为
+                messageAndroid.setHwChId(manufacturer.getFactoryChId());
+                break;
+            case "vivo":
+                // 小米
+                messageAndroid.setVivoChId(manufacturer.getFactoryChId());
+                break;
+            case "oppo":
+                // oppo
+                messageAndroid.setOppoChId(manufacturer.getFactoryChId());
+                break;
+        }
+    }
+
+    /**
+     * 账号
      */
     private static PushAppRequest pushAccountAndroid(PushEntity push) {
         // 请求
@@ -149,6 +189,9 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        ManufacturerEntity manufacturer = push.getManufacturer();
+        // 构建消息内容
+        buildMessageAndroid(manufacturer, messageAndroid);
         messageAndroid.setCustom_content(push.getExtras());
 
         // 设备在推送的账户信息
@@ -174,6 +217,9 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        ManufacturerEntity manufacturer = push.getManufacturer();
+        // 构建消息内容
+        buildMessageAndroid(manufacturer, messageAndroid);
         messageAndroid.setCustom_content(push.getExtras());
 
         ArrayList<String> tagList = new ArrayList();
@@ -200,6 +246,9 @@ public class TencentPushUtils {
         // 类型
         MessageAndroid messageAndroid = new MessageAndroid();
         pushAppRequest.getMessage().setAndroid(messageAndroid);
+        ManufacturerEntity manufacturer = push.getManufacturer();
+        // 构建消息内容
+        buildMessageAndroid(manufacturer, messageAndroid);
         messageAndroid.setCustom_content(push.getExtras());
         // 返回请求
         return pushAppRequest;

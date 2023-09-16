@@ -1,5 +1,6 @@
 package com.cdkjframework.entity.message;
 
+import com.cdkjframework.entity.message.tencent.ManufacturerEntity;
 import com.cdkjframework.enums.push.PushPlatformEnums;
 import com.cdkjframework.enums.push.PushRangeEnums;
 import lombok.Data;
@@ -102,4 +103,9 @@ public class PushEntity {
      * 推送类型
      */
     private String pushType;
+
+    /**
+     * 厂商信息
+     */
+    private ManufacturerEntity manufacturer;
 }
