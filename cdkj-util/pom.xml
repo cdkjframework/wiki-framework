@@ -271,8 +271,12 @@
         </dependency>
         <!--xinge-->
         <dependency>
-            <groupId>com.github.xingePush</groupId>
+            <groupId>io.github.tpnsPush</groupId>
             <artifactId>xinge</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
         </dependency>
         <!-- uni push 推送 -->
         <dependency>

@@ -63,7 +63,8 @@
         <jpush-client.version>3.3.10</jpush-client.version>
         <jiguang-common.version>1.1.4</jiguang-common.version>
         <gexin.version>4.1.2.1</gexin.version>
-        <xinge.version>1.2.4.9</xinge.version>
+        <xinge.version>1.2.4.14</xinge.version>
+        <json.version>0.0.20131108.vaadin1</json.version>
         <fastjson.version>1.0.0.7</fastjson.version>
         <base.version>4.0.0.7</base.version>
         <template.version>4.0.0.8</template.version>
@@ -402,9 +403,14 @@
             </dependency>
             <!--xinge-->
             <dependency>
-                <groupId>com.github.xingePush</groupId>
+                <groupId>io.github.tpnsPush</groupId>
                 <artifactId>xinge</artifactId>
                 <version>${xinge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin.external.google</groupId>
+                <artifactId>android-json</artifactId>
+                <version>${json.version}</version>
             </dependency>
             <!-- uni push 推送 -->
             <dependency>
