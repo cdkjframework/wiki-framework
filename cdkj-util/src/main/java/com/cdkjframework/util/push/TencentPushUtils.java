@@ -167,9 +167,10 @@ public class TencentPushUtils {
     messageAndroid.setVibrate(IntegerConsts.ONE);
     messageAndroid.setRing(IntegerConsts.ONE);
     messageAndroid.setLights(IntegerConsts.ONE);
+//        messageAndroid.setBadgeType(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
     // 腾讯通道
     messageAndroid.setnChId(manufacturer.getChId());
-    messageAndroid.setNChName("琅智消息");
+    messageAndroid.setNChName(manufacturer.getChName());
     switch (manufacturer.getFactoryType()) {
       case "xm":
         // 小米
@@ -178,7 +179,6 @@ public class TencentPushUtils {
       case "hw":
       case "honor":
         // 华为
-        messageAndroid.setBadgeType(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
         messageAndroid.setHwCategory(manufacturer.getCategory());
         messageAndroid.setHwImportance(manufacturer.getImportance());
         messageAndroid.setHwChId(manufacturer.getFactoryChId());
@@ -323,7 +323,7 @@ public class TencentPushUtils {
     ManufacturerEntity manufacturer = push.getManufacturer();
     if (manufacturer != null) {
       Aps aps = new Aps();
-      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+//      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
       aps.setSound(manufacturer.getFileName());
       messageIos.setAps(aps);
     }
@@ -354,7 +354,7 @@ public class TencentPushUtils {
     ManufacturerEntity manufacturer = push.getManufacturer();
     if (manufacturer != null) {
       Aps aps = new Aps();
-      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+//      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
       aps.setSound(manufacturer.getFileName());
       messageIos.setAps(aps);
     }
@@ -386,7 +386,7 @@ public class TencentPushUtils {
     ManufacturerEntity manufacturer = push.getManufacturer();
     if (manufacturer != null) {
       Aps aps = new Aps();
-      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+//      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
       aps.setSound(manufacturer.getFileName());
       messageIos.setAps(aps);
     }
@@ -419,7 +419,7 @@ public class TencentPushUtils {
     ManufacturerEntity manufacturer = push.getManufacturer();
     if (manufacturer != null) {
       Aps aps = new Aps();
-      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
+//      aps.setBadge_type(IntegerConsts.TWO * IntegerConsts.MINUS_ONE);
       aps.setSound(manufacturer.getFileName());
       messageIos.setAps(aps);
     }

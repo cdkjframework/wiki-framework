@@ -25,9 +25,14 @@ public class ManufacturerEntity {
   private String factoryType;
 
   /**
-   * 服务商ID
+   * 通道D
    */
   private String chId;
+
+  /**
+   * 通道名称ID
+   */
+  private String chName;
 
   /**
    * 工厂ID
