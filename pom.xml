@@ -41,6 +41,7 @@
         <module>cdkj-license-verify</module>
         <module>cdkj-license-core</module>
         <module>cdkj-socket-client</module>
+        <module>kafka</module>
     </modules>
 
     <parent>
