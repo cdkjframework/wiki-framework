@@ -1,11 +1,11 @@
-package com.cdkjframework.message.kafka.producer;
+package com.cdkjframework.kafka.producer;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka
+ * @Package: com.cdkjframework.kafka.producer
  * @ClassName: ProducerService
  * @Description: 生产服务
  * @Author: xiaLin

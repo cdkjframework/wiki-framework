@@ -1,4 +1,4 @@
-package com.cdkjframework.message.kafka.consumer;
+package com.cdkjframework.kafka.consumer;
 
 import com.cdkjframework.util.log.LogUtils;
 import org.apache.kafka.clients.consumer.Consumer;
@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: com.lesmarthome.interface
- * @Package: com.lesmarthome.interfaces.mq
- * @ClassName: com.cdkjframework.message.kafka.consumer.ConsumerListener
+ * @Package: com.cdkjframework.kafka.consumer
+ * @ClassName: com.cdkjframework.kafka.consumer.ConsumerListener
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
@@ -25,14 +25,14 @@ public class ConsumerListener {
     /**
      * 消费者服务接口
      */
-    private final com.cdkjframework.message.kafka.consumer.ConsumerService consumerService;
+    private final ConsumerService consumerService;
 
     /**
      * 构造函数
      *
      * @param consumerService 消费者服务接口
      */
-    public ConsumerListener(com.cdkjframework.message.kafka.consumer.ConsumerService consumerService) {
+    public ConsumerListener(ConsumerService consumerService) {
         this.consumerService = consumerService;
     }
 

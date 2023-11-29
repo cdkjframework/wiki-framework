@@ -1,7 +1,7 @@
-package com.cdkjframework.message.kafka.producer.impl;
+package com.cdkjframework.kafka.producer.impl;
 
 import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.message.kafka.producer.ProducerService;
+import com.cdkjframework.kafka.producer.ProducerService;
 import com.cdkjframework.util.log.LogUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,7 +14,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka
+ * @Package: com.cdkjframework.kafka.producer
  * @ClassName: ProducerService
  * @Description: 生产服务
  * @Author: xiaLin

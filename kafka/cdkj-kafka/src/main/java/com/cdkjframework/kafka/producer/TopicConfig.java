@@ -1,4 +1,4 @@
-package com.cdkjframework.message.kafka.producer;
+package com.cdkjframework.kafka.producer;
 
 import com.cdkjframework.config.KafkaConfig;
 import com.cdkjframework.constant.IntegerConsts;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka
+ * @Package: com.cdkjframework.kafka.producer
  * @ClassName: KafkaTopicConfig
  * @Description: topic配置
  * @Author: xiaLin

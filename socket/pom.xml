@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cdkj-framework</artifactId>
+        <groupId>com.cdkjframework</groupId>
+        <version>1.0.5</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>socket</artifactId>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>cdkj-socket</module>
+        <module>cdkj-socket-client</module>
+        <module>cdkj-web-socket</module>
+        <module>cdkj-web-socket-client</module>
+    </modules>
+
+</project>

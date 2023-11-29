@@ -1,4 +1,4 @@
-package com.cdkjframework.message.kafka.consumer;
+package com.cdkjframework.kafka.consumer;
 
 import com.cdkjframework.config.KafkaConfig;
 import com.cdkjframework.util.log.LogUtils;
@@ -6,8 +6,13 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.CommonClientConfigs;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.config.SaslConfigs;
+import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +31,7 @@ import java.util.Map;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka
+ * @Package: com.cdkjframework.kafka.consumer
  * @ClassName: ProducerConfiguration
  * @Description: 设置@Configuration、@EnableKafka两个注解，声明Config并且打开KafkaTemplate能力。
  * @Author: xiaLin
@@ -41,6 +46,11 @@ public class ConsumerConfiguration {
    * 日志
    */
   private final LogUtils logUtils = LogUtils.getLogger(ConsumerConfiguration.class);
+
+  /**
+   * JAAS配置
+   */
+  private String JAAS_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=%s password=%s;";
 
   /**
    * 配置
@@ -135,11 +145,13 @@ public class ConsumerConfiguration {
     // (3)、none：topic各分区都存在已提交的offset时，从offset后开始消费；只要有一个分区不存在已提交的offset，则抛出异常
     propsMap.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, kafkaConfig.getAutoOffsetReset());
 
-    // 安全认证
-    if (StringUtils.isNotNullAndEmpty(kafkaConfig.getUsername()) && StringUtils.isNotNullAndEmpty(kafkaConfig.getPassword())) {
-      propsMap.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, kafkaConfig.getProtocol());
-      propsMap.put(SaslConfigs.SASL_MECHANISM, kafkaConfig.getMechanism());
-      propsMap.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(kafkaConfig.getJaasConfig(), kafkaConfig.getUsername(), kafkaConfig.getPassword()));
+    // 安全认证 账号密码
+    if (StringUtils.isNotNullAndEmpty(kafkaConfig.getUsername()) &&
+            StringUtils.isNotNullAndEmpty(kafkaConfig.getPassword())) {
+      propsMap.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
+      String SASL_MECHANISM = "PLAIN";
+      propsMap.put(SaslConfigs.SASL_MECHANISM, SASL_MECHANISM);
+      propsMap.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(JAAS_CONFIG, kafkaConfig.getUsername(), kafkaConfig.getPassword()));
     }
 
     return propsMap;

@@ -1,11 +1,11 @@
-package com.cdkjframework.message.kafka.consumer;
+package com.cdkjframework.kafka.consumer;
 
 import com.cdkjframework.exceptions.GlobalException;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka.consumer
- * @ClassName: com.cdkjframework.message.kafka.consumer.ConsumerService
+ * @Package: com.cdkjframework.kafka.consumer
+ * @ClassName: com.cdkjframework.kafka.consumer.ConsumerService
  * @Description: 消息内容
  * @Author: xiaLin
  * @Version: 1.0
