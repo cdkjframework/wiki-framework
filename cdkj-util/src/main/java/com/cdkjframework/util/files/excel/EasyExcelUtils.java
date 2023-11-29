@@ -9,7 +9,7 @@ import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
-import com.cdkjframework.util.files.excel.converter.CustomMergeStrategy;
+import com.cdkjframework.util.files.excel.handler.*;
 import com.cdkjframework.util.files.excel.converter.LocalDateConverter;
 import com.cdkjframework.util.files.excel.converter.LocalDateTimeConverter;
 import com.cdkjframework.util.log.LogUtils;
@@ -48,7 +48,7 @@ public class EasyExcelUtils {
     /**
      * 工作薄大小
      */
-    private static final int SHEET_LIST_SIZE = 50000;
+    private static final int SHEET_LIST_SIZE = 49490;
 
     /**
      * 默认值
@@ -59,6 +59,19 @@ public class EasyExcelUtils {
      * 表头
      */
     private static final List<List<String>> HEAD = null;
+
+    /**
+     * 标题
+     */
+    private static String title;
+
+    public static String getTitle() {
+        return title;
+    }
+
+    public static void setTitle(String title) {
+        EasyExcelUtils.title = title;
+    }
 
     /**
      * 读取 Excel 文件流转换为 list
@@ -335,6 +348,19 @@ public class EasyExcelUtils {
                 .registerConverter(new LocalDateTimeConverter())
                 .registerConverter(new LocalDateConverter());
 
+        // 标题
+        if (StringUtils.isNotNullAndEmpty(title)) {
+            writerBuilder
+                    .relativeHeadRowIndex(IntegerConsts.TWO)
+                    .registerWriteHandler(new CustomSheetWriteHandler(title));
+        }
+        // 自适应高度、宽度
+        writerBuilder.registerWriteHandler(new CustomCellWriteWeightStrategy())
+                .registerWriteHandler(new CustomCellWriteHeightStrategy());
+
+        // 设备单元格样式
+        writerBuilder.registerWriteHandler(new CustomCellStyleStrategy());
+
         // 设置合并列
         if (!CollectionUtils.isEmpty(mergeData)) {
             Set<Map.Entry<Integer, List<S>>> entrySet = mergeData.entrySet();
@@ -364,9 +390,11 @@ public class EasyExcelUtils {
             // 设置工作薄
             WriteSheet writeSheet = new WriteSheet();
             writeSheet.setSheetName("Sheet" + (i + IntegerConsts.ONE));
+
             if (columnWidth != null) {
                 writeSheet.setColumnWidthMap(columnWidth);
             }
+
             if (!CollectionUtils.isEmpty(head)) {
                 writeSheet.setHead(head);
             }

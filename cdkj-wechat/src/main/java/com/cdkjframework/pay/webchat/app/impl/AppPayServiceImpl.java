@@ -2,7 +2,6 @@ package com.cdkjframework.pay.webchat.app.impl;
 
 import com.cdkjframework.config.WeChatConfig;
 import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.entity.pay.webchat.app.UnifiedOrderEntity;
 import com.cdkjframework.entity.pay.webchat.app.UnifiedOrderReturnEntity;
@@ -15,15 +14,12 @@ import com.cdkjframework.util.files.XmlUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpRequestUtils;
-import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
-import java.net.URLEncoder;
 import java.util.*;
 
 /**
@@ -50,11 +46,6 @@ public class AppPayServiceImpl implements AppPayService {
     private final PayRequest payRequest;
 
     /**
-     * mongo 存储库
-     */
-    private final IMongoRepository mongoRepository;
-
-    /**
      * 签名字段
      */
     private final Map<String, String> signatureField;
@@ -62,10 +53,9 @@ public class AppPayServiceImpl implements AppPayService {
     /**
      * 构造函数
      */
-    public AppPayServiceImpl(WeChatConfig weChatConfig, PayRequest payRequest, IMongoRepository mongoRepository) {
+    public AppPayServiceImpl(WeChatConfig weChatConfig, PayRequest payRequest) {
         this.weChatConfig = weChatConfig;
         this.payRequest = payRequest;
-        this.mongoRepository = mongoRepository;
         signatureField = new HashMap<>();
         signatureField.put("appid", "appId");
         signatureField.put("body", "body");
@@ -114,7 +104,7 @@ public class AppPayServiceImpl implements AppPayService {
         orderReturn.setId(GeneratedValueUtils.getOrderlyShortUuid());
         orderReturn.setStatus(IntegerConsts.ZERO);
         orderReturn.setDeleted(IntegerConsts.ZERO);
-        mongoRepository.save(orderReturn);
+//        mongoRepository.save(orderReturn);
 
         // 返回结果
         return orderReturn.getPrepayId();

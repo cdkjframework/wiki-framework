@@ -19,118 +19,128 @@ import java.util.List;
 @ConfigurationProperties(prefix = "spring.custom.kafka")
 public class KafkaConfig {
 
-    /**
-     * 服务列表
-     */
-    private List<String> bootstrapServers;
+  /**
+   * 服务列表
+   */
+  private List<String> bootstrapServers;
 
-    /**
-     * 主题
-     */
-    private List<String> topics;
+  /**
+   * 主题
+   */
+  private List<String> topics;
 
-    /**
-     * 延迟为1毫秒
-     */
-    private Integer linger = 1;
+  /**
+   * 账号
+   */
+  private String username;
 
-    /**
-     * 批量大小
-     */
-    private Integer batchSize = 16384;
+  /**
+   * 密码
+   */
+  private String password;
 
-    /**
-     * 重试次数，0为不启用重试机制
-     */
-    private Integer retries = 0;
+  /**
+   * 延迟为1毫秒
+   */
+  private Integer linger = 1;
 
-    /**
-     * 人锁
-     */
-    private Integer maxBlock = 6000;
+  /**
+   * 批量大小
+   */
+  private Integer batchSize = 16384;
 
-    /**
-     * acks
-     */
-    private String acks = "1";
+  /**
+   * 重试次数，0为不启用重试机制
+   */
+  private Integer retries = 0;
 
-    /**
-     * security.providers
-     */
-    private String securityProviders;
+  /**
+   * 人锁
+   */
+  private Integer maxBlock = 6000;
 
-    /**
-     * 启用自动提交
-     */
-    private boolean enableAutoCommit = true;
+  /**
+   * acks
+   */
+  private String acks = "1";
 
-    /**
-     * 会话超时
-     */
-    private String sessionTimeout = "5000";
+  /**
+   * security.providers
+   */
+  private String securityProviders;
 
-    /**
-     * 会话超时
-     */
-    private Integer maxPollInterval = 10000;
+  /**
+   * 启用自动提交
+   */
+  private boolean enableAutoCommit = true;
 
-    /**
-     * 组ID
-     */
-    private String groupId = "defaultGroup";
+  /**
+   * 会话超时
+   */
+  private String sessionTimeout = "5000";
 
-    /**
-     * 最大投票记录
-     */
-    private Integer maxPollRecords = 1;
+  /**
+   * 会话超时
+   */
+  private Integer maxPollInterval = 10000;
 
-    /**
-     * 并发性
-     */
-    private Integer concurrency = 3;
+  /**
+   * 组ID
+   */
+  private String groupId = "defaultGroup";
 
-    /**
-     * 拉取超时时间
-     */
-    private Integer pollTimeout = 60000;
+  /**
+   * 最大投票记录
+   */
+  private Integer maxPollRecords = 1;
 
-    /**
-     * 批量监听
-     */
-    private boolean batchListener = false;
+  /**
+   * 并发性
+   */
+  private Integer concurrency = 3;
 
-    /**
-     * 副本数量
-     */
-    private String sort = "1";
+  /**
+   * 拉取超时时间
+   */
+  private Integer pollTimeout = 60000;
 
-    /**
-     * 分区数
-     */
-    private Integer partitions = 3;
+  /**
+   * 批量监听
+   */
+  private boolean batchListener = false;
 
-    /**
-     * 消费者默认支持解压
-     */
-    private String compressionType = "none";
+  /**
+   * 副本数量
+   */
+  private String sort = "1";
 
-    /**
-     * offset偏移量规则设置
-     */
-    private String autoOffsetReset = "earliest";
+  /**
+   * 分区数
+   */
+  private Integer partitions = 3;
 
-    /**
-     * 自动提交的频率
-     */
-    private Integer autoCommitInterval = 100;
+  /**
+   * 消费者默认支持解压
+   */
+  private String compressionType = "none";
 
-    /**
-     * 生产者可以使用的总内存字节来缓冲等待发送到服务器的记录
-     */
-    private Integer bufferMemory = 33554432;
+  /**
+   * offset偏移量规则设置
+   */
+  private String autoOffsetReset = "earliest";
 
-    /**
-     * 消息的最大大小限制
-     */
-    private Integer maxRequestSize = 1048576;
+  /**
+   * 自动提交的频率
+   */
+  private Integer autoCommitInterval = 100;
+
+  /**
+   * 生产者可以使用的总内存字节来缓冲等待发送到服务器的记录
+   */
+  private Integer bufferMemory = 33554432;
+
+  /**
+   * 消息的最大大小限制
+   */
+  private Integer maxRequestSize = 1048576;
 }

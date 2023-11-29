@@ -1,13 +1,12 @@
 package com.cdkjframework.swagger;
 
-import com.cdkjframework.config.SwaggerConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
+import com.cdkjframework.swagger.config.SwaggerConfig;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import com.fasterxml.classmate.ResolvedType;
 import com.fasterxml.classmate.TypeResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;

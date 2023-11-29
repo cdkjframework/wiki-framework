@@ -7,7 +7,7 @@
     <groupId>com.cdkjframework</groupId>
     <artifactId>cdkj-pom</artifactId>
     <description>cdkj-framework 框架依赖包</description>
-    <version>1.0.3</version>
+    <version>1.0.5</version>
     <packaging>pom</packaging>
 
     <parent>
@@ -17,9 +17,7 @@
     </parent>
 
     <properties>
-        <cdkj.version>1.0.3</cdkj.version>
-
-
+        <cdkj.version>1.0.5</cdkj.version>
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
@@ -54,7 +52,7 @@
         <!--alibaba -->
         <druid.version>1.1.24</druid.version>
         <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
-        <mq-http.version>1.0.3.2</mq-http.version>
+        <mq-http.version>1.0.4.2</mq-http.version>
         <ons.client.version>1.8.4.Final</ons.client.version>
         <sms.alicloud.version>2.0.5</sms.alicloud.version>
         <call.alicloud.version>4.5.6</call.alicloud.version>
@@ -65,7 +63,8 @@
         <jpush-client.version>3.3.10</jpush-client.version>
         <jiguang-common.version>1.1.4</jiguang-common.version>
         <gexin.version>4.1.2.1</gexin.version>
-        <xinge.version>1.2.4.9</xinge.version>
+        <xinge.version>1.2.4.14</xinge.version>
+        <json.version>0.0.20131108.vaadin1</json.version>
         <fastjson.version>1.0.0.7</fastjson.version>
         <base.version>4.0.0.7</base.version>
         <template.version>4.0.0.8</template.version>
@@ -153,6 +152,11 @@
             <dependency>
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-config</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-socket</artifactId>
                 <version>${cdkj.version}</version>
             </dependency>
             <dependency>
@@ -399,9 +403,14 @@
             </dependency>
             <!--xinge-->
             <dependency>
-                <groupId>com.github.xingePush</groupId>
+                <groupId>io.github.tpnsPush</groupId>
                 <artifactId>xinge</artifactId>
                 <version>${xinge.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.vaadin.external.google</groupId>
+                <artifactId>android-json</artifactId>
+                <version>${json.version}</version>
             </dependency>
             <!-- uni push 推送 -->
             <dependency>

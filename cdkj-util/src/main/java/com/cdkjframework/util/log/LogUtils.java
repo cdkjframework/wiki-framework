@@ -42,7 +42,7 @@ public class LogUtils {
   /**
    * 换行符号
    */
-  private final String newline = System.getProperty("line.separator");
+  private final String NEW_LINE = System.getProperty("line.separator");
 
   /**
    * 操作系统
@@ -367,7 +367,7 @@ public class LogUtils {
       StringBuilder builder = new StringBuilder(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
       builder.append(String.format("    【%s】    ", level.getName()));
       builder.append(String.format("%s：%s ", logger.getName(), message));
-      builder.append(newline);
+      builder.append(NEW_LINE);
       //  异常信息
       if (elements != null) {
         writeExceptionFile(builder, level, elements, logPath, logFileName);
@@ -395,7 +395,7 @@ public class LogUtils {
       builder.append(String.format("    【%s】    ", level.getName()));
       builder.append(String.format("%s.%s(%s：%d)", element.getClassName(),
           element.getMethodName(), element.getFileName(), element.getLineNumber()));
-      builder.append(newline);
+      builder.append(NEW_LINE);
     }
 
     // 保存文件

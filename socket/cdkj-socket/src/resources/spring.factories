@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cdkjframework.socket.config.SocketConfig,\
+  com.cdkjframework.socket.config.SocketAutoConfiguration

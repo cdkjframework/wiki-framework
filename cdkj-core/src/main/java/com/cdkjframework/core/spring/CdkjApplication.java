@@ -4,7 +4,12 @@ import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.boot.SpringApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.Environment;
+
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * @ProjectName: cdkj.cloud
@@ -17,16 +22,47 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 public class CdkjApplication {
 
-    /**
-     * 程序启动
-     *
-     * @param args 参数
-     * @return 返回结果
-     */
-    public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
-        // 启动程序
-        ConfigurableApplicationContext context = SpringApplication.run(primarySource, args);
-        Application.applicationContext = context;
-        return context;
+  /**
+   * 日志
+   */
+  private static LogUtils logUtils = LogUtils.getLogger(CdkjApplication.class);
+  /**
+   * 端口
+   */
+  static String SERVER_PORT = "server.port";
+
+  /**
+   * 应用名称
+   */
+  static String SPRING_APPLICATION_NAME = "spring.application.name";
+
+  /**
+   * 程序启动
+   *
+   * @param args 参数
+   * @return 返回结果
+   */
+  public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {
+    // 启动程序
+    ConfigurableApplicationContext context = SpringApplication.run(primarySource, args);
+    Application.applicationContext = context;
+
+    Environment env = context.getEnvironment();
+    try {
+      if (env != null) {
+        logUtils.info("\n----------------------------------------------------------\n\t" +
+                "Application '{}' is running! Access URLs:\n\t" +
+                "Local: \t\thttp://localhost:{}\n\t" +
+                "External: \thttp://{}:{}\n----------------------------------------------------------",
+            env.getProperty(SPRING_APPLICATION_NAME),
+            env.getProperty(SERVER_PORT),
+            InetAddress.getLocalHost().getHostAddress(),
+            env.getProperty(SERVER_PORT));
+      }
+    } catch (UnknownHostException e) {
+      logUtils.error(e);
     }
+
+    return context;
+  }
 }

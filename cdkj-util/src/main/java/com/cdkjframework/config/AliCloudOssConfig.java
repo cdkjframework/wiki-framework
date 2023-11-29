@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.aliyun.oss")
+@ConfigurationProperties(prefix = "spring.custom.oss")
 public class AliCloudOssConfig {
 
     /**
@@ -44,6 +44,11 @@ public class AliCloudOssConfig {
      * 名称
      */
     private String bucketName = "ecoss";
+
+    /**
+     * 目录
+     */
+    private String bucketPath;
 
     /**
      * 访问域名

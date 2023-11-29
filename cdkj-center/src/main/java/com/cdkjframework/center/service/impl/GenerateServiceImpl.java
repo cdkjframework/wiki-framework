@@ -3,6 +3,7 @@ package com.cdkjframework.center.service.impl;
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.center.service.GenerateService;
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.constant.AutoGenerateConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.core.business.mapper.GenerateMapper;
 import com.cdkjframework.entity.BaseEntity;
@@ -12,7 +13,7 @@ import com.cdkjframework.enums.datasource.MySqlDataTypeContrastEnums;
 import com.cdkjframework.enums.datasource.MySqlJdbcTypeContrastEnums;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.files.FileUtils;
-import com.cdkjframework.util.files.freemarker.FreemarkerUtil;
+import com.cdkjframework.util.files.freemarker.FreemarkerUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.HostUtils;
@@ -20,7 +21,6 @@ import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.meta.ClassMetadataUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import freemarker.template.TemplateException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -40,7 +40,6 @@ import java.util.stream.Collectors;
  */
 
 @Service
-@RequiredArgsConstructor
 public class GenerateServiceImpl implements GenerateService {
     /**
      * 环境
@@ -67,6 +66,20 @@ public class GenerateServiceImpl implements GenerateService {
      * 生成 mapper
      */
     private final GenerateMapper generateMapper;
+
+    /**
+     * 获取实例
+     */
+    private FreemarkerUtils freemarker;
+
+    /**
+     * 构建函数
+     */
+    public GenerateServiceImpl(CustomConfig customConfig, GenerateMapper generateMapper) {
+        this.customConfig = customConfig;
+        this.generateMapper = generateMapper;
+        freemarker = FreemarkerUtils.getInstance(customConfig);
+    }
 
     /**
      * 获取数据库
@@ -336,7 +349,7 @@ public class GenerateServiceImpl implements GenerateService {
         }
         // 生成 解析模板
         // 读取模板
-        String html = FreemarkerUtil.analyticalTemplate(templateName, entity);
+        String html = freemarker.analyticalTemplate(templateName, entity);
         html = html.replace("[begin]", "#{")
                 .replace("[end]", "}")
                 .replace("[this]", "this.");
@@ -372,23 +385,24 @@ public class GenerateServiceImpl implements GenerateService {
                 continue;
             }
             switch (entry.getKey()) {
-                case "projectName":
+                case AutoGenerateConsts
+                        .PROJECT_NAME:
                     entity.setProjectName(linkedList.element().toString());
                     break;
-                case "basePackage":
+                case AutoGenerateConsts.BASE_PACKAGE:
                     entity.setPackageName(linkedList.element().toString());
                     break;
-                case "basePath":
+                case AutoGenerateConsts.BASE_PATH:
                     entity.setBasePath(linkedList.element().toString());
                     break;
-                case "path":
+                case AutoGenerateConsts.PATH:
                     String[] element = (String[]) linkedList.element();
                     entity.setPath(Arrays.asList(element));
                     break;
-                case "jpa":
+                case AutoGenerateConsts.JPA:
                     entity.setJpa(ConvertUtils.convertBoolean(linkedList.element()));
                     break;
-                case "myBatis":
+                case AutoGenerateConsts.MY_BATIS:
                     entity.setMyBatis(ConvertUtils.convertBoolean(linkedList.element()));
                     break;
             }

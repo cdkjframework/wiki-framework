@@ -108,4 +108,14 @@ public class MpAddressConfig {
    * 获取素材总量
    */
   public final static String getMaterialCount = "https://api.weixin.qq.com/cgi-bin/material/get_materialcount?access_token=%s";
+
+  /**
+   * 添加菜单
+   */
+  public final static String addMenus = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s";
+
+  /**
+   * 查询菜单
+   */
+  public final static String findMenus = "https://api.weixin.qq.com/cgi-bin/get_current_selfmenu_info?access_token=%s";
 }

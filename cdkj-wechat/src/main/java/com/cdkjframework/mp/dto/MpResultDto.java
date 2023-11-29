@@ -103,4 +103,10 @@ public class MpResultDto {
    */
   @JSONField(name = "cover_url")
   private String coverUrl;
+
+  /**
+   * 自定义菜单信息
+   */
+  @JSONField(name = "selfmenu_info")
+  private String selfMenuInfo;
 }

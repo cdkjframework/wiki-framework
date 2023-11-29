@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-framework</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -143,10 +143,10 @@
         <!-- end aliYun-sdk-oss -->
 
         <!--log4j2 begin-->
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-log4j2</artifactId>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-log4j2</artifactId>
+        </dependency>
 
 <!--        <dependency>-->
 <!--            <groupId>com.lmax</groupId>-->
@@ -271,8 +271,12 @@
         </dependency>
         <!--xinge-->
         <dependency>
-            <groupId>com.github.xingePush</groupId>
+            <groupId>io.github.tpnsPush</groupId>
             <artifactId>xinge</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
         </dependency>
         <!-- uni push 推送 -->
         <dependency>

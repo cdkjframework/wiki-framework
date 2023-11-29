@@ -1,11 +1,14 @@
 package com.cdkjframework.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * @ProjectName: ec-icm
@@ -16,66 +19,64 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.mq.message.mqtt")
+@ConfigurationProperties(prefix = "spring.custom.mqtt")
 public class MqttConfig {
 
-    /**
-     * 区域
-     */
-    private String region;
-    /**
-     * tcp://MQTT安装的服务器地址:MQTT定义的端口号
-     * tcp://192.168.1.102:1883
-     */
-    private String host;
+  /**
+   * 区域
+   */
+  private String region;
+  /**
+   * tcp://MQTT安装的服务器地址:MQTT定义的端口号
+   * tcp://192.168.1.102:1883
+   */
+  private String host;
 
-    /**
-     * 定义一个主题
-     */
-    private String toPic;
+  /**
+   * QOS值
+   */
+  private Integer qos;
 
-    /**
-     * 客服端主题
-     */
-    private String toPicList;
+  /**
+   * 定义一个主题
+   */
+  private String toPic;
 
-    /**
-     * 定义MQTT的ID，可以在MQTT服务配置中指定
-     */
-    private String clientId;
+  /**
+   * 客服端主题
+   */
+  private List<String> toPicList;
 
-    /**
-     * 用户名
-     * paho
-     */
-    private String userName;
+  /**
+   * 定义MQTT的ID，可以在MQTT服务配置中指定
+   */
+  private String clientId;
 
-    /**
-     * 密码
-     */
-    private String password;
+  /**
+   * 用户名
+   * paho
+   */
+  private String userName;
 
-    /**
-     * 连接超时时间
-     */
-    private int connectionTimeout = 10;
-    /**
-     * 设置会话心跳时间
-     */
-    private int keepAliveInterval = 20;
+  /**
+   * 密码
+   */
+  private String password;
 
-    /**
-     * 调用类名
-     */
-    private String className = "";
+  /**
+   * 连接超时时间
+   */
+  private int connectionTimeout = 10;
+  /**
+   * 设置会话心跳时间
+   */
+  private int keepAliveInterval = 20;
 
-    /**
-     * 方法名称
-     */
-    private String methodName = "";
+  /**
+   * 是否自动连接
+   */
+  private boolean connect;
 }

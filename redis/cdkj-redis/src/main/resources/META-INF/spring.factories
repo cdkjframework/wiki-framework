@@ -1,0 +1,6 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cdkjframework.redis.config.RedisConfig,\
+  com.cdkjframework.redis.connectivity.RedisConfiguration,\
+  com.cdkjframework.redis.connectivity.RedisClusterConfiguration,\
+  com.cdkjframework.redis.connectivity.RedisClientConfiguration,\
+  com.cdkjframework.redis.connectivity.RedisSubscribeConfiguration

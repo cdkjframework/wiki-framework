@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-framework</artifactId>
-        <version>1.0.3</version>
+        <version>1.0.5</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -16,25 +16,6 @@
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.kafka</groupId>
-            <artifactId>spring-kafka</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-clients</artifactId>
-        </dependency>
-        <!--aliYun MQ -->
-        <dependency>
-            <groupId>com.aliyun.openservices</groupId>
-            <artifactId>ons-client</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!--aliYun 短信-->
@@ -62,12 +43,6 @@
                     <artifactId>aliyun-java-sdk-core</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <!--mqtt MQ -->
-        <dependency>
-            <groupId>org.springframework.integration</groupId>
-            <artifactId>spring-integration-mqtt</artifactId>
         </dependency>
 
         <dependency>

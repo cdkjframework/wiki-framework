@@ -17,6 +17,7 @@ import org.springframework.util.CollectionUtils;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 import java.util.Set;
@@ -50,12 +51,12 @@ public class HttpRequestUtils {
 
     //http 请求
     StringBuilder result = httpRequest(httpRequestEntity);
-
+    Object obj = JSON.parse(result.toString());
     if (clazz.getName().contains(name)) {
-      JSONArray jsonArray = JSON.parseArray(result.toString());
+      JSONArray jsonArray = JSON.parseArray(obj.toString());
       t = (T) jsonArray.toJavaList(clazz);
     } else {
-      JSONObject jsonObject = JSON.parseObject(result.toString());
+      JSONObject jsonObject = JSON.parseObject(obj.toString());
       t = jsonObject.toJavaObject(clazz);
     }
 
@@ -102,7 +103,12 @@ public class HttpRequestUtils {
       }
       InputStream inputStream = (InputStream) request.getData();
       URL url = new URL(request.getRequestAddress());
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+      HttpURLConnection conn;
+      if (request.getProxy() != null) {
+        conn = (HttpURLConnection) url.openConnection(request.getProxy());
+      } else {
+        conn = (HttpURLConnection) url.openConnection();
+      }
       conn.setDoOutput(true);
       conn.setDoInput(true);
       conn.setUseCaches(false);
@@ -193,7 +199,12 @@ public class HttpRequestUtils {
     try {
       URL realUrl = new URL(httpRequestEntity.getRequestAddress());
       // 打开和URL之间的连接
-      HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
+      HttpURLConnection connection;
+      if (httpRequestEntity.getProxy() != null) {
+        connection = (HttpURLConnection) realUrl.openConnection(httpRequestEntity.getProxy());
+      } else {
+        connection = (HttpURLConnection) realUrl.openConnection();
+      }
       connection.setRequestProperty(HttpHeaderConsts.CONTENT_TYPE, httpRequestEntity.getContentType());
       // 设置通用的请求属性
       //设置 http 请求头
@@ -295,7 +306,12 @@ public class HttpRequestUtils {
       }
       URL realUrl = new URL(urlString.toString());
       // 打开和URL之间的连接
-      HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
+      HttpURLConnection connection;
+      if (httpRequestEntity.getProxy() != null) {
+        connection = (HttpURLConnection) realUrl.openConnection(httpRequestEntity.getProxy());
+      } else {
+        connection = (HttpURLConnection) realUrl.openConnection();
+      }
       //设置 http 请求头
       setHeader(connection, httpRequestEntity);
       // 建立实际的连接
@@ -342,5 +358,17 @@ public class HttpRequestUtils {
     if (httpRequestEntity.isCompress()) {
       connection.setRequestProperty(HttpHeaderConsts.CONTENT_ENCODING, "gzip");
     }
+  }
+
+  /**
+   * 读取图片
+   *
+   * @return 返回结果
+   */
+  public static InputStream readImages(String uri) throws IOException {
+    URL realUrl = new URL(uri);
+    // 打开和URL之间的连接
+    HttpURLConnection connection = (HttpURLConnection) realUrl.openConnection();
+    return connection.getInputStream();
   }
 }
