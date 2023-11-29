@@ -4,6 +4,7 @@ import com.cdkjframework.datasource.mybatis.LogbackImpl;
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.github.pagehelper.PageInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -37,6 +38,7 @@ import java.util.Properties;
  */
 
 @Configuration
+@RequiredArgsConstructor
 @EnableTransactionManagement
 public class MybatisConfiguration {
 
@@ -48,8 +50,7 @@ public class MybatisConfiguration {
     /**
      * 读取配置
      */
-    @Autowired
-    private MybatisConfig mybatisConfig;
+    private final MybatisConfig mybatisConfig;
 
     /**
      * 数据源

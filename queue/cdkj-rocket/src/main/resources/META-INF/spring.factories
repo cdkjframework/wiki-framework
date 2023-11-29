@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cdkjframework.config.AliCloudRocketMqConfig,\
+  com.cdkjframework.rocket.producer.RocketProducer

@@ -3,51 +3,31 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
+        <artifactId>security</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <artifactId>cdkj-framework</artifactId>
         <version>1.0.5</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-message</artifactId>
+    <description>权限验证服务客户端</description>
+    <artifactId>cdkj-security-client</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-util</artifactId>
-        </dependency>
-
-        <!--aliYun 短信-->
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>dysmsapi20170525</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--阿里云语音通知-->
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>dyvmsapi20170525</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-security</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-datasource-mongodb</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
         </dependency>
     </dependencies>
 
@@ -57,7 +37,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.0</version>
                 <configuration>
                     <excludes>
                         <exclude>*.properties</exclude>
@@ -76,7 +55,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>

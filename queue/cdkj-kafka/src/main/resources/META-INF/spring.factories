@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cdkjframework.config.KafkaConfig,\
+  com.cdkjframework.kafka.producer.ProducerConfiguration

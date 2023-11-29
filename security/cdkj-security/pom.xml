@@ -3,51 +3,36 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
+        <artifactId>security</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <artifactId>cdkj-framework</artifactId>
         <version>1.0.5</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-message</artifactId>
+    <artifactId>cdkj-security</artifactId>
 
     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.cdkjframework</groupId>
+            <artifactId>cdkj-entity</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
         </dependency>
-
-        <!--aliYun 短信-->
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>dysmsapi20170525</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <!--阿里云语音通知-->
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>dyvmsapi20170525</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-datasource-mongodb</artifactId>
+            <artifactId>cdkj-redis</artifactId>
         </dependency>
     </dependencies>
 
@@ -57,7 +42,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.0</version>
                 <configuration>
                     <excludes>
                         <exclude>*.properties</exclude>
@@ -76,7 +60,6 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <phase>compile</phase>
@@ -97,7 +80,6 @@
             </plugin>
         </plugins>
     </build>
-
 
     <distributionManagement>
         <repository>

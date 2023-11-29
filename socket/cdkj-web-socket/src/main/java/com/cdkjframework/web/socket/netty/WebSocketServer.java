@@ -11,11 +11,8 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 
@@ -58,7 +55,7 @@ public class WebSocketServer implements ApplicationRunner {
     /**
      * 启动方法
      */
-    public void run() {
+    public void init() {
         /**
          * netty事件集
          */
@@ -114,6 +111,6 @@ public class WebSocketServer implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        run();
+        init();
     }
 }

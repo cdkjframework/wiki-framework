@@ -2,53 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>cdkj-framework</artifactId>
+        <groupId>com.cdkjframework</groupId>
+        <version>1.0.5</version>
+    </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.cdkjframework</groupId>
-    <artifactId>cdkj-framework</artifactId>
+    <artifactId>security</artifactId>
+    <description>安全认证组件</description>
+
     <packaging>pom</packaging>
-    <version>1.0.5</version>
+
     <modules>
-        <module>cdkj-cloud</module>
-        <module>cdkj-util</module>
-        <module>cdkj-core</module>
-        <module>cdkj-wechat</module>
-        <module>cdkj-pom</module>
-        <module>cdkj-entity</module>
-        <module>cdkj-constant</module>
-        <module>cdkj-message</module>
-        <!--        <module>cdkj-web</module>-->
-        <module>cdkj-center</module>
-        <module>cdkj-log</module>
-        <module>cdkj-config</module>
-        <module>cdkj-swagger</module>
-        <module>cdkj-login</module>
-        <module>cdkj-cache</module>
-        <module>datasource</module>
-        <module>licenses</module>
-        <module>redis</module>
-        <module>socket</module>
-        <module>security</module>
-        <module>queue</module>
+        <module>cdkj-security</module>
+        <module>cdkj-security-client</module>
     </modules>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
-    </parent>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.cdkjframework</groupId>
-                <artifactId>cdkj-pom</artifactId>
-                <version>1.0.5</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
     <repositories>
         <repository>
             <id>cdkj Maven Repository</id>
@@ -84,4 +54,5 @@
             <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
         </repository>
     </distributionManagement>
+
 </project>

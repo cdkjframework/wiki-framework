@@ -1,5 +1,3 @@
-#org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-#  com.cdkjframework.web.socket.config.WebSocketConfig
-#
-#org.springframework.boot.autoconfigure.AutoConfigurationImportListener=\
-#  com.cdkjframework.web.socket.config.WebsocketAutoConfiguration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cdkjframework.web.socket.config.WebSocketConfig,\
+  com.cdkjframework.web.socket.config.WebsocketAutoConfiguration

@@ -3,51 +3,56 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
+        <artifactId>redis</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <artifactId>cdkj-framework</artifactId>
         <version>1.0.5</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>cdkj-message</artifactId>
+    <artifactId>cdkj-redis</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-util</artifactId>
         </dependency>
-
-        <!--aliYun 短信-->
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>dysmsapi20170525</artifactId>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
             <exclusions>
                 <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-transport</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-handler</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-common</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--阿里云语音通知-->
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>aliyun-java-sdk-core</artifactId>
+            <groupId>com.redislabs</groupId>
+            <artifactId>lettusearch</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.aliyun</groupId>
-            <artifactId>dyvmsapi20170525</artifactId>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.aliyun</groupId>
-                    <artifactId>aliyun-java-sdk-core</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-transport</artifactId>
         </dependency>
-
         <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-datasource-mongodb</artifactId>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-handler</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-context</artifactId>
         </dependency>
     </dependencies>
 
@@ -97,7 +102,6 @@
             </plugin>
         </plugins>
     </build>
-
 
     <distributionManagement>
         <repository>
