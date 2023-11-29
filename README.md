@@ -5,7 +5,7 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
 框架官网 [https://www.framewiki.com](https://www.framewiki.com)
 
 #### 软件架构
-基于Spring Boot 2.1.5.RELEASE 及 Spring Cloud 2.2.2.RELEASE，MyBatis、JPA、PageHelper（分页插件）、alibaba数据库驱动
+基于Spring Boot 2.3.7.RELEASE 及 Spring Cloud 2.2.6.RELEASE，MyBatis、JPA、PageHelper（分页插件）、alibaba数据库驱动
 
 包含以下工具：JWT、Redis、easyPoi导入导出excel、mongodb（基于Spring Boot）、webSocket（基于netty）、汉字转拼音、swagger2（接口管理）、AliYun OSS、AliYun 短信、fasterxml.jackson、zxing、mqttv3、kryo、cxf Web Service及密码加密码（或解密）、GZIP压缩、HTTP请求等
 
@@ -23,7 +23,7 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-pom</artifactId>
-        <version>1.0-191022</version>
+        <version>1.0.5</version>
     </parent>
 
 #### 参与贡献
@@ -36,4 +36,6 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
 1、宏图物流股份有限公司
 
 2、成都乐享智家科技责任有限公司
+
+3、成都领数云科技有限公司
 
