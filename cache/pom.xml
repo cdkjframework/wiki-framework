@@ -9,14 +9,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>redis</artifactId>
-    <description>redis组件</description>
+    <artifactId>cache</artifactId>
+    <description>cache组件</description>
 
     <packaging>pom</packaging>
 
     <modules>
         <module>cdkj-redis</module>
         <module>cdkj-redisJson</module>
+        <module>cdkj-cache</module>
     </modules>
 
     <repositories>

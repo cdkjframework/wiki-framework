@@ -23,10 +23,9 @@
         <module>cdkj-config</module>
         <module>cdkj-swagger</module>
         <module>cdkj-login</module>
-        <module>cdkj-cache</module>
         <module>datasource</module>
         <module>licenses</module>
-        <module>redis</module>
+        <module>cache</module>
         <module>socket</module>
         <module>security</module>
         <module>queue</module>
