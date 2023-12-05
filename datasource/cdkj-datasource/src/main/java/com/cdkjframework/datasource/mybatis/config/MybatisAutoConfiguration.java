@@ -36,10 +36,7 @@ import org.springframework.context.annotation.Lazy;
         MybatisConfig.class,
         DataSourceConfig.class
 })
-@ImportAutoConfiguration(value = {MybatisDruidDbConfiguration.class},
-        exclude = {DataSourceAutoConfiguration.class,
-                HibernateJpaAutoConfiguration.class,
-                DruidDataSourceAutoConfigure.class})
+@ImportAutoConfiguration(value = {MybatisDruidDbConfiguration.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(MybatisMarkerConfiguration.Marker.class)
 public class MybatisAutoConfiguration {
