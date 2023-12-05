@@ -7,6 +7,7 @@ import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ import java.sql.SQLException;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@RequiredArgsConstructor
 public class MybatisDruidDbConfiguration {
 
   /**
@@ -42,15 +44,6 @@ public class MybatisDruidDbConfiguration {
    * 自定义配置
    */
   private final CustomConfig customConfig;
-
-  /**
-   * 构建函数
-   */
-  public MybatisDruidDbConfiguration(MybatisConfig mybatisSqlConfig, DataSourceConfig dataSourceConfig, CustomConfig customConfig) {
-    this.mybatisSqlConfig = mybatisSqlConfig;
-    this.dataSourceConfig = dataSourceConfig;
-    this.customConfig = customConfig;
-  }
 
   /**
    * 加载数据源

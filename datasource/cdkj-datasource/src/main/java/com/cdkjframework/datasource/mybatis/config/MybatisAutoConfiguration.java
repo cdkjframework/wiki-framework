@@ -1,5 +1,6 @@
 package com.cdkjframework.datasource.mybatis.config;
 
+import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.mybatis.connectivity.MybatisConfiguration;
@@ -35,10 +36,12 @@ import org.springframework.context.annotation.Lazy;
         MybatisConfig.class,
         DataSourceConfig.class
 })
-@ImportAutoConfiguration({MybatisConfiguration.class})
+@ImportAutoConfiguration(value = {MybatisDruidDbConfiguration.class},
+        exclude = {DataSourceAutoConfiguration.class,
+                HibernateJpaAutoConfiguration.class,
+                DruidDataSourceAutoConfigure.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(MybatisMarkerConfiguration.Marker.class)
-@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class, HibernateJpaAutoConfiguration.class})
 public class MybatisAutoConfiguration {
 
   /**
@@ -47,22 +50,13 @@ public class MybatisAutoConfiguration {
   private final MybatisConfig mybatisConfig;
 
   /**
-   * 基础配置
-   */
-  private final DataSourceConfig dataSourceConfig;
-  /**
-   * 自定义配置
-   */
-  private final CustomConfig customConfig;
-
-  /**
    * mybatis 启动触发器
    *
    * @return 返回结果
    */
-  @Bean(initMethod = "mybatisDataSource")
-  @ConditionalOnMissingBean
-  public MybatisDruidDbConfiguration mybatisDruidDbStartTrigger() {
-    return new MybatisDruidDbConfiguration(mybatisConfig, dataSourceConfig, customConfig);
+  @Bean
+  @ConditionalOnMissingBean(MybatisDruidDbConfiguration.class)
+  public MybatisConfiguration mybatisDruidDbStartTrigger() {
+    return new MybatisConfiguration(mybatisConfig);
   }
 }
