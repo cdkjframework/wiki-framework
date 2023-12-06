@@ -10,6 +10,7 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.connection.ClusterConnectionMode;
 import com.mongodb.connection.ClusterType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.mongodb.MongoDatabaseFactory;
@@ -27,7 +28,13 @@ import java.util.Arrays;
  * @Version: 1.0
  */
 @Configuration
+@RequiredArgsConstructor
 public class MongoConfiguration {
+
+  /**
+   * 默认地址
+   */
+  private final String DEFAULT_URI = "mongodb://127.0.0.1:27017/admin";
 
   /**
    * 读取配置文件配置
@@ -37,14 +44,6 @@ public class MongoConfiguration {
    * 自定义配置
    */
   private final CustomConfig customConfig;
-
-  /**
-   * 构造函数
-   */
-  public MongoConfiguration(MongoConfig mongoConfig, CustomConfig customConfig) {
-    this.mongoConfig = mongoConfig;
-    this.customConfig = customConfig;
-  }
 
   /**
    * 日志
@@ -69,9 +68,8 @@ public class MongoConfiguration {
   @Bean
   public MongoDatabaseFactory mongoDbFactory() {
     //客户端配置（连接数、副本集群验证）
-    String uri = "mongodb://127.0.0.1:27017/admin";
     if (StringUtils.isNullAndSpaceOrEmpty(mongoConfig.getUri())) {
-      return new SimpleMongoClientDatabaseFactory(uri);
+      return new SimpleMongoClientDatabaseFactory(DEFAULT_URI);
     }
 
     logUtil.info("mongodb 进入配置");
