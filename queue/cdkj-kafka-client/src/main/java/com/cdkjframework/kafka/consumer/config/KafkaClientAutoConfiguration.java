@@ -1,7 +1,8 @@
-package com.cdkjframework.kafka.producer.config;
+package com.cdkjframework.kafka.consumer.config;
 
-import com.cdkjframework.kafka.producer.ProducerConfiguration;
-import com.cdkjframework.kafka.producer.util.ProducerUtils;
+import com.cdkjframework.kafka.consumer.ConsumerConfiguration;
+import com.cdkjframework.kafka.consumer.service.ConsumerService;
+import com.cdkjframework.kafka.consumer.listener.ConsumerListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -25,37 +26,25 @@ import org.springframework.context.annotation.Lazy;
 @Lazy(false)
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(KafkaConfig.class)
+@EnableConfigurationProperties(KafkaClientConfig.class)
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
-@ImportAutoConfiguration(ProducerConfiguration.class)
-@ConditionalOnBean(KafkaMarkerConfiguration.Marker.class)
-public class KafkaAutoConfiguration {
+@ImportAutoConfiguration(ConsumerConfiguration.class)
+@ConditionalOnBean(KafkaClientMarkerConfiguration.Marker.class)
+public class KafkaClientAutoConfiguration {
 
   /**
-   * 读取配置文件
+   * 消费者服务接口
    */
-  private final KafkaConfig kafkaConfig;
-
-  /**
-   * kafka topic 启动触发器
-   *
-   * @return 返回结果
-   */
-  @Bean(initMethod = "kafkaAdmin")
-  @ConditionalOnMissingBean
-  public TopicConfig kafkaTopic() {
-    TopicConfig trigger = new TopicConfig(kafkaConfig);
-    return trigger;
-  }
+  private final ConsumerService consumerService;
 
   /**
    * kafka topic 启动触发器
    *
    * @return 返回结果
    */
-  @Bean(initMethod = "start")
+  @Bean
   @ConditionalOnMissingBean
-  public ProducerUtils Producer() {
-    return new ProducerUtils();
+  public ConsumerListener kafkaConsumer() {
+    return new ConsumerListener(consumerService);
   }
 }

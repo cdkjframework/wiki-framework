@@ -1,20 +1,19 @@
-package com.cdkjframework.kafka.consumer;
+package com.cdkjframework.kafka.consumer.listener;
 
+import com.cdkjframework.kafka.consumer.service.ConsumerService;
 import com.cdkjframework.util.log.LogUtils;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.stereotype.Component;
 
 /**
  * @ProjectName: com.lesmarthome.interface
  * @Package: com.cdkjframework.kafka.consumer
- * @ClassName: com.cdkjframework.kafka.consumer.ConsumerListener
+ * @ClassName: com.cdkjframework.kafka.consumer.listener.ConsumerListener
  * @Description: java类作用描述
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Component
 public class ConsumerListener {
 
     /**

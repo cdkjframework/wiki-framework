@@ -29,7 +29,7 @@ import java.util.Map;
  */
 @Configuration
 @RequiredArgsConstructor
-public class ProducerStartTrigger {
+public class ProducerConfiguration {
 
   /**
    * 配置
