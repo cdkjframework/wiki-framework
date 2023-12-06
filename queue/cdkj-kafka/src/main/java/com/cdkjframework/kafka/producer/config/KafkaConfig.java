@@ -1,4 +1,4 @@
-package com.cdkjframework.config;
+package com.cdkjframework.kafka.producer.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

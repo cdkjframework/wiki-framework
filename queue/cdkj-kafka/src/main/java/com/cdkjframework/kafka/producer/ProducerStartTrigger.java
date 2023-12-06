@@ -1,6 +1,7 @@
 package com.cdkjframework.kafka.producer;
 
-import com.cdkjframework.config.KafkaConfig;
+import com.cdkjframework.kafka.producer.config.KafkaConfig;
+import com.cdkjframework.kafka.producer.util.ProducerUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.CommonClientConfigs;
@@ -10,11 +11,11 @@ import org.apache.kafka.common.security.auth.SecurityProtocol;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,9 +28,8 @@ import java.util.Map;
  * @Version: 1.0
  */
 @Configuration
-@EnableKafka
 @RequiredArgsConstructor
-public class ProducerConfiguration {
+public class ProducerStartTrigger {
 
   /**
    * 配置
@@ -52,7 +52,7 @@ public class ProducerConfiguration {
   /**
    * Producer 工厂配置
    */
-  @Bean
+  @Bean(name = "producerFactory")
   public ProducerFactory<String, String> producerFactory() {
     return new DefaultKafkaProducerFactory<>(producerConfigs());
   }
@@ -60,7 +60,6 @@ public class ProducerConfiguration {
   /**
    * Producer 参数配置
    */
-  @Bean
   public Map<String, Object> producerConfigs() {
     Map<String, Object> props = new HashMap<>();
     // 指定多个kafka集群多个地址

@@ -1,11 +1,8 @@
-package com.cdkjframework.kafka.producer;
+package com.cdkjframework.kafka.producer.config;
 
-import com.cdkjframework.config.KafkaConfig;
 import com.cdkjframework.constant.IntegerConsts;
-import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.admin.AdminClientConfig;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.kafka.core.KafkaAdmin;
 
 import java.util.HashMap;
@@ -19,8 +16,6 @@ import java.util.Map;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Configuration
-@RequiredArgsConstructor
 public class TopicConfig {
 
   /**
@@ -29,12 +24,19 @@ public class TopicConfig {
   private final KafkaConfig kafkaConfig;
 
   /**
+   * 构造函数
+   */
+  public TopicConfig(KafkaConfig kafkaConfig) {
+    this.kafkaConfig = kafkaConfig;
+  }
+
+  /**
    * 定义一个KafkaAdmin的bean，可以自动检测集群中是否存在topic，不存在则创建
    */
-  @Bean
   public KafkaAdmin kafkaAdmin() {
     Map<String, Object> configs = new HashMap<>(IntegerConsts.ONE);
     // 指定多个kafka集群多个地址，例如：192.168.2.11,9092,192.168.2.12:9092,192.168.2.13:9092
+    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
     configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
     return new KafkaAdmin(configs);
   }

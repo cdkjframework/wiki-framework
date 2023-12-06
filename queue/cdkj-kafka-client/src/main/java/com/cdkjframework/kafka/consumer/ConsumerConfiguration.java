@@ -1,6 +1,5 @@
 package com.cdkjframework.kafka.consumer;
 
-import com.cdkjframework.config.KafkaConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;

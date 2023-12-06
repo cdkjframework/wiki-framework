@@ -3,9 +3,14 @@ package com.cdkjframework.socket.config;
 import com.cdkjframework.socket.NettySocketServer;
 import com.cdkjframework.socket.listener.SocketListener;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 
 /**
  * @ProjectName: cdkj-framework
@@ -16,8 +21,12 @@ import org.springframework.context.annotation.Configuration;
  * @Date: 2023/7/18 9:26
  * @Version: 1.0
  */
-@Configuration
+@Lazy(false)
 @RequiredArgsConstructor
+@Configuration(proxyBeanMethods = false)
+@EnableConfigurationProperties(SocketConfig.class)
+@AutoConfigureAfter({WebClientAutoConfiguration.class})
+@ConditionalOnBean(SocketMarkerConfiguration.Marker.class)
 public class SocketAutoConfiguration {
 
     /**
@@ -35,7 +44,7 @@ public class SocketAutoConfiguration {
      *
      * @return 返回结果
      */
-    @Bean(initMethod = "init")
+    @Bean(initMethod = "start")
     @ConditionalOnMissingBean
     public NettySocketServer nettySocketServer() {
         return new NettySocketServer(customConfig, socketListener);
