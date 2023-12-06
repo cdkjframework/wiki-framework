@@ -1,9 +1,10 @@
-package com.cdkjframework.datasource.mybatis.config;
+package com.cdkjframework.datasource.mongodb.config;
 
 import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.config.DataSourceConfig;
-import com.cdkjframework.datasource.mybatis.connectivity.MybatisConfiguration;
-import com.cdkjframework.datasource.mybatis.connectivity.MybatisDruidDbConfiguration;
+import com.cdkjframework.datasource.mongodb.connectivity.MongoConfiguration;
+import com.cdkjframework.datasource.mongodb.number.MongoNumberUtils;
+import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
+import com.cdkjframework.datasource.mongodb.repository.impl.MongoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
@@ -27,29 +28,31 @@ import org.springframework.context.annotation.Lazy;
 @Lazy(false)
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties({
-        CustomConfig.class,
-        MybatisConfig.class,
-        DataSourceConfig.class
-})
-@ImportAutoConfiguration(value = {MybatisDruidDbConfiguration.class})
+@EnableConfigurationProperties({MongoConfig.class, CustomConfig.class})
+@ImportAutoConfiguration(value = {MongoConfiguration.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
-@ConditionalOnBean(MybatisMarkerConfiguration.Marker.class)
-public class MybatisAutoConfiguration {
+@ConditionalOnBean(MongoMarkerConfiguration.Marker.class)
+public class MongodbAutoConfiguration {
 
   /**
-   * 配置信息
-   */
-  private final MybatisConfig mybatisConfig;
-
-  /**
-   * mybatis 启动触发器
+   * mongodb 启动触发器
    *
    * @return 返回结果
    */
   @Bean
-  @ConditionalOnMissingBean(MybatisDruidDbConfiguration.class)
-  public MybatisConfiguration mybatisDruidDbStartTrigger() {
-    return new MybatisConfiguration(mybatisConfig);
+  @ConditionalOnMissingBean
+  public IMongoRepository repositoryStartTrigger() {
+    return new MongoRepository();
+  }
+
+  /**
+   * MongoNumberUtils 启动触发器
+   *
+   * @return 返回结果
+   */
+  @Bean(initMethod = "start")
+  @ConditionalOnMissingBean
+  public MongoNumberUtils numberStartTrigger() {
+    return new MongoNumberUtils(repositoryStartTrigger());
   }
 }

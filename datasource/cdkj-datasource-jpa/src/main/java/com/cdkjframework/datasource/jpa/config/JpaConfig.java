@@ -1,5 +1,6 @@
 package com.cdkjframework.datasource.jpa.config;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,11 +19,9 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
-@Configuration
+@Data
 @RefreshScope
+@Configuration
 @ConfigurationProperties(prefix = "spring.datasource.jpa")
 public class JpaConfig {
 

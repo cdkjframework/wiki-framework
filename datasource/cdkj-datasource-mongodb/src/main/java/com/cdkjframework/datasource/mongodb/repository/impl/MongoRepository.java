@@ -32,7 +32,6 @@ import java.util.List;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Component
 public class MongoRepository implements IMongoRepository {
 
     /**

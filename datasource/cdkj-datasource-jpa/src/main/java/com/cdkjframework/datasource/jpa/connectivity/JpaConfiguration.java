@@ -32,67 +32,73 @@ import java.util.Map;
 @Component
 @Configuration
 @EnableTransactionManagement
-@RequiredArgsConstructor
 public class JpaConfiguration {
 
-    /**
-     * 数据源
-     */
-    @Resource(name = "jpaDataSource")
-    @Qualifier("jpaDataSource")
-    private DataSource jpaDataSource;
+  /**
+   * 数据源
+   */
+  @Resource(name = "jpaDataSource")
+  @Qualifier("jpaDataSource")
+  private DataSource jpaDataSource;
 
-    /**
-     * 配置
-     */
-    private final JpaConfig jpaReadConfig;
+  /**
+   * 配置
+   */
+  private final JpaConfig jpaReadConfig;
 
-    /**
-     * JAP 管理工厂
-     *
-     * @return 返回实体管理工厂
-     */
-    @Bean
-    public EntityManagerFactory entityManagerFactory() {
-        // 供应商适配器
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
-        vendorAdapter.setDatabasePlatform(jpaReadConfig.getDialect());
-        // 工厂
-        LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
-        factory.setJpaVendorAdapter(vendorAdapter);
-        factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
-        factory.setPackagesToScan(jpaReadConfig.getPackagesToScan().toArray(new String[jpaReadConfig.getPackagesToScan().size()]));
-        factory.setDataSource(jpaDataSource);
-        // 其它参数
-        Map<String, Object> jpaProperties = new HashMap<>(IntegerConsts.SEVEN);
-        jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
-        jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
-        jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
-        jpaProperties.put("spring.jpa.open-in-view", jpaReadConfig.isOpenInView());
-        jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
-        jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
-        jpaProperties.put("spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults", false);
-        System.setProperty("druid.mysql.usePingMethod", "false");
-        //设置自动更新表结构
-        if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getHbm2ddlAuto())) {
-            jpaProperties.put("hibernate.hbm2ddl.auto", jpaReadConfig.getHbm2ddlAuto());
-        }
-        //设置配置
-        factory.setJpaPropertyMap(jpaProperties);
-        factory.afterPropertiesSet();
-        return factory.getObject();
+  /**
+   * 构造函数
+   */
+  public JpaConfiguration(JpaConfig jpaReadConfig) {
+    this.jpaReadConfig = jpaReadConfig;
+  }
+
+  /**
+   * JAP 管理工厂
+   *
+   * @return 返回实体管理工厂
+   */
+  @Bean
+  public EntityManagerFactory entityManagerFactory() {
+    // 供应商适配器
+    HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+    vendorAdapter.setShowSql(jpaReadConfig.isShowSql());
+    vendorAdapter.setDatabasePlatform(jpaReadConfig.getDialect());
+    // 工厂
+    LocalContainerEntityManagerFactoryBean factory = new LocalContainerEntityManagerFactoryBean();
+    factory.setJpaVendorAdapter(vendorAdapter);
+    factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+    factory.setPackagesToScan(jpaReadConfig.getPackagesToScan().toArray(new String[jpaReadConfig.getPackagesToScan().size()]));
+    factory.setDataSource(jpaDataSource);
+    // 其它参数
+    Map<String, Object> jpaProperties = new HashMap<>(IntegerConsts.SEVEN);
+    jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
+    jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
+    jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
+    jpaProperties.put("spring.jpa.open-in-view", jpaReadConfig.isOpenInView());
+    jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
+    jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
+    jpaProperties.put("spring.jpa.properties.hibernate.temp.use_jdbc_metadata_defaults", false);
+    System.setProperty("druid.mysql.usePingMethod", "false");
+    //设置自动更新表结构
+    if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getHbm2ddlAuto())) {
+      jpaProperties.put("hibernate.hbm2ddl.auto", jpaReadConfig.getHbm2ddlAuto());
     }
+    //设置配置
+    factory.setJpaPropertyMap(jpaProperties);
+    factory.afterPropertiesSet();
+    return factory.getObject();
+  }
 
-    /**
-     * JAP 事件
-     *
-     * @return 返回事务接口
-     */
-    @Bean(name = "transactionManager")
-    public PlatformTransactionManager transactionManager() {
-        JpaTransactionManager txManager = new JpaTransactionManager();
-        txManager.setEntityManagerFactory(entityManagerFactory());
-        return txManager;
-    }
+  /**
+   * JAP 事件
+   *
+   * @return 返回事务接口
+   */
+  @Bean(name = "transactionManager")
+  public PlatformTransactionManager transactionManager() {
+    JpaTransactionManager txManager = new JpaTransactionManager();
+    txManager.setEntityManagerFactory(entityManagerFactory());
+    return txManager;
+  }
 }
