@@ -6,7 +6,6 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-import redis.clients.jedis.HostAndPort;
 
 /**
  * @ProjectName: cdkj-framework
@@ -45,7 +44,7 @@ public class RedisJsonConfiguration implements ApplicationRunner {
      */
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        HostAndPort config = new HostAndPort(redisJsonConfig.getHost(), redisJsonConfig.getPort());
+//        HostAndPort config = new HostAndPort(redisJsonConfig.getHost(), redisJsonConfig.getPort());
 //        JReJSON client= new JReJSON(config);
 
 //        PooledJedisConnectionProvider provider = new PooledJedisConnectionProvider(config);

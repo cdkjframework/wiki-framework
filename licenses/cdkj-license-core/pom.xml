@@ -36,10 +36,6 @@
             <groupId>com.cdkjframework</groupId>
             <artifactId>cdkj-license</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.cdkjframework</groupId>
-            <artifactId>cdkj-license</artifactId>
-        </dependency>
     </dependencies>
 
     <build>

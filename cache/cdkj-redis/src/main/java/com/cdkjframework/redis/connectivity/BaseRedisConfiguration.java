@@ -16,11 +16,6 @@ import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 public class BaseRedisConfiguration {
 
     /**
-     * 日志
-     */
-    private LogUtils logUtils = LogUtils.getLogger(BaseRedisConfiguration.class);
-
-    /**
      * 配置
      */
     protected RedisConfig redisConfig;

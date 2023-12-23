@@ -18,6 +18,7 @@
 
     <properties>
         <cdkj.version>1.0.5</cdkj.version>
+        <codecentric.version>2.3.1</codecentric.version>
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
@@ -243,6 +244,23 @@
                 <groupId>com.cdkjframework</groupId>
                 <artifactId>cdkj-util</artifactId>
                 <version>${cdkj.version}</version>
+            </dependency>
+
+            <!--监控-->
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-server</artifactId>
+                <version>${codecentric.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-starter-client</artifactId>
+                <version>${codecentric.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>de.codecentric</groupId>
+                <artifactId>spring-boot-admin-server-ui</artifactId>
+                <version>${codecentric.version}</version>
             </dependency>
 
             <dependency>
