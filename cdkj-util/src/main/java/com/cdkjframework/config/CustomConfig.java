@@ -144,20 +144,20 @@ public class CustomConfig {
    */
   private String aesCbcNoPadding = "AES/CBC/NoPadding";
 
-    /**
-     * 算法 PKCS5 Padding
-     */
-    private String aesEcbNoPadding = "AES/ECB/NoPadding";
+  /**
+   * 算法 PKCS5 Padding
+   */
+  private String aesEcbNoPadding = "AES/ECB/NoPadding";
 
-    /**
-     * 加密类型 (AES加密类型 0：CBC，1：ECB)
-     */
-    private Integer aesType= IntegerConsts.ZERO;
+  /**
+   * 加密类型 (AES加密类型 0：CBC，1：ECB)
+   */
+  private Integer aesType = IntegerConsts.ZERO;
 
-    /**
-     * 密码类型
-     */
-    private String passwordType = "AES";
+  /**
+   * 密码类型
+   */
+  private String passwordType = "AES";
 
   /**
    * 编码类型
@@ -189,6 +189,16 @@ public class CustomConfig {
    * Security 退出地址
    */
   private String logoutUrl = "/security/user/logout";
+
+  /**
+   * 默认账号
+   */
+  private String username = "framewiki";
+
+  /**
+   * 默认账号密码
+   */
+  private String password = "framewiki";
 
   /**
    * Security 资源过滤地址
