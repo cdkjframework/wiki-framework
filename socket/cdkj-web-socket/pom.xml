@@ -82,6 +82,34 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>cdkj Maven Repository</id>
+            <name>cdkj Maven Repository</name>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
+            就会覆盖中央仓库的配置 -->
+            <id>mvnRepository</id>
+            <name>mvnRepository</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <distributionManagement>
         <repository>
             <id>cdkj Maven Repository</id>

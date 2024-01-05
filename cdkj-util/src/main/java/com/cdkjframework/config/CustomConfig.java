@@ -40,19 +40,9 @@ public class CustomConfig {
   private String jwtKey = "cdkj-framework-jwt";
 
   /**
-   * 日志路径
-   */
-  private String logPath = "/opt/log/";
-
-  /**
    * 模块
    */
   private String modular = "[]";
-
-  /**
-   * 日志级别
-   */
-  private String level = "INFO";
 
   /**
    * 是否加密
@@ -120,11 +110,6 @@ public class CustomConfig {
   private List<String> ignoreAopUrls;
 
   /**
-   * 缩略图
-   */
-  private List<String> thumbnail;
-
-  /**
    * 许可
    */
   private String permission;
@@ -163,12 +148,6 @@ public class CustomConfig {
    * 编码类型
    */
   private String charsetName = "utf-8";
-
-  /**
-   * 应用名称
-   */
-  @Value("${spring.application.name}")
-  private String application;
 
   /**
    * Security 登录地址
