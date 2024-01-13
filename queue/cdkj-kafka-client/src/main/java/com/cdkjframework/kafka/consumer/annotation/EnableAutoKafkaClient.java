@@ -7,9 +7,9 @@ import java.lang.annotation.*;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.swagger.annotation
- * @ClassName: EnableAutoSocket
- * @Description: java类作用描述
+ * @Package: com.cdkjframework.kafka.consumer.annotation
+ * @ClassName: EnableAutoKafkaClient
+ * @Description: Kafka客户端自动启动类
  * @Author: xiaLin
  * @Date: 2023/7/18 9:20
  * @Version: 1.0

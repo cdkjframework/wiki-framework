@@ -8,9 +8,9 @@ import java.util.List;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka
+ * @Package: com.cdkjframework.kafka.producer.config;
  * @ClassName: KafakConfig
- * @Description: java类作用描述
+ * @Description: Kafak 配置
  * @Author: xiaLin
  * @Version: 1.0
  */

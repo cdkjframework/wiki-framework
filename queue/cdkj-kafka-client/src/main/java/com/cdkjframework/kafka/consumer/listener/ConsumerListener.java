@@ -7,10 +7,10 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
 
 /**
- * @ProjectName: com.lesmarthome.interface
+ * @ProjectName: cdkj-kafka-client
  * @Package: com.cdkjframework.kafka.consumer
  * @ClassName: com.cdkjframework.kafka.consumer.listener.ConsumerListener
- * @Description: java类作用描述
+ * @Description: 消费者监听器
  * @Author: xiaLin
  * @Version: 1.0
  */

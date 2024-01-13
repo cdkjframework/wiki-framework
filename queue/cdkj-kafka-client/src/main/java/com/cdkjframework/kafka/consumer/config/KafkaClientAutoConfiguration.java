@@ -16,9 +16,9 @@ import org.springframework.context.annotation.Lazy;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.swagger.config
- * @ClassName: SwaggerMarkerConfiguration
- * @Description: java类作用描述
+ * @Package: com.cdkjframework.kafka.consumer.config
+ * @ClassName: KafkaClientAutoConfiguration
+ * @Description: Kafka客户端自动配置
  * @Author: xiaLin
  * @Date: 2023/7/18 9:21
  * @Version: 1.0

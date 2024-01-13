@@ -13,9 +13,9 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.kafka.producer
- * @ClassName: ProducerService
- * @Description: 生产服务
+ * @Package: com.cdkjframework.kafka.producer.util
+ * @ClassName: ProducerUtils
+ * @Description: 生产工具
  * @Author: xiaLin
  * @Version: 1.0
  */

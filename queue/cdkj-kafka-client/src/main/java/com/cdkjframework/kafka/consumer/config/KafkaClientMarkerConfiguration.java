@@ -8,7 +8,7 @@ import org.springframework.kafka.annotation.EnableKafka;
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.kafka.consumer.config
  * @ClassName: KafkaClientMarkerConfiguration
- * @Description: java类作用描述
+ * @Description: Kafka客户端标记配置
  * @Author: xiaLin
  * @Date: 2023/12/6 13:11
  * @Version: 1.0

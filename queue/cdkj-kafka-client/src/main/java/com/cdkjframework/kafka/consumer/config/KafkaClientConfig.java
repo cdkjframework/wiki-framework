@@ -8,9 +8,9 @@ import java.util.List;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.message.queue.kafka
- * @ClassName: KafakConfig
- * @Description: java类作用描述
+ * @Package: com.cdkjframework.kafka.consumer.config
+ * @ClassName: KafkaClientConfig
+ * @Description: Kafka客户端配置
  * @Author: xiaLin
  * @Version: 1.0
  */

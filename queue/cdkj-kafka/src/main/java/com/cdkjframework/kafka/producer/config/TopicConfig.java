@@ -10,8 +10,8 @@ import java.util.Map;
 
 /**
  * @ProjectName: cdkj-framework
- * @Package: com.cdkjframework.kafka.producer
- * @ClassName: KafkaTopicConfig
+ * @Package: com.cdkjframework.kafka.producer.config
+ * @ClassName: TopicConfig
  * @Description: topic配置
  * @Author: xiaLin
  * @Version: 1.0
