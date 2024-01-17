@@ -1,7 +1,9 @@
 package com.cdkjframework.config;
 
 import com.cdkjframework.constant.IntegerConsts;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -21,6 +23,8 @@ import java.util.List;
 @Data
 @Configuration
 @RefreshScope
+@AllArgsConstructor
+@NoArgsConstructor
 @ConfigurationProperties(prefix = "spring.custom")
 public class CustomConfig {
 
