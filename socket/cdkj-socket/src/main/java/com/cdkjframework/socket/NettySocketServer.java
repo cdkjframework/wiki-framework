@@ -25,8 +25,6 @@ import java.util.List;
  * @Version: 1.0
  * @Description: Netty服务端初始化
  */
-@Component
-@Order(Integer.MIN_VALUE)
 public class NettySocketServer {
 
     /**
@@ -55,7 +53,7 @@ public class NettySocketServer {
     /**
      * 线程启动
      */
-    public void init() {
+    public void start() {
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
         try {

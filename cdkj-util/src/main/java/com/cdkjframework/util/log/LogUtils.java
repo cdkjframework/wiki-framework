@@ -1,6 +1,7 @@
 package com.cdkjframework.util.log;
 
 import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.config.LogConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
@@ -37,7 +38,7 @@ public class LogUtils {
   /**
    * 自定义配置
    */
-  private static volatile CustomConfig customConfig;
+  private static volatile LogConfig customConfig;
 
   /**
    * 换行符号
@@ -68,7 +69,7 @@ public class LogUtils {
    * 静态初始化
    */
   static {
-    customConfig = new CustomConfig();
+    customConfig = new LogConfig();
   }
 
   /**
@@ -81,7 +82,7 @@ public class LogUtils {
    * 构造函数
    */
   @Autowired
-  public LogUtils(CustomConfig config) {
+  public LogUtils(LogConfig config) {
     LogUtils.customConfig = config;
   }
 

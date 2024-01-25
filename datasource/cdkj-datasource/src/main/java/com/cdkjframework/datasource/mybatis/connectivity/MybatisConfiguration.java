@@ -38,7 +38,6 @@ import java.util.Properties;
  */
 
 @Configuration
-@RequiredArgsConstructor
 @EnableTransactionManagement
 public class MybatisConfiguration {
 
@@ -52,7 +51,11 @@ public class MybatisConfiguration {
      */
     private final MybatisConfig mybatisConfig;
 
-    /**
+  public MybatisConfiguration(MybatisConfig mybatisConfig) {
+    this.mybatisConfig = mybatisConfig;
+  }
+
+  /**
      * 数据源
      */
     @Resource(name = "mybatisDataSource")

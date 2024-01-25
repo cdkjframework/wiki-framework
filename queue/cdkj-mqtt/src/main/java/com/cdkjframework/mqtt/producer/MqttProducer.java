@@ -36,11 +36,6 @@ import org.springframework.stereotype.Component;
 public class MqttProducer {
 
     /**
-     * 日志
-     */
-    private LogUtils logUtil = LogUtils.getLogger(MqttProducer.class);
-
-    /**
      * 配置信息
      */
     private final MqttConfig mqttConfig;

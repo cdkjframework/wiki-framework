@@ -1,6 +1,6 @@
 package com.cdkjframework.util.files.images;
 
-import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.config.ThumbnailConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class ThumbnailUtils {
     /**
      * 读取配置
      */
-    private static CustomConfig customConfig;
+    private static ThumbnailConfig customConfig;
 
     /**
      * 日志
@@ -41,7 +41,7 @@ public class ThumbnailUtils {
      * @param config 配置
      */
     @Autowired
-    public ThumbnailUtils(CustomConfig config) {
+    public ThumbnailUtils(ThumbnailConfig config) {
         customConfig = config;
     }
 

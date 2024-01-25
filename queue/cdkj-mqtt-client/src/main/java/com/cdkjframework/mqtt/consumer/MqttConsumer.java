@@ -36,7 +36,7 @@ public class MqttConsumer {
   /**
    * 日志
    */
-  private LogUtils logUtil = LogUtils.getLogger(MqttConsumer.class);
+  private static LogUtils logUtil = LogUtils.getLogger(MqttConsumer.class);
 
   /**
    * 配置信息
@@ -49,14 +49,9 @@ public class MqttConsumer {
   private final CdkjMqttCallback mqttCallback;
 
   /**
-   * 取消订阅主题服务
-   */
-  private final UnsubscribeService unsubscribeServiceImpl;
-
-  /**
    * 消息客户端
    */
-  private MqttClient client;
+  private static MqttClient client;
 
   /**
    * MQTT的连接设置
@@ -142,15 +137,22 @@ public class MqttConsumer {
       if (topicArray.length > IntegerConsts.ZERO) {
         client.subscribe(topicArray, qOs);
       }
-      if (unsubscribeServiceImpl != null) {
-        // 是否订阅
-        List<String> topics = unsubscribeServiceImpl.unsubscribeTopics();
-        if (CollectionUtils.isEmpty(topics)) {
-          client.unsubscribe(topics.toArray(new String[topics.size()]));
-        }
-      }
       client.notifyAll();
     } catch (Exception e) {
+      logUtil.error(e.getCause(), e.getMessage());
+    }
+  }
+
+  /**
+   * 取消订阅事件
+   *
+   * @param topic 主题
+   */
+  public static void unsubscribe(String topic) {
+    try {
+      client.unsubscribe(topic);
+      client.notifyAll();
+    } catch (MqttException e) {
       logUtil.error(e.getCause(), e.getMessage());
     }
   }

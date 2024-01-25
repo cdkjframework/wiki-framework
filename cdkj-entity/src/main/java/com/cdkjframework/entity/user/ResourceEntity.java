@@ -88,11 +88,6 @@ public class ResourceEntity extends BaseEntity {
      */
     @Column(name = "remark")
     private String remark;
-    /**
-     * 是否可以用
-     */
-    @Column(name = "enabled")
-    private Integer enabled;
 
     /**
      * 子菜单

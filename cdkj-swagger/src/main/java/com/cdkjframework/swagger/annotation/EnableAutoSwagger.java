@@ -1,7 +1,6 @@
 package com.cdkjframework.swagger.annotation;
 
-import com.cdkjframework.swagger.config.SwaggerConfigurationSelector;
-import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import com.cdkjframework.swagger.config.SwaggerMarkerConfiguration;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -15,11 +14,9 @@ import java.lang.annotation.*;
  * @Date: 2023/7/18 9:20
  * @Version: 1.0
  */
-@Target({ElementType.TYPE})
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Inherited
-@AutoConfigurationPackage
-@Import({SwaggerConfigurationSelector.class})
+@Import({SwaggerMarkerConfiguration.class})
 public @interface EnableAutoSwagger {
 }

@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cdkjframework.datasource.mongodb.config.MongoConfig,\
-  com.cdkjframework.datasource.mongodb.connectivity.MongoConfiguration
+  com.cdkjframework.datasource.mongodb.config.MongodbAutoConfiguration

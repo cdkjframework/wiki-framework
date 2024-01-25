@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
  * @Version 1.0
  **/
 @Component
-public class WebSocketServer implements ApplicationRunner {
+public class WebSocketServer {
 
     /**
      * 日志
@@ -48,14 +48,12 @@ public class WebSocketServer implements ApplicationRunner {
     public WebSocketServer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
         this.webSocketConfig = webSocketConfig;
         this.webSocket = webSocket;
-        // 注册服务
-//        run();
     }
 
     /**
      * 启动方法
      */
-    public void init() {
+    public void start() {
         /**
          * netty事件集
          */
@@ -107,10 +105,5 @@ public class WebSocketServer implements ApplicationRunner {
                 workerGroup.shutdownGracefully();
             }
         }
-    }
-
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        init();
     }
 }

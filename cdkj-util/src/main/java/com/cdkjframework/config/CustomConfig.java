@@ -1,7 +1,9 @@
 package com.cdkjframework.config;
 
 import com.cdkjframework.constant.IntegerConsts;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -21,6 +23,8 @@ import java.util.List;
 @Data
 @Configuration
 @RefreshScope
+@AllArgsConstructor
+@NoArgsConstructor
 @ConfigurationProperties(prefix = "spring.custom")
 public class CustomConfig {
 
@@ -40,19 +44,9 @@ public class CustomConfig {
   private String jwtKey = "cdkj-framework-jwt";
 
   /**
-   * 日志路径
-   */
-  private String logPath = "/opt/log/";
-
-  /**
    * 模块
    */
   private String modular = "[]";
-
-  /**
-   * 日志级别
-   */
-  private String level = "INFO";
 
   /**
    * 是否加密
@@ -120,11 +114,6 @@ public class CustomConfig {
   private List<String> ignoreAopUrls;
 
   /**
-   * 缩略图
-   */
-  private List<String> thumbnail;
-
-  /**
    * 许可
    */
   private String permission;
@@ -144,31 +133,25 @@ public class CustomConfig {
    */
   private String aesCbcNoPadding = "AES/CBC/NoPadding";
 
-    /**
-     * 算法 PKCS5 Padding
-     */
-    private String aesEcbNoPadding = "AES/ECB/NoPadding";
+  /**
+   * 算法 PKCS5 Padding
+   */
+  private String aesEcbNoPadding = "AES/ECB/NoPadding";
 
-    /**
-     * 加密类型 (AES加密类型 0：CBC，1：ECB)
-     */
-    private Integer aesType= IntegerConsts.ZERO;
+  /**
+   * 加密类型 (AES加密类型 0：CBC，1：ECB)
+   */
+  private Integer aesType = IntegerConsts.ZERO;
 
-    /**
-     * 密码类型
-     */
-    private String passwordType = "AES";
+  /**
+   * 密码类型
+   */
+  private String passwordType = "AES";
 
   /**
    * 编码类型
    */
   private String charsetName = "utf-8";
-
-  /**
-   * 应用名称
-   */
-  @Value("${spring.application.name}")
-  private String application;
 
   /**
    * Security 登录地址
@@ -189,6 +172,16 @@ public class CustomConfig {
    * Security 退出地址
    */
   private String logoutUrl = "/security/user/logout";
+
+  /**
+   * 默认账号
+   */
+  private String username = "framewiki";
+
+  /**
+   * 默认账号密码
+   */
+  private String password = "framewiki";
 
   /**
    * Security 资源过滤地址

@@ -1,3 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cdkjframework.swagger.SwaggerConfiguration,\
-  com.cdkjframework.swagger.config.SwaggerConfig
+  com.cdkjframework.swagger.config.SwaggerAutoConfiguration

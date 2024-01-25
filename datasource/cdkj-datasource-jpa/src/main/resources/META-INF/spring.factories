@@ -1,4 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.cdkjframework.datasource.jpa.config.JpaConfig,\
-  com.cdkjframework.datasource.jpa.connectivity.JpaDruidDbConfiguration,\
-  com.cdkjframework.datasource.jpa.connectivity.JpaConfiguration
+  com.cdkjframework.datasource.jpa.config.JpaAutoConfiguration
