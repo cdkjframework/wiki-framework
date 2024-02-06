@@ -2,12 +2,13 @@ package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.constant.BusinessConsts;
-import com.cdkjframework.constant.CacheConsts;
+import com.cdkjframework.constant.*;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.redis.RedisUtils;
+import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 
 public class WebUiController extends AbstractController {
+
+  /**
+   * 受权常量
+   */
+  private final String TOKEN = "token";
 
   /**
    * 自定义配置信息
@@ -38,8 +44,14 @@ public class WebUiController extends AbstractController {
   public ResponseBuilder quit(String id) {
     ResponseBuilder builder = new ResponseBuilder();
     try {
-      final String key = CacheConsts.USER_LOGIN + id;
-      RedisUtils.syncDel(key);
+      Claims claims = JwtUtils.parseJwt(id, customConfig.getJwtKey());
+      if (claims != null) {
+        String tokenKey = ConvertUtils.convertString(claims.get(TOKEN));
+        final String userKey = CacheConsts.USER_LOGIN + tokenKey;
+        final String resourceKey = CacheConsts.USER_RESOURCE + CurrentUser.getUserId();
+        RedisUtils.syncDel(resourceKey);
+        RedisUtils.syncDel(userKey);
+      }
     } catch (Exception ex) {
       ex.printStackTrace();
 

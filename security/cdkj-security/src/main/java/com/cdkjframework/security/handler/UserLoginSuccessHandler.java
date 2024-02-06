@@ -67,11 +67,6 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
   private final ResourceService resourceServiceImpl;
 
   /**
-   * 用户角色
-   */
-  private final UserRoleService userRoleServiceImpl;
-
-  /**
    * 工作流服务
    */
   private final WorkflowService workflowServiceImpl;
