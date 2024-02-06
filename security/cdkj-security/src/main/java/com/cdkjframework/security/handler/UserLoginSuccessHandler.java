@@ -106,7 +106,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     user.setConfigureList(configureList);
 
     // 用户角色
-    List<RoleEntity> roleList = userRoleServiceImpl.listRoleByUserId(user.getUserId());
+    List<RoleEntity> roleList = user.getRoleList();
     if (!CollectionUtils.isEmpty(roleList)) {
       // 用户资源
       List<ResourceEntity> resourceList = resourceServiceImpl.listResource(roleList, user.getUserId());
