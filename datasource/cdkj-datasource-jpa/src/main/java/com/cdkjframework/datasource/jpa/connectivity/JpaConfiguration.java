@@ -96,6 +96,7 @@ public class JpaConfiguration {
    * @return 返回事务接口
    */
   @Bean(name = "transactionManager")
+  @Qualifier(value = "transactionManagers")
   public PlatformTransactionManager transactionManager() {
     JpaTransactionManager txManager = new JpaTransactionManager();
     txManager.setEntityManagerFactory(entityManagerFactory());
