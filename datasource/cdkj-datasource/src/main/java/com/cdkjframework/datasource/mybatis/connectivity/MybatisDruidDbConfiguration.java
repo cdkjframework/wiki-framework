@@ -9,6 +9,7 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ import java.sql.SQLException;
  * @Version: 1.0
  */
 @RequiredArgsConstructor
+@ImportAutoConfiguration(value = {MybatisConfiguration.class})
 public class MybatisDruidDbConfiguration {
 
   /**
