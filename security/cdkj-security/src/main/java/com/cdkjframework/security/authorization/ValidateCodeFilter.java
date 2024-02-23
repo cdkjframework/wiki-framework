@@ -82,7 +82,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     if (values == null || values.length == IntegerConsts.ZERO) {
       ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码错误！"));
     }
-    String verifyCode = values[IntegerConsts.ZERO];
+    String verifyCode = ConvertUtils.convertString(values[IntegerConsts.ZERO]).toLowerCase();
 
     if (StringUtils.isNullAndSpaceOrEmpty(verifyCode) ||
         !validateValue.equals(verifyCode)) {
