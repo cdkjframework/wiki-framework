@@ -1,12 +1,15 @@
 package com.cdkjframework.security.service;
 
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
+import com.cdkjframework.exceptions.GlobalException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * @ProjectName: cdkj-framework
@@ -20,12 +23,19 @@ import java.io.IOException;
 public interface UserAuthenticationService {
 
   /**
+   * 授权常量
+   */
+  String AUTHORIZATION = "token";
+
+  /**
    * 身份权限验证
    *
    * @param userName  用户名
    * @param sessionId 会话id
    * @return 返回权限
    * @throws AuthenticationException 权限异常
+   * @throws ServletException        权限异常
+   * @throws IOException             权限异常
    */
   Authentication authenticate(String userName, String sessionId) throws AuthenticationException, IOException, ServletException;
 
@@ -34,7 +44,16 @@ public interface UserAuthenticationService {
    *
    * @param ticket   票据
    * @param response 响应
-   * @throws IOException IO异常信息
+   * @return 返回用户信息
+   * @throws Exception IO异常信息
    */
   SecurityUserEntity ticket(String ticket, HttpServletResponse response) throws Exception;
+
+  /**
+   * 刷新票据
+   *
+   * @param request 响应
+   * @return 返回票据
+   */
+  String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
 }

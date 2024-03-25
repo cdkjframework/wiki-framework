@@ -1,5 +1,6 @@
 package com.cdkjframework.security.service.impl;
 
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.constant.IntegerConsts;
@@ -13,6 +14,7 @@ import com.cdkjframework.security.service.UserAuthenticationService;
 import com.cdkjframework.security.service.UserLoginSuccessService;
 import com.cdkjframework.security.service.UserRoleService;
 import com.cdkjframework.util.encrypts.AesUtils;
+import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
@@ -30,8 +32,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -69,6 +73,11 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
   private final UserRoleService userRoleService;
 
   /**
+   * 配置信息
+   */
+  private final CustomConfig customConfig;
+
+  /**
    * 日志
    */
   private LogUtils logUtils = LogUtils.getLogger(UserAuthenticationService.class);
@@ -91,7 +100,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     SecurityUserEntity userInfo = (SecurityUserEntity) userDetails;
     // 还可以加一些其他信息的判断，比如用户账号已停用等判断
     if (userInfo.getStatus().equals(IntegerConsts.ZERO) ||
-        userInfo.getDeleted().equals(IntegerConsts.ONE)) {
+            userInfo.getDeleted().equals(IntegerConsts.ONE)) {
       throw new LockedException("该用户已被冻结");
     }
     // 角色集合
@@ -126,7 +135,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     }
     ticket = URLDecoder.decode(ticket, StandardCharsets.UTF_8.toString());
     String token = AesUtils.base64Decrypt(ticket
-        .replace(BusinessConsts.TICKET_SUFFIX, StringUtils.Empty));
+            .replace(BusinessConsts.TICKET_SUFFIX, StringUtils.Empty));
     // 读取用户信息
     String key = CacheConsts.USER_LOGIN + token;
     SecurityUserEntity user = RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
@@ -149,5 +158,26 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     RedisUtils.syncDel(ticketKey);
     // 返回结果
     return user;
+  }
+
+  /**
+   * 刷新票据
+   *
+   * @param request 响应
+   * @return 返回票据
+   */
+  @Override
+  public String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException {
+    String jwtToken = request.getHeader(AUTHORIZATION);
+    // 验证TOKEN有效性
+    String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
+
+    // 票据 token 关系
+    String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + tokenValue;
+    // 存储票据信息
+    RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.SIXTY);
+
+    // 返回票据
+    return URLEncoder.encode(AesUtils.base64Encode(tokenValue), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
   }
 }

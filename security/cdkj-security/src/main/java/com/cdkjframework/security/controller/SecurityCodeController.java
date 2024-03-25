@@ -81,7 +81,7 @@ public class SecurityCodeController {
     HttpSession session = request.getSession();
     // 生成验证码
     String code = VerifyCodeUtils.outputVerifyImage(IntegerConsts.ONE_HUNDRED, IntegerConsts.THIRTY_FIVE,
-        outputStream, IntegerConsts.FOUR);
+            outputStream, IntegerConsts.FOUR);
     // 将图形验证码存入到session中
     session.setAttribute(BusinessConsts.IMAGE_CODE, code);
     session.setAttribute(BusinessConsts.TIME, System.currentTimeMillis());
@@ -188,6 +188,21 @@ public class SecurityCodeController {
   @GetMapping(value = "/ticket.html")
   public SecurityUserEntity ticket(@RequestParam("ticket") String ticket, HttpServletResponse response) throws Exception {
     return userAuthenticationServiceImpl.ticket(ticket, response);
+  }
+
+  /**
+   * 票据认证
+   *
+   * @param request 响应
+   * @return 返回票据信息
+   */
+  @ResponseBody
+  @ApiOperation(value = "票据认证")
+  @GetMapping(value = "/refresh/ticket.html")
+  public ResponseBuilder refreshTicket(HttpServletRequest request) {
+    String ticket = userAuthenticationServiceImpl.refreshTicket(request);
+    // 返回结果
+    return ResponseBuilder.successBuilder(ticket);
   }
 
   /**
