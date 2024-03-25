@@ -30,6 +30,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
@@ -195,11 +196,13 @@ public class SecurityCodeController {
    *
    * @param request 响应
    * @return 返回票据信息
+   * @throws UnsupportedEncodingException 异常信息
+   * @throws GlobalException              异常信息
    */
   @ResponseBody
   @ApiOperation(value = "票据认证")
   @GetMapping(value = "/refresh/ticket.html")
-  public ResponseBuilder refreshTicket(HttpServletRequest request) {
+  public ResponseBuilder refreshTicket(HttpServletRequest request) throws UnsupportedEncodingException, GlobalException {
     String ticket = userAuthenticationServiceImpl.refreshTicket(request);
     // 返回结果
     return ResponseBuilder.successBuilder(ticket);
