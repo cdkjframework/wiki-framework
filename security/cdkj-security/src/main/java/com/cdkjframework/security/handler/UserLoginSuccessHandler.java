@@ -136,7 +136,6 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     map.put(BusinessConsts.USER_NAME, user.getUsername());
     map.put(BusinessConsts.USER_TYPE, user.getUserType());
     map.put(BusinessConsts.DISPLAY_NAME, user.getDisplayName());
-    map.put(BusinessConsts.TIME, time);
     // 暂不需要该参数
     String userAgent = StringUtils.Empty;
     StringBuilder builder = new StringBuilder();

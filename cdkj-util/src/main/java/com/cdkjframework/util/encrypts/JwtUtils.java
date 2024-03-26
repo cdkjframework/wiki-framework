@@ -124,9 +124,9 @@ public class JwtUtils {
     try {
       Claims claims = parseJwt(jwtToken, base64Security);
       long effective = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
-      Long time = ConvertUtils.convertLong(claims.get(BusinessConsts.EXP));
+      Long time = ConvertUtils.convertLong(claims.get(BusinessConsts.TIME));
       if (time <= IntegerConsts.ZERO) {
-        time = ConvertUtils.convertLong(claims.get(BusinessConsts.TIME));
+        time = ConvertUtils.convertLong(claims.get(BusinessConsts.EXP));
       }
 
       // 验证 token 是否过期
