@@ -53,7 +53,7 @@ public class CdkjApplication {
       logUtils.info("\n----------------------------------------------------------\n\t" +
                       "Application '{}' is running! Access URLs:\n\t" +
                       "Local: \t\thttp://localhost:{}\n\t" +
-                      "External: \thttp://{}:{}\n" +
+                      "External: \thttp://{}:{}\n\t" +
                       "External-IPv6: http://{}:{}\n----------------------------------------------------------",
               env.getProperty(SPRING_APPLICATION_NAME),
               env.getProperty(SERVER_PORT),
