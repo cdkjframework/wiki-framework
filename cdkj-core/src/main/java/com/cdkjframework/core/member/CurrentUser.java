@@ -1,7 +1,7 @@
 package com.cdkjframework.core.member;
 
 import com.alibaba.fastjson.JSONArray;
-import com.cdkjframework.config.MemberConfig;
+import com.cdkjframework.config.AccountConfig;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.CacheConsts;
@@ -47,13 +47,13 @@ public class CurrentUser {
   /**
    * 配置信息
    */
-  private static MemberConfig customConfig;
+  private static AccountConfig customConfig;
 
   /**
    * 静态初始
    */
   static {
-    customConfig = Application.applicationContext.getBean(MemberConfig.class);
+    customConfig = Application.applicationContext.getBean(AccountConfig.class);
   }
 
   /**

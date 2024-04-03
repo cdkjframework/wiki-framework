@@ -3,6 +3,7 @@ package com.cdkjframework.core.spring;
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.HostUtils;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -48,19 +49,18 @@ public class CdkjApplication {
     Application.applicationContext = context;
 
     Environment env = context.getEnvironment();
-    try {
-      if (env != null) {
-        logUtils.info("\n----------------------------------------------------------\n\t" +
-                "Application '{}' is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:{}\n\t" +
-                "External: \thttp://{}:{}\n----------------------------------------------------------",
-            env.getProperty(SPRING_APPLICATION_NAME),
-            env.getProperty(SERVER_PORT),
-            InetAddress.getLocalHost().getHostAddress(),
-            env.getProperty(SERVER_PORT));
-      }
-    } catch (UnknownHostException e) {
-      logUtils.error(e);
+    if (env != null) {
+      logUtils.info("\n----------------------------------------------------------\n\t" +
+                      "Application '{}' is running! Access URLs:\n\t" +
+                      "Local: \t\thttp://localhost:{}\n\t" +
+                      "External: \thttp://{}:{}\n" +
+                      "External-IPv6: http://{}:{}\n----------------------------------------------------------",
+              env.getProperty(SPRING_APPLICATION_NAME),
+              env.getProperty(SERVER_PORT),
+              HostUtils.getLocalHost(),
+              env.getProperty(SERVER_PORT),
+              HostUtils.getLocalIpv6(),
+              env.getProperty(SERVER_PORT));
     }
 
     return context;
