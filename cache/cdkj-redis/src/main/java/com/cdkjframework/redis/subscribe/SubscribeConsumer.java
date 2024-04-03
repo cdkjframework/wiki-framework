@@ -8,9 +8,11 @@ import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Component
+@RequiredArgsConstructor
 public class SubscribeConsumer implements RedisPubSubListener<String, String> {
 
   /**
@@ -54,11 +57,10 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
   private StatefulRedisClusterPubSubConnection<String, String> redisClusterSubscribeConnection;
 
   /**
-   * 构建函数
+   * 启动后启动服务
    */
-  public SubscribeConsumer(CustomConfig customConfig, RedisConfig redisConfig) {
-    this.customConfig = customConfig;
-    this.redisConfig = redisConfig;
+  @PostConstruct
+  public void subscribeConsumer(){
     // 订阅数据
     consumerMessage();
   }
