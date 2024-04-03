@@ -18,6 +18,10 @@ import java.util.Enumeration;
  */
 @Component
 public class HostUtils {
+  /**
+   * IPV6默认网卡
+   */
+  private static final String IPV6 = "%eth0";
 
   /**
    * 日志
@@ -104,7 +108,8 @@ public class HostUtils {
           boolean isIpv6 = inetAddress instanceof Inet6Address;
           // 检查是否为IPv6地址
           if (ipv6 && isIpv6) {
-            ip = inetAddress.getHostAddress();
+            ip = inetAddress.getHostAddress()
+                    .replace(IPV6, StringUtils.Empty);
           } else if (!ipv6 && !isIpv6) {
             ip = inetAddress.getHostAddress();
           }
