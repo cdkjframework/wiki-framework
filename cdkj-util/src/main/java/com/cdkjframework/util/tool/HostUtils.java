@@ -1,5 +1,6 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +22,7 @@ public class HostUtils {
   /**
    * IPV6默认网卡
    */
-  private static final String IPV6 = "%eth0";
+  private static final String IPV6 = "%";
 
   /**
    * 日志
@@ -88,7 +89,7 @@ public class HostUtils {
    * @return 返回结果
    */
   private static String getLocalIp(boolean ipv6) {
-    String ip = StringUtils.Empty;
+    StringBuffer ip = new StringBuffer(StringUtils.Empty);
     try {
       // 获取所有网络接口
       Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
@@ -108,10 +109,21 @@ public class HostUtils {
           boolean isIpv6 = inetAddress instanceof Inet6Address;
           // 检查是否为IPv6地址
           if (ipv6 && isIpv6) {
-            ip = inetAddress.getHostAddress()
-                    .replace(IPV6, StringUtils.Empty);
+            String ipV6 = inetAddress.getHostAddress();
+            String[] ipv6s = ipV6.split(StringUtils.COLON);
+            for (String ip6 :
+                    ipv6s) {
+              if (!ip.toString().isEmpty()) {
+                ip.append(StringUtils.COLON);
+              }
+              int idx = ip6.indexOf(IPV6);
+              if (idx > IntegerConsts.ZERO) {
+                ip6 = ip6.substring(IntegerConsts.ZERO, idx);
+              }
+              ip.append(ip6);
+            }
           } else if (!ipv6 && !isIpv6) {
-            ip = inetAddress.getHostAddress();
+            ip.append(inetAddress.getHostAddress());
           }
         }
       }
@@ -120,6 +132,6 @@ public class HostUtils {
     }
 
     //主机名
-    return ip;
+    return ip.toString();
   }
 }
