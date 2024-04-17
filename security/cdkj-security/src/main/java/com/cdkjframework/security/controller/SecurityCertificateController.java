@@ -11,7 +11,6 @@ import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.UserAuthenticationService;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
-import com.cdkjframework.util.files.FileUtils;
 import com.cdkjframework.util.files.images.code.QrCodeUtils;
 import com.cdkjframework.util.make.VerifyCodeUtils;
 import com.cdkjframework.util.network.http.HttpRequestUtils;
@@ -21,7 +20,8 @@ import io.jsonwebtoken.Claims;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -39,16 +39,16 @@ import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.security.controller
- * @ClassName: SecurityCodeController
- * @Description: java类作用描述
+ * @ClassName: SecurityCertificateController
+ * @Description: 安全认证接口
  * @Author: xiaLin
  * @Version: 1.0
  */
 @RestController
-@Api(tags = "验证生成接口")
+@Api(tags = "安全认证接口")
 @RequiredArgsConstructor
 @RequestMapping(value = "/security")
-public class SecurityCodeController {
+public class SecurityCertificateController {
 
   /**
    * 二维生成
@@ -76,7 +76,7 @@ public class SecurityCodeController {
   @ApiOperation(value = "获取验证码")
   public void verificationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
     OutputStream outputStream = response.getOutputStream();
-    response.setHeader("content-type", "text/html;charset=UTF-8");
+    response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE);
 
     // 创建 session
     HttpSession session = request.getSession();
@@ -99,7 +99,7 @@ public class SecurityCodeController {
   @GetMapping(value = "/scan/qrcode.html")
   public void scanCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
     OutputStream outputStream = response.getOutputStream();
-    response.setHeader("content-type", "text/html;charset=UTF-8");
+    response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE);
 
     // 创建 session
     HttpSession session = request.getSession();
@@ -243,5 +243,18 @@ public class SecurityCodeController {
     // 受权信息
     userAuthenticationServiceImpl.authenticate(username, id);
     RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.TWO));
+  }
+
+  /**
+   * 用户退出登录
+   *
+   * @param request 响应
+   * @throws GlobalException 异常信息
+   */
+  @ResponseBody
+  @ApiOperation(value = "扫码完成接口【即登录】")
+  @PostMapping(value = "/logout.html")
+  public void logout(HttpServletRequest request) throws GlobalException {
+    userAuthenticationServiceImpl.logout(request);
   }
 }

@@ -23,6 +23,11 @@ import java.io.UnsupportedEncodingException;
 public interface UserAuthenticationService {
 
   /**
+   * 获取登录参数
+   */
+  String GRANT_TYPE = "grantType";
+
+  /**
    * 授权常量
    */
   String AUTHORIZATION = "token";
@@ -56,4 +61,12 @@ public interface UserAuthenticationService {
    * @return 返回票据
    */
   String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
+
+  /**
+   * 用户退出登录
+   *
+   * @param request 响应
+   * @throws GlobalException 异常信息
+   */
+  void logout(HttpServletRequest request) throws GlobalException;
 }

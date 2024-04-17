@@ -13,7 +13,6 @@ import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.ConfigureService;
 import com.cdkjframework.security.service.ResourceService;
-import com.cdkjframework.security.service.UserRoleService;
 import com.cdkjframework.security.service.WorkflowService;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
@@ -52,6 +51,16 @@ import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
   /**
+   * 有效时间
+   */
+  private final long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
+
+  /**
+   * 加密 token 参数
+   */
+  private final String TOKEN_ENCRYPTION = "loginName=%s&effective=%s&time=%s&userAgent=%s";
+
+  /**
    * 自定义配置
    */
   private final CustomConfig customConfig;
@@ -70,11 +79,6 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
    * 工作流服务
    */
   private final WorkflowService workflowServiceImpl;
-
-  /**
-   * 有效时间
-   */
-  private final long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
 
   /**
    * 权限认证成功
@@ -139,7 +143,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     // 暂不需要该参数
     String userAgent = StringUtils.Empty;
     StringBuilder builder = new StringBuilder();
-    builder.append(String.format("loginName=%s&effective=%s&time=%s&userAgent=%s",
+    builder.append(String.format(TOKEN_ENCRYPTION,
         user.getUsername(), EFFECTIVE, time, userAgent));
     String token = Md5Utils.getMd5(builder.toString());
     map.put(BusinessConsts.HEADER_TOKEN, token);

@@ -6,21 +6,19 @@ import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.user.ResourceEntity;
 import com.cdkjframework.entity.user.RoleEntity;
+import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.RedisUtils;
-import com.cdkjframework.security.encrypt.Md5PasswordEncoder;
 import com.cdkjframework.security.service.UserAuthenticationService;
 import com.cdkjframework.security.service.UserLoginSuccessService;
 import com.cdkjframework.security.service.UserRoleService;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
-import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import com.cdkjframework.util.tool.number.ConvertUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,6 +28,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +40,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
@@ -76,11 +76,6 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
    * 配置信息
    */
   private final CustomConfig customConfig;
-
-  /**
-   * 日志
-   */
-  private LogUtils logUtils = LogUtils.getLogger(UserAuthenticationService.class);
 
   /**
    * 身份权限验证
@@ -144,15 +139,37 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     }
 
     // 票据 token 关系
-    String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + token;
-    String jwtToken = RedisUtils.syncGet(ticketKey);
+    String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + token,
+            jwtToken = RedisUtils.syncGet(ticketKey),
+            // 资源 key
+            resourceKey;
     RedisUtils.syncDel(ticketKey);
     user.setToken(jwtToken);
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
 
+    List<ResourceEntity> resourceList = null;
+    // 读取全部资源数据
+    HttpServletRequest request = HttpServletUtils.getRequest();
+    String grantType = request.getParameter(GRANT_TYPE);
+    if (StringUtils.isNotNullAndEmpty(grantType)) {
+      resourceKey = CacheConsts.USER_RESOURCE_ALL + user.getId();
+      resourceList = RedisUtils.syncGetList(resourceKey, ResourceEntity.class);
+      if (!CollectionUtils.isEmpty(resourceList)) {
+        Optional<ResourceEntity> optional = resourceList.stream()
+                .filter(f -> f.getCode().equals(grantType))
+                .findFirst();
+        if (optional.isPresent()) {
+          ResourceEntity resource = optional.get();
+          resourceList = resource.getChildren();
+        }
+      }
+    }
+
     // 读取用户资源
-    String resourceKey = CacheConsts.USER_RESOURCE + user.getUserId();
-    List<ResourceEntity> resourceList = RedisUtils.syncGetList(resourceKey, ResourceEntity.class);
+    if (CollectionUtils.isEmpty(resourceList)) {
+      resourceKey = CacheConsts.USER_RESOURCE + user.getUserId();
+      resourceList = RedisUtils.syncGetList(resourceKey, ResourceEntity.class);
+    }
     user.setResourceList(resourceList);
     // 删除数据
     RedisUtils.syncDel(ticketKey);
@@ -179,5 +196,36 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     // 返回票据
     return URLEncoder.encode(AesUtils.base64Encode(tokenValue), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
+  }
+
+  /**
+   * 用户退出登录
+   *
+   * @param request 响应
+   * @throws GlobalException 异常信息
+   */
+  @Override
+  public void logout(HttpServletRequest request) throws GlobalException {
+    String jwtToken = request.getHeader(AUTHORIZATION);
+    // 验证TOKEN有效性
+    String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
+    // 先读取用户信息
+    String key = CacheConsts.USER_LOGIN + tokenValue;
+    String jsonCache = RedisUtils.syncGet(key);
+    if (StringUtils.isNullAndSpaceOrEmpty(jsonCache)) {
+      return;
+    }
+    UserEntity user = JsonUtils.jsonStringToBean(jsonCache, UserEntity.class);
+    // 删除 用户信息
+    RedisUtils.syncDel(key);
+    // 删除 资源
+    key = CacheConsts.USER_RESOURCE + tokenValue;
+    RedisUtils.syncDel(key);
+    // 删除 用户全部资源
+    key = CacheConsts.USER_RESOURCE_ALL + user.getId();
+    RedisUtils.syncDel(key);
+    // 删除 用户工作流引擎
+    key = CacheConsts.WORK_FLOW + user.getId();
+    RedisUtils.syncDel(key);
   }
 }
