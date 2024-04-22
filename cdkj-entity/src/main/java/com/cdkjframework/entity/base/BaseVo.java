@@ -63,7 +63,7 @@ public class BaseVo {
    * 备注
    */
   @ApiModelProperty("状态")
-  private Integer remark;
+  private String remark;
 
   /**
    * 状态

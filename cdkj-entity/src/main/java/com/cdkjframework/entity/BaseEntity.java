@@ -111,7 +111,7 @@ public class BaseEntity implements Serializable {
    * 备注
    */
   @Column(name = "remark", nullable = false)
-  private Integer remark;
+  private String remark;
 
   /**
    * 是否删除
