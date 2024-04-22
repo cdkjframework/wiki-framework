@@ -10,6 +10,7 @@ import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.RedisUtils;
+import com.cdkjframework.security.service.ResourceService;
 import com.cdkjframework.security.service.UserAuthenticationService;
 import com.cdkjframework.security.service.UserLoginSuccessService;
 import com.cdkjframework.security.service.UserRoleService;
@@ -38,10 +39,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 
@@ -76,6 +74,11 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
    * 配置信息
    */
   private final CustomConfig customConfig;
+
+  /**
+   * 资源服务
+   */
+  private final ResourceService resourceServiceImpl;
 
   /**
    * 身份权限验证
@@ -147,29 +150,8 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     user.setToken(jwtToken);
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
 
-    List<ResourceEntity> resourceList = null;
-    // 读取全部资源数据
-    HttpServletRequest request = HttpServletUtils.getRequest();
-    String grantType = request.getParameter(GRANT_TYPE);
-    if (StringUtils.isNotNullAndEmpty(grantType)) {
-      resourceKey = CacheConsts.USER_RESOURCE_ALL + user.getId();
-      resourceList = RedisUtils.syncGetList(resourceKey, ResourceEntity.class);
-      if (!CollectionUtils.isEmpty(resourceList)) {
-        Optional<ResourceEntity> optional = resourceList.stream()
-                .filter(f -> f.getCode().equals(grantType))
-                .findFirst();
-        if (optional.isPresent()) {
-          ResourceEntity resource = optional.get();
-          resourceList = resource.getChildren();
-        }
-      }
-    }
-
-    // 读取用户资源
-    if (CollectionUtils.isEmpty(resourceList)) {
-      resourceKey = CacheConsts.USER_RESOURCE + user.getUserId();
-      resourceList = RedisUtils.syncGetList(resourceKey, ResourceEntity.class);
-    }
+    // 读取当前用户所登录平台资源数据
+    List<ResourceEntity> resourceList = resourceServiceImpl.listResource(new ArrayList<>(), user.getUserId());
     user.setResourceList(resourceList);
     // 删除数据
     RedisUtils.syncDel(ticketKey);

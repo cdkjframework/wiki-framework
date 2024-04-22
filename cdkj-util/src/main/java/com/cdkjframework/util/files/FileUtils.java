@@ -1,6 +1,8 @@
 package com.cdkjframework.util.files;
 
+import com.cdkjframework.constant.FileTypeConsts;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.enums.FileTypeEnums;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
@@ -725,44 +727,93 @@ public class FileUtils {
     public static byte[] compressPictures(InputStream byteInput, float quality) {
         byte[] imgBytes = null;
         try {
-            BufferedImage image = ImageIO.read(byteInput);
+          BufferedImage image = ImageIO.read(byteInput);
 
-            // 如果图片空，返回空
-            if (image == null) {
-                return null;
-            }
-            // 得到指定Format图片的writer（迭代器）
-            Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
-            // 得到writer
-            ImageWriter writer = (ImageWriter) iter.next();
-            // 得到指定writer的输出参数设置(ImageWriteParam )
-            ImageWriteParam iwp = writer.getDefaultWriteParam();
-            // 设置可否压缩
-            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            // 设置压缩质量参数
-            iwp.setCompressionQuality(quality);
+          // 如果图片空，返回空
+          if (image == null) {
+            return null;
+          }
+          // 得到指定Format图片的writer（迭代器）
+          Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
+          // 得到writer
+          ImageWriter writer = (ImageWriter) iter.next();
+          // 得到指定writer的输出参数设置(ImageWriteParam )
+          ImageWriteParam iwp = writer.getDefaultWriteParam();
+          // 设置可否压缩
+          iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+          // 设置压缩质量参数
+          iwp.setCompressionQuality(quality);
 
-            iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
+          iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
 
-            ColorModel colorModel = ColorModel.getRGBdefault();
-            // 指定压缩时使用的色彩模式
-            iwp.setDestinationType(
-                    new javax.imageio.ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(16, 16)));
+          ColorModel colorModel = ColorModel.getRGBdefault();
+          // 指定压缩时使用的色彩模式
+          iwp.setDestinationType(
+                  new javax.imageio.ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(16, 16)));
 
-            // 开始打包图片，写入byte[]
-            // 取得内存输出流
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            IIOImage iioImage = new IIOImage(image, null, null);
+          // 开始打包图片，写入byte[]
+          // 取得内存输出流
+          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+          IIOImage iioImage = new IIOImage(image, null, null);
 
-            // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput
-            // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput
-            writer.setOutput(ImageIO.createImageOutputStream(byteArrayOutputStream));
-            writer.write(null, iioImage, iwp);
-            imgBytes = byteArrayOutputStream.toByteArray();
+          // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput
+          // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput
+          writer.setOutput(ImageIO.createImageOutputStream(byteArrayOutputStream));
+          writer.write(null, iioImage, iwp);
+          imgBytes = byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            logUtil.error(e);
+          logUtil.error(e);
         } finally {
-            return imgBytes;
+          return imgBytes;
         }
     }
+
+  /**
+   * 验证文件的魔术数字
+   *
+   * @param inputStream 文件流
+   * @param typeEnums   文件类型
+   * @return 返回结果
+   */
+  public static boolean validFileTypeByMagicNumber(InputStream inputStream, List<FileTypeEnums> typeEnums) {
+    for (FileTypeEnums fileType :
+            typeEnums) {
+      byte[] magicNumbers = null;
+      switch (fileType) {
+        case PNG:
+          magicNumbers = FileTypeConsts.PNG;
+          break;
+        case GIF:
+          magicNumbers = FileTypeConsts.GIF;
+          break;
+        case JPG:
+          magicNumbers = FileTypeConsts.JPG;
+          break;
+        case BMP:
+          magicNumbers = FileTypeConsts.BMP;
+          break;
+        case TAR:
+          magicNumbers = FileTypeConsts.TAR;
+          break;
+        case ZIP:
+          magicNumbers = FileTypeConsts.ZIP;
+          break;
+      }
+      if (magicNumbers == null) {
+        continue;
+      }
+      byte[] header = new byte[magicNumbers.length];
+      try {
+        inputStream.read(header);
+        for (int i = 0; i < magicNumbers.length; i++) {
+          if (magicNumbers[i] != header[i]) {
+            return false;
+          }
+        }
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return true;
+  }
 }
