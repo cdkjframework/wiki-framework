@@ -53,27 +53,33 @@ public class BaseVo {
     @ApiModelProperty("主键")
     protected String id;
 
-    /**
-     * 日志ID
-     */
-    @ApiModelProperty("日志ID")
-    protected String logId;
+  /**
+   * 日志ID
+   */
+  @ApiModelProperty("日志ID")
+  protected String logId;
 
-    /**
-     * 状态
-     */
-    @ApiModelProperty("状态")
-    private Integer status;
+  /**
+   * 备注
+   */
+  @ApiModelProperty("状态")
+  private Integer remark;
 
-    /**
-     * 是否删除
-     */
-    @ApiModelProperty("是否删除")
-    protected Integer deleted;
+  /**
+   * 状态
+   */
+  @ApiModelProperty("状态")
+  private Integer status;
 
-    /**
-     * 添加时间
-     */
+  /**
+   * 是否删除
+   */
+  @ApiModelProperty("是否删除")
+  protected Integer deleted;
+
+  /**
+   * 添加时间
+   */
     @ApiModelProperty("添加时间")
     protected LocalDateTime addTime;
 

@@ -108,6 +108,12 @@ public class BaseEntity implements Serializable {
   private String id;
 
   /**
+   * 备注
+   */
+  @Column(name = "remark", nullable = false)
+  private Integer remark;
+
+  /**
    * 是否删除
    */
   @Column(name = "deleted", nullable = false)
