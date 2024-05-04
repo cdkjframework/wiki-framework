@@ -245,6 +245,16 @@
                 <artifactId>cdkj-util</artifactId>
                 <version>${cdkj.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-kafka</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cdkjframework</groupId>
+                <artifactId>cdkj-kafka-client</artifactId>
+                <version>${cdkj.version}</version>
+            </dependency>
 
             <!--监控-->
             <dependency>

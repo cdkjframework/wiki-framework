@@ -37,7 +37,6 @@ public class TopicConfig {
     Map<String, Object> configs = new HashMap<>(IntegerConsts.ONE);
     // 指定多个kafka集群多个地址，例如：192.168.2.11,9092,192.168.2.12:9092,192.168.2.13:9092
     configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
-    configs.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
     return new KafkaAdmin(configs);
   }
 }
