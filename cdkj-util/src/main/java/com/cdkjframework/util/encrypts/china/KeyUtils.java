@@ -31,7 +31,7 @@ public class KeyUtils {
   final static String stdName = "sm2p256v1";
 
   /**
-   * STD 名称
+   * 算法
    */
   final static String algorithm = "EC";
 
@@ -51,8 +51,6 @@ public class KeyUtils {
     KeyPair keyPair = keyPairGenerator.generateKeyPair();
     PrivateKey privateKey = keyPair.getPrivate();
     PublicKey publicKey = keyPair.getPublic();
-    //String[0] 公钥
-    //String[1] 私钥
     String[] result = {
         new String(Base64.getEncoder().encode(publicKey.getEncoded())),
         new String(Base64.getEncoder().encode(privateKey.getEncoded()))
