@@ -23,7 +23,7 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-pom</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </parent>
 
 #### 参与贡献
