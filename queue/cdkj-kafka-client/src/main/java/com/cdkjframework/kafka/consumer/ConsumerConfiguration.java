@@ -96,7 +96,6 @@ public class ConsumerConfiguration {
         }
       });
     }
-//        factory.setContainerCustomizer();
 
     return factory;
   }
