@@ -4,19 +4,16 @@ import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.CacheConsts;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.entity.user.BmsConfigureEntity;
 import com.cdkjframework.entity.user.ResourceEntity;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.RedisUtils;
-import com.cdkjframework.security.service.ResourceService;
-import com.cdkjframework.security.service.UserAuthenticationService;
-import com.cdkjframework.security.service.UserLoginSuccessService;
-import com.cdkjframework.security.service.UserRoleService;
+import com.cdkjframework.security.service.*;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
-import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +26,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -39,7 +35,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 
@@ -79,6 +78,11 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
    * 资源服务
    */
   private final ResourceService resourceServiceImpl;
+
+  /**
+   * 配置服务
+   */
+  private final ConfigureService configureServiceImpl;
 
   /**
    * 身份权限验证
@@ -153,6 +157,15 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     // 读取当前用户所登录平台资源数据
     List<ResourceEntity> resourceList = resourceServiceImpl.listResource(new ArrayList<>(), user.getUserId());
     user.setResourceList(resourceList);
+
+    // 读取配置信息
+    BmsConfigureEntity configure = new BmsConfigureEntity();
+    configure.setOrganizationId(user.getCurrentOrganizationId());
+    configure.setDeleted(IntegerConsts.ZERO);
+    configure.setStatus(IntegerConsts.ONE);
+    List<BmsConfigureEntity> configureList = configureServiceImpl.listConfigure(configure);
+    user.setConfigureList(configureList);
+
     // 删除数据
     RedisUtils.syncDel(ticketKey);
     // 返回结果
