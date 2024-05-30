@@ -2,9 +2,6 @@ package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -95,14 +92,17 @@ public class BmsConfigureEntity extends BaseEntity {
      * @param sort
      * @param remark
      */
-    public BmsConfigureEntity(String configName, String configKey, String configValue, String controlType, String defaultValue, String argument, Integer sort, String remark) {
-        this.configName = configName;
-        this.configKey = configKey;
-        this.configValue = configValue;
-        this.controlType = controlType;
-        this.defaultValue = defaultValue;
-        this.argument = argument;
-        this.sort = sort;
-        this.remark = remark;
+    public BmsConfigureEntity(String configName, String groupCode, String groupName, String configKey, String configValue,
+                              String controlType, String defaultValue, String argument, Integer sort, String remark) {
+      this.configName = configName;
+      this.groupCode = groupCode;
+      this.groupName = groupName;
+      this.configKey = configKey;
+      this.configValue = configValue;
+      this.controlType = controlType;
+      this.defaultValue = defaultValue;
+      this.argument = argument;
+      this.sort = sort;
+      this.remark = remark;
     }
 }
