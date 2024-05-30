@@ -59,6 +59,8 @@ public interface UserAuthenticationService {
    *
    * @param request 响应
    * @return 返回票据
+   * @throws GlobalException              异常信息
+   * @throws UnsupportedEncodingException 异常信息
    */
   String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
 

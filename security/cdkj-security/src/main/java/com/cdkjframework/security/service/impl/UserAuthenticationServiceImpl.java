@@ -161,6 +161,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     // 读取配置信息
     BmsConfigureEntity configure = new BmsConfigureEntity();
     configure.setOrganizationId(user.getCurrentOrganizationId());
+    configure.setTopOrganizationId(user.getTopOrganizationId());
     configure.setDeleted(IntegerConsts.ZERO);
     configure.setStatus(IntegerConsts.ONE);
     List<BmsConfigureEntity> configureList = configureServiceImpl.listConfigure(configure);
@@ -168,6 +169,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
     // 删除数据
     RedisUtils.syncDel(ticketKey);
+    user.setPassword(StringUtils.Empty);
     // 返回结果
     return user;
   }
