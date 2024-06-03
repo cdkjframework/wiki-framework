@@ -1,7 +1,7 @@
 package com.cdkjframework.util.encrypts.china;
 
 import com.cdkjframework.util.log.LogUtils;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+//import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import java.security.*;
 import java.security.spec.ECGenParameterSpec;
@@ -45,7 +45,7 @@ public class KeyUtils {
     KeyPairGenerator keyPairGenerator = null;
     SecureRandom secureRandom = new SecureRandom();
     ECGenParameterSpec sm2Spec = new ECGenParameterSpec(stdName);
-    keyPairGenerator = KeyPairGenerator.getInstance(algorithm, new BouncyCastleProvider());
+//    keyPairGenerator = KeyPairGenerator.getInstance(algorithm, new BouncyCastleProvider());
     keyPairGenerator.initialize(sm2Spec);
     keyPairGenerator.initialize(sm2Spec, secureRandom);
     KeyPair keyPair = keyPairGenerator.generateKeyPair();
@@ -69,8 +69,8 @@ public class KeyUtils {
     PublicKey key = null;
     try {
       X509EncodedKeySpec publicKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(publicKey));
-      KeyFactory keyFactory = KeyFactory.getInstance(algorithm, new BouncyCastleProvider());
-      key = keyFactory.generatePublic(publicKeySpec);
+//      KeyFactory keyFactory = KeyFactory.getInstance(algorithm, new BouncyCastleProvider());
+//      key = keyFactory.generatePublic(publicKeySpec);
     } catch (Exception e) {
       logUtils.error(e, e.getMessage());
     }
@@ -87,8 +87,8 @@ public class KeyUtils {
     PrivateKey key = null;
     try {
       PKCS8EncodedKeySpec pkcs8EncodedKeySpec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKey));
-      KeyFactory keyFactory = KeyFactory.getInstance(algorithm, new BouncyCastleProvider());
-      key = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
+//      KeyFactory keyFactory = KeyFactory.getInstance(algorithm, new BouncyCastleProvider());
+//      key = keyFactory.generatePrivate(pkcs8EncodedKeySpec);
     } catch (Exception e) {
       logUtils.error(e, e.getMessage());
     }

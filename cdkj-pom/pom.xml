@@ -13,22 +13,24 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.3.7.RELEASE</version>
+        <version>3.2.6</version>
+        <relativePath/>
     </parent>
 
     <properties>
         <cdkj.version>1.0.6</cdkj.version>
+        <compress.version>1.26.2</compress.version>
         <codecentric.version>2.3.1</codecentric.version>
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.boot.version>2.3.7.RELEASE</spring.boot.version>
+        <spring.boot.version>3.2.6</spring.boot.version>
         <disruptor.version>3.4.2</disruptor.version>
-        <spring.eureka.version>1.4.6.RELEASE</spring.eureka.version>
-        <spring.cloud.version>Hoxton.SR9</spring.cloud.version>
+        <spring.eureka.version>4.1.2</spring.eureka.version>
+        <spring.cloud.version>2023.0.2</spring.cloud.version>
         <spring.platform.version>Cairo-SR8</spring.platform.version>
-        <spring.version>5.2.12.RELEASE</spring.version>
+        <spring.version>6.1.8</spring.version>
         <swagger.version>2.9.2</swagger.version>
         <swagger-annotations.version>1.5.21</swagger-annotations.version>
         <swagger-models.version>1.5.21</swagger-models.version>
@@ -41,8 +43,9 @@
         <paleo-core.version>0.14.1</paleo-core.version>
         <kotlin-stdlib.version>1.4.30</kotlin-stdlib.version>
         <junit.version>4.12</junit.version>
-        <mockito.version>2.8.47</mockito.version>
-        <poi.version>3.17</poi.version>
+        <mockito.version>5.12.0</mockito.version>
+        <poi.version>5.2.5</poi.version>
+        <poi-schemas.version>4.1.2</poi-schemas.version>
         <easypoi.version>4.1.0</easypoi.version>
         <mybatis.starter.version>2.1.2</mybatis.starter.version>
         <mybatis.version>3.5.0</mybatis.version>
@@ -52,7 +55,7 @@
         <elasticsearch.version>7.2.1</elasticsearch.version>
         <!--alibaba -->
         <druid.version>1.1.24</druid.version>
-        <alibaba.fastjson.version>1.2.68</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
         <mq-http.version>1.0.4.2</mq-http.version>
         <ons.client.version>1.8.4.Final</ons.client.version>
         <sms.alicloud.version>2.0.5</sms.alicloud.version>
@@ -60,8 +63,8 @@
         <dyvmsapi.alicloud.version>1.0.2</dyvmsapi.alicloud.version>
         <sms.alicloud.dysmsapi.version>1.1.0</sms.alicloud.dysmsapi.version>
         <com.aliyun.mns.version>1.1.9</com.aliyun.mns.version>
-        <oss.version>3.4.2</oss.version>
-        <jpush-client.version>3.3.10</jpush-client.version>
+        <oss.version>3.17.4</oss.version>
+        <jpush-client.version>3.7.7</jpush-client.version>
         <jiguang-common.version>1.1.4</jiguang-common.version>
         <gexin.version>4.1.2.1</gexin.version>
         <xinge.version>1.2.4.14</xinge.version>
@@ -72,27 +75,28 @@
 
         <log4j-core.version>2.13.0</log4j-core.version>
         <junit.jupiter.api.version>5.5.1</junit.jupiter.api.version>
-        <cxf.version>3.4.3</cxf.version>
+        <cxf.version>4.0.4</cxf.version>
         <pinyin4j.version>2.5.1</pinyin4j.version>
-        <google.guava.version>28.0-jre</google.guava.version>
+        <google.guava.version>33.2.1-jre</google.guava.version>
         <barcode4j.version>2.1</barcode4j.version>
         <google.core.version>3.3.3</google.core.version>
         <google.gson.version>2.8.5</google.gson.version>
         <google-collect.version>1.0-rc1</google-collect.version>
+        <jdom2.version>2.0.6.1</jdom2.version>
         <xjar.version>2.0.9</xjar.version>
         <loadkit.version>v1.0.2</loadkit.version>
 
-        <itextpdf.version>5.5.13.1</itextpdf.version>
-        <easyexcel.version>2.2.6</easyexcel.version>
+        <itextpdf.version>5.5.13.3</itextpdf.version>
+        <easyexcel.version>3.3.4</easyexcel.version>
         <flowable.version>6.5.0</flowable.version>
-        <logback.version>1.2.3</logback.version>
+        <logback.version>1.5.6</logback.version>
         <lettuce-core.version>6.1.8.RELEASE</lettuce-core.version>
         <lettuce-search.version>3.1.2</lettuce-search.version>
         <redis-json.version>4.0.0</redis-json.version>
         <commons-pool2.version>2.7.0</commons-pool2.version>
 
 
-        <fileupload.version>1.4</fileupload.version>
+        <fileupload.version>1.5</fileupload.version>
         <kryo.version>4.0.2</kryo.version>
         <kryo.erializers.version>0.42</kryo.erializers.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
@@ -102,11 +106,11 @@
         <tomcat.version>9.0.22</tomcat.version>
         <jackson.annotations.version>2.11.0</jackson.annotations.version>
         <jackson-datatype-jsr310.version>2.11.0</jackson-datatype-jsr310.version>
-        <xstream.version>1.4.11</xstream.version>
+        <xstream.version>1.4.20</xstream.version>
         <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
         <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
         <lombok.version>1.18.8</lombok.version>
-        <commons.io.version>2.6</commons.io.version>
+        <commons.io.version>2.16.1</commons.io.version>
         <commons-lang.version>2.6</commons-lang.version>
 
         <apache.mina.version>3.0.0-M2</apache.mina.version>
@@ -256,6 +260,11 @@
                 <version>${cdkj.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-compress</artifactId>
+                <version>${compress.version}</version>
+            </dependency>
             <!--监控-->
             <dependency>
                 <groupId>de.codecentric</groupId>
@@ -320,13 +329,13 @@
                 <artifactId>disruptor</artifactId>
                 <version>${disruptor.version}</version>
             </dependency>
-            <dependency>
-                <groupId>io.spring.platform</groupId>
-                <artifactId>platform-bom</artifactId>
-                <version>${spring.platform.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>io.spring.platform</groupId>-->
+<!--                <artifactId>platform-bom</artifactId>-->
+<!--                <version>${spring.platform.version}</version>-->
+<!--                <type>pom</type>-->
+<!--                <scope>import</scope>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -379,7 +388,7 @@
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml-schemas</artifactId>
-                <version>${poi.version}</version>
+                <version>${poi-schemas.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -731,6 +740,11 @@
                 <version>${google-collect.version}</version>
             </dependency>
             <!-- jwt end -->
+            <dependency>
+                <groupId>org.jdom</groupId>
+                <artifactId>jdom2</artifactId>
+                <version>${jdom2.version}</version>
+            </dependency>
             <!-- 加密工具 -->
             <dependency>
                 <groupId>org.bouncycastle</groupId>

@@ -16,7 +16,6 @@
 
     <modules>
         <module>cdkj-security</module>
-        <module>cdkj-security-client</module>
     </modules>
 
     <repositories>
