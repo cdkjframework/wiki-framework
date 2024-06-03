@@ -3,13 +3,18 @@ package com.cdkjframework.util.encrypts.china;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.HexUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.bouncycastle.pqc.math.linearalgebra.ByteUtils;
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.security.AlgorithmParameters;
 import java.security.Key;
+import java.security.SecureRandom;
+import java.security.Security;
 
 /**
  * @ProjectName: cdkj-framework
@@ -47,7 +52,7 @@ public class SM4Utils {
    * 静态初始
    */
   static {
-//    Security.addProvider(new BouncyCastleProvider());
+    Security.addProvider(new BouncyCastleProvider());
   }
 
   /**
@@ -79,10 +84,9 @@ public class SM4Utils {
    * @throws Exception 异常信息
    */
   public static byte[] generateKey(int keySize) throws Exception {
-//    KeyGenerator kg = KeyGenerator.getInstance(ALGORITHM_NAME, BouncyCastleProvider.PROVIDER_NAME);
-//    kg.init(keySize, new SecureRandom());
-//    return kg.generateKey().getEncoded();
-    return null;
+    KeyGenerator kg = KeyGenerator.getInstance(ALGORITHM_NAME, BouncyCastleProvider.PROVIDER_NAME);
+    kg.init(keySize, new SecureRandom());
+    return kg.generateKey().getEncoded();
   }
 
   /**
@@ -96,15 +100,14 @@ public class SM4Utils {
    */
   public static String encrypt(String hexKey, String paramStr) throws Exception {
     // 16进制字符串-->byte[]
-//    byte[] keyData = ByteUtils.fromHexString(hexKey);
-    // String-->byte[]
-//    byte[] srcData = paramStr.getBytes(ENCODING);
-//    // 加密后的数组
-//    byte[] cipherArray = encryptCbcPadding(keyData, srcData);
-//
-//    // byte[]-->hexString
-//    return ByteUtils.toHexString(cipherArray);
-    return null;
+    byte[] keyData = ByteUtils.fromHexString(hexKey);
+    // 待加密字符串-->byte[]String-->byte[]
+    byte[] srcData = paramStr.getBytes(ENCODING);
+    // 加密后的数组
+    byte[] cipherArray = encryptCbcPadding(keyData, srcData);
+
+    // byte[]-->hexString
+    return ByteUtils.toHexString(cipherArray);
   }
 
   /**
@@ -130,11 +133,10 @@ public class SM4Utils {
    * @throws Exception 异常信息
    */
   private static Cipher generateCbcCipher(String algorithmName, int mode, byte[] key) throws Exception {
-//    Cipher cipher = Cipher.getInstance(algorithmName, BouncyCastleProvider.PROVIDER_NAME);
-//    Key sm4Key = new SecretKeySpec(key, ALGORITHM_NAME);
-//    cipher.init(mode, sm4Key, generateIV());
-//    return cipher;
-    return null;
+    Cipher cipher = Cipher.getInstance(algorithmName, BouncyCastleProvider.PROVIDER_NAME);
+    Key sm4Key = new SecretKeySpec(key, ALGORITHM_NAME);
+    cipher.init(mode, sm4Key, generateIV());
+    return cipher;
   }
 
   /**
@@ -146,7 +148,7 @@ public class SM4Utils {
   public static AlgorithmParameters generateIV() throws Exception {
     // iv 为一个 16 字节的数组，这里采用和 iOS 端一样的构造方法，数据全为0
     byte[] iv = new byte[IntegerConsts.SIXTEEN];
-//    Arrays.fill(iv, (byte) 0x00);
+    // Arrays.fill(iv, (byte) 0x00);
     AlgorithmParameters params = AlgorithmParameters.getInstance(ALGORITHM_NAME);
     params.init(new IvParameterSpec(iv));
     return params;
@@ -165,13 +167,13 @@ public class SM4Utils {
     // 用于接收解密后的字符串
     String result = StringUtils.Empty;
     // hexString-->byte[]
-//    byte[] keyData = ByteUtils.fromHexString(hexKey);
-//     hexString-->byte[]
-//    byte[] resultData = ByteUtils.fromHexString(text);
+    byte[] keyData = ByteUtils.fromHexString(hexKey);
+    // hexString-->byte[]
+    byte[] resultData = ByteUtils.fromHexString(text);
     // 解密
-//    byte[] srcData = decryptCbcPadding(keyData, resultData);
+    byte[] srcData = decryptCbcPadding(keyData, resultData);
     // byte[]-->String
-//    result = new String(srcData, ENCODING);
+    result = new String(srcData, ENCODING);
     // 返回结果
     return result;
   }
