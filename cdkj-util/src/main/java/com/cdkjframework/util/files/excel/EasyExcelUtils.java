@@ -4,7 +4,6 @@ import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.ExcelWriter;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
 import com.alibaba.excel.support.ExcelTypeEnum;
-import com.alibaba.excel.util.CollectionUtils;
 import com.alibaba.excel.write.builder.ExcelWriterBuilder;
 import com.alibaba.excel.write.metadata.WriteSheet;
 import com.cdkjframework.constant.IntegerConsts;
@@ -15,6 +14,7 @@ import com.cdkjframework.util.files.excel.converter.LocalDateTimeConverter;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.*;
 import java.util.HashMap;
@@ -390,10 +390,6 @@ public class EasyExcelUtils {
             // 设置工作薄
             WriteSheet writeSheet = new WriteSheet();
             writeSheet.setSheetName("Sheet" + (i + IntegerConsts.ONE));
-
-            if (columnWidth != null) {
-                writeSheet.setColumnWidthMap(columnWidth);
-            }
 
             if (!CollectionUtils.isEmpty(head)) {
                 writeSheet.setHead(head);

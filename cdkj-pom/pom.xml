@@ -21,6 +21,7 @@
         <cdkj.version>1.0.6</cdkj.version>
         <compress.version>1.26.2</compress.version>
         <codecentric.version>2.3.1</codecentric.version>
+        <ribbon.version>2.7.18</ribbon.version>
         <java.version>1.8</java.version>
         <winsw.version>1.9</winsw.version>
         <mysql-connector-java.version>8.0.21</mysql-connector-java.version>
@@ -85,6 +86,7 @@
         <jdom2.version>2.0.6.1</jdom2.version>
         <xjar.version>2.0.9</xjar.version>
         <loadkit.version>v1.0.2</loadkit.version>
+        <collections4.version>4.4</collections4.version>
 
         <itextpdf.version>5.5.13.3</itextpdf.version>
         <easyexcel.version>3.3.4</easyexcel.version>
@@ -100,6 +102,7 @@
         <kryo.version>4.0.2</kryo.version>
         <kryo.erializers.version>0.42</kryo.erializers.version>
         <javax.servlet.version>4.0.1</javax.servlet.version>
+        <jakarta.servlet.version>6.1.0-M2</jakarta.servlet.version>
         <javax.inject.version>1</javax.inject.version>
         <javax.mail.version>1.6.2</javax.mail.version>
         <mailapi.version>1.4.3</mailapi.version>
@@ -109,7 +112,7 @@
         <xstream.version>1.4.20</xstream.version>
         <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
         <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
-        <lombok.version>1.18.8</lombok.version>
+        <lombok.version>1.18.32</lombok.version>
         <commons.io.version>2.16.1</commons.io.version>
         <commons-lang.version>2.6</commons-lang.version>
 
@@ -264,6 +267,28 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${compress.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-collections4</artifactId>
+                <version>${collections4.version}</version>
+            </dependency>
+
+            <!--监控-->
+            <dependency>
+                <groupId>com.netflix.ribbon</groupId>
+                <artifactId>ribbon-core</artifactId>
+                <version>${ribbon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.netflix.ribbon</groupId>
+                <artifactId>ribbon-loadbalancer</artifactId>
+                <version>${ribbon.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.netflix.ribbon</groupId>
+                <artifactId>ribbon-httpclient</artifactId>
+                <version>${ribbon.version}</version>
             </dependency>
             <!--监控-->
             <dependency>
@@ -790,6 +815,11 @@
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${javax.servlet.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.servlet</groupId>
+                <artifactId>jakarta.servlet-api</artifactId>
+                <version>${jakarta.servlet.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.inject</groupId>

@@ -1,15 +1,10 @@
 package com.cdkjframework.util.network.http;
 
 import com.cdkjframework.util.tool.StringUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.RequestContextListener;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ProjectName: com.cdkjframework.QRcode
@@ -67,7 +62,7 @@ public class HttpServletUtils {
      *
      * @return 返回结果
      */
-    public static HttpServletResponse getResponse() {
+    public static jakarta.servlet.http.HttpServletResponse getResponse() {
         ServletRequestAttributes attributes = getRequestAttributes();
         if (attributes == null) {
             return null;
