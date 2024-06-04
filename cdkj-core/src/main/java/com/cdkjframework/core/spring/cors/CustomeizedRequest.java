@@ -1,9 +1,7 @@
 package com.cdkjframework.core.spring.cors;
 
-import com.cdkjframework.core.member.CurrentUser;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 /**
  * @ProjectName: cdkj-framework

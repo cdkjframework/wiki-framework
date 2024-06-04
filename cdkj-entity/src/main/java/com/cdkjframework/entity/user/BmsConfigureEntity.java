@@ -2,6 +2,7 @@ package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,6 +18,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
+@EqualsAndHashCode(callSuper=false)
 @Table(name = "bms_configure", catalog = "")
 public class BmsConfigureEntity extends BaseEntity {
 

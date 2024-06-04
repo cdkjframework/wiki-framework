@@ -11,12 +11,11 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.cluster.RedisClusterClient;
 import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
+import jakarta.annotation.Resource;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @ProjectName: cdkj-framework

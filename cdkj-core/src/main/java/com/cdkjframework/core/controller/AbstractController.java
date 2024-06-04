@@ -2,6 +2,7 @@ package com.cdkjframework.core.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.config.VersionConfig;
+import com.cdkjframework.constant.EncodingConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.file.FileEntity;
 import com.cdkjframework.entity.user.UserEntity;
@@ -13,6 +14,8 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -91,7 +94,7 @@ public abstract class AbstractController implements IController {
     public void version(HttpServletRequest request) {
         StringBuilder builder = new StringBuilder();
         builder.append(versionConfig.getSpringApplicationName());
-        builder.append(":");
+        builder.append(StringUtils.COLON);
         builder.append(versionConfig.getServerPort());
 
         //输出信息
@@ -327,11 +330,11 @@ public abstract class AbstractController implements IController {
     @Override
     public void outputStream(InputStream inputStream, String fileName) throws IOException {
         if (StringUtils.isNotNullAndEmpty(fileName)) {
-            fileName = URLDecoder.decode(fileName, "UTF-8");
+            fileName = URLDecoder.decode(fileName, EncodingConsts.UTF8);
         }
         HttpServletResponse response = HttpServletUtils.getResponse();
         response.reset();
-        response.setCharacterEncoding("utf-8");
+        response.setCharacterEncoding(EncodingConsts.UTF8);
         response.addHeader("Content-Length", "" + inputStream.available());
         response.setContentType("application/vnd.ms-excel;charset=utf-8");
         response.addHeader("Content-Disposition", "attachment;filename=" + fileName);

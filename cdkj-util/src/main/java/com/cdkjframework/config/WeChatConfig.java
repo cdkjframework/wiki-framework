@@ -1,10 +1,8 @@
 package com.cdkjframework.config;
 
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;

@@ -1,6 +1,8 @@
 package com.cdkjframework.util.network.http;
 
 import com.cdkjframework.util.tool.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -62,7 +64,7 @@ public class HttpServletUtils {
      *
      * @return 返回结果
      */
-    public static jakarta.servlet.http.HttpServletResponse getResponse() {
+    public static HttpServletResponse getResponse() {
         ServletRequestAttributes attributes = getRequestAttributes();
         if (attributes == null) {
             return null;

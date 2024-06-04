@@ -2,10 +2,9 @@ package com.cdkjframework.center.controller;
 
 import com.cdkjframework.constant.Application;
 import com.cdkjframework.core.controller.WebUiController;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ProjectName: cdkjframework

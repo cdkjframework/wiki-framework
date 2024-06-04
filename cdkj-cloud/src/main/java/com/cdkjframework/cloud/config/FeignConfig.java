@@ -2,6 +2,7 @@ package com.cdkjframework.cloud.config;
 
 import com.cdkjframework.cloud.client.FeignClient;
 import com.cdkjframework.cloud.service.FeignService;
+import com.cdkjframework.constant.IntegerConsts;
 import feign.Request;
 import feign.Retryer;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.concurrent.TimeUnit;
+
 
 /**
  * @ProjectName: HT-OMS-Project-OMS
@@ -36,6 +38,12 @@ public class FeignConfig extends FeignApiInterceptor {
   private final String SSL_CONTEXT = "SSL";
 
   /**
+   * 默认值：70s
+   */
+  private final int CONNECT_TIMEOUT_MILLIS = IntegerConsts.ONE_THOUSAND * IntegerConsts.SEVENTY,
+      READ_TIMEOUT_MILLIS = CONNECT_TIMEOUT_MILLIS;
+
+  /**
    * Feign服务接口
    */
   private final FeignService feignServiceImpl;
@@ -47,7 +55,9 @@ public class FeignConfig extends FeignApiInterceptor {
    */
   @Bean
   public Retryer feignRetryer() {
-    return new Retryer.Default(100, TimeUnit.SECONDS.toMillis(10), 3);
+    return new Retryer.Default(IntegerConsts.ONE_HUNDRED,
+        TimeUnit.SECONDS.toMillis(IntegerConsts.TEN),
+        IntegerConsts.THREE);
   }
 
   /**
@@ -57,12 +67,11 @@ public class FeignConfig extends FeignApiInterceptor {
    */
   @Bean
   public Request.Options feignOption() {
-    Request.Options option = new Request.Options(70000, 70000);
-    return option;
+    return new Request.Options(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS, READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS, Boolean.TRUE);
   }
 
   /**
-   * 默认不注入，如果yml配置里有 ccom.cdkjframework.cloud.client.FeignClient 才注入
+   * 默认不注入，如果yml配置里有 com.cdkjframework.cloud.client.FeignClient 才注入
    *
    * @return 返回结果
    * @throws NoSuchAlgorithmException 异常信息
@@ -70,7 +79,7 @@ public class FeignConfig extends FeignApiInterceptor {
    */
   @Bean
   @ConditionalOnProperty("com.cdkjframework.cloud.client.FeignClient")
-  FeignClient getClient() throws NoSuchAlgorithmException, KeyManagementException {
+  public FeignClient getClient() throws NoSuchAlgorithmException, KeyManagementException {
     // 忽略SSL校验
     SSLContext ctx = SSLContext.getInstance(SSL_CONTEXT);
     X509TrustManager tm = new X509TrustManager() {

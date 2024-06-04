@@ -7,16 +7,23 @@ import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.reactive.RedisAdvancedClusterReactiveCommands;
 import io.lettuce.core.cluster.api.reactive.RedisClusterReactiveCommands;
 import io.lettuce.core.cluster.models.partitions.ClusterPartitionParser;
+import io.lettuce.core.models.stream.ClaimedMessages;
+import io.lettuce.core.models.stream.PendingMessage;
+import io.lettuce.core.models.stream.PendingMessages;
 import io.lettuce.core.output.*;
 import io.lettuce.core.protocol.CommandArgs;
 import io.lettuce.core.protocol.CommandType;
 import io.lettuce.core.protocol.ProtocolKeyword;
+import io.lettuce.core.protocol.RedisCommand;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -73,29 +80,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
     @Override
     public void setTimeout(Duration timeout) {
 
-    }
-
-    /**
-     * Set the default timeout for operations. A zero timeout value indicates to not time out.
-     *
-     * @param timeout the timeout value.
-     * @param unit    the unit of the timeout value.
-     * @deprecated since 5.0, use {@link #setTimeout(Duration)}.
-     */
-    @Override
-    public void setTimeout(long timeout, TimeUnit unit) {
-
-    }
-
-    /**
-     * Authenticate to the server.
-     *
-     * @param password the password.
-     * @return String simple-string-reply.
-     */
-    @Override
-    public Mono<String> auth(String password) {
-        return null;
     }
 
     /**
@@ -156,6 +140,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> clusterDelSlotsRange(Range<Integer>... ranges) {
+        return null;
+    }
+
     /**
      * Assign a slot to a node. The command migrates the specified slot from the current node to the specified node in
      * {@code nodeId}
@@ -177,6 +166,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> clusterSetSlotStable(int slot) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<Object>> clusterShards() {
         return null;
     }
 
@@ -272,6 +266,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> clusterAddSlotsRange(Range<Integer>... ranges) {
+        return null;
+    }
+
     /**
      * Returns the number of failure reports for the specified node. Failure reports are the way Redis Cluster uses in order to
      * promote a {@literal PFAIL} state, that means a node is not reachable, to a {@literal FAIL} state, that means that the
@@ -344,6 +343,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> auth(CharSequence charSequence) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> auth(String s, CharSequence charSequence) {
+        return null;
+    }
+
     /**
      * Turn this node into a replica of the node with the id {@code nodeId}.
      *
@@ -355,6 +364,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Flux<String> clusterReplicas(String s) {
+        return null;
+    }
+
     /**
      * Failover a cluster node. Turns the currently connected node into a master and the master into its replica.
      *
@@ -363,6 +377,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> clusterFailover(boolean force) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> clusterFailover(boolean b, boolean b1) {
         return null;
     }
 
@@ -590,12 +609,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
 
     }
 
+    @Override
+    public Mono<Boolean> copy(String s, String k1) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> copy(String s, String k1, CopyArgs copyArgs) {
+        return null;
+    }
+
     /**
      * Delete one or more keys with pipelining. Cross-slot keys will result in multiple calls to the particular cluster nodes.
      *
      * @param keys the keys.
      * @return Long integer-reply The number of keys that were removed.
-     * @see RedisKeyReactiveCommands#del(Object[])
      */
     @Override
     public Mono<Long> del(String... keys) {
@@ -607,7 +635,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param keys the keys.
      * @return Long integer-reply The number of keys that were removed.
-     * @see RedisKeyReactiveCommands#unlink(Object[])
      */
     @Override
     public Mono<Long> unlink(String... keys) {
@@ -651,6 +678,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Boolean> expire(String s, long l, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> expire(String s, Duration duration) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> expire(String s, Duration duration, ExpireArgs expireArgs) {
+        return null;
+    }
+
     /**
      * Set the expiration for a key as a UNIX timestamp.
      *
@@ -666,6 +708,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Boolean> expireat(String s, Date date, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> expireat(String s, Instant instant) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> expireat(String s, Instant instant, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> expiretime(String s) {
+        return null;
+    }
+
     /**
      * Set the expiration for a key as a UNIX timestamp.
      *
@@ -678,6 +740,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Boolean> expireat(String key, long timestamp) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> expireat(String s, long l, ExpireArgs expireArgs) {
         return null;
     }
 
@@ -901,6 +968,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> getdel(String s) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> getex(String s, GetExArgs getExArgs) {
+        return null;
+    }
+
     /**
      * Get a substring of the string stored at a key.
      *
@@ -967,7 +1044,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param keys the key.
      * @return V array-reply list of values at the specified keys.
-     * @see RedisStringReactiveCommands#mget(Object[])
      */
     @Override
     public Flux<KeyValue<String, String>> mget(String... keys) {
@@ -992,7 +1068,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param map the map.
      * @return String simple-string-reply always {@code OK} since {@code MSET} can't fail.
-     * @see RedisStringReactiveCommands#mset(Map)
      */
     @Override
     public Mono<String> mset(Map<String, String> map) {
@@ -1007,7 +1082,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Boolean integer-reply specifically:
      * <p>
      * {@code 1} if the all the keys were set. {@code 0} if no key was set (at least one key already existed).
-     * @see RedisStringReactiveCommands#msetnx(Map)
      */
     @Override
     public Mono<Boolean> msetnx(Map<String, String> map) {
@@ -1036,6 +1110,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> set(String key, String value, SetArgs setArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> setGet(String s, String s2) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> setGet(String s, String s2, SetArgs setArgs) {
         return null;
     }
 
@@ -1158,6 +1242,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> clientCaching(boolean b) {
+        return null;
+    }
+
     /**
      * Get the current connection name.
      *
@@ -1168,15 +1257,29 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Long> clientGetredir() {
+        return null;
+    }
+
     /**
      * Set the current connection name on all cluster nodes with pipelining.
      *
      * @param name the client name.
      * @return simple-string-reply {@code OK} if the connection name was successfully set.
-     * @see RedisServerReactiveCommands#clientSetname(Object)
      */
     @Override
     public Mono<String> clientSetname(String name) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> clientSetinfo(String s, String s1) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> clientTracking(TrackingArgs trackingArgs) {
         return null;
     }
 
@@ -1234,6 +1337,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> clientList() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> clientList(ClientListArgs clientListArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> clientInfo() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> clientNoEvict(boolean b) {
         return null;
     }
 
@@ -1301,6 +1419,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Map<String, String>> configGet(String... strings) {
+        return null;
+    }
+
     /**
      * Reset the stats returned by INFO.
      *
@@ -1334,14 +1457,23 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> configSet(Map<String, String> map) {
+        return null;
+    }
+
     /**
      * Remove all keys from all databases on all cluster masters with pipelining.
      *
      * @return String simple-string-reply.
-     * @see RedisServerReactiveCommands#flushall()
      */
     @Override
     public Mono<String> flushall() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> flushall(FlushMode flushMode) {
         return null;
     }
 
@@ -1349,7 +1481,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Remove all keys asynchronously from all databases on all cluster upstream nodes with pipelining.
      *
      * @return String simple-string-reply
-     * @see RedisServerReactiveCommands#flushallAsync()
      * @since 5.3.3
      */
     @Override
@@ -1361,10 +1492,14 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Remove all keys from the current database on all cluster masters with pipelining.
      *
      * @return String simple-string-reply.
-     * @see RedisServerReactiveCommands#flushdb()
      */
     @Override
     public Mono<String> flushdb() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> flushdb(FlushMode flushMode) {
         return null;
     }
 
@@ -1421,6 +1556,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> replicaof(String s, int i) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> replicaofNoOne() {
+        return null;
+    }
+
     /**
      * Synchronously save the dataset to disk.
      *
@@ -1435,7 +1580,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Return the number of keys in the selected database on all cluster masters.
      *
      * @return Long integer-reply.
-     * @see RedisServerReactiveCommands#dbsize()
      */
     @Override
     public Mono<Long> dbsize() {
@@ -1532,7 +1676,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param pattern the pattern type: patternkey (pattern).
      * @return List&lt;K&gt; array-reply list of keys matching {@code pattern}.
-     * @see RedisKeyReactiveCommands#keys(Object)
      */
     @Override
     public Flux<String> keys(String pattern) {
@@ -1545,7 +1688,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @param channel the channel.
      * @param pattern the pattern.
      * @return Long array-reply list of keys matching {@code pattern}.
-     * @see RedisKeyReactiveCommands#keys(KeyStreamingChannel, Object)
      */
     @Override
     public Mono<Long> keys(KeyStreamingChannel<String> channel, String pattern) {
@@ -1605,6 +1747,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Long> objectFreq(String s) {
+        return null;
+    }
+
     /**
      * returns the number of seconds since the object stored at the specified key is idle (not requested by read or write
      * operations).
@@ -1656,6 +1803,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Boolean> pexpire(String s, long l, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> pexpire(String s, Duration duration) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> pexpire(String s, Duration duration, ExpireArgs expireArgs) {
+        return null;
+    }
+
     /**
      * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
      *
@@ -1671,6 +1833,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Boolean> pexpireat(String s, Date date, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> pexpireat(String s, Instant instant) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> pexpireat(String s, Instant instant, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> pexpiretime(String s) {
+        return null;
+    }
+
     /**
      * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
      *
@@ -1683,6 +1865,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Boolean> pexpireat(String key, long timestamp) {
+        return null;
+    }
+
+    @Override
+    public Mono<Boolean> pexpireat(String s, long l, ExpireArgs expireArgs) {
         return null;
     }
 
@@ -1702,7 +1889,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Return a random key from the keyspace on a random master.
      *
      * @return K bulk-string-reply the random key, or a {@link Mono} that completes empty when the database is empty.
-     * @see RedisKeyReactiveCommands#randomkey()
      */
     @Override
     public Mono<String> randomkey() {
@@ -1810,6 +1996,39 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Flux<String> sortReadOnly(String s) {
+        return null;
+    }
+
+    /**
+     * @param valueStreamingChannel
+     * @param s
+     * @deprecated
+     */
+    @Override
+    @Deprecated
+    public Mono<Long> sortReadOnly(ValueStreamingChannel<String> valueStreamingChannel, String s) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> sortReadOnly(String s, SortArgs sortArgs) {
+        return null;
+    }
+
+    /**
+     * @param valueStreamingChannel
+     * @param s
+     * @param sortArgs
+     * @deprecated
+     */
+    @Override
+    @Deprecated
+    public Mono<Long> sortReadOnly(ValueStreamingChannel<String> valueStreamingChannel, String s, SortArgs sortArgs) {
+        return null;
+    }
+
     /**
      * Sort the elements in a list, set or sorted set.
      *
@@ -1836,6 +2055,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public <T> Flux<T> eval(byte[] bytes, ScriptOutputType scriptOutputType, String... strings) {
+        return null;
+    }
+
     /**
      * Execute a Lua script server side.
      *
@@ -1847,6 +2071,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public <T> Flux<T> eval(String script, ScriptOutputType type, String[] keys, String... values) {
+        return null;
+    }
+
+    @Override
+    public <T> Flux<T> eval(byte[] bytes, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public <T> Flux<T> evalReadOnly(byte[] bytes, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
         return null;
     }
 
@@ -1877,6 +2111,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public <T> Flux<T> evalshaReadOnly(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
     /**
      * Check existence of scripts in the script cache.
      *
@@ -1894,10 +2133,14 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Remove all the scripts from the script cache on all cluster nodes.
      *
      * @return String simple-string-reply.
-     * @see RedisScriptingReactiveCommands#scriptFlush()
      */
     @Override
     public Mono<String> scriptFlush() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> scriptFlush(FlushMode flushMode) {
         return null;
     }
 
@@ -1905,7 +2148,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Kill the script currently in execution on all cluster nodes. This call does not fail even if no scripts are running.
      *
      * @return String simple-string-reply, always {@literal OK}.
-     * @see RedisScriptingReactiveCommands#scriptKill()
      */
     @Override
     public Mono<String> scriptKill() {
@@ -1923,6 +2165,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> scriptLoad(byte[] bytes) {
+        return null;
+    }
+
     /**
      * Create a SHA1 digest from a Lua script.
      *
@@ -1934,14 +2181,23 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public String digest(byte[] bytes) {
+        return null;
+    }
+
     /**
      * Synchronously save the dataset to disk and then shut down all nodes of the cluster.
      *
      * @param save {@code true} force save operation.
-     * @see RedisServerReactiveCommands#shutdown(boolean)
      */
     @Override
     public Mono<Void> shutdown(boolean save) {
+        return null;
+    }
+
+    @Override
+    public Mono<Void> shutdown(ShutdownArgs shutdownArgs) {
         return null;
     }
 
@@ -2026,7 +2282,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Incrementally iterate the keys space over the whole Cluster.
      *
      * @return KeyScanCursor&lt;K&gt; scan cursor.
-     * @see RedisKeyReactiveCommands#scan(ScanArgs)
      */
     @Override
     public Mono<KeyScanCursor<String>> scan() {
@@ -2038,7 +2293,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param scanArgs scan arguments.
      * @return KeyScanCursor&lt;K&gt; scan cursor.
-     * @see RedisKeyReactiveCommands#scan(ScanArgs)
      */
     @Override
     public Mono<KeyScanCursor<String>> scan(ScanArgs scanArgs) {
@@ -2052,7 +2306,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *                   {@link #scan()} call.
      * @param scanArgs   scan arguments.
      * @return KeyScanCursor&lt;K&gt; scan cursor.
-     * @see RedisKeyReactiveCommands#scan(ScanCursor, ScanArgs)
      */
     @Override
     public Mono<KeyScanCursor<String>> scan(ScanCursor scanCursor, ScanArgs scanArgs) {
@@ -2065,7 +2318,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @param scanCursor cursor to resume the scan. It's required to reuse the {@code scanCursor} instance from the previous
      *                   {@link #scan()} call.
      * @return KeyScanCursor&lt;K&gt; scan cursor.
-     * @see RedisKeyReactiveCommands#scan(ScanCursor)
      */
     @Override
     public Mono<KeyScanCursor<String>> scan(ScanCursor scanCursor) {
@@ -2077,7 +2329,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param channel streaming channel that receives a call for every key.
      * @return StreamScanCursor scan cursor.
-     * @see RedisKeyReactiveCommands#scan(KeyStreamingChannel)
      */
     @Override
     public Mono<StreamScanCursor> scan(KeyStreamingChannel<String> channel) {
@@ -2090,7 +2341,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @param channel  streaming channel that receives a call for every key.
      * @param scanArgs scan arguments.
      * @return StreamScanCursor scan cursor.
-     * @see RedisKeyReactiveCommands#scan(KeyStreamingChannel, ScanArgs)
      */
     @Override
     public Mono<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanArgs scanArgs) {
@@ -2105,7 +2355,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *                   {@link #scan()} call.
      * @param scanArgs   scan arguments.
      * @return StreamScanCursor scan cursor.
-     * @see RedisKeyReactiveCommands#scan(KeyStreamingChannel, ScanCursor, ScanArgs)
      */
     @Override
     public Mono<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanCursor scanCursor, ScanArgs scanArgs) {
@@ -2119,7 +2368,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @param scanCursor cursor to resume the scan. It's required to reuse the {@code scanCursor} instance from the previous
      *                   {@link #scan()} call.
      * @return StreamScanCursor scan cursor.
-     * @see RedisKeyReactiveCommands#scan(ScanCursor, ScanArgs)
      */
     @Override
     public Mono<StreamScanCursor> scan(KeyStreamingChannel<String> channel, ScanCursor scanCursor) {
@@ -2174,6 +2422,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Long> geoadd(String s, double v, double v1, String v2, GeoAddArgs geoAddArgs) {
+        return null;
+    }
+
     /**
      * Multi geo add.
      *
@@ -2183,6 +2436,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> geoadd(String key, Object... lngLatMember) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> geoadd(String s, GeoValue<String>... geoValues) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> geoadd(String s, GeoAddArgs geoAddArgs, Object... objects) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> geoadd(String s, GeoAddArgs geoAddArgs, GeoValue<String>... geoValues) {
         return null;
     }
 
@@ -2231,7 +2499,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
     }
 
     /**
-     * Perform a {@link #georadius(Object, double, double, double, GeoArgs.Unit, GeoArgs)} query and store the results in a
+     * Perform a {@link #(Object, double, double, double, GeoArgs.Unit, GeoArgs)} query and store the results in a
      * sorted set.
      *
      * @param key                the key of the geo set.
@@ -2280,7 +2548,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
     }
 
     /**
-     * Perform a {@link #georadiusbymember(Object, Object, double, GeoArgs.Unit, GeoArgs)} query and store the results in a
+     * Perform a {@link #(Object, Object, double, GeoArgs.Unit, GeoArgs)} query and store the results in a
      * sorted set.
      *
      * @param key                the key of the geo set.
@@ -2293,6 +2561,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> georadiusbymember(String key, String member, double distance, GeoArgs.Unit unit, GeoRadiusStoreArgs<String> geoRadiusStoreArgs) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> geosearch(String s, GeoSearch.GeoRef<String> geoRef, GeoSearch.GeoPredicate geoPredicate) {
+        return null;
+    }
+
+    @Override
+    public Flux<GeoWithin<String>> geosearch(String s, GeoSearch.GeoRef<String> geoRef, GeoSearch.GeoPredicate geoPredicate, GeoArgs geoArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> geosearchstore(String s, String k1, GeoSearch.GeoRef<String> geoRef, GeoSearch.GeoPredicate geoPredicate, GeoArgs geoArgs, boolean b) {
         return null;
     }
 
@@ -2429,15 +2712,8 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
-    /**
-     * Get all the fields and values in a hash.
-     *
-     * @param key the key.
-     * @return Map&lt;K,V&gt; array-reply list of fields and their values stored in the hash, or an empty list when {@code key}
-     * does not exist.
-     */
     @Override
-    public Mono<Map<String, String>> hgetall(String key) {
+    public Flux<KeyValue<String, String>> hgetall(String s) {
         return null;
     }
 
@@ -2521,6 +2797,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> hmset(String key, Map<String, String> map) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> hrandfield(String s) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> hrandfield(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, String>> hrandfieldWithvalues(String s) {
+        return null;
+    }
+
+    @Override
+    public Flux<KeyValue<String, String>> hrandfieldWithvalues(String s, long l) {
         return null;
     }
 
@@ -2705,6 +3001,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> blmove(String s, String k1, LMoveArgs lMoveArgs, long l) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> blmove(String s, String k1, LMoveArgs lMoveArgs, double v) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, List<String>>> blmpop(long l, LMPopArgs lmPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, List<String>>> blmpop(double v, LMPopArgs lmPopArgs, String... strings) {
+        return null;
+    }
+
     /**
      * Remove and get the first element in a list, or block until one is available.
      *
@@ -2718,6 +3034,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<KeyValue<String, String>> blpop(long timeout, String... keys) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, String>> blpop(double v, String... strings) {
         return null;
     }
 
@@ -2737,6 +3058,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<KeyValue<String, String>> brpop(double v, String... strings) {
+        return null;
+    }
+
     /**
      * Pop a value from a list, push it to another list and return it; or block until one is available.
      *
@@ -2748,6 +3074,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> brpoplpush(long timeout, String source, String destination) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> brpoplpush(double v, String s, String k1) {
         return null;
     }
 
@@ -2789,6 +3120,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<String> lmove(String s, String k1, LMoveArgs lMoveArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, List<String>>> lmpop(LMPopArgs lmPopArgs, String... strings) {
+        return null;
+    }
+
     /**
      * Remove and get the first element in a list.
      *
@@ -2797,6 +3138,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<String> lpop(String key) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> lpop(String s, long l) {
         return null;
     }
 
@@ -2971,6 +3317,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Flux<String> rpop(String s, long l) {
+        return null;
+    }
+
     /**
      * Remove the last element in a list, append it to another list and return it.
      *
@@ -3090,6 +3441,16 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Long> sintercard(String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> sintercard(long l, String... strings) {
+        return null;
+    }
+
     /**
      * Intersect multiple sets and store the resulting set in a key.
      *
@@ -3153,6 +3514,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> smembers(ValueStreamingChannel<String> channel, String key) {
+        return null;
+    }
+
+    @Override
+    public Flux<Boolean> smismember(String s, String... strings) {
         return null;
     }
 
@@ -3364,6 +3730,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<KeyValue<String, ScoredValue<String>>> bzmpop(long l, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, List<ScoredValue<String>>>> bzmpop(long l, long l1, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, ScoredValue<String>>> bzmpop(double v, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, List<ScoredValue<String>>>> bzmpop(double v, int i, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
     /**
      * Removes and returns a member with the lowest scores in the sorted set stored at one of the keys.
      *
@@ -3378,6 +3764,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<KeyValue<String, ScoredValue<String>>> bzpopmin(double v, String... strings) {
+        return null;
+    }
+
     /**
      * Removes and returns a member with the highest scores in the sorted set stored at one of the keys.
      *
@@ -3389,6 +3780,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<KeyValue<String, ScoredValue<String>>> bzpopmax(long timeout, String... keys) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, ScoredValue<String>>> bzpopmax(double v, String... strings) {
         return null;
     }
 
@@ -3539,6 +3935,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zcount(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zcount(String key, double min, double max) {
         return null;
     }
@@ -3553,6 +3950,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zcount(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zcount(String key, String min, String max) {
         return null;
     }
@@ -3570,6 +3968,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Flux<String> zdiff(String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zdiffstore(String s, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<ScoredValue<String>> zdiffWithScores(String... strings) {
+        return null;
+    }
+
     /**
      * Increment the score of a member in a sorted set.
      *
@@ -3581,6 +3994,36 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Double> zincrby(String key, double amount, String member) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> zinter(String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> zinter(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zintercard(String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zintercard(long l, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<ScoredValue<String>> zinterWithScores(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<ScoredValue<String>> zinterWithScores(String... strings) {
         return null;
     }
 
@@ -3619,6 +4062,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zlexcount(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zlexcount(String key, String min, String max) {
         return null;
     }
@@ -3633,6 +4077,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> zlexcount(String key, Range<? extends String> range) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<Double>> zmscore(String s, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, ScoredValue<String>>> zmpop(ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<KeyValue<String, List<ScoredValue<String>>>> zmpop(int i, ZPopArgs zPopArgs, String... strings) {
         return null;
     }
 
@@ -3683,6 +4142,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Flux<ScoredValue<String>> zpopmax(String key, long count) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> zrandmember(String s) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> zrandmember(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public Mono<ScoredValue<String>> zrandmemberWithScores(String s) {
+        return null;
+    }
+
+    @Override
+    public Flux<ScoredValue<String>> zrandmemberWithScores(String s, long l) {
         return null;
     }
 
@@ -3750,6 +4229,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebylex(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrangebylex(String key, String min, String max) {
         return null;
     }
@@ -3779,6 +4259,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebylex(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrangebylex(String key, String min, String max, long offset, long count) {
         return null;
     }
@@ -3807,6 +4288,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrangebyscore(String key, double min, double max) {
         return null;
     }
@@ -3821,6 +4303,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrangebyscore(String key, String min, String max) {
         return null;
     }
@@ -3850,6 +4333,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrangebyscore(String key, double min, double max, long offset, long count) {
         return null;
     }
@@ -3866,6 +4350,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrangebyscore(String key, String min, String max, long offset, long count) {
         return null;
     }
@@ -3895,6 +4380,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(ValueStreamingChannel, Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscore(ValueStreamingChannel<String> channel, String key, double min, double max) {
         return null;
     }
@@ -3910,6 +4396,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(ValueStreamingChannel, Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscore(ValueStreamingChannel<String> channel, String key, String min, String max) {
         return null;
     }
@@ -3941,6 +4428,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(ValueStreamingChannel, Object, Range, Limit limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscore(ValueStreamingChannel<String> channel, String key, double min, double max, long offset, long count) {
         return null;
     }
@@ -3958,6 +4446,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscore(ValueStreamingChannel, Object, Range, Limit limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscore(ValueStreamingChannel<String> channel, String key, String min, String max, long offset, long count) {
         return null;
     }
@@ -3987,6 +4476,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrangebyscoreWithScores(String key, double min, double max) {
         return null;
     }
@@ -4001,6 +4491,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrangebyscoreWithScores(String key, String min, String max) {
         return null;
     }
@@ -4030,6 +4521,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(Object, Range, Limit limit)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrangebyscoreWithScores(String key, double min, double max, long offset, long count) {
         return null;
     }
@@ -4046,6 +4538,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrangebyscoreWithScores(String key, String min, String max, long offset, long count) {
         return null;
     }
@@ -4075,6 +4568,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, double min, double max) {
         return null;
     }
@@ -4090,6 +4584,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, String min, String max) {
         return null;
     }
@@ -4121,6 +4616,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range, Limit limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, double min, double max, long offset, long count) {
         return null;
     }
@@ -4138,6 +4634,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range, Limit limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, String min, String max, long offset, long count) {
         return null;
     }
@@ -4157,6 +4654,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Long> zrangestore(String s, String k1, Range<Long> range) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zrangestorebylex(String s, String k1, Range<? extends String> range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zrangestorebyscore(String s, String k1, Range<? extends Number> range, Limit limit) {
+        return null;
+    }
+
     /**
      * Determine the index of a member in a sorted set.
      *
@@ -4167,6 +4679,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> zrank(String key, String member) {
+        return null;
+    }
+
+    @Override
+    public Mono<ScoredValue<Long>> zrankWithScore(String s, String s2) {
         return null;
     }
 
@@ -4194,6 +4711,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zremrangebylex(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zremrangebylex(String key, String min, String max) {
         return null;
     }
@@ -4234,6 +4752,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zremrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zremrangebyscore(String key, double min, double max) {
         return null;
     }
@@ -4248,6 +4767,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zremrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zremrangebyscore(String key, String min, String max) {
         return null;
     }
@@ -4356,6 +4876,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrevrangebyscore(String key, double max, double min) {
         return null;
     }
@@ -4370,6 +4891,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrevrangebyscore(String key, String max, String min) {
         return null;
     }
@@ -4399,6 +4921,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscore(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrevrangebyscore(String key, double max, double min, long offset, long count) {
         return null;
     }
@@ -4415,6 +4938,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscore(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<String> zrevrangebyscore(String key, String max, String min, long offset, long count) {
         return null;
     }
@@ -4444,6 +4968,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscore(ValueStreamingChannel<String> channel, String key, double max, double min) {
         return null;
     }
@@ -4459,6 +4984,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscore(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscore(ValueStreamingChannel<String> channel, String key, String max, String min) {
         return null;
     }
@@ -4490,6 +5016,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscore(ValueStreamingChannel<String> channel, String key, double max, double min, long offset, long count) {
         return null;
     }
@@ -4507,6 +5034,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscore(ValueStreamingChannel<String> channel, String key, String max, String min, long offset, long count) {
         return null;
     }
@@ -4536,6 +5064,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrevrangebyscoreWithScores(String key, double max, double min) {
         return null;
     }
@@ -4550,6 +5079,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(Object, Range)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrevrangebyscoreWithScores(String key, String max, String min) {
         return null;
     }
@@ -4579,6 +5109,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrevrangebyscoreWithScores(String key, double max, double min, long offset, long count) {
         return null;
     }
@@ -4595,6 +5126,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Flux<ScoredValue<String>> zrevrangebyscoreWithScores(String key, String max, String min, long offset, long count) {
         return null;
     }
@@ -4624,6 +5156,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, double max, double min) {
         return null;
     }
@@ -4639,6 +5172,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, String max, String min) {
         return null;
     }
@@ -4669,6 +5203,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, double max, double min, long offset, long count) {
         return null;
     }
@@ -4686,6 +5221,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @deprecated Use {@link #zrevrangebyscoreWithScores(ScoredValueStreamingChannel, Object, Range, Limit)}.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> channel, String key, String max, String min, long offset, long count) {
         return null;
     }
@@ -4705,6 +5241,21 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<Long> zrevrangestore(String s, String k1, Range<Long> range) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zrevrangestorebylex(String s, String k1, Range<? extends String> range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> zrevrangestorebyscore(String s, String k1, Range<? extends Number> range, Limit limit) {
+        return null;
+    }
+
     /**
      * Determine the index of a member in a sorted set, with scores ordered from high to low.
      *
@@ -4715,6 +5266,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> zrevrank(String key, String member) {
+        return null;
+    }
+
+    @Override
+    public Mono<ScoredValue<Long>> zrevrankWithScore(String s, String s2) {
         return null;
     }
 
@@ -4831,6 +5387,26 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Flux<String> zunion(String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> zunion(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<ScoredValue<String>> zunionWithScores(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Flux<ScoredValue<String>> zunionWithScores(String... strings) {
+        return null;
+    }
+
     /**
      * Add multiple sorted sets and store the resulting sorted set in a new key.
      *
@@ -4919,6 +5495,11 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
+    @Override
+    public Mono<ClaimedMessages<String, String>> xautoclaim(String s, XAutoClaimArgs<String> xAutoClaimArgs) {
+        return null;
+    }
+
     /**
      * Gets ownership of one or multiple messages in the Pending Entries List of a given stream consumer group.
      *
@@ -4989,15 +5570,13 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
-    /**
-     * Delete a consumer from a consumer group.
-     *
-     * @param key      the stream key.
-     * @param consumer consumer identified by group name and consumer key.
-     * @return simple-reply {@code true} if successful.
-     */
     @Override
-    public Mono<Boolean> xgroupDelconsumer(String key, Consumer<String> consumer) {
+    public Mono<Boolean> xgroupCreateconsumer(String s, Consumer<String> consumer) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> xgroupDelconsumer(String s, Consumer<String> consumer) {
         return null;
     }
 
@@ -5073,43 +5652,23 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
         return null;
     }
 
-    /**
-     * Read pending messages from a stream for a {@code group}.
-     *
-     * @param key   the stream key.
-     * @param group name of the consumer group.
-     * @return Object array-reply list pending entries.
-     */
     @Override
-    public Flux<Object> xpending(String key, String group) {
+    public Mono<PendingMessages> xpending(String s, String k1) {
         return null;
     }
 
-    /**
-     * Read pending messages from a stream within a specific {@link Range}.
-     *
-     * @param key   the stream key.
-     * @param group name of the consumer group.
-     * @param range must not be {@code null}.
-     * @param limit must not be {@code null}.
-     * @return Object array-reply list with members of the resulting stream.
-     */
     @Override
-    public Flux<Object> xpending(String key, String group, Range<String> range, Limit limit) {
+    public Flux<PendingMessage> xpending(String s, String k1, Range<String> range, Limit limit) {
         return null;
     }
 
-    /**
-     * Read pending messages from a stream within a specific {@link Range}.
-     *
-     * @param key      the stream key.
-     * @param consumer consumer identified by group name and consumer key.
-     * @param range    must not be {@code null}.
-     * @param limit    must not be {@code null}.
-     * @return Object array-reply list with members of the resulting stream.
-     */
     @Override
-    public Flux<Object> xpending(String key, Consumer<String> consumer, Range<String> range, Limit limit) {
+    public Flux<PendingMessage> xpending(String s, Consumer<String> consumer, Range<String> range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Flux<PendingMessage> xpending(String s, XPendingArgs<String> xPendingArgs) {
         return null;
     }
 
@@ -5233,6 +5792,161 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      */
     @Override
     public Mono<Long> xtrim(String key, boolean approximateTrimming, long count) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> xtrim(String s, XTrimArgs xTrimArgs) {
+        return null;
+    }
+
+    @Override
+    public Mono<Set<AclCategory>> aclCat() {
+        return null;
+    }
+
+    @Override
+    public Mono<Set<CommandType>> aclCat(AclCategory aclCategory) {
+        return null;
+    }
+
+    @Override
+    public Mono<Long> aclDeluser(String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclDryRun(String s, String s1, String... strings) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclDryRun(String s, RedisCommand<String, String, ?> redisCommand) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclGenpass() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclGenpass(int i) {
+        return null;
+    }
+
+    @Override
+    public Mono<List<Object>> aclGetuser(String s) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> aclList() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclLoad() {
+        return null;
+    }
+
+    @Override
+    public Flux<Map<String, Object>> aclLog() {
+        return null;
+    }
+
+    @Override
+    public Flux<Map<String, Object>> aclLog(int i) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclLogReset() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclSave() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclSetuser(String s, AclSetuserArgs aclSetuserArgs) {
+        return null;
+    }
+
+    @Override
+    public Flux<String> aclUsers() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> aclWhoami() {
+        return null;
+    }
+
+    @Override
+    public <T> Flux<T> fcall(String s, ScriptOutputType scriptOutputType, String... strings) {
+        return null;
+    }
+
+    @Override
+    public <T> Flux<T> fcall(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public <T> Flux<T> fcallReadOnly(String s, ScriptOutputType scriptOutputType, String... strings) {
+        return null;
+    }
+
+    @Override
+    public <T> Flux<T> fcallReadOnly(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> functionLoad(String s) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> functionLoad(String s, boolean b) {
+        return null;
+    }
+
+    @Override
+    public Mono<byte[]> functionDump() {
+        return null;
+    }
+
+    @Override
+    public Mono<String> functionRestore(byte[] bytes) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> functionRestore(byte[] bytes, FunctionRestoreMode functionRestoreMode) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> functionFlush(FlushMode flushMode) {
+        return null;
+    }
+
+    @Override
+    public Mono<String> functionKill() {
+        return null;
+    }
+
+    @Override
+    public Flux<Map<String, Object>> functionList() {
+        return null;
+    }
+
+    @Override
+    public Flux<Map<String, Object>> functionList(String s) {
         return null;
     }
 }

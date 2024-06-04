@@ -9,10 +9,9 @@ import com.cdkjframework.entity.generate.template.TableColumnEntity;
 import com.cdkjframework.entity.generate.template.TableEntity;
 import com.cdkjframework.util.tool.CopyUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;

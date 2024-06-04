@@ -14,12 +14,12 @@ import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
+import com.cdkjframework.util.tool.CollectUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.jsonwebtoken.Claims;
-import org.springframework.util.CollectionUtils;
+import jakarta.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,20 +40,22 @@ public class CurrentUser {
   private static final String ID = "438a848a-60b6-4c00-b6fd-7dfc6dd94aac";
 
   /**
+   * 默认名称
+   */
+  private static final String DEFAULT_NAME = "系统默认用户";
+
+  /**
    * 日志
    */
-  private static LogUtils logUtils = LogUtils.getLogger(CurrentUser.class.getName());
+  private final static LogUtils LOGGER = LogUtils.getLogger(CurrentUser.class.getName());
 
   /**
    * 配置信息
    */
-  private static AccountConfig customConfig;
+  private final static AccountConfig CUSTOM_CONFIG;
 
-  /**
-   * 静态初始
-   */
   static {
-    customConfig = Application.applicationContext.getBean(AccountConfig.class);
+    CUSTOM_CONFIG = Application.applicationContext.getBean(AccountConfig.class);
   }
 
   /**
@@ -188,13 +190,14 @@ public class CurrentUser {
    */
   public static BmsConfigureEntity getConfigure(InterfaceEnum typeEnum) {
     List<BmsConfigureEntity> bmsConfigureEntityList = getConfigureList();
-    if (CollectionUtils.isEmpty(bmsConfigureEntityList) || typeEnum == null ||
+    if (CollectUtils.isEmpty(bmsConfigureEntityList) || typeEnum == null ||
         StringUtils.isNullAndSpaceOrEmpty(typeEnum.getValue())) {
       return null;
     }
     Optional<BmsConfigureEntity> optional = bmsConfigureEntityList.stream()
         .filter(f -> f.getConfigKey().equals(typeEnum.getValue()))
         .findFirst();
+
     if (optional.isPresent()) {
       return optional.get();
     } else {
@@ -211,7 +214,7 @@ public class CurrentUser {
   public static String getConfigureValue(InterfaceEnum typeEnum) {
     BmsConfigureEntity bmsConfigureEntity = getConfigure(typeEnum);
     if (bmsConfigureEntity == null) {
-      return "";
+      return StringUtils.Empty;
     } else {
       return bmsConfigureEntity.getConfigValue();
     }
@@ -230,10 +233,9 @@ public class CurrentUser {
       String key = CacheConsts.USER_RESOURCE + user.getId();
       resourceList = RedisUtils.syncGetList(key, ResourceEntity.class);
     } catch (Exception e) {
-      logUtils.error(e);
-    } finally {
-      return resourceList;
+      LOGGER.error(e);
     }
+    return resourceList;
   }
 
   /**
@@ -245,8 +247,8 @@ public class CurrentUser {
     UserEntity entity = getCurrentUser(UserEntity.class);
     if (entity == null) {
       entity = new UserEntity();
-      entity.setId("438a848a-60b6-4c00-b6fd-7dfc6dd94aac");
-      entity.setLoginName("系统默认用户");
+      entity.setId(ID);
+      entity.setLoginName(DEFAULT_NAME);
     }
 
     //返回结果
@@ -264,14 +266,17 @@ public class CurrentUser {
     try {
       String key = getRequestUserHeader();
       if (StringUtils.isNotNullAndEmpty(key)) {
-        Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
+        Claims claims = JwtUtils.parseJwt(key, CUSTOM_CONFIG.getJwtKey());
+        if (claims == null) {
+          return null;
+        }
         String token = claims.get(BusinessConsts.HEADER_TOKEN).toString();
         return getCurrentUser(token, clazz);
       } else {
         return null;
       }
     } catch (Exception ex) {
-      logUtils.error(ex);
+      LOGGER.error(ex);
     }
 
     //返回结果
@@ -291,7 +296,7 @@ public class CurrentUser {
       String key = CacheConsts.USER_LOGIN + token;
       userEntity = RedisUtils.syncGetEntity(key, clazz);
     } catch (Exception ex) {
-      logUtils.error(ex);
+      LOGGER.error(ex);
     }
 
     //返回结果

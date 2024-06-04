@@ -17,8 +17,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.util.CollectionUtils;
 
 import javax.servlet.FilterChain;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;

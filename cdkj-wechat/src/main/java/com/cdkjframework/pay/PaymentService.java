@@ -6,7 +6,7 @@ import com.cdkjframework.entity.pay.PayRecordEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.pay.dto.PaymentResultDto;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @ProjectName: cdkjframework.pay
