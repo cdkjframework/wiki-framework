@@ -109,6 +109,7 @@ public class RedisClientConfiguration {
     AssertUtils.isListEmpty(redisConfig.getHost(), "redis 没有配置连接地址");
     // redis 集群连接
     boolean redisCluster = redisConfig.isCluster();
+    logUtils.info("Redis 连接地址：" + redisConfig.getHost());
     if (redisCluster) {
       logUtils.info("Redis 集群配置开始：" + LocalDateUtils.dateTimeCurrentFormatter());
     } else {
