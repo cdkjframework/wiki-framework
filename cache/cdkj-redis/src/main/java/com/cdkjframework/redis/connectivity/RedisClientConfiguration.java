@@ -7,10 +7,7 @@ import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.AssertUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import io.lettuce.core.AbstractRedisClient;
-import io.lettuce.core.ClientOptions;
-import io.lettuce.core.RedisClient;
-import io.lettuce.core.RedisURI;
+import io.lettuce.core.*;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.ClusterTopologyRefreshOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
@@ -23,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * @ProjectName: cdkj-framework
@@ -79,7 +77,6 @@ public class RedisClientConfiguration {
         RedisClient redisClient = RedisClient.create(createRedisUrl(redisConfig.getHost()
             .get(IntegerConsts.ZERO), redisConfig.getPort()));
         redisClient.setOptions(clientOptions());
-        redisClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
         // 返回结果
         return redisClient;
       } else {
@@ -90,7 +87,6 @@ public class RedisClientConfiguration {
         }
         RedisClusterClient clusterClient = RedisClusterClient.create(urlList);
         clusterClient.setOptions(clusterClientOptions());
-        clusterClient.setDefaultTimeout(Duration.ofSeconds(redisConfig.getTimeout()));
         // 返回结果
         return clusterClient;
       }
@@ -129,10 +125,16 @@ public class RedisClientConfiguration {
     RedisURI redisUri = RedisURI.builder()
         .withHost(redisUrl)
         .withPort(port)
+        .withTimeout(Duration.ofSeconds(redisConfig.getTimeout()))
         .withDatabase(redisConfig.getDatabase())
         .build();
     if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
-      redisUri.setPassword(redisConfig.getPassword());
+      Supplier<RedisCredentials> supplier = () -> {
+        RedisCredentials redisCredentials = new RedisCredentials(redisConfig.getPassword());
+        return redisCredentials;
+      };
+      RedisCredentialsProvider credentialsProvider = RedisCredentialsProvider.from(supplier);
+      redisUri.setCredentialsProvider(credentialsProvider);
     }
     // 返回地址
     return redisUri;
