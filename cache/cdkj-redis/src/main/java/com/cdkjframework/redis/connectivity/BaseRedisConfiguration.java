@@ -4,6 +4,8 @@ import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.log.LogUtils;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 
+import java.time.Duration;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.redis
@@ -30,9 +32,9 @@ public class BaseRedisConfiguration {
         poolConfig.setMaxIdle(redisConfig.getMaxIdle());
         poolConfig.setMinIdle(redisConfig.getMinIdle());
         poolConfig.setMaxTotal(redisConfig.getMaxTotal());
-        poolConfig.setMaxWaitMillis(redisConfig.getMaxWaitMillis());
-        poolConfig.setMinEvictableIdleTimeMillis(redisConfig.getMinEvictableIdleTimeMillis());
-        poolConfig.setSoftMinEvictableIdleTimeMillis(redisConfig.getSoftMinEvictableIdleTimeMillis());
+        poolConfig.setMaxWait(Duration.ofMillis(redisConfig.getMaxWaitMillis()));
+        poolConfig.setMinEvictableIdleDuration(Duration.ofMillis(redisConfig.getMinEvictableIdleTimeMillis()));
+        poolConfig.setSoftMinEvictableIdleDuration(Duration.ofMillis(redisConfig.getSoftMinEvictableIdleTimeMillis()));
 
         // 返回配置
         return poolConfig;

@@ -41,26 +41,32 @@ import java.util.stream.Collectors;
 
 @Service
 public class GenerateServiceImpl implements GenerateService {
-    /**
-     * 环境
-     */
-    @Value("${spring.application.name}")
-    private String active;
 
-    /**
-     * 配置
-     */
-    private final CustomConfig customConfig;
+  /**
+   * 存储库Int
+   */
+  private final String REPOSITORY_INT = "repositoryInt";
 
-    /**
-     * 替换值
-     */
-    private final String REPLACEMENT = " ";
+  /**
+   * 环境
+   */
+  @Value("${spring.application.name}")
+  private String active;
 
-    /**
-     * 日志
-     */
-    private LogUtils logUtil = LogUtils.getLogger(GenerateServiceImpl.class);
+  /**
+   * 配置
+   */
+  private final CustomConfig customConfig;
+
+  /**
+   * 替换值
+   */
+  private final String REPLACEMENT = " ";
+
+  /**
+   * 日志
+   */
+  private LogUtils logUtil = LogUtils.getLogger(GenerateServiceImpl.class);
 
     /**
      * 生成 mapper
@@ -304,23 +310,23 @@ public class GenerateServiceImpl implements GenerateService {
                         case "mapperXml":
                         case "extendXml":
                             path.append(pathList.get(IntegerConsts.SIX));
-                            isXml = true;
-                            break;
+                          isXml = true;
+                          break;
                     }
-                    path.append("/src/main/");
-                    if (isXml) {
-                        path.append("resources/");
-                    } else {
-                        path.append("java/");
-                    }
+                  path.append("/src/main/");
+                  if (isXml) {
+                    path.append("resources/");
+                  } else {
+                    path.append("java/");
+                  }
                 }
-                if (!entity.isIntTemplate() && temp.getTemplateName().equals("repositoryInt")) {
-                    continue;
-                }
-                if (!isXml && path.length() > IntegerConsts.ZERO) {
-                    path.append(entity.getPackageName().replace(StringUtils.POINT, DIVISION));
-                }
-                template(entity, temp.getTemplateName(), path.toString(), temp.getCateLog(), temp.getSuffix());
+              if (!entity.isIntTemplate() && temp.getTemplateName().equals(REPOSITORY_INT)) {
+                continue;
+              }
+              if (!isXml && path.length() > IntegerConsts.ZERO) {
+                path.append(entity.getPackageName().replace(StringUtils.POINT, DIVISION));
+              }
+              template(entity, temp.getTemplateName(), path.toString(), temp.getCateLog(), temp.getSuffix());
             }
         } catch (IOException e) {
             logUtil.error(e.getCause(), e.getMessage());

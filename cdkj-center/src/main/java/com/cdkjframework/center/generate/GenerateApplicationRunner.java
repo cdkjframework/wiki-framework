@@ -2,6 +2,7 @@ package com.cdkjframework.center.generate;
 
 import com.cdkjframework.center.service.UpdateDatabaseService;
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.center.library.ColumnLayoutEntity;
 import com.cdkjframework.entity.center.library.TableLayoutEntity;
 import com.cdkjframework.enums.datasource.DataTypeContrastEnums;
@@ -126,7 +127,7 @@ public class GenerateApplicationRunner implements ApplicationRunner {
         if (defaultValue.equals(name)) {
             if (column.length() > length) {
                 name = "TEXT";
-            } else if (column.length() > length * 2) {
+            } else if (column.length() > length * IntegerConsts.TWO) {
                 name = "MEDIUMTEXT";
             }
         }

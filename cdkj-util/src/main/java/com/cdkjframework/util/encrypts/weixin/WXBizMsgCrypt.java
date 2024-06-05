@@ -25,6 +25,7 @@
  */
 package com.cdkjframework.util.encrypts.weixin;
 
+import com.cdkjframework.constant.IntegerConsts;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
@@ -65,7 +66,7 @@ public class WXBizMsgCrypt {
      * @throws AesException 执行失败，请查看该异常的错误码和具体的错误信息
      */
     public WXBizMsgCrypt(String token, String encodingAesKey, String appId) throws AesException {
-        if (encodingAesKey.length() != 43) {
+        if (encodingAesKey.length() != IntegerConsts.FORTY_THREE) {
             throw new AesException(AesException.IllegalAesKey);
         }
 
@@ -95,7 +96,7 @@ public class WXBizMsgCrypt {
      */
     int recoverNetworkBytesOrder(byte[] orderBytes) {
         int sourceNumber = 0;
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < IntegerConsts.FOUR; i++) {
             sourceNumber <<= 8;
             sourceNumber |= orderBytes[i] & 0xff;
         }
@@ -110,7 +111,7 @@ public class WXBizMsgCrypt {
         String base = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         Random random = new Random();
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < 16; i++) {
+        for (int i = 0; i < IntegerConsts.SIXTEEN; i++) {
             int number = random.nextInt(base.length());
             sb.append(base.charAt(number));
         }

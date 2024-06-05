@@ -1,5 +1,6 @@
 package com.cdkjframework.license.util;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 
 import java.text.SimpleDateFormat;
@@ -36,7 +37,7 @@ public class DateUtils {
     public static Long getTime(String time) throws GlobalException {
         if (CommonUtils.isEmpty(time)) {
             throw new GlobalException("时间[" + time + "]格式不合法");
-        } else if (time.length() < 11) {
+        } else if (time.length() < IntegerConsts.ELEVEN) {
             dtF = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate parse = LocalDate.parse(time, dtF);
             return LocalDate.from(parse).atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();

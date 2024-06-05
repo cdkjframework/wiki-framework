@@ -9,6 +9,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -152,8 +153,7 @@ public class CopyUtils {
         if (sourceList != null) {
             for (S o : sourceList) {
                 try {
-
-                    T d = targetList.newInstance();
+                  T d = targetList.getDeclaredConstructor().newInstance();
                     copyProperties(o, d, true);
                     result.add(d);
                 } catch (Exception e) {
@@ -173,12 +173,12 @@ public class CopyUtils {
     public static <S, T> T copyProperties(S source, Class<T> target) {
         T t;
         try {
-            if (source == null) {
-                return null;
-            }
-            t = target.newInstance();
-            copyProperties(source, t, false);
-            return t;
+          if (source == null) {
+            return null;
+          }
+          t = target.getDeclaredConstructor().newInstance();
+          copyProperties(source, t, false);
+          return t;
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
             return null;
@@ -199,7 +199,7 @@ public class CopyUtils {
         for (S o : sourceList) {
             try {
 
-                T d = targetList.newInstance();
+              T d = targetList.getDeclaredConstructor().newInstance();
                 copyProperties(o, d, true);
                 result.add(d);
             } catch (Exception e) {
@@ -218,12 +218,12 @@ public class CopyUtils {
     public static <S, T> T copyNoNullProperties(S source, Class<T> target) {
         T t;
         try {
-            if (source == null) {
-                return null;
-            }
-            t = target.newInstance();
-            copyProperties(source, t, true);
-            return t;
+          if (source == null) {
+            return null;
+          }
+          t = target.getDeclaredConstructor().newInstance();
+          copyProperties(source, t, true);
+          return t;
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
             return null;
@@ -289,7 +289,7 @@ public class CopyUtils {
                 } else if (targetField.getType().equals(BigDecimal.class)) {
                     clazz = BigDecimal.valueOf(Double.valueOf(String.valueOf(value) ));
                 } else {
-                    clazz = targetField.getType().newInstance();
+                  clazz = targetField.getType().getDeclaredConstructor().newInstance();
                 }
                 if (!clazz.getClass().getName().contains("java.")) {
                     copyProperties(value, clazz);
@@ -315,9 +315,16 @@ public class CopyUtils {
         List list = new ArrayList();
         for (Object obj :
                 arrayList) {
-            Object objClazz = clazz.newInstance();
-            copyProperties(obj, objClazz);
-            list.add(objClazz);
+          Object objClazz = null;
+          try {
+            objClazz = clazz.getDeclaredConstructor().newInstance();
+          } catch (InvocationTargetException ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+          } catch (NoSuchMethodException ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+          }
+          copyProperties(obj, objClazz);
+          list.add(objClazz);
         }
         ReflectionUtils.setFieldValue(target, targetField, list);
     }

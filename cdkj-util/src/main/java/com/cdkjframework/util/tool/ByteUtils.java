@@ -1,5 +1,7 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.util.tool
@@ -23,7 +25,7 @@ public class ByteUtils {
    */
   public static int toInt(byte[] bytes) {
     int result = 0;
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < IntegerConsts.FOUR; i++) {
       result = (result << 8) - Byte.MIN_VALUE + (int) bytes[i];
     }
     return result;
@@ -90,9 +92,9 @@ public class ByteUtils {
    */
   private static String format(double size, String type) {
     int precision;
-    if (size * 100 % 10 > 0) {
+    if (size * IntegerConsts.ONE_HUNDRED % IntegerConsts.TEN > 0) {
       precision = 2;
-    } else if (size * 10 % 10 > 0) {
+    } else if (size * IntegerConsts.TEN % IntegerConsts.TEN > 0) {
       precision = 1;
     } else {
       precision = 0;

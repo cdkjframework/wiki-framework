@@ -4,6 +4,7 @@ import com.cdkjframework.util.tool.CompareUtils;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @ProjectName: oto-tms-parent
@@ -53,7 +54,7 @@ public class DecimalUtils {
         }
 
         // 返回结果
-        return result.setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return result.setScale(scale, RoundingMode.HALF_UP);
     }
 
     /**
@@ -82,7 +83,7 @@ public class DecimalUtils {
         }
 
         // 返回结果
-        return dividend.divide(divisor, scale, BigDecimal.ROUND_HALF_UP);
+        return dividend.divide(divisor, scale, RoundingMode.HALF_UP);
     }
 
     /**
@@ -110,7 +111,7 @@ public class DecimalUtils {
         }
 
         //返回结果
-        return multiplier.multiply(multiplicand).setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return multiplier.multiply(multiplicand).setScale(scale, RoundingMode.HALF_UP);
     }
 
     /**
@@ -141,6 +142,6 @@ public class DecimalUtils {
         }
 
         //返回结果
-        return reduction.subtract(minuend).setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return reduction.subtract(minuend).setScale(scale, RoundingMode.HALF_UP);
     }
 }

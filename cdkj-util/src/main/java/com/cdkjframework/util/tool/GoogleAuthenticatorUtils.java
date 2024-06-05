@@ -1,5 +1,6 @@
 package com.cdkjframework.util.tool;
 
+import com.cdkjframework.constant.IntegerConsts;
 import org.apache.commons.codec.binary.Base32;
 import org.apache.commons.codec.binary.Base64;
 
@@ -49,7 +50,7 @@ public class GoogleAuthenticatorUtils {
    * @param s window size - must be >=1 and <=17. Other values are ignored
    */
   public void setWindowSize(int s) {
-    if (s >= 1 && s <= 17)
+    if (s >= 1 && s <= IntegerConsts.SEVENTEEN)
       window_size = s;
   }
 
@@ -134,7 +135,7 @@ public class GoogleAuthenticatorUtils {
   private static int verifyCode(byte[] key, long t) throws NoSuchAlgorithmException, InvalidKeyException {
     byte[] data = new byte[8];
     long value = t;
-    for (int i = 8; i-- > 0; value >>>= 8) {
+    for (int i = IntegerConsts.EIGHT; i-- > 0; value >>>= IntegerConsts.EIGHT) {
       data[i] = (byte) value;
     }
     SecretKeySpec signKey = new SecretKeySpec(key, "HmacSHA1");
@@ -144,7 +145,7 @@ public class GoogleAuthenticatorUtils {
     int offset = hash[20 - 1] & 0xF;
     // 我们使用long是因为Java没有无符号int。
     long truncatedHash = 0;
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < IntegerConsts.FOUR; ++i) {
       truncatedHash <<= 8;
       // 我们正在处理签名字节： 我们只保留第一个字节。
       truncatedHash |= (hash[offset + i] & 0xFF);

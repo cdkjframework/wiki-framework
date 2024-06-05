@@ -67,6 +67,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return the underlying connection.
      */
     @Override
+    @Deprecated
     public StatefulRedisClusterConnection<String, String> getStatefulConnection() {
         return null;
     }
@@ -78,6 +79,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @since 5.0
      */
     @Override
+    @Deprecated
     public void setTimeout(Duration timeout) {
 
     }
@@ -239,6 +241,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * {@link #clusterNodes()} but one line per replica.
      */
     @Override
+    @Deprecated
     public Flux<String> clusterSlaves(String nodeId) {
         return null;
     }
@@ -575,6 +578,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return {@code true} if the connection is open (connected and not closed).
      */
     @Override
+    @Deprecated
     public boolean isOpen() {
         return false;
     }
@@ -584,6 +588,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * internal state machine gets out of sync with the connection.
      */
     @Override
+    @Deprecated
     public void reset() {
 
     }
@@ -596,6 +601,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @param autoFlush state of autoFlush.
      */
     @Override
+    @Deprecated
     public void setAutoFlushCommands(boolean autoFlush) {
 
     }
@@ -605,6 +611,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * achieve batching. No-op if channel is not connected.
      */
     @Override
+    @Deprecated
     public void flushCommands() {
 
     }
@@ -1058,6 +1065,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long array-reply list of values at the specified keys.
      */
     @Override
+    @Deprecated
     public Mono<Long> mget(KeyValueStreamingChannel<String, String> channel, String... keys) {
         return null;
     }
@@ -1509,6 +1517,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return String simple-string-reply.
      */
     @Override
+    @Deprecated
     public Mono<String> flushdbAsync() {
         return null;
     }
@@ -1690,6 +1699,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long array-reply list of keys matching {@code pattern}.
      */
     @Override
+    @Deprecated
     public Mono<Long> keys(KeyStreamingChannel<String> channel, String pattern) {
         return null;
     }
@@ -1967,6 +1977,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long number of values.
      */
     @Override
+    @Deprecated
     public Mono<Long> sort(ValueStreamingChannel<String> channel, String key) {
         return null;
     }
@@ -1992,6 +2003,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long number of values.
      */
     @Override
+    @Deprecated
     public Mono<Long> sort(ValueStreamingChannel<String> channel, String key, SortArgs sortArgs) {
         return null;
     }
@@ -3437,6 +3449,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long count of members of the resulting set.
      */
     @Override
+    @Deprecated
     public Mono<Long> sinter(ValueStreamingChannel<String> channel, String... keys) {
         return null;
     }
@@ -3513,6 +3526,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long count of members of the resulting set.
      */
     @Override
+    @Deprecated
     public Mono<Long> smembers(ValueStreamingChannel<String> channel, String key) {
         return null;
     }
@@ -3579,6 +3593,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long count of members of the resulting set.
      */
     @Override
+    @Deprecated
     public Mono<Long> srandmember(ValueStreamingChannel<String> channel, String key, long count) {
         return null;
     }
@@ -3614,6 +3629,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long count of members of the resulting set.
      */
     @Override
+    @Deprecated
     public Mono<Long> sunion(ValueStreamingChannel<String> channel, String... keys) {
         return null;
     }
@@ -3686,6 +3702,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return StreamScanCursor scan cursor.
      */
     @Override
+    @Deprecated
     public Mono<StreamScanCursor> sscan(ValueStreamingChannel<String> channel, String key) {
         return null;
     }
@@ -3699,6 +3716,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return StreamScanCursor scan cursor.
      */
     @Override
+    @Deprecated
     public Mono<StreamScanCursor> sscan(ValueStreamingChannel<String> channel, String key, ScanArgs scanArgs) {
         return null;
     }
@@ -3726,6 +3744,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return StreamScanCursor scan cursor.
      */
     @Override
+    @Deprecated
     public Mono<StreamScanCursor> sscan(ValueStreamingChannel<String> channel, String key, ScanCursor scanCursor) {
         return null;
     }
@@ -4188,6 +4207,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long count of elements in the specified range.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrange(ValueStreamingChannel<String> channel, String key, long start, long stop) {
         return null;
     }
@@ -4215,6 +4235,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * @return Long count of elements in the specified range.
      */
     @Override
+    @Deprecated
     public Mono<Long> zrangeWithScores(ScoredValueStreamingChannel<String> channel, String key, long start, long stop) {
         return null;
     }

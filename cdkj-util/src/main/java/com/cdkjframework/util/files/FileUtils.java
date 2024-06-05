@@ -22,6 +22,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -404,18 +405,18 @@ public class FileUtils {
         StringBuffer byteStr = new StringBuffer();
         BigDecimal fullSize = new BigDecimal(fileBytes);
         //mb
-        BigDecimal mbSize = new BigDecimal(MB_SIZE);
-        float gbSize = fullSize.divide(new BigDecimal(GB_SIZE), IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue();
+      BigDecimal mbSize = new BigDecimal(MB_SIZE);
+      float gbSize = fullSize.divide(new BigDecimal(GB_SIZE), IntegerConsts.TWO, RoundingMode.HALF_UP).floatValue();
         if (gbSize > IntegerConsts.ONE) {
             byteStr.append(gbSize).append("GB");
         } else {
-            float dvSize = fullSize.divide(mbSize, IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue();
+          float dvSize = fullSize.divide(mbSize, IntegerConsts.TWO, RoundingMode.HALF_UP).floatValue();
             if (dvSize > IntegerConsts.ONE) {
                 byteStr.append(dvSize).append("MB");
             } else {
                 //kb显示
                 BigDecimal kbSize = new BigDecimal(KB_SIZE);
-                byteStr.append(fullSize.divide(kbSize, IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue()).append("KB");
+              byteStr.append(fullSize.divide(kbSize, IntegerConsts.TWO, RoundingMode.HALF_UP).floatValue()).append("KB");
             }
         }
         return byteStr.toString();
