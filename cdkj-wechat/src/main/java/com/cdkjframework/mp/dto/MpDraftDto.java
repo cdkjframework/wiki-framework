@@ -2,6 +2,7 @@ package com.cdkjframework.mp.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: common-core
@@ -13,6 +14,7 @@ import lombok.Data;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class MpDraftDto extends MpBaseDto {
 
   /**

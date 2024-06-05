@@ -7,7 +7,7 @@
   <groupId>com.cdkjframework</groupId>
   <artifactId>cdkj-pom</artifactId>
   <description>cdkj-framework 框架依赖包</description>
-  <version>1.0.6</version>
+  <version>1.0.7</version>
   <packaging>pom</packaging>
 
   <parent>
@@ -18,7 +18,7 @@
   </parent>
 
   <properties>
-    <cdkj.version>1.0.6</cdkj.version>
+    <cdkj.version>1.0.7</cdkj.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>
@@ -55,7 +55,7 @@
     <javax.persistence-api.version>2.2</javax.persistence-api.version>
     <elasticsearch.version>8.13.4</elasticsearch.version>
     <!--alibaba -->
-    <druid.version>1.1.24</druid.version>
+    <druid.version>1.2.23</druid.version>
     <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
     <mq-http.version>1.0.4.2</mq-http.version>
     <ons.client.version>1.8.4.Final</ons.client.version>

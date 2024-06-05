@@ -12,8 +12,8 @@ import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -31,11 +31,6 @@ import java.io.InputStream;
  */
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter {
-
-  /**
-   * 日志
-   */
-  private LogUtils logUtils = LogUtils.getLogger(ValidateCodeFilter.class);
 
   /**
    * 过虑权限验证

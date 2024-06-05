@@ -12,7 +12,6 @@ import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
-import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.mqtt.core.DefaultMqttPahoClientFactory;
 import org.springframework.integration.mqtt.core.MqttPahoClientFactory;
 import org.springframework.integration.mqtt.outbound.MqttPahoMessageHandler;
@@ -82,7 +81,7 @@ public class MqttProducer {
 
     @Bean
     public IntegrationFlow mqttOutFlow() {
-        return IntegrationFlows.from(mqttOutboundChannel())
+        return IntegrationFlow.from(mqttOutboundChannel())
                 .handle(mqttOutbound())
                 .get();
     }

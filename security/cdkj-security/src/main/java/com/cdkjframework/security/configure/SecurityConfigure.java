@@ -8,16 +8,19 @@ import com.cdkjframework.security.authorization.ValidateCodeFilter;
 import com.cdkjframework.security.encrypt.JwtAuthenticationFilter;
 import com.cdkjframework.security.encrypt.Md5PasswordEncoder;
 import com.cdkjframework.security.handler.*;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -33,7 +36,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfigure extends WebSecurityConfigurerAdapter {
+public class SecurityConfigure {
+
+  /**
+   * 放行路径
+   */
+  private final String[] PATTERNS = new String[]{"/**"};
+
   /**
    * 自定义登录成功处理器
    */
@@ -65,6 +74,20 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
   private final CustomConfig customConfig;
 
   /**
+   * 身份验证管理器
+   */
+  @Resource(name = "authentication")
+  private AuthenticationManager authentication;
+
+  /**
+   * 鉴权管理类
+   */
+  @Bean(name = "authentication")
+  public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+    return config.getAuthenticationManager();
+  }
+
+  /**
    * 加密方式
    */
   @Bean
@@ -83,72 +106,59 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
   }
 
   /**
-   * 配置登录验证逻辑
+   * Spring Security 过滤链
    */
-  @Override
-  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    //这里可启用我们自己的登陆验证逻辑
-    auth.authenticationProvider(userAuthenticationProvider);
-  }
-
-  /**
-   * 配置security的控制逻辑
-   *
-   * @Author youcong
-   * @Param http 请求
-   */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     int size = customConfig.getPatternsUrls().size();
     String[] patternsUrls = customConfig.getPatternsUrls().toArray(new String[size]);
-    http.authorizeRequests()
-        // 忽略常见的静态资源路径
-        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-        // 不进行权限验证的请求或资源(从配置文件中读取)
-        .antMatchers(patternsUrls).permitAll()
-        // 其他的需要登陆后才能访问
-        .anyRequest().authenticated()
-        .and()
-        // 配置未登录自定义处理类
-        .httpBasic()
-        .authenticationEntryPoint(userAuthenticationEntryPointHandler)
-        .and()
-        // 配置登录地址
-        .formLogin()
-        .loginPage(customConfig.getLoginPage())
-        .loginProcessingUrl(customConfig.getLoginUrl())
-        .defaultSuccessUrl(customConfig.getLoginSuccess())
-        // 配置登录成功自定义处理类
-        .successHandler(userLoginSuccessHandler)
-        // 配置登录失败自定义处理类
-        .failureHandler(userLoginFailureHandler)
-        .and()
-        // 配置登出地址
-        .logout()
-        .logoutUrl(customConfig.getLogoutUrl())
-        // 配置用户登出自定义处理类
-        .logoutSuccessHandler(userLogoutSuccessHandler)
-        .and()
-        // 配置没有权限自定义处理类
-        .exceptionHandling()
-        .accessDeniedHandler(userAuthAccessDeniedHandler)
-        .and()
-        // 开启跨域
-        .cors()
-        .and()
-        // 取消跨站请求伪造防护
-        .csrf().disable();
-    // 基于Token不需要session
-    http.sessionManagement()
-        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    // 禁用缓存
-    http.headers().cacheControl();
-    // 验证码验证
-    http.addFilterBefore(new ValidateCodeFilter(), UsernamePasswordAuthenticationFilter.class);
-    // 权限验证
-    http.addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    // 添加JWT过滤器
-    http.addFilter(new JwtAuthenticationFilter(authenticationManager(), customConfig));
+    return http
+            // 配置未登录自定义处理类
+            .httpBasic(basic ->
+                    basic.authenticationEntryPoint(userAuthenticationEntryPointHandler)
+            )
+            // 禁用缓存
+            .headers(header -> header.cacheControl(cache -> cache.disable()))
+            // 关闭csrf
+            .csrf(AbstractHttpConfigurer::disable)
+            // 配置登录地址
+            .formLogin(form -> form.loginPage(customConfig.getLoginPage())
+                    .loginProcessingUrl(customConfig.getLoginUrl())
+                    .defaultSuccessUrl(customConfig.getLoginSuccess())
+                    // 配置登录成功自定义处理类
+                    .successHandler(userLoginSuccessHandler)
+                    // 配置登录失败自定义处理类
+                    .failureHandler(userLoginFailureHandler)
+                    .permitAll()
+            )
+            // 禁用默认登出页
+            .logout(logout -> logout.logoutUrl(customConfig.getLogoutUrl())
+                    .logoutSuccessHandler(userLogoutSuccessHandler)
+                    .permitAll()
+            )
+            // 配置没有权限自定义处理类
+            .exceptionHandling(exception -> exception.accessDeniedHandler(userAuthAccessDeniedHandler))
+            // 禁用session
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            // 配置拦截信息
+            .authorizeHttpRequests(authorization -> authorization
+                    // 允许所有的OPTIONS请求
+                    .requestMatchers(HttpMethod.OPTIONS, PATTERNS).permitAll()
+                    // 放行白名单
+                    .requestMatchers(patternsUrls).permitAll()
+                    // 根据接口所需权限进行动态鉴权
+                    .anyRequest()
+                    .authenticated()
+            )
+            // 配置登录验证逻辑
+            .authenticationProvider(userAuthenticationProvider)
+            // 注册自定义拦截器
+            .addFilterBefore(new ValidateCodeFilter(), UsernamePasswordAuthenticationFilter.class)
+            // 权限验证
+            .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+            // 添加JWT过滤器
+            .addFilter(new JwtAuthenticationFilter(authentication, customConfig))
+            .build();
   }
 
   /**
@@ -159,7 +169,7 @@ public class SecurityConfigure extends WebSecurityConfigurerAdapter {
    */
   private AuthenticationFilter authenticationFilter() throws Exception {
     AuthenticationFilter filter = new AuthenticationFilter();
-    filter.setAuthenticationManager(super.authenticationManagerBean());
+    filter.setAuthenticationManager(authentication);
     filter.setFilterProcessesUrl(customConfig.getLoginUrl());
     // 处理登录成功
     filter.setAuthenticationSuccessHandler(userLoginSuccessHandler);

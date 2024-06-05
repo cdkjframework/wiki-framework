@@ -2,14 +2,13 @@ package com.cdkjframework.security.handler;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.util.network.ResponseUtils;
-import com.cdkjframework.util.tool.StringUtils;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**

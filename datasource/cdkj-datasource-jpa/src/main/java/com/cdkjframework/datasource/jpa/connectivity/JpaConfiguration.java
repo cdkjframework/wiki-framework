@@ -3,7 +3,7 @@ package com.cdkjframework.datasource.jpa.connectivity;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.jpa.config.JpaConfig;
 import com.cdkjframework.util.tool.StringUtils;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,6 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import jakarta.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;

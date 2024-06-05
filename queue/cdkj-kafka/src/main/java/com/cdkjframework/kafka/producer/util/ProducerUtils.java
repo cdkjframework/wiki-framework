@@ -2,11 +2,12 @@ package com.cdkjframework.kafka.producer.util;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFutureCallback;
-
 import jakarta.annotation.Resource;
+import org.apache.kafka.clients.producer.RecordMetadata;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
+
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -64,19 +65,17 @@ public class ProducerUtils {
    * @param topic   topic名称
    * @param message producer发送的数据
    */
-  public static void sendMessageAsync(String topic, String message) {
-    kafkaTemplate.send(topic, message).addCallback(new ListenableFutureCallback() {
-      @Override
-      public void onFailure(Throwable throwable) {
-        logUtils.error("topic：" + topic + "，message：" + message);
-        logUtils.error(throwable, throwable.getMessage());
-      }
-
-      @Override
-      public void onSuccess(Object o) {
-        logUtils.info("topic：" + topic + "，发送成功");
-      }
-    });
+  public static void sendMessageAsync(String topic, String message) throws ExecutionException, InterruptedException, TimeoutException {
+    CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topic, message);
+    future.thenApply(result -> {
+              RecordMetadata metadata = result.getRecordMetadata();
+              logUtils.info("topic：{}，partition：{}，offset：{}", metadata.topic(), metadata.partition(), metadata.offset());
+              return String.format("%d-%d", metadata.partition(), metadata.offset());
+            })
+            .exceptionally(ex -> {
+              logUtils.error("topic：{}，message：{}", topic, message);
+              return null;
+            });
   }
 
   /**
@@ -87,17 +86,15 @@ public class ProducerUtils {
    * @param message producer发送的数据
    */
   public static void sendMessageAsync(String topic, String key, String message) {
-    kafkaTemplate.send(topic, key, message).addCallback(new ListenableFutureCallback() {
-      @Override
-      public void onFailure(Throwable throwable) {
-        logUtils.error("topic：" + topic + "，message：" + message);
-        logUtils.error(throwable, throwable.getMessage());
-      }
-
-      @Override
-      public void onSuccess(Object o) {
-        logUtils.info("topic：" + topic + "，发送成功");
-      }
-    });
+    CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.send(topic, key, message);
+    future.thenApply(result -> {
+              RecordMetadata metadata = result.getRecordMetadata();
+              logUtils.info("topic：{}，partition：{}，offset：{}", metadata.topic(), metadata.partition(), metadata.offset());
+              return String.format("%d-%d", metadata.partition(), metadata.offset());
+            })
+            .exceptionally(ex -> {
+              logUtils.error("topic：{}，message：{}", topic, message);
+              return null;
+            });
   }
 }

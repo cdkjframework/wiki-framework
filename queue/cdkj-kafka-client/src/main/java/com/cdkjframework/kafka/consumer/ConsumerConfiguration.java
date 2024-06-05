@@ -1,5 +1,6 @@
 package com.cdkjframework.kafka.consumer;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.kafka.consumer.config.KafkaClientConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -20,9 +21,9 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.KafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
-import org.springframework.kafka.listener.BatchErrorHandler;
+import org.springframework.kafka.listener.CommonErrorHandler;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
-import org.springframework.kafka.listener.ConsumerAwareErrorHandler;
+import org.springframework.kafka.listener.MessageListenerContainer;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -73,9 +74,10 @@ public class ConsumerConfiguration {
     // 当使用批量监听器时需要设置为true
     factory.setBatchListener(kafkaClientConfig.isBatchListener());
     // 将单条消息异常处理器添加到参数中
-    factory.setErrorHandler(new ConsumerAwareErrorHandler() {
+    factory.setCommonErrorHandler(new CommonErrorHandler() {
+
       @Override
-      public void handle(Exception thrownException, ConsumerRecord<?, ?> data, Consumer<?, ?> consumer) {
+      public boolean handleOne(Exception thrownException, ConsumerRecord<?, ?> data, Consumer<?, ?> consumer, MessageListenerContainer container) {
         logUtils.error("// 将单条消息异常：" + thrownException.getMessage());
         logUtils.error("// 将单条消息：" + data.toString() + "，" + consumer.toString());
         Iterator<TopicPartition> iterator = consumer.assignment().iterator();
@@ -83,19 +85,16 @@ public class ConsumerConfiguration {
           // 提交重新消费
           consumer.seek(iterator.next(), data.offset());
         }
+        return Boolean.TRUE;
+      }
+
+      @Override
+      public void handleBatch(Exception thrownException, ConsumerRecords<?, ?> data, Consumer<?, ?> consumer, MessageListenerContainer container, Runnable invokeListener) {
+        logUtils.error("// 将批量消息异常：" + thrownException.getMessage());
+        logUtils.error(thrownException);
+        logUtils.error(JsonUtils.objectToJsonString(data));
       }
     });
-    if (kafkaClientConfig.isBatchListener()) {
-      // 将批量消息异常处理器添加到参数中
-      factory.setBatchErrorHandler(new BatchErrorHandler() {
-        @Override
-        public void handle(Exception thrownException, ConsumerRecords<?, ?> data) {
-          logUtils.error("// 将批量消息异常：" + thrownException.getMessage());
-          logUtils.error(thrownException);
-          logUtils.error(JsonUtils.objectToJsonString(data));
-        }
-      });
-    }
 
     return factory;
   }
@@ -117,7 +116,7 @@ public class ConsumerConfiguration {
    */
   @Bean
   public Map<String, Object> consumerConfig() {
-    Map<String, Object> propsMap = new HashMap<>();
+    Map<String, Object> propsMap = new HashMap<>(IntegerConsts.TWELVE);
     // Kafka地址
     propsMap.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaClientConfig.getBootstrapServers());
     //配置默认分组，这里没有配置+在监听的地方没有设置groupId，多个服务会出现收到相同消息情况

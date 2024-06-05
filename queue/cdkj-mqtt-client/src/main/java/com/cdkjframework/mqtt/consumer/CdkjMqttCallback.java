@@ -3,6 +3,7 @@ package com.cdkjframework.mqtt.consumer;
 import com.cdkjframework.entity.message.baidu.MqttCallbackEntity;
 import com.cdkjframework.enums.QueueMessageTypeEnums;
 import com.cdkjframework.util.log.LogUtils;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -10,7 +11,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PreDestroy;
 import java.util.concurrent.ScheduledExecutorService;
 
 /**

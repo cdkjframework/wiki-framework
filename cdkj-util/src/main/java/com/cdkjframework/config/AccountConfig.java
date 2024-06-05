@@ -1,6 +1,7 @@
 package com.cdkjframework.config;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -14,5 +15,6 @@ import org.springframework.context.annotation.Configuration;
  */
 @Data
 @Configuration
+@EqualsAndHashCode(callSuper = false)
 public class AccountConfig extends CustomConfig{
 }

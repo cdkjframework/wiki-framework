@@ -7,7 +7,10 @@ import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.AssertUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import io.lettuce.core.*;
+import io.lettuce.core.AbstractRedisClient;
+import io.lettuce.core.ClientOptions;
+import io.lettuce.core.RedisClient;
+import io.lettuce.core.RedisURI;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.cluster.ClusterTopologyRefreshOptions;
 import io.lettuce.core.cluster.RedisClusterClient;
@@ -20,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 /**
  * @ProjectName: cdkj-framework
@@ -122,20 +124,22 @@ public class RedisClientConfiguration {
    * @return 返回结果
    */
   protected RedisURI createRedisUrl(String redisUrl, int port) {
-    RedisURI redisUri = RedisURI.builder()
-        .withHost(redisUrl)
-        .withPort(port)
-        .withTimeout(Duration.ofSeconds(redisConfig.getTimeout()))
-        .withDatabase(redisConfig.getDatabase())
-        .build();
+    RedisURI.Builder builder = RedisURI.builder()
+            .withHost(redisUrl)
+            .withPort(port)
+            .withTimeout(Duration.ofSeconds(redisConfig.getTimeout()))
+            .withDatabase(redisConfig.getDatabase());
+    // 添加密码
     if (StringUtils.isNotNullAndEmpty(redisConfig.getPassword())) {
-      Supplier<RedisCredentials> supplier = () -> {
-        RedisCredentials redisCredentials = new RedisCredentials(redisConfig.getPassword());
-        return redisCredentials;
-      };
-      RedisCredentialsProvider credentialsProvider = RedisCredentialsProvider.from(supplier);
-      redisUri.setCredentialsProvider(credentialsProvider);
+      builder.withPassword(redisConfig.getPassword().toCharArray());
+//      Supplier<RedisCredentials> supplier = () -> {
+//        RedisCredentials redisCredentials = RedisCredentials.just(StringUtils.Empty, redisConfig.getPassword());
+//        return redisCredentials;
+//      };
+//      RedisCredentialsProvider credentialsProvider = RedisCredentialsProvider.from(supplier);
+//      redisUri.setCredentialsProvider(credentialsProvider);
     }
+    RedisURI redisUri = builder.build();
     // 返回地址
     return redisUri;
   }
