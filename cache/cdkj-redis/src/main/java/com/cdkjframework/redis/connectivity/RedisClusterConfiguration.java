@@ -118,7 +118,7 @@ public class RedisClusterConfiguration extends BaseRedisConfiguration {
 
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
-            logUtils.info("Requesting new StatefulRedisClusterConnection " + System.currentTimeMillis());
+            logUtils.info("Requesting new StatefulRedisClusterConnection " + LocalDateUtils.dateTimeCurrentFormatter());
             return connection;
         }, poolConfig);
 
