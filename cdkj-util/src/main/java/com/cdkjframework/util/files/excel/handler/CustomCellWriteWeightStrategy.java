@@ -6,6 +6,7 @@ import com.alibaba.excel.metadata.data.CellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.style.column.AbstractColumnWidthStyleStrategy;
+import com.cdkjframework.constant.IntegerConsts;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.util.CollectionUtils;
@@ -47,7 +48,7 @@ public class CustomCellWriteWeightStrategy extends AbstractColumnWidthStyleStrat
     if (needSetWidth) {
       Map<Integer, Integer> maxColumnWidthMap = CACHE.get(writeSheetHolder.getSheetNo());
       if (maxColumnWidthMap == null) {
-        maxColumnWidthMap = new HashMap<>();
+        maxColumnWidthMap = new HashMap<>(IntegerConsts.ONE);
         CACHE.put(writeSheetHolder.getSheetNo(), maxColumnWidthMap);
       }
 

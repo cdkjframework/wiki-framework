@@ -75,12 +75,12 @@ public enum DataTypeContrastEnums {
     /**
      * JAVA 类型
      */
-    private String javaType;
+    private final String javaType;
 
     /**
      * 程序类型
      */
-    private String dataType;
+    private final String dataType;
 
     /**
      * 获取 JAVA类型

@@ -55,12 +55,12 @@ public class SwaggerConfig {
     /**
      * 描述
      */
-    private String description = "更多请关注 http://www.framewiki.com";
+    private String description = "更多请关注 https://www.framewiki.com";
 
     /**
      * 服务条款URL
      */
-    private String termsOfServiceUrl = "http://www.framewiki.com/termsOfServiceUrl.html";
+    private String termsOfServiceUrl = "https://www.framewiki.com/termsOfServiceUrl.html";
 
     /**
      * contact

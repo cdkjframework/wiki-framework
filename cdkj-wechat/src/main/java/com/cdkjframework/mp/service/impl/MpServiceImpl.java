@@ -431,10 +431,10 @@ public class MpServiceImpl implements MpService {
       url = String.format(MpAddressConfig.addMaterial, token.getAccessToken(), draftDto.getType());
       // 添加参数
       if (StringUtils.isNotNullAndEmpty(draftDto.getTitle())) {
-        Map<String, Object> paramsMap = new HashMap<>();
+        Map<String, Object> paramsMap = new HashMap<>(IntegerConsts.TWO);
         paramsMap.put("title", draftDto.getTitle());
         paramsMap.put("introduction", draftDto.getContent());
-        request.setParamsMap(new HashMap<>());
+        request.setParamsMap(new HashMap<>(IntegerConsts.ONE));
         request.getParamsMap().put("description", JsonUtils.objectToJsonString(paramsMap));
       }
     }

@@ -45,7 +45,7 @@ public class DesensitizationUtils {
         for (char c :
                 chars) {
             try {
-                buffer.append(aes.base64Encode(String.valueOf(c)))
+                buffer.append(AesUtils.base64Encode(String.valueOf(c)))
                         .append(StringUtils.COMMA);
             } catch (Exception e) {
                 logUtils.error(e);
@@ -90,7 +90,7 @@ public class DesensitizationUtils {
         for (String key :
                 keys) {
             try {
-                buffer.append(aes.base64Decrypt(key));
+                buffer.append(AesUtils.base64Decrypt(key));
             } catch (Exception e) {
                 logUtils.error(e);
             }

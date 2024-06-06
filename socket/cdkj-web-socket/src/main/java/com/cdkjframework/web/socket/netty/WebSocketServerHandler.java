@@ -29,12 +29,7 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
      */
     private final LogUtils logUtils = LogUtils.getLogger(WebSocketServerHandler.class);
 
-    /**
-     * 心跳类型
-     */
-    private final String TYPE = "heartbeat";
-
-    /**
+  /**
      * 接口
      */
     private final WebSocket webSocket;
@@ -124,7 +119,11 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
         Channel channel = ctx.channel();
         String message = textWebSocketFrame.text();
         WebSocketEntity socket = JsonUtils.jsonStringToBean(message, WebSocketEntity.class);
-        if (socket == null) {
+      /**
+       * 心跳类型
+       */
+      String TYPE = "heartbeat";
+      if (socket == null) {
             socket = new WebSocketEntity();
             socket.setType(TYPE);
             socket.setMessage("数据错误！");

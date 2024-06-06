@@ -2,9 +2,6 @@ package com.cdkjframework.util.make;
 
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * @ProjectName: com.lesmarthome.interface
  * @Package: com.lesmarthome.interfaces.util
@@ -30,62 +27,62 @@ public class SnowflakeUtils {
     /**
      * 开始时间截 (2022-09-23 14:33:53)
      */
-    private final long epoch = 1663914833335L;
+    private final long EPOCH = 1663914833335L;
 
     /**
      * 机器id所占的位数
      */
-    private final long workerIdBits = 4L;
+    private final long WORKER_ID_BITS = 4L;
 
     /**
      * 数据标识id所占的位数
      */
-    private final long datacenterIdBits = 4L;
+    private final long DATACENTER_ID_BITS = 4L;
 
     /**
      * 业务id占位
      **/
-    private final long bizBits = 4L;
+    private final long BIZ_BITS = 4L;
 
     /**
      * 支持的最大机器id，结果是31 (这个移位算法可以很快的计算出几位二进制数所能表示的最大十进制数)
      */
-    private final long maxWorkerId = -1L ^ (-1L << workerIdBits);
+    private final long MAX_WORKER_ID = ~(-1L << WORKER_ID_BITS);
 
     /**
      * 支持的最大数据标识id，结果是31
      */
-    private final long maxDatacenterId = -1L ^ (-1L << datacenterIdBits);
+    private final long MAX_DATACENTER_ID = ~(-1L << DATACENTER_ID_BITS);
 
     /**
      * 序列在id中占的位数
      */
-    private final long sequenceBits = 10L;
+    private final long SEQUENCE_BITS = 10L;
 
     /**
      * 机器ID向左移10位
      */
-    private final long workerIdShift = sequenceBits;
+    private final long WORKER_ID_SHIFT = SEQUENCE_BITS;
 
     /**
      * 数据标识id向左移14位(4+10)
      */
-    private final long datacenterIdShift = workerIdShift + workerIdBits;
+    private final long DATACENTER_ID_SHIFT = WORKER_ID_SHIFT + WORKER_ID_BITS;
 
     /**
      * 业务预留标识id向左移18位(4+4+10)
      */
-    private final long bizShift = datacenterIdShift + datacenterIdBits;
+    private final long BIZ_SHIFT = DATACENTER_ID_SHIFT + DATACENTER_ID_BITS;
 
     /**
      * 时间截向左移22位(4+4+4+10)
      */
-    private final long timestampLeftShift = bizShift + bizBits;
+    private final long TIMESTAMP_LEFT_SHIFT = BIZ_SHIFT + BIZ_BITS;
 
     /**
      * 生成序列的掩码，这里为1024 (0b1111111111=0xfff=1023)
      */
-    private final long sequenceMask = -1L ^ (-1L << sequenceBits);
+    private final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
 
     /**
      * 工作机器ID(0~15)
@@ -114,11 +111,11 @@ public class SnowflakeUtils {
      * @param datacenterId 数据中心ID (0~15)
      */
     private SnowflakeUtils(long workerId, long datacenterId) {
-        if (workerId > maxWorkerId || workerId < 0) {
-            throw new GlobalRuntimeException(String.format("工作线程Id不能大于%d或小于0", maxWorkerId));
+        if (workerId > MAX_WORKER_ID || workerId < 0) {
+            throw new GlobalRuntimeException(String.format("工作线程Id不能大于%d或小于0", MAX_WORKER_ID));
         }
-        if (datacenterId > maxDatacenterId || datacenterId < 0) {
-            throw new GlobalRuntimeException(String.format("数据中心Id不能大于%d或小于0", maxDatacenterId));
+        if (datacenterId > MAX_DATACENTER_ID || datacenterId < 0) {
+            throw new GlobalRuntimeException(String.format("数据中心Id不能大于%d或小于0", MAX_DATACENTER_ID));
         }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
@@ -156,7 +153,7 @@ public class SnowflakeUtils {
         }
         //如果是同一时间生成的，则进行毫秒内序列
         if (timestamp == lastTimestamp) {
-            sequence = (sequence + 1) & sequenceMask;
+            sequence = (sequence + 1) & SEQUENCE_MASK;
             //毫秒内序列溢出
             if (sequence == 0) {
                 //阻塞到下一个毫秒,获得新的时间戳
@@ -174,11 +171,11 @@ public class SnowflakeUtils {
         //移位并通过或运算拼到一起组成64位的ID
         /** 开始时间截 (2022-09-23 14:33:53) */
 //         上次生成ID的时间截 -  1561376248657L(开始时间截) << 10L + 4L + 4L + 4L
-        return ((timestamp - epoch) << timestampLeftShift)
+        return ((timestamp - EPOCH) << TIMESTAMP_LEFT_SHIFT)
                 // 0               10L +  4L
-                | (datacenterId << datacenterIdShift)
+                | (datacenterId << DATACENTER_ID_SHIFT)
                 // 0               10L
-                | (workerId << workerIdShift)
+                | (workerId << WORKER_ID_SHIFT)
                 // 0L
                 | sequence;
     }
@@ -204,31 +201,5 @@ public class SnowflakeUtils {
      */
     private long timeGen() {
         return System.currentTimeMillis();
-    }
-
-    //==============================Test=============================================
-
-    /**
-     * 测试
-     */
-    static SnowflakeUtils snowflakeId;
-    static  List<Long> keys = new ArrayList<>();
-    static  List<Long> keys2 = new ArrayList<>();
-
-    public static void main(String[] args) {
-        snowflakeId = new SnowflakeUtils(15, 15);
-        Runnable work = () -> {
-            long id = snowflakeId.getId();
-            keys2.add(id);
-            if (keys.contains(id)) {
-                System.out.println("重复:" + id);
-            } else {
-                keys.add(id);
-            }
-        };
-        for (int i = 0; i < 50000; i++) {
-            new Thread(work).start();
-        }
-        System.out.println("keys：" + keys.size() + "，keys2：" + keys2.size());
     }
 }

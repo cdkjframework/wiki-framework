@@ -59,11 +59,6 @@ public class GenerateServiceImpl implements GenerateService {
   private final CustomConfig customConfig;
 
   /**
-   * 替换值
-   */
-  private final String REPLACEMENT = " ";
-
-  /**
    * 日志
    */
   private LogUtils logUtil = LogUtils.getLogger(GenerateServiceImpl.class);
@@ -169,7 +164,11 @@ public class GenerateServiceImpl implements GenerateService {
                 TreeEntity treeColumn = new TreeEntity();
                 treeColumn.setId(column.getColumnName());
                 treeColumn.setLabel(column.getColumnName());
-                treeColumn.setExplain(ConvertUtils.convertString(column.getColumnComment())
+              /**
+               * 替换值
+               */
+              String REPLACEMENT = " ";
+              treeColumn.setExplain(ConvertUtils.convertString(column.getColumnComment())
                         .replace("\\n", REPLACEMENT)
                         .replace("\\t", REPLACEMENT)
                         .replace("\\s", REPLACEMENT)

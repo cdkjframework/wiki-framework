@@ -53,8 +53,8 @@ public enum AliSmsActionEnums implements InterfaceEnum {
      */
     QUERY_SMS_SIGN("QuerySmsSign", "查询短信模板");
 
-    private String value;
-    private String text;
+    private final String value;
+    private final String text;
     private String node;
 
     /**

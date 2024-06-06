@@ -52,16 +52,16 @@ public enum FileTypeEnums implements InterfaceEnum {
   /**
    * 值
    */
-  private String value;
+  private final String value;
   /**
    * 说明
    */
-  private String text;
+  private final String text;
 
   /**
    * 节点值
    */
-  private String node;
+  private final String node;
 
   /**
    * 构造函数

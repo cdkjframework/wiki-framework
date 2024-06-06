@@ -64,9 +64,9 @@ public class JpaDruidDbConfiguration {
         //设置数据库连接
         if (dataSourceConfig.isEncryption()) {
             AesUtils aes = new AesUtils(customConfig);
-            datasource.setUrl(aes.base64Decrypt(jpaReadConfig.getUrl()));
-            datasource.setUsername(aes.base64Decrypt(jpaReadConfig.getUsername()));
-            datasource.setPassword(aes.base64Decrypt(jpaReadConfig.getPassword()));
+            datasource.setUrl(AesUtils.base64Decrypt(jpaReadConfig.getUrl()));
+            datasource.setUsername(AesUtils.base64Decrypt(jpaReadConfig.getUsername()));
+            datasource.setPassword(AesUtils.base64Decrypt(jpaReadConfig.getPassword()));
         } else {
             datasource.setUrl(jpaReadConfig.getUrl());
             datasource.setUsername(jpaReadConfig.getUsername());

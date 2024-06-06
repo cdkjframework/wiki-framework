@@ -56,11 +56,6 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
   private final long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
 
   /**
-   * 加密 token 参数
-   */
-  private final String TOKEN_ENCRYPTION = "loginName=%s&effective=%s&time=%s&userAgent=%s";
-
-  /**
    * 自定义配置
    */
   private final CustomConfig customConfig;
@@ -143,6 +138,10 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     // 暂不需要该参数
     String userAgent = StringUtils.Empty;
     StringBuilder builder = new StringBuilder();
+    /**
+     * 加密 token 参数
+     */
+    String TOKEN_ENCRYPTION = "loginName=%s&effective=%s&time=%s&userAgent=%s";
     builder.append(String.format(TOKEN_ENCRYPTION,
         user.getUsername(), EFFECTIVE, time, userAgent));
     String token = Md5Utils.getMd5(builder.toString());

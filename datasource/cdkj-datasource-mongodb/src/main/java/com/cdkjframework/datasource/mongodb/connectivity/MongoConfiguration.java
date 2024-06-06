@@ -32,11 +32,6 @@ import java.util.Arrays;
 public class MongoConfiguration {
 
   /**
-   * 默认地址
-   */
-  private final String DEFAULT_URI = "mongodb://127.0.0.1:27017/admin";
-
-  /**
    * 读取配置文件配置
    */
   private final MongoConfig mongoConfig;
@@ -69,6 +64,10 @@ public class MongoConfiguration {
   public MongoDatabaseFactory mongoDbFactory() {
     //客户端配置（连接数、副本集群验证）
     if (StringUtils.isNullAndSpaceOrEmpty(mongoConfig.getUri())) {
+      /**
+       * 默认地址
+       */
+      String DEFAULT_URI = "mongodb://127.0.0.1:27017/admin";
       return new SimpleMongoClientDatabaseFactory(DEFAULT_URI);
     }
 

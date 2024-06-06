@@ -1,27 +1,31 @@
 package com.cdkjframework.util.network.https;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.cdkjframework.constant.HttpHeaderConsts;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.http.HttpRequestEntity;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.GzipUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.AbstractHttpClientResponseHandler;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.ParseException;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.apache.hc.core5.http.io.entity.StringEntity;
+import org.apache.hc.core5.http.message.BasicHeader;
+import org.apache.hc.core5.net.URIBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.time.Duration;
 import java.util.*;
 
 /**
@@ -48,75 +52,81 @@ public class HttpsClientUtils {
      */
     @SuppressWarnings("resource")
     public static String doPost(HttpRequestEntity requestEntity) {
-        HttpClient httpClient = null;
-        HttpPost httpPost = null;
-        String result = null;
-        try {
-            httpClient = TlsPool.createSslContext();
-            httpPost = new HttpPost(requestEntity.getRequestAddress());
-            //设置 http 请头
-            Header[] headers = setHeader(requestEntity);
-            httpPost.setHeaders(headers);
+      HttpClient httpClient = null;
+      HttpPost httpPost = null;
+      final StringBuffer result = new StringBuffer();
+      try {
+        httpClient = TlsPool.createSslContext();
+        httpPost = new HttpPost(requestEntity.getRequestAddress());
+        //设置 http 请头
+        Header[] headers = setHeader(requestEntity);
+        httpPost.setHeaders(headers);
 
-            String basicHeader = requestEntity.getHeaderMap().get(HttpHeaderConsts.CONTENT_TYPE);
-            final String contentType = "application/json";
-            if (StringUtils.isNullAndSpaceOrEmpty(basicHeader)) {
-                basicHeader = contentType;
-            }
-
-            //将参数转换为 json 对象
-            String param = StringUtils.Empty;
-            if (requestEntity.getObjectList().size() > 0) {
-                param = JSON.toJSONString(requestEntity.getObjectList());
-            } else {
-                Map<String, Object> paramsMap = requestEntity.getParamsMap();
-                if (paramsMap == null) {
-                    paramsMap = new HashMap<>(IntegerConsts.ONE);
-                }
-                if (contentType.equals(basicHeader)) {
-                    param = JSON.toJSONString(requestEntity.getParamsMap());
-                } else {
-                    Set<Map.Entry<String, Object>> entrySet = paramsMap.entrySet();
-                    for (Map.Entry entry :
-                            entrySet) {
-                        if (StringUtils.isNotNullAndEmpty(param)) {
-                            param += "&";
-                        }
-                        param += String.format("%s=%s", entry.getKey(), entry.getValue());
-                    }
-                }
-            }
-            StringEntity stringEntity;
-            //是否启用 gzip 加密
-            if (requestEntity.isCompress()) {
-                basicHeader = "gzip";
-                String gzipParams = GzipUtils.gZip(param, requestEntity.getCharset());
-                stringEntity = new StringEntity(gzipParams);
-            } else {
-                stringEntity = new StringEntity(param, requestEntity.getCharset());
-            }
-
-            //设置请求类型
-            stringEntity.setContentType(requestEntity.getContentType());
-
-            stringEntity.setContentEncoding(new BasicHeader(HttpHeaderConsts.CONTENT_TYPE, basicHeader));
-            httpPost.setEntity(stringEntity);
-            //请求并获取结果
-            HttpResponse response = httpClient.execute(httpPost);
-            if (response != null) {
-                //读取返回结果
-                HttpEntity resEntity = response.getEntity();
-                if (resEntity != null) {
-                    //读取返回内容
-                    result = EntityUtils.toString(resEntity, requestEntity.getCharset());
-                }
-            }
-        } catch (Exception ex) {
-            logUtil.error(ex.getMessage());
+        String basicHeader = requestEntity.getHeaderMap().get(HttpHeaderConsts.CONTENT_TYPE);
+        final String contentType = "application/json";
+        if (StringUtils.isNullAndSpaceOrEmpty(basicHeader)) {
+          basicHeader = contentType;
         }
 
+        //将参数转换为 json 对象
+        String param = StringUtils.Empty;
+        if (requestEntity.getObjectList().size() > 0) {
+          param = JSON.toJSONString(requestEntity.getObjectList());
+        } else {
+          Map<String, Object> paramsMap = requestEntity.getParamsMap();
+          if (paramsMap == null) {
+            paramsMap = new HashMap<>(IntegerConsts.ONE);
+          }
+          if (contentType.equals(basicHeader)) {
+            param = JSON.toJSONString(requestEntity.getParamsMap());
+          } else {
+            Set<Map.Entry<String, Object>> entrySet = paramsMap.entrySet();
+            for (Map.Entry entry :
+                    entrySet) {
+              if (StringUtils.isNotNullAndEmpty(param)) {
+                param += StringUtils.CONNECTOR;
+              }
+              param += String.format("%s=%s", entry.getKey(), entry.getValue());
+            }
+          }
+        }
+        StringEntity stringEntity;
+        ContentType content;
+        //是否启用 gzip 加密
+        if (requestEntity.isCompress()) {
+          basicHeader = "gzip";
+          content = ContentType.create(HttpHeaderConsts.CONTENT_TYPE, basicHeader);
+          String gzipParams = GzipUtils.gZip(param, requestEntity.getCharset());
+          stringEntity = new StringEntity(gzipParams, content);
+        } else {
+          content = ContentType.create(HttpHeaderConsts.CONTENT_TYPE, requestEntity.getContentType());
+          stringEntity = new StringEntity(param, content);
+        }
+
+        httpPost.setEntity(stringEntity);
+        //请求并获取结果
+        var handler = new AbstractHttpClientResponseHandler() {
+          @Override
+          public Object handleEntity(HttpEntity entity) throws IOException {
+            //读取返回结果
+            if (entity != null) {
+              //读取返回内容
+              try {
+                result.append(EntityUtils.toString(entity, requestEntity.getCharset()));
+              } catch (ParseException e) {
+                logUtil.error(e);
+              }
+            }
+            return result.toString();
+          }
+        };
+        httpClient.execute(httpPost, handler);
+      } catch (Exception ex) {
+        logUtil.error(ex.getMessage());
+      }
+
         //返回结果
-        return result;
+      return result.toString();
     }
 
     /**
@@ -131,39 +141,49 @@ public class HttpsClientUtils {
         HttpGet httpGet = null;
         StringBuilder result = null;
         try {
-            httpClient = TlsPool.createSslContext();
-            // 设置 http 请头
-            Header[] headers = setHeader(requestEntity);
-            httpGet.setHeaders(headers);
+          httpClient = TlsPool.createSslContext();
+          // 设置 http 请头
+          Header[] headers = setHeader(requestEntity);
+          httpGet.setHeaders(headers);
 
-            // 设置请求的配置
-            RequestConfig requestConfig = RequestConfig.custom()
-                    .setSocketTimeout(5000).setConnectTimeout(5000)
-                    .setConnectionRequestTimeout(5000).build();
-            httpGet.setConfig(requestConfig);
+          // 设置请求的配置
+          final int seconds = 5000;
+          Timeout timeout = Timeout.of(Duration.ofSeconds(seconds));
+          RequestConfig requestConfig = RequestConfig.custom()
+                  .setConnectTimeout(timeout)
+                  .setConnectionRequestTimeout(timeout).build();
+          httpGet.setConfig(requestConfig);
 
-            //将参数转换为
-            URIBuilder uriBuilder = new URIBuilder(requestEntity.getRequestAddress());
+          //将参数转换为
+          URIBuilder uriBuilder = new URIBuilder(requestEntity.getRequestAddress());
 
-            // 添加请求参数
-            Map<String, Object> paramMap = requestEntity.getParamsMap();
-            if (paramMap != null) {
-                for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
-                    uriBuilder.addParameter(entry.getKey(), String.valueOf(entry.getValue()));
-                }
+          // 添加请求参数
+          Map<String, Object> paramMap = requestEntity.getParamsMap();
+          if (paramMap != null) {
+            for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
+              uriBuilder.addParameter(entry.getKey(), String.valueOf(entry.getValue()));
             }
-            httpGet = new HttpGet(uriBuilder.build());
+          }
+          httpGet = new HttpGet(uriBuilder.build());
 
-            //请求并获取结果
-            HttpResponse response = httpClient.execute(httpGet);
-            if (response != null) {
-                //读取返回结果
-                HttpEntity resEntity = response.getEntity();
-                if (resEntity != null) {
-                    //读取返回内容
-                    result.append(EntityUtils.toString(resEntity, requestEntity.getCharset()));
+          //请求并获取结果
+          var handler = new AbstractHttpClientResponseHandler() {
+            @Override
+            public Object handleEntity(HttpEntity entity) throws IOException {
+              //读取返回结果
+              if (entity != null) {
+                //读取返回内容
+                try {
+                  result.append(EntityUtils.toString(entity, requestEntity.getCharset()));
+                } catch (ParseException e) {
+                  logUtil.error(e);
                 }
+              }
+              return StringUtils.Empty;
             }
+          };
+          //请求并获取结果
+          httpClient.execute(httpGet, handler);
         } catch (Exception ex) {
             logUtil.error(ex.getMessage());
         }

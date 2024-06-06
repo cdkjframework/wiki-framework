@@ -19,21 +19,7 @@ import java.io.IOException;
 @Component
 public class CdkjCorsFilter implements Filter {
 
-    /**
-     * IP头部变量
-     */
-    private final String HEADER_IP = "X-Real-IP";
-    /**
-     * IP头部变量
-     */
-    private final String ForwardedFor = "X-Forwarded-For";
-
-    /**
-     * 结束进程常量
-     */
-    private final String SHUTDOWN = "/shutdown";
-
-    /**
+  /**
      * 初始加载
      *
      * @param filterConfig 过虑配置
@@ -62,7 +48,11 @@ public class CdkjCorsFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "*");
         String servletPath = request.getServletPath();
-        if (StringUtils.isNotNullAndEmpty(servletPath) && SHUTDOWN.equals(servletPath)) {
+      /**
+       * 结束进程常量
+       */
+      String SHUTDOWN = "/shutdown";
+      if (StringUtils.isNotNullAndEmpty(servletPath) && SHUTDOWN.equals(servletPath)) {
             return;
         }
         filterChain.doFilter(servletRequest, servletResponse);
@@ -83,11 +73,19 @@ public class CdkjCorsFilter implements Filter {
      * @return 返回IP
      */
     private String getRemoteAddr(HttpServletRequest request) {
-        String ip = request.getHeader(HEADER_IP);
+      /**
+       * IP头部变量
+       */
+      String HEADER_IP = "X-Real-IP";
+      String ip = request.getHeader(HEADER_IP);
         if (StringUtils.isNotNullAndEmpty(ip)) {
             return ip;
         }
-        ip = request.getHeader(ForwardedFor);
+      /**
+       * IP头部变量
+       */
+      String forwardedFor = "X-Forwarded-For";
+      ip = request.getHeader(forwardedFor);
         if (StringUtils.isNotNullAndEmpty(ip)) {
             return ip;
         }

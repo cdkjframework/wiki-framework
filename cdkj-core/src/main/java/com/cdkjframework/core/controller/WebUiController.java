@@ -24,11 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class WebUiController extends AbstractController {
 
   /**
-   * 受权常量
-   */
-  private final String TOKEN = "token";
-
-  /**
    * 自定义配置信息
    */
   @Autowired
@@ -46,6 +41,10 @@ public class WebUiController extends AbstractController {
     try {
       Claims claims = JwtUtils.parseJwt(id, customConfig.getJwtKey());
       if (claims != null) {
+        /**
+         * 受权常量
+         */
+        String TOKEN = "token";
         String tokenKey = ConvertUtils.convertString(claims.get(TOKEN));
         final String userKey = CacheConsts.USER_LOGIN + tokenKey;
         final String resourceKey = CacheConsts.USER_RESOURCE + CurrentUser.getUserId();

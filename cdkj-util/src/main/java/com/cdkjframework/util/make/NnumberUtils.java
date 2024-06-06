@@ -145,22 +145,23 @@ public class NnumberUtils {
             if (isUnitStep && isLastUnitStep) {
                 int size = cnChars.size();
                 cnChars.remove(size - IntegerConsts.ONE);
-                // 补0
-                if (!CN_CHARS[IntegerConsts.ZERO].equals(cnChars.get(size - IntegerConsts.TWO))) {
-                    cnChars.add(CN_CHARS[IntegerConsts.ZERO]);
-                }
+              // 补0
+              if (!CN_CHARS[IntegerConsts.ZERO].equals(cnChars.get(size - IntegerConsts.TWO))) {
+                cnChars.add(CN_CHARS[IntegerConsts.ZERO]);
+              }
             }
-            // 单位进位(万、亿)，或者非0时加上单位
-            if (isUnitStep || !isZero) {
-                cnChars.add(cnUnit);
-                isLastUnitStep = isUnitStep;
-            }
-            // 当前位为0低位为0，或者当前位为0并且为单位进位时进行省略
-            if (isZero && (isZeroLow || isUnitStep)) {
-                continue;
-            }
-            cnChars.add(cnChar);
-            isLastUnitStep = false;
+          // 单位进位(万、亿)，或者非0时加上单位
+          if (isUnitStep || !isZero) {
+            cnChars.add(cnUnit);
+            isLastUnitStep = isUnitStep;
+          }
+          // 当前位为 0 低位为0，或者当前位为0并且为单位进位时进行省略
+          boolean genuineSham = isZeroLow || isUnitStep;
+          if (isZero && genuineSham) {
+            continue;
+          }
+          cnChars.add(cnChar);
+          isLastUnitStep = false;
         }
 
         Collections.reverse(cnChars);

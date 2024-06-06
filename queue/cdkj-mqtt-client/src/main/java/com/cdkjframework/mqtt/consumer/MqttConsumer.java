@@ -54,11 +54,6 @@ public class MqttConsumer {
   private static MqttClient client;
 
   /**
-   * MQTT的连接设置
-   */
-  private MqttConnectOptions options;
-
-  /**
    * 启动
    */
   @Bean
@@ -74,8 +69,8 @@ public class MqttConsumer {
    */
   public void reconnect() {
     try {
-      if (this.client != null) {
-        this.client.connect(getOptions());
+      if (client != null) {
+        client.connect(getOptions());
       }
     } catch (MqttException e) {
       logUtil.error("重新连接失败");
@@ -121,7 +116,10 @@ public class MqttConsumer {
       client = new MqttClient(mqttConfig.getHost(), clientId, new MemoryPersistence());
 
       //连接类型
-      options = getOptions();
+      /**
+       * MQTT的连接设置
+       */
+      MqttConnectOptions options = getOptions();
       // 设置回调
       client.setCallback(mqttCallback);
       mqttCallback.setClient(this);

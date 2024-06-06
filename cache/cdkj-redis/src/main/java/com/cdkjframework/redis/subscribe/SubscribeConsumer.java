@@ -160,7 +160,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
   /**
    * 消息读取
    */
-  private final void consumerMessage() {
+  private void consumerMessage() {
     // 渠道
     if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
       List<String> channelList = new ArrayList<>();

@@ -28,12 +28,7 @@ public class PayRequest {
      */
     private LogUtils logUtils = LogUtils.getLogger(PayRequest.class);
 
-    /**
-     * 编码
-     */
-    private final String CHARSET_NAME = "UTF-8";
-
-    /**
+  /**
      * 请求数据
      *
      * @param t              数据实体
@@ -50,7 +45,11 @@ public class PayRequest {
             //创建请求地址
             URL url = new URL(requestAddress);
             //获取参数
-            byte[] postDataBytes = xml.getBytes(CHARSET_NAME);
+          /**
+           * 编码
+           */
+          String CHARSET_NAME = "UTF-8";
+          byte[] postDataBytes = xml.getBytes(CHARSET_NAME);
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");

@@ -1,7 +1,6 @@
 package com.cdkjframework.util.files;
 
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
 import com.cdkjframework.config.AliCloudOssConfig;
 import com.cdkjframework.util.make.GeneratedValueUtils;

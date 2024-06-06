@@ -47,11 +47,6 @@ public class ConsumerConfiguration {
   private final LogUtils logUtils = LogUtils.getLogger(ConsumerConfiguration.class);
 
   /**
-   * JAAS配置
-   */
-  private String JAAS_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=%s password=%s;";
-
-  /**
    * 配置
    */
   private final KafkaClientConfig kafkaClientConfig;
@@ -147,6 +142,10 @@ public class ConsumerConfiguration {
       propsMap.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
       String SASL_MECHANISM = "PLAIN";
       propsMap.put(SaslConfigs.SASL_MECHANISM, SASL_MECHANISM);
+      /**
+       * JAAS配置
+       */
+      String JAAS_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=%s password=%s;";
       propsMap.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(JAAS_CONFIG, kafkaClientConfig.getUsername(), kafkaClientConfig.getPassword()));
     }
 

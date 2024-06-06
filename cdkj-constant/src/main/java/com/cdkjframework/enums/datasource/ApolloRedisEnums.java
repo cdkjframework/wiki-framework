@@ -14,142 +14,165 @@ import com.cdkjframework.enums.basics.BasicsEnum;
 
 public enum ApolloRedisEnums implements BasicsEnum {
 
-    database {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.database";
-        }
+  /**
+   * 数据库
+   */
+  database {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.database";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "database";
-        }
-    },
-    host {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.host";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "database";
+    }
+  },
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "host";
-        }
-    },
-    port {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.port";
-        }
+  /**
+   * 主机
+   */
+  host {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.host";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "port";
-        }
-    },
-    password {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.password";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "host";
+    }
+  },
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "password";
-        }
-    },
-    maxActive {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.maxActive";
-        }
+  /**
+   * 端口
+   */
+  port {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.port";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "maxActive";
-        }
-    },
-    timeOut {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.timeOut";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "port";
+    }
+  },
+  /**
+   * 密码
+   */
+  password {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.password";
+    }
 
-        /**
-         * 获取枚举名称
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getCode() {
-            return "port";
-        }
-    },
-    maxIdle {
-        /**
-         * 获取枚举值
-         *
-         * @return 返回结果
-         */
-        @Override
-        public String getValue() {
-            return "spring.data.redis.maxIdle";
-        }
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "password";
+    }
+  },
+  /**
+   * 最大连接数
+   */
+  maxActive {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.maxActive";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "maxActive";
+    }
+  },
+  /**
+   * 超时时间
+   */
+  timeOut {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.timeOut";
+    }
+
+    /**
+     * 获取枚举名称
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getCode() {
+      return "port";
+    }
+  },
+  /**
+   * 最大空闲连接数
+   */
+  maxIdle {
+    /**
+     * 获取枚举值
+     *
+     * @return 返回结果
+     */
+    @Override
+    public String getValue() {
+      return "spring.data.redis.maxIdle";
+    }
 
         /**
          * 获取枚举名称

@@ -6,6 +6,7 @@ import com.aliyun.openservices.ons.api.bean.OrderConsumerBean;
 import com.aliyun.openservices.ons.api.bean.Subscription;
 import com.aliyun.openservices.ons.api.order.MessageOrderListener;
 import com.cdkjframework.config.AliCloudRocketMqConfig;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -55,7 +56,7 @@ public class RocketConsumer {
     OrderConsumerBean orderConsumerBean = new OrderConsumerBean();
     orderConsumerBean.setProperties(buildProperties());
     // 订阅关系
-    Map<Subscription, MessageOrderListener> subscriptionTable = new HashMap<>();
+    Map<Subscription, MessageOrderListener> subscriptionTable = new HashMap<>(IntegerConsts.ONE);
     List<String> topicList = aliCloudRocketMqConfig.getTopic();
     List<String> tagList = aliCloudRocketMqConfig.getTag();
     if (CollectionUtils.isEmpty(tagList)) {

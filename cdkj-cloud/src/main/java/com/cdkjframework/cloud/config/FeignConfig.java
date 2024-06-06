@@ -33,11 +33,6 @@ import java.util.concurrent.TimeUnit;
 public class FeignConfig extends FeignApiInterceptor {
 
   /**
-   * SLL Context
-   */
-  private final String SSL_CONTEXT = "SSL";
-
-  /**
    * 默认值：70s
    */
   private final int CONNECT_TIMEOUT_MILLIS = IntegerConsts.ONE_THOUSAND * IntegerConsts.SEVENTY,
@@ -81,7 +76,11 @@ public class FeignConfig extends FeignApiInterceptor {
   @ConditionalOnProperty("com.cdkjframework.cloud.client.FeignClient")
   public FeignClient getClient() throws NoSuchAlgorithmException, KeyManagementException {
     // 忽略SSL校验
-    SSLContext ctx = SSLContext.getInstance(SSL_CONTEXT);
+    /**
+     * SLL Context
+     */
+    String sslContext = "SSL";
+    SSLContext ctx = SSLContext.getInstance(sslContext);
     X509TrustManager tm = new X509TrustManager() {
       @Override
       public void checkClientTrusted(X509Certificate[] chain, String authType) {

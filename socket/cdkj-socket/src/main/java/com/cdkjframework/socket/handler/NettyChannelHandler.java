@@ -26,7 +26,7 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     /**
      * 日志
      */
-    private static final LogUtils logUtils = LogUtils.getLogger(NettyChannelHandler.class);
+    private static final LogUtils LOG_UTILS = LogUtils.getLogger(NettyChannelHandler.class);
 
     /**
      * socket 监听
@@ -51,7 +51,7 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
-        logUtils.info("RemoteAddress : " + channel.remoteAddress().toString() + " add !");
+        LOG_UTILS.info("RemoteAddress : " + channel.remoteAddress().toString() + " add !");
         NettySocketUtils.getClients().add(channel);
         NettySocketUtils.onlineChannelsHeart.put(ctx.channel().id().asLongText(), IntegerConsts.ONE);
     }
@@ -83,7 +83,7 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Channel channel = ctx.channel();
         String channelId = channel.id().asLongText();
-        logUtils.info("RemoteAddress : " + channel.remoteAddress().toString() + " remove !");
+        LOG_UTILS.info("RemoteAddress : " + channel.remoteAddress().toString() + " remove !");
         NettySocketUtils.getClients().remove(channel);
         NettySocketUtils.onlineChannelsHeart.remove(channelId);
         if (socketListener != null) {
@@ -119,7 +119,7 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Channel channel = ctx.channel();
         String channelId = channel.id().asLongText();
-        logUtils.error("异常处理 - 通道ID：" + channelId + cause.getMessage());
+        LOG_UTILS.error("异常处理 - 通道ID：" + channelId + cause.getMessage());
         if (socketListener != null) {
             socketListener.onDisconnect(channelId);
         }

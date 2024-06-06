@@ -34,11 +34,6 @@ public class FreemarkerUtils {
   private LogUtils logUtils = LogUtils.getLogger(FreemarkerUtils.class);
 
   /**
-   * 后缀
-   */
-  private final String suffix = ".ftl";
-
-  /**
    * 模版配置对象
    */
   private final Configuration cfg;
@@ -103,6 +98,10 @@ public class FreemarkerUtils {
    */
   public String analyticalTemplate(String template, GenerateEntity entity) throws IOException, TemplateException {
     // 读取模板
+    /**
+     * 后缀
+     */
+    String suffix = ".ftl";
     if (!template.endsWith(suffix)) {
       template = template + suffix;
     }

@@ -1,5 +1,6 @@
 package com.cdkjframework.kafka.producer;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.kafka.producer.config.KafkaConfig;
 import com.cdkjframework.kafka.producer.util.ProducerUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -37,11 +38,6 @@ public class ProducerConfiguration {
   private final KafkaConfig kafkaConfig;
 
   /**
-   * JAAS配置
-   */
-  private String JAAS_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=%s password=%s;";
-
-  /**
    * Producer Template 配置
    */
   @Bean(name = "kafkaTemplate")
@@ -61,7 +57,7 @@ public class ProducerConfiguration {
    * Producer 参数配置
    */
   public Map<String, Object> producerConfigs() {
-    Map<String, Object> props = new HashMap<>();
+    Map<String, Object> props = new HashMap<>(IntegerConsts.SEVENTEEN);
     // 指定多个kafka集群多个地址
     props.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaConfig.getBootstrapServers());
 
@@ -100,6 +96,10 @@ public class ProducerConfiguration {
       props.put(CommonClientConfigs.SECURITY_PROTOCOL_CONFIG, SecurityProtocol.SASL_PLAINTEXT.name);
       String SASL_MECHANISM = "PLAIN";
       props.put(SaslConfigs.SASL_MECHANISM, SASL_MECHANISM);
+      /**
+       * JAAS配置
+       */
+      String JAAS_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=%s password=%s;";
       props.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(JAAS_CONFIG, kafkaConfig.getUsername(), kafkaConfig.getPassword()));
     }
 

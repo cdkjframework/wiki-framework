@@ -36,11 +36,6 @@ public class UserLogoutSuccessHandler implements LogoutSuccessHandler {
   private static final String TOKEN = "token";
 
   /**
-   * 用户ID
-   */
-  private final String ID = "id";
-
-  /**
    * 用户登出返回结果
    * 这里应该让前端清除掉Token
    */
@@ -55,6 +50,10 @@ public class UserLogoutSuccessHandler implements LogoutSuccessHandler {
       String userInfo = RedisUtils.syncGet(userKey);
       if (StringUtils.isNotNullAndEmpty(userInfo)) {
         JSONObject object = JsonUtils.parseObject(userInfo);
+        /**
+         * 用户ID
+         */
+        String ID = "id";
         String userId = object.getString(ID);
         final String resourceKey = CacheConsts.USER_RESOURCE + userId;
         RedisUtils.syncDel(resourceKey);

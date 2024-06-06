@@ -46,11 +46,6 @@ public class LogUtils {
   private final String NEW_LINE = System.getProperty("line.separator");
 
   /**
-   * 操作系统
-   */
-  private final String OS = "win";
-
-  /**
    * 目标值
    */
   private final String TARGET = "{}";
@@ -411,6 +406,10 @@ public class LogUtils {
   private String existsCatalog(String logFileName) {
     // 验证目录存不存在
     String logPath = customConfig.getLogPath();
+    /**
+     * 操作系统
+     */
+    String OS = "win";
     if (HostUtils.getOs().startsWith(OS)) {
       logPath = "c:" + logPath;
     }

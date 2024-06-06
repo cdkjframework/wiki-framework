@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
  * @Author: xiaLin
  * @Version: 1.0
  */
-//@RefreshScope
 @RestController
 @RequestMapping(value = "/configure")
 public class ConfigureRefreshController {

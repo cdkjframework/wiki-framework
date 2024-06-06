@@ -29,7 +29,7 @@ public class AssertUtils {
      * @param <T> 类型
      * @throws GlobalException 异常信息
      */
-    public final static <T> void isEmptyMessage(T t) throws GlobalException {
+    public static <T> void isEmptyMessage(T t) throws GlobalException {
         isEmptyMessage(t, IS_EMPTY_MESSAGE);
     }
 
@@ -39,7 +39,7 @@ public class AssertUtils {
      * @param key 验证字段
      * @throws GlobalException 异常信息
      */
-    public final static void isEmptyMessage(String key) throws GlobalException {
+    public static void isEmptyMessage(String key) throws GlobalException {
         isEmptyMessage(key, IS_EMPTY_MESSAGE);
     }
 
@@ -50,7 +50,7 @@ public class AssertUtils {
      * @param message 消息
      * @throws GlobalException 异常信息
      */
-    public final static void isEmptyMessage(String key, String message) throws GlobalException {
+    public static void isEmptyMessage(String key, String message) throws GlobalException {
         if (StringUtils.isNullAndSpaceOrEmpty(message)) {
             message = IS_EMPTY_MESSAGE;
         }
@@ -66,7 +66,7 @@ public class AssertUtils {
      * @param <T> 类型
      * @throws GlobalException 异常信息
      */
-    public final static <T> void isEmptyMessage(T t, String message) throws GlobalException {
+    public static <T> void isEmptyMessage(T t, String message) throws GlobalException {
         if (StringUtils.isNullAndSpaceOrEmpty(message)) {
             message = IS_EMPTY_MESSAGE;
         }
@@ -82,7 +82,7 @@ public class AssertUtils {
      * @param list 数据集
      * @throws GlobalException 异常信息
      */
-    public final static void isListEmpty(List<?> list) throws GlobalException {
+    public static void isListEmpty(List<?> list) throws GlobalException {
         isListEmpty(list, IS_EMPTY_MESSAGE);
     }
 
@@ -92,7 +92,7 @@ public class AssertUtils {
      * @param list 数据集
      * @throws GlobalException 异常信息
      */
-    public final static void isListEmpty(List<?> list, String message) throws GlobalException {
+    public static void isListEmpty(List<?> list, String message) throws GlobalException {
         if (StringUtils.isNullAndSpaceOrEmpty(message)) {
             message = IS_EMPTY_MESSAGE;
         }

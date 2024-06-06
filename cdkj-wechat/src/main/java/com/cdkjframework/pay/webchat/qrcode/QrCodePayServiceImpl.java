@@ -15,6 +15,7 @@ import com.cdkjframework.util.encrypts.WebChatPayAutographUtils;
 import com.cdkjframework.util.files.XmlUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.DecimalUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,12 +86,12 @@ public class QrCodePayServiceImpl extends AbstractPaymentServiceImpl<WebChatPayC
         //其它信息
         webChatEntity.setNotifyUrl(configEntity.getNotifyUrl() + webChatEntity.getNotifyUrl());
         webChatEntity.setTradeType("NATIVE");
-        webChatEntity.setBody("");
-        webChatEntity.setDeviceInfo("");
-        webChatEntity.setSpbillCreateIp("");
+        webChatEntity.setBody(StringUtils.Empty);
+        webChatEntity.setDeviceInfo(StringUtils.Empty);
+        webChatEntity.setSpbillCreateIp(StringUtils.Empty);
 
         //签名
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>(IntegerConsts.TWELVE);
         data.put("appid", webChatEntity.getAppId());
         data.put("mch_id", webChatEntity.getMchId());
         data.put("nonce_str", webChatEntity.getNonceStr());

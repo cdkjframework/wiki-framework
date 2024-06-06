@@ -2,6 +2,7 @@ package com.cdkjframework.center.generate;
 
 import com.cdkjframework.center.annotation.EnableAutoGenerate;
 import com.cdkjframework.constant.Application;
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.tool.meta.BeanRegistrationUtils;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
@@ -35,11 +36,8 @@ public class CdkjCoreConfigRegistrar implements ImportBeanDefinitionRegistrar {
         Map<String, Object> map = annotationMetadata.getAnnotationAttributes(EnableAutoGenerate.class.getName());
         AnnotationAttributes attributes = AnnotationAttributes.fromMap(map);
 
-        Map<String, Object> propertySourcesPlaceholderPropertyValues = new HashMap<>();
-        propertySourcesPlaceholderPropertyValues.put("order", 0);
-
-//        BeanRegistrationUtil.registerBeanDefinitionIfNotExists(registry, PropertySourcesPlaceholderConfigurer.class.getName(),
-//                PropertySourcesPlaceholderConfigurer.class, propertySourcesPlaceholderPropertyValues);
+        Map<String, Object> propertySourcesPlaceholderPropertyValues = new HashMap<>(IntegerConsts.ONE);
+        propertySourcesPlaceholderPropertyValues.put("order", IntegerConsts.ZERO);
 
         BeanRegistrationUtils.registerBeanDefinitionIfNotExists(registry, Application.class.getName(), Application.class);
     }

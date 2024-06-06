@@ -26,16 +26,6 @@ public class CacheConfigurer implements CachingConfigurer {
      */
     @Override
     public CacheManager cacheManager() {
-//        try {
-//            RedisCacheManagerBuilder
-//            net.sf.ehcache.CacheManager ehcacheCacheManager
-//                    = new net.sf.ehcache.CacheManager(new ClassPathResource("ehcache.xml").getInputStream());
-//
-//            EhCacheCacheManager cacheCacheManager = new EhCacheCacheManager(ehcacheCacheManager);
-//            return cacheCacheManager;
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
         return null;
     }
 

@@ -42,12 +42,7 @@ public class QrCodePayNotifyServiceImpl extends AbstractPaymentNotifyServiceImpl
      */
     private final PayRecordService payRecordServiceImpl;
 
-    /**
-     * 验证结果常量
-     */
-    private final String RESULTS_CODE = "SUCCESS";
-
-    /**
+  /**
      * 构造函数
      *
      * @param payRecordServiceImpl 支付服务
@@ -66,7 +61,11 @@ public class QrCodePayNotifyServiceImpl extends AbstractPaymentNotifyServiceImpl
     public void checkSignature(PayConfigEntity configEntity, StringBuilder builder) throws Exception {
         //将数据转换为实体
         WebChatPayActionEntity entity = XmlUtils.xmlToBean(WebChatPayActionEntity.class, builder.toString());
-        if (RESULTS_CODE.equals(entity.getResultCode())) {
+      /**
+       * 验证结果常量
+       */
+      String RESULTS_CODE = "SUCCESS";
+      if (RESULTS_CODE.equals(entity.getResultCode())) {
             String orderNo = entity.getOutTradeNo();
             String nonceStr = entity.getNonceStr();
             //设置查询条件
@@ -119,7 +118,7 @@ public class QrCodePayNotifyServiceImpl extends AbstractPaymentNotifyServiceImpl
     private String buildSignatureHasMap(PayConfigEntity configEntity, PayRecordEntity recordEntity, WebChatPayActionEntity entity) throws Exception {
         //验证签名
         //签名
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>(IntegerConsts.NINETEEN);
         data.put("appid", configEntity.getAppId());
         data.put("mch_id", configEntity.getMchId());
         data.put("nonce_str", recordEntity.getNonceStr());

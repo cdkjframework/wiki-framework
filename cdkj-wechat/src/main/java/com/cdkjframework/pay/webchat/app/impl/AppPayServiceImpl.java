@@ -20,7 +20,10 @@ import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * @ProjectName: cdkj-framework
@@ -132,9 +135,8 @@ public class AppPayServiceImpl implements AppPayService {
         httpRequest.setMethod(HttpMethodEnums.POST);
 
         // header设置
-        Map<String, String> header = new HashMap<>();
-//        header.put("Authorization:", "WECHATPAY2-SHA256-RSA2048 mchid=\"1900009191\",nonce_str=\"593BEC0C930BF1AFEB40B4A08C8FB242\",signature=\"uOVRnA4qG/MNnYzdQxJanN+zU+lTgIcnU9BxGw5dKjK+VdEUz2FeIoC+D5sB/LN+nGzX3hfZg6r5wT1pl2ZobmIc6p0ldN7J6yDgUzbX8Uk3sD4a4eZVPTBvqNDoUqcYMlZ9uuDdCvNv4TM3c1WzsXUrExwVkI1XO5jCNbgDJ25nkT/c1gIFvqoogl7MdSFGc4W4xZsqCItnqbypR3RuGIlR9h9vlRsy7zJR9PBI83X8alLDIfR1ukt1P7tMnmogZ0cuDY8cZsd8ZlCgLadmvej58SLsIkVxFJ8XyUgx9FmutKSYTmYtWBZ0+tNvfGmbXU7cob8H/4nLBiCwIUFluw==\",timestamp=\"1554208460\",serial_no=\"1DDE55AD98ED71D6EDD4A4A16996DE7B47773A8C\");
-                httpRequest.setHeaderMap(header);
+        Map<String, String> header = new HashMap<>(IntegerConsts.ONE);
+        httpRequest.setHeaderMap(header);
         return HttpRequestUtils.httpRequest(httpRequest).toString();
     }
 
@@ -153,7 +155,7 @@ public class AppPayServiceImpl implements AppPayService {
         unifiedOrder.setNonceStr(GeneratedValueUtils.getOrderlyShortUuid());
 
         //签名
-        Map<String, String> data = new HashMap<>();
+        Map<String, String> data = new HashMap<>(signatureField.size());
         List<Field> fields = ReflectionUtils.getDeclaredFields(UnifiedOrderEntity.class);
         for (Map.Entry<String, String> entry :
                 signatureField.entrySet()) {

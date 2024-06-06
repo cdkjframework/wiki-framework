@@ -61,9 +61,9 @@ public class MybatisDruidDbConfiguration {
     //设置数据库连接
     if (dataSourceConfig.isEncryption()) {
       AesUtils aes = new AesUtils(customConfig);
-      datasource.setUrl(aes.base64Decrypt(mybatisSqlConfig.getUrl()));
-      datasource.setUsername(aes.base64Decrypt(mybatisSqlConfig.getUsername()));
-      datasource.setPassword(aes.base64Decrypt(mybatisSqlConfig.getPassword()));
+      datasource.setUrl(AesUtils.base64Decrypt(mybatisSqlConfig.getUrl()));
+      datasource.setUsername(AesUtils.base64Decrypt(mybatisSqlConfig.getUsername()));
+      datasource.setPassword(AesUtils.base64Decrypt(mybatisSqlConfig.getPassword()));
     } else {
       datasource.setUrl(mybatisSqlConfig.getUrl());
       datasource.setUsername(mybatisSqlConfig.getUsername());

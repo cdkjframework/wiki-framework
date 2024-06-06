@@ -93,17 +93,14 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
   }
 
   /**
-   * 配置读取
-   */
-  private final CustomConfig customConfig;
-
-  /**
    * 构造函数
    *
    * @param customConfig 配置信息
    */
   public MapperDebugAspect(CustomConfig customConfig) {
-    this.customConfig = customConfig;
+    /**
+     * 配置读取
+     */
   }
 
   /**
