@@ -11,6 +11,7 @@ import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -26,7 +27,6 @@ import java.util.List;
  * @Version: 1.0
  */
 @Component
-@RequiredArgsConstructor
 public class SubscribeConsumer implements RedisPubSubListener<String, String> {
 
   /**
@@ -57,12 +57,44 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
   private StatefulRedisClusterPubSubConnection<String, String> redisClusterSubscribeConnection;
 
   /**
-   * 启动后启动服务
+   * 构建函数
    */
-  @PostConstruct
-  public void subscribeConsumer(){
-    // 订阅数据
-    consumerMessage();
+  public SubscribeConsumer(CustomConfig customConfig, RedisConfig redisConfig) {
+    this.customConfig = customConfig;
+    this.redisConfig = redisConfig;
+  }
+
+  /**
+   * 订阅数据 启动服务
+   */
+  @Bean(name = "start")
+  public void start() {
+    if (!redisConfig.isSubscribe()) {
+      return;
+    }
+    // 渠道
+    if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
+      List<String> channelList = new ArrayList<>();
+      for (String key :
+          customConfig.getChannel()) {
+        key = String.format(key, redisConfig.getDatabase());
+        channelList.add(getNamespaces(key));
+      }
+      subscribe(channelList
+          .toArray(new String[channelList.size()]));
+    }
+
+    // 模式
+    if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
+      List<String> patternList = new ArrayList<>();
+      for (String key :
+          customConfig.getPattern()) {
+        key = String.format(key, redisConfig.getDatabase());
+        patternList.add(getNamespaces(key));
+      }
+      psubscribe(patternList
+          .toArray(new String[patternList.size()]));
+    }
   }
 
   /**
@@ -155,35 +187,6 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     logUtils.info("从模式中取消订阅，模式:" + pattern + ",取消订阅数量:" + count);
     logUtils.info("重新订阅，模式:" + pattern);
     psubscribe(pattern);
-  }
-
-  /**
-   * 消息读取
-   */
-  private void consumerMessage() {
-    // 渠道
-    if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
-      List<String> channelList = new ArrayList<>();
-      for (String key :
-              customConfig.getChannel()) {
-        key = String.format(key, redisConfig.getDatabase());
-        channelList.add(getNamespaces(key));
-      }
-      subscribe(channelList
-              .toArray(new String[channelList.size()]));
-    }
-
-    // 模式
-    if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
-      List<String> patternList = new ArrayList<>();
-      for (String key :
-              customConfig.getPattern()) {
-        key = String.format(key, redisConfig.getDatabase());
-        patternList.add(getNamespaces(key));
-      }
-      psubscribe(patternList
-              .toArray(new String[patternList.size()]));
-    }
   }
 
   /**
