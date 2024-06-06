@@ -264,10 +264,6 @@
           <artifactId>guava</artifactId>
       </dependency>
       <dependency>
-          <groupId>org.apache.tomcat.embed</groupId>
-          <artifactId>tomcat-embed-core</artifactId>
-      </dependency>
-      <dependency>
           <groupId>org.apache.commons</groupId>
           <artifactId>commons-pool2</artifactId>
       </dependency>
