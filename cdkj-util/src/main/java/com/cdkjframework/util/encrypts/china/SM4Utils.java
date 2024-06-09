@@ -100,14 +100,14 @@ public class SM4Utils {
    */
   public static String encrypt(String hexKey, String paramStr) throws Exception {
     // 16进制字符串-->byte[]
-    byte[] keyData = ByteUtils.fromHexString(hexKey);
+    byte[] keyData = HexUtils.hexToByteArray(hexKey);
     // 待加密字符串-->byte[]String-->byte[]
     byte[] srcData = paramStr.getBytes(ENCODING);
     // 加密后的数组
     byte[] cipherArray = encryptCbcPadding(keyData, srcData);
 
     // byte[]-->hexString
-    return ByteUtils.toHexString(cipherArray);
+    return HexUtils.encodeHexStr(cipherArray);
   }
 
   /**
@@ -148,7 +148,6 @@ public class SM4Utils {
   public static AlgorithmParameters generateIV() throws Exception {
     // iv 为一个 16 字节的数组，这里采用和 iOS 端一样的构造方法，数据全为0
     byte[] iv = new byte[IntegerConsts.SIXTEEN];
-    // Arrays.fill(iv, (byte) 0x00);
     AlgorithmParameters params = AlgorithmParameters.getInstance(ALGORITHM_NAME);
     params.init(new IvParameterSpec(iv));
     return params;
@@ -165,11 +164,11 @@ public class SM4Utils {
    */
   public static String decrypt(String hexKey, String text) throws Exception {
     // 用于接收解密后的字符串
-    String result = StringUtils.Empty;
+    String result;
     // hexString-->byte[]
-    byte[] keyData = ByteUtils.fromHexString(hexKey);
+    byte[] keyData = HexUtils.hexToByteArray(hexKey);
     // hexString-->byte[]
-    byte[] resultData = ByteUtils.fromHexString(text);
+    byte[] resultData = HexUtils.hexToByteArray(text);
     // 解密
     byte[] srcData = decryptCbcPadding(keyData, resultData);
     // byte[]-->String

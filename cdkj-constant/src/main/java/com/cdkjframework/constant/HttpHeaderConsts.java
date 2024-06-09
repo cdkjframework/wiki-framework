@@ -47,6 +47,11 @@ public class HttpHeaderConsts {
     public static final String CONNECTION = "Connection";
 
     /**
+     * 内容处置
+     */
+    public static final String CONTENT_DISPOSITION = "Content-Disposition";
+
+    /**
      * 内容长度
      */
     public static final String CONTENT_LENGTH = "Content-Length";

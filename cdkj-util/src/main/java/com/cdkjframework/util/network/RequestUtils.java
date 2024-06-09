@@ -12,6 +12,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -31,11 +32,6 @@ public class RequestUtils {
   private static LogUtils logUtils = LogUtils.getLogger(RequestUtils.class);
 
   /**
-   * SET 头
-   */
-  private final static String SET = "set";
-
-  /**
    * 请求字节流转换为字符串
    *
    * @param stream 流
@@ -43,7 +39,7 @@ public class RequestUtils {
    */
   public static String inputStreamToString(InputStream stream) throws IOException {
     // 初始值，起标志位作用
-    int len = -1;
+    int len;
     // 缓冲区
     byte[] bytes = new byte[IntegerConsts.BYTE_LENGTH];
     // 捕获内存缓冲区的数据转换为字节数组
@@ -68,10 +64,11 @@ public class RequestUtils {
   public static <T> T parameterToEntity(HttpServletRequest request, Class<T> clazz) {
     T t;
     try {
-      t = clazz.newInstance();
+      t = clazz.getDeclaredConstructor().newInstance();
 
       // 获取目标参数所有字段
       List<Field> fieldList = ReflectionUtils.getDeclaredFields(clazz);
+      final String SET = "set";
       for (Field field : fieldList) {
         field.setAccessible(true);
         //从注解中获取目标字段
@@ -93,6 +90,12 @@ public class RequestUtils {
       logUtils.error(e.getMessage());
       t = null;
     } catch (IllegalAccessException e) {
+      logUtils.error(e.getMessage());
+      t = null;
+    } catch (InvocationTargetException e) {
+      logUtils.error(e.getMessage());
+      t = null;
+    } catch (NoSuchMethodException e) {
       logUtils.error(e.getMessage());
       t = null;
     }
