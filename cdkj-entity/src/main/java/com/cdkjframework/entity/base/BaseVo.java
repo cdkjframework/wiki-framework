@@ -1,14 +1,9 @@
 package com.cdkjframework.entity.base;
 
-import com.cdkjframework.entity.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @ProjectName: cdkj.cloud
@@ -18,9 +13,7 @@ import java.util.Date;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@ToString
-@Getter
-@Setter
+@Data
 public class BaseVo {
 
     /**

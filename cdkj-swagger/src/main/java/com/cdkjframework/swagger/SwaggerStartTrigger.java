@@ -8,12 +8,10 @@ import com.cdkjframework.swagger.config.SwaggerConfig;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.fasterxml.classmate.TypeResolver;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.ParameterBuilder;
@@ -29,7 +27,6 @@ import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -104,6 +101,7 @@ public class SwaggerStartTrigger {
       }
     }
     final boolean hidden = swaggerConfig.getHidden();
+    final String paramType = "header";
     for (SwaggerApiInfoEntity entity :
             apiInfoEntityList) {
       AlternateTypeRule[] finalAlternateTypeRules = alternateTypeRules;
@@ -116,7 +114,7 @@ public class SwaggerStartTrigger {
                   ParameterBuilder builderPar = new ParameterBuilder();
                   builderPar.name(header.getHeaderName())
                           .description(header.getDescription())
-                          .modelRef(new ModelRef(header.getHeaderType())).parameterType("header")
+                          .modelRef(new ModelRef(header.getHeaderType())).parameterType(paramType)
                           .required(false).build();
                   pars.add(builderPar.build());
                 }

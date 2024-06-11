@@ -132,7 +132,15 @@
                   <groupId>org.apache.poi</groupId>
                   <artifactId>poi-ooxml</artifactId>
               </exclusion>
+              <exclusion>
+                  <groupId>org.apache.xmlbeans</groupId>
+                  <artifactId>xmlbeans</artifactId>
+              </exclusion>
           </exclusions>
+      </dependency>
+      <dependency>
+          <groupId>org.apache.xmlbeans</groupId>
+          <artifactId>xmlbeans</artifactId>
       </dependency>
       <dependency>
           <groupId>org.apache.poi</groupId>
@@ -163,6 +171,10 @@
               <exclusion>
                   <groupId>org.bouncycastle</groupId>
                   <artifactId>bcprov-jdk15on</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>org.apache.httpcomponents</groupId>
+                  <artifactId>httpclient</artifactId>
               </exclusion>
           </exclusions>
       </dependency>
@@ -207,6 +219,16 @@
       <dependency>
           <groupId>com.esotericsoftware</groupId>
           <artifactId>kryo</artifactId>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.ow2.asm</groupId>
+                  <artifactId>asm</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+      <dependency>
+          <groupId>org.ow2.asm</groupId>
+          <artifactId>asm</artifactId>
       </dependency>
       <dependency>
           <groupId>com.esotericsoftware</groupId>
@@ -253,7 +275,16 @@
       <dependency>
           <groupId>org.mockito</groupId>
           <artifactId>mockito-core</artifactId>
-          <scope>compile</scope>
+          <exclusions>
+              <exclusion>
+                  <groupId>org.objenesis</groupId>
+                  <artifactId>objenesis</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+      <dependency>
+          <groupId>org.objenesis</groupId>
+          <artifactId>objenesis</artifactId>
       </dependency>
       <dependency>
           <groupId>com.google.guava</groupId>
