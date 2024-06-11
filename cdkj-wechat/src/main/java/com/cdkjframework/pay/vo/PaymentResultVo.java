@@ -1,7 +1,7 @@
 package com.cdkjframework.pay.vo;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -17,19 +17,19 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-@ApiModel(value = "支付返回結果")
+@Schema(name = "支付返回結果")
 public class PaymentResultVo {
 
-    /**
-     * 消息
-     */
-    @ApiModelProperty(value = "消息")
-    private String Message;
+  /**
+   * 消息
+   */
+  @SchemaProperty(name = "消息")
+  private String Message;
 
 
-    /**
-     * 是否有错误
-     */
-    @ApiModelProperty(value = "是否有错误")
-    private boolean isError;
+  /**
+   * 是否有错误
+   */
+  @SchemaProperty(name = "是否有错误")
+  private boolean isError;
 }

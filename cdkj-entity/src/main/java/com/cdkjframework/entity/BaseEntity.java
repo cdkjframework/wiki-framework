@@ -1,11 +1,12 @@
 package com.cdkjframework.entity;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.Transient;
 import lombok.Data;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -148,14 +149,14 @@ public class BaseEntity implements Serializable {
   /**
    * 修改用户ID
    */
-  @ApiModelProperty("修改用户ID")
+  @SchemaProperty(name = "修改用户ID")
   @Column(name = "edit_user_id", length = 36)
   private String editUserId;
 
   /**
    * 修改用户名称
    */
-  @ApiModelProperty("修改用户名称")
+  @SchemaProperty(name = "修改用户名称")
   @Column(name = "edit_user_name", length = 500)
   private String editUserName;
 

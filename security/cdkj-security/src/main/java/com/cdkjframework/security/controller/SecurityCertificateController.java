@@ -17,8 +17,8 @@ import com.cdkjframework.util.network.http.HttpRequestUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import io.jsonwebtoken.Claims;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -45,7 +46,7 @@ import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
  * @Version: 1.0
  */
 @RestController
-@Api(tags = "安全认证接口")
+@Tag(name = "安全认证接口")
 @RequiredArgsConstructor
 @RequestMapping(value = "/security")
 public class SecurityCertificateController {
@@ -73,7 +74,7 @@ public class SecurityCertificateController {
    * @throws IOException IO异常信息
    */
   @GetMapping(value = "/verify/code")
-  @ApiOperation(value = "获取验证码")
+  @Operation(summary = "获取验证码")
   public void verificationCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
     OutputStream outputStream = response.getOutputStream();
     response.setHeader(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_HTML_VALUE);
@@ -82,7 +83,7 @@ public class SecurityCertificateController {
     HttpSession session = request.getSession();
     // 生成验证码
     String code = VerifyCodeUtils.outputVerifyImage(IntegerConsts.ONE_HUNDRED, IntegerConsts.THIRTY_FIVE,
-            outputStream, IntegerConsts.FOUR);
+        outputStream, IntegerConsts.FOUR);
     // 将图形验证码存入到session中
     session.setAttribute(BusinessConsts.IMAGE_CODE, code);
     session.setAttribute(BusinessConsts.TIME, System.currentTimeMillis());
@@ -95,7 +96,7 @@ public class SecurityCertificateController {
    * @param response 响应
    * @throws IOException IO异常信息
    */
-  @ApiOperation(value = "获取验证码")
+  @Operation(summary = "获取验证码")
   @GetMapping(value = "/scan/qrcode.html")
   public void scanCode(HttpServletRequest request, HttpServletResponse response) throws Exception {
     OutputStream outputStream = response.getOutputStream();
@@ -131,7 +132,7 @@ public class SecurityCertificateController {
    * @throws IOException IO异常信息
    */
   @ResponseBody
-  @ApiOperation(value = "验证二维码是否已被扫码")
+  @Operation(summary = "验证二维码是否已被扫码")
   @GetMapping(value = "/validate.html")
   public ResponseBuilder validate(HttpServletRequest request, HttpServletResponse response) throws Exception {
     // 创建 session
@@ -185,7 +186,7 @@ public class SecurityCertificateController {
    * @throws IOException IO异常信息
    */
   @ResponseBody
-  @ApiOperation(value = "票据认证")
+  @Operation(summary = "票据认证")
   @GetMapping(value = "/ticket.html")
   public SecurityUserEntity ticket(@RequestParam("ticket") String ticket, HttpServletResponse response) throws Exception {
     return userAuthenticationServiceImpl.ticket(ticket, response);
@@ -200,7 +201,7 @@ public class SecurityCertificateController {
    * @throws GlobalException              异常信息
    */
   @ResponseBody
-  @ApiOperation(value = "票据认证")
+  @Operation(summary = "票据认证")
   @GetMapping(value = "/refresh/ticket.html")
   public ResponseBuilder refreshTicket(HttpServletRequest request) throws UnsupportedEncodingException, GlobalException {
     String ticket = userAuthenticationServiceImpl.refreshTicket(request);
@@ -214,7 +215,7 @@ public class SecurityCertificateController {
    * @throws IOException IO异常信息
    */
   @ResponseBody
-  @ApiOperation(value = "验证二维码是否已被扫码")
+  @Operation(summary = "验证二维码是否已被扫码")
   @GetMapping(value = "/confirm.html")
   public void confirm(@RequestParam("id") String id) throws Exception {
     String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
@@ -229,7 +230,7 @@ public class SecurityCertificateController {
    * @throws IOException IO异常信息
    */
   @ResponseBody
-  @ApiOperation(value = "扫码完成接口【即登录】")
+  @Operation(summary = "扫码完成接口【即登录】")
   @PostMapping(value = "/completed.html")
   public void completed(@RequestParam("username") String username, @RequestParam("id") String id) throws Exception {
 
@@ -252,7 +253,7 @@ public class SecurityCertificateController {
    * @throws GlobalException 异常信息
    */
   @ResponseBody
-  @ApiOperation(value = "扫码完成接口【即登录】")
+  @Operation(summary = "扫码完成接口【即登录】")
   @PostMapping(value = "/logout.html")
   public void logout(HttpServletRequest request) throws GlobalException {
     userAuthenticationServiceImpl.logout(request);

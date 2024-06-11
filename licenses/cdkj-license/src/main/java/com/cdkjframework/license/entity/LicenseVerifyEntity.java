@@ -1,7 +1,7 @@
 package com.cdkjframework.license.entity;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 
 /**
@@ -13,36 +13,36 @@ import lombok.Data;
  * @date created on  10:42 下午 2020/8/21
  */
 @Data
-@ApiModel(value = "License校验类需要的参数")
+@Schema(name = "License校验类需要的参数")
 public class LicenseVerifyEntity {
 
-    /**
-     * 证书主题
-     */
-    @ApiModelProperty(value = "证书主题")
-    private String subject;
+  /**
+   * 证书主题
+   */
+  @SchemaProperty(name = "证书主题")
+  private String subject;
 
-    /**
-     * 公钥别名
-     */
-    @ApiModelProperty(value = "公钥别名")
-    private String publicAlias;
+  /**
+   * 公钥别名
+   */
+  @SchemaProperty(name = "公钥别名")
+  private String publicAlias;
 
-    /**
-     * 访问公钥库的密码
-     */
-    @ApiModelProperty(value = "访问公钥库的密码")
-    private String storePass;
+  /**
+   * 访问公钥库的密码
+   */
+  @SchemaProperty(name = "访问公钥库的密码")
+  private String storePass;
 
-    /**
-     * 证书生成路径
-     */
-    @ApiModelProperty(value = "证书生成路径")
-    private String licensePath;
+  /**
+   * 证书生成路径
+   */
+  @SchemaProperty(name = "证书生成路径")
+  private String licensePath;
 
-    /**
-     * 公钥库存储路径
-     */
-    @ApiModelProperty(value = "公钥库存储路径")
-    private String publicKeysStorePath;
+  /**
+   * 公钥库存储路径
+   */
+  @SchemaProperty(name = "公钥库存储路径")
+  private String publicKeysStorePath;
 }
