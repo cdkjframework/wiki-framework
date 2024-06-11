@@ -106,7 +106,7 @@ public class SecurityCertificateController {
     HttpSession session = request.getSession();
     String id = session.getId().toLowerCase();
     long currentTime = System.currentTimeMillis();
-    StringBuffer content = new StringBuffer(id);
+    StringBuilder content = new StringBuilder(id);
     content.append(StringUtils.COMMA);
     content.append(currentTime);
     // 生成二维码
@@ -142,39 +142,40 @@ public class SecurityCertificateController {
     String timeKey = CacheConsts.USER_PREFIX + BusinessConsts.TIME;
 
     // 读取状态
-    Integer status = ConvertUtils.convertInt(RedisUtils.hGet(statusKey, id));
+    int status = ConvertUtils.convertInt(RedisUtils.hGet(statusKey, id));
     long time = ConvertUtils.convertLong(RedisUtils.hGet(timeKey, id));
 
     // 返回结果
     String message;
     switch (status) {
-      case 1:
+      case 1 -> {
         long currentTime = System.currentTimeMillis();
         long value = ((currentTime - time) / IntegerConsts.ONE_THOUSAND) / IntegerConsts.SIXTY;
         message = "success";
         if (value > IntegerConsts.FIVE) {
           message = "timeout";
         }
-        break;
-      case 2:
+      }
+      case 2 -> {
         String tokenKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + id;
         String token = RedisUtils.syncGet(tokenKey);
         if (StringUtils.isNotNullAndEmpty(token)) {
           message = "successful";
           Claims claims = JwtUtils.parseJwt(token, customConfig.getJwtKey());
-          // 生成 ticket 票据
-          token = ConvertUtils.convertString(claims.get(BusinessConsts.HEADER_TOKEN));
-          String ticket = URLEncoder.encode(AesUtils.base64Encode(token), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
-          response.setHeader(BusinessConsts.TICKET, ticket);
-          String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN;
-          RedisUtils.hSet(ticketKey, token, ticket);
+          if (claims == null) {
+            message = "timeout";
+          } else {          // 生成 ticket 票据
+            token = ConvertUtils.convertString(claims.get(BusinessConsts.HEADER_TOKEN));
+            String ticket = URLEncoder.encode(AesUtils.base64Encode(token), StandardCharsets.UTF_8) + TICKET_SUFFIX;
+            response.setHeader(BusinessConsts.TICKET, ticket);
+            String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN;
+            RedisUtils.hSet(ticketKey, token, ticket);
+          }
         } else {
           message = "timeout";
         }
-        break;
-      default:
-        message = StringUtils.Empty;
-        break;
+      }
+      default -> message = StringUtils.Empty;
     }
     // 返回结果
     return ResponseBuilder.successBuilder(message);
@@ -211,13 +212,11 @@ public class SecurityCertificateController {
 
   /**
    * 扫码确认接口
-   *
-   * @throws IOException IO异常信息
    */
   @ResponseBody
   @Operation(summary = "验证二维码是否已被扫码")
   @GetMapping(value = "/confirm.html")
-  public void confirm(@RequestParam("id") String id) throws Exception {
+  public void confirm(@RequestParam("id") String id) {
     String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
     RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.ONE));
   }
