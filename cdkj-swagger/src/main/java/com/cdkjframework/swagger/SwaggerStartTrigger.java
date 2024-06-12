@@ -5,6 +5,7 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.swagger.config.SwaggerConfig;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.fasterxml.classmate.TypeResolver;
@@ -13,17 +14,13 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
+import org.springframework.http.HttpMethod;
+import springfox.documentation.builders.*;
 import springfox.documentation.schema.AlternateTypeRule;
 import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ModelRef;
+import springfox.documentation.schema.ScalarType;
 import springfox.documentation.schema.WildcardType;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
+import springfox.documentation.service.*;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
 import springfox.documentation.spring.web.plugins.Docket;
@@ -42,6 +39,11 @@ import java.util.Map;
  * @Version: 1.0
  */
 public class SwaggerStartTrigger {
+
+  /**
+   * 日志
+   */
+  private final LogUtils LOG_UTILS = LogUtils.getLogger(SwaggerStartTrigger.class);
 
   /**
    * 读取配置
@@ -67,7 +69,6 @@ public class SwaggerStartTrigger {
    * 通过select()函数返回一个ApiSelectorBuilder实例,用来控制哪些接口暴露给Swagger来展现，
    * 本例采用指定扫描的包路径来定义指定要建立API的目录。
    *
-   * @return
    */
   @Bean(name = "start")
   public void start() {
@@ -96,31 +97,31 @@ public class SwaggerStartTrigger {
                   typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
                   typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
         } catch (ClassNotFoundException e) {
-
+          LOG_UTILS.error(e);
         }
       }
     }
     final boolean hidden = swaggerConfig.getHidden();
-    final String paramType = "header";
     for (SwaggerApiInfoEntity entity :
             apiInfoEntityList) {
       AlternateTypeRule[] finalAlternateTypeRules = alternateTypeRules;
       BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Docket.class,
               () -> {
                 //设置 header
-                List<Parameter> pars = new ArrayList<>();
+                List<RequestParameter> pars = new ArrayList<>();
                 for (SwaggerHeaderEntity header :
                         headerEntityList) {
-                  ParameterBuilder builderPar = new ParameterBuilder();
+                  RequestParameterBuilder builderPar = new RequestParameterBuilder();
                   builderPar.name(header.getHeaderName())
                           .description(header.getDescription())
-                          .modelRef(new ModelRef(header.getHeaderType())).parameterType(paramType)
-                          .required(false).build();
+                          .in(ParameterType.HEADER)
+                          .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+                          .required(Boolean.FALSE).build();
                   pars.add(builderPar.build());
                 }
                 Docket result;
                 ApiSelectorBuilder builder;
-                Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                Docket docket = new Docket(DocumentationType.OAS_30)
                         .groupName(entity.getGroupName());
                 if (finalAlternateTypeRules != null) {
                   docket = docket.alternateTypeRules(finalAlternateTypeRules);
@@ -130,10 +131,12 @@ public class SwaggerStartTrigger {
                 if (hidden) {
                   result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
                 } else {
-                  result = builder.build().globalOperationParameters(pars).apiInfo(apiInfo());
+                  result = builder.build().globalRequestParameters(pars).apiInfo(apiInfo());
                 }
-                return result;
 
+                result.globalResponses(HttpMethod.GET, getGlobalResponseMessage());
+                result.globalResponses(HttpMethod.POST, getGlobalResponseMessage());
+                return result;
               });
 
       BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
@@ -147,7 +150,7 @@ public class SwaggerStartTrigger {
    * 创建该API的基本信息（这些基本信息会展现在文档页面中）
    * 访问地址：http://项目实际地址/swagger-ui.html
    *
-   * @return
+   * @return 返回接口信息
    */
   private ApiInfo apiInfo() {
     //联系人信息
@@ -162,5 +165,18 @@ public class SwaggerStartTrigger {
             .contact(contact)
             .version(swaggerConfig.getVersion())
             .build();
+  }
+
+  /**
+   * 生成通用响应信息
+   *
+   * @return 返回结果
+   */
+  private static List<Response> getGlobalResponseMessage() {
+    List<Response> responses = new ArrayList<>();
+    responses.add(new ResponseBuilder().code("404").description("找不到资源").build());
+
+    // 返回结果
+    return responses;
   }
 }
