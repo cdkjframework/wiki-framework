@@ -1,11 +1,11 @@
 package com.cdkjframework.swagger;
 
 import com.cdkjframework.constant.Application;
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.swagger.config.SwaggerConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CollectUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.fasterxml.classmate.TypeResolver;
@@ -68,7 +68,6 @@ public class SwaggerStartTrigger {
    * apiInfo() 增加API相关信息
    * 通过select()函数返回一个ApiSelectorBuilder实例,用来控制哪些接口暴露给Swagger来展现，
    * 本例采用指定扫描的包路径来定义指定要建立API的目录。
-   *
    */
   @Bean(name = "start")
   public void start() {
@@ -77,71 +76,76 @@ public class SwaggerStartTrigger {
     }
     //接口信息
     List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
-            .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
+        .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
     List<SwaggerHeaderEntity> headerEntityList;
     if (StringUtils.isNotNullAndEmpty(swaggerConfig.getHeaders())) {
       headerEntityList = JsonUtils
-              .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
+          .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
     } else {
       headerEntityList = new ArrayList<>();
     }
+    // 备用类型规则
     List<String> resolve = swaggerConfig.getResolve();
-    AlternateTypeRule[] alternateTypeRules = null;
-    if (resolve != null && resolve.size() > IntegerConsts.ZERO) {
+    AlternateTypeRule[] alternateTypeRules;
+    if (CollectUtils.isNotEmpty(resolve)) {
       alternateTypeRules = new AlternateTypeRule[resolve.size()];
       for (String key :
-              resolve) {
+          resolve) {
         try {
           Type type = Class.forName(key);
           alternateTypeRules[resolve.indexOf(key)] = AlternateTypeRules.newRule(
-                  typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
-                  typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
+              typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
+              typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
         } catch (ClassNotFoundException e) {
           LOG_UTILS.error(e);
         }
       }
+    } else {
+      alternateTypeRules = null;
     }
     final boolean hidden = swaggerConfig.getHidden();
-    for (SwaggerApiInfoEntity entity :
-            apiInfoEntityList) {
-      AlternateTypeRule[] finalAlternateTypeRules = alternateTypeRules;
-      BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Docket.class,
-              () -> {
-                //设置 header
-                List<RequestParameter> pars = new ArrayList<>();
-                for (SwaggerHeaderEntity header :
-                        headerEntityList) {
-                  RequestParameterBuilder builderPar = new RequestParameterBuilder();
-                  builderPar.name(header.getHeaderName())
-                          .description(header.getDescription())
-                          .in(ParameterType.HEADER)
-                          .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-                          .required(Boolean.FALSE).build();
-                  pars.add(builderPar.build());
-                }
-                Docket result;
-                ApiSelectorBuilder builder;
-                Docket docket = new Docket(DocumentationType.OAS_30)
-                        .groupName(entity.getGroupName());
-                if (finalAlternateTypeRules != null) {
-                  docket = docket.alternateTypeRules(finalAlternateTypeRules);
-                }
-                builder = docket.select().apis(RequestHandlerSelectors
-                        .basePackage(entity.getBasePackage()));
-                if (hidden) {
-                  result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
-                } else {
-                  result = builder.build().globalRequestParameters(pars).apiInfo(apiInfo());
-                }
+    //设置 header
+    List<RequestParameter> pars = new ArrayList<>();
+    for (SwaggerHeaderEntity header :
+        headerEntityList) {
+      RequestParameterBuilder builderPar = new RequestParameterBuilder();
+      builderPar.name(header.getHeaderName())
+          .description(header.getDescription())
+          .in(ParameterType.HEADER)
+          .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
+          .required(Boolean.FALSE).build();
+      pars.add(builderPar.build());
+    }
 
-                result.globalResponses(HttpMethod.GET, getGlobalResponseMessage());
-                result.globalResponses(HttpMethod.POST, getGlobalResponseMessage());
-                return result;
-              });
+    for (SwaggerApiInfoEntity entity :
+        apiInfoEntityList) {
+      BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Docket.class,
+          () -> {
+            Docket result;
+            ApiSelectorBuilder builder;
+            Docket docket = new Docket(DocumentationType.OAS_30)
+                .groupName(entity.getGroupName());
+            if (alternateTypeRules != null) {
+              docket = docket.alternateTypeRules(alternateTypeRules);
+            }
+            builder = docket.select().apis(RequestHandlerSelectors
+                .basePackage(entity.getBasePackage()));
+            if (hidden) {
+              result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
+            } else {
+              result = builder.paths(PathSelectors.any()).build()
+                  .globalRequestParameters(pars)
+                  .apiInfo(apiInfo());
+            }
+
+            result.globalResponses(HttpMethod.GET, getGlobalResponseMessage());
+            result.globalResponses(HttpMethod.POST, getGlobalResponseMessage());
+            return result;
+          });
 
       BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
       BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) Application
-              .applicationContext.getBeanFactory();
+          .applicationContext.getBeanFactory();
       beanFactory.registerBeanDefinition(entity.getBeanName(), beanDefinition);
     }
   }

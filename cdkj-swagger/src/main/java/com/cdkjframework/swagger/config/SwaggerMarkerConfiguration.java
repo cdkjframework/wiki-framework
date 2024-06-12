@@ -2,7 +2,6 @@ package com.cdkjframework.swagger.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @ProjectName: cdkj-framework
@@ -13,7 +12,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * @Date: 2023/7/18 9:21
  * @Version: 1.0
  */
-@EnableSwagger2
 @Configuration(proxyBeanMethods = false)
 public class SwaggerMarkerConfiguration {
 

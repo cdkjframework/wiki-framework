@@ -2,6 +2,7 @@ package com.cdkjframework.swagger.config;
 
 import com.cdkjframework.swagger.SwaggerStartTrigger;
 import com.fasterxml.classmate.TypeResolver;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -11,7 +12,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @ProjectName: cdkj-framework
@@ -25,7 +25,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @Lazy(false)
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
-@EnableConfigurationProperties(SwaggerConfig.class)
+@EnableConfigurationProperties({SwaggerConfig.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(SwaggerMarkerConfiguration.Marker.class)
 public class SwaggerAutoConfiguration {
@@ -38,7 +38,13 @@ public class SwaggerAutoConfiguration {
   /**
    * 类型解析程序
    */
-  private final TypeResolver typeResolver;
+  @Resource(name = "typeResolver")
+  private TypeResolver resolver;
+
+  @Bean
+  public TypeResolver typeResolver() {
+    return new TypeResolver();
+  }
 
   /**
    * swagger启动触发器
@@ -48,7 +54,6 @@ public class SwaggerAutoConfiguration {
   @Bean(initMethod = "start")
   @ConditionalOnMissingBean
   public SwaggerStartTrigger swaggerStartTrigger() {
-    SwaggerStartTrigger trigger = new SwaggerStartTrigger(swaggerConfig, typeResolver);
-    return trigger;
+    return new SwaggerStartTrigger(swaggerConfig, resolver);
   }
 }
