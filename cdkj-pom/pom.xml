@@ -34,6 +34,7 @@
       <spring.version>6.1.8</spring.version>
       <spring-plugin-core.version>3.0.0</spring-plugin-core.version>
       <swagger.version>3.0.0</swagger.version>
+      <knife4j.version>3.0.3</knife4j.version>
       <swagger-annotations.version>2.2.22</swagger-annotations.version>
       <swagger-models.version>2.2.22</swagger-models.version>
       <swagger2markup.version>1.3.3</swagger2markup.version>
@@ -623,6 +624,11 @@
                 <groupId>io.springfox</groupId>
                 <artifactId>springfox-swagger-ui</artifactId>
                 <version>${swagger.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>

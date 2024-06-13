@@ -38,13 +38,7 @@ public class SwaggerAutoConfiguration {
   /**
    * 类型解析程序
    */
-  @Resource(name = "typeResolver")
-  private TypeResolver resolver;
-
-  @Bean
-  public TypeResolver typeResolver() {
-    return new TypeResolver();
-  }
+  private final TypeResolver resolver;
 
   /**
    * swagger启动触发器

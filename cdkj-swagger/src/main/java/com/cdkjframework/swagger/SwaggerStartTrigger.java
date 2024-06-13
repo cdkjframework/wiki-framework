@@ -4,6 +4,7 @@ import com.cdkjframework.constant.Application;
 import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
 import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.swagger.config.SwaggerConfig;
+import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CollectUtils;
 import com.cdkjframework.util.tool.JsonUtils;
@@ -11,7 +12,7 @@ import com.cdkjframework.util.tool.StringUtils;
 import com.fasterxml.classmate.TypeResolver;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
 import org.springframework.http.HttpMethod;
@@ -74,6 +75,7 @@ public class SwaggerStartTrigger {
     if (StringUtils.isNullAndSpaceOrEmpty(swaggerConfig.getBasePackage())) {
       return;
     }
+    LOG_UTILS.info("Swagger 3 开始配置：{}", LocalDateUtils.dateTimeCurrentFormatter());
     //接口信息
     List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
         .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
@@ -105,7 +107,7 @@ public class SwaggerStartTrigger {
     }
     final boolean hidden = swaggerConfig.getHidden();
     //设置 header
-    List<RequestParameter> pars = new ArrayList<>();
+    List<RequestParameter> parameters = new ArrayList<>();
     for (SwaggerHeaderEntity header :
         headerEntityList) {
       RequestParameterBuilder builderPar = new RequestParameterBuilder();
@@ -114,11 +116,12 @@ public class SwaggerStartTrigger {
           .in(ParameterType.HEADER)
           .query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
           .required(Boolean.FALSE).build();
-      pars.add(builderPar.build());
+      parameters.add(builderPar.build());
     }
 
     for (SwaggerApiInfoEntity entity :
         apiInfoEntityList) {
+      LOG_UTILS.info("Swagger 3 分组：{}", entity.getGroupName());
       BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Docket.class,
           () -> {
             Docket result;
@@ -134,7 +137,7 @@ public class SwaggerStartTrigger {
               result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
             } else {
               result = builder.paths(PathSelectors.any()).build()
-                  .globalRequestParameters(pars)
+                  .globalRequestParameters(parameters)
                   .apiInfo(apiInfo());
             }
 
@@ -144,10 +147,11 @@ public class SwaggerStartTrigger {
           });
 
       BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-      BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) Application
+      DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) Application
           .applicationContext.getBeanFactory();
       beanFactory.registerBeanDefinition(entity.getBeanName(), beanDefinition);
     }
+    LOG_UTILS.info("Swagger 3 配置成功：{}", LocalDateUtils.dateTimeCurrentFormatter());
   }
 
   /**
