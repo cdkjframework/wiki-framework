@@ -31,15 +31,15 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     /**
      * socket 监听
      */
-    private final SocketListener socketListener;
+    private final SocketListener SocketListener;
 
     /**
      * 构造函数
      *
-     * @param socketListener 监听接口
+     * @param SocketListener 监听接口
      */
-    public NettyChannelHandler(SocketListener socketListener) {
-        this.socketListener = socketListener;
+    public NettyChannelHandler(SocketListener SocketListener) {
+        this.SocketListener = SocketListener;
     }
 
     /**
@@ -68,8 +68,8 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
         NettySocketUtils.getClients().remove(channel);
         String channelId = channel.id().asLongText();
         NettySocketUtils.onlineChannelsHeart.remove(channelId);
-        if (socketListener != null) {
-            socketListener.onDisconnect(channelId);
+        if (SocketListener != null) {
+            SocketListener.onDisconnect(channelId);
         }
     }
 
@@ -86,8 +86,8 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
         LOG_UTILS.info("RemoteAddress : " + channel.remoteAddress().toString() + " remove !");
         NettySocketUtils.getClients().remove(channel);
         NettySocketUtils.onlineChannelsHeart.remove(channelId);
-        if (socketListener != null) {
-            socketListener.onDisconnect(channelId);
+        if (SocketListener != null) {
+            SocketListener.onDisconnect(channelId);
         }
     }
 
@@ -101,12 +101,12 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf buf) throws Exception {
         String channelId = ctx.channel().id().asLongText();
-        if (socketListener == null) {
+        if (SocketListener == null) {
             return;
         }
         byte[] bytes = new byte[buf.readableBytes()];
         buf.getBytes(buf.readerIndex(), bytes);
-        socketListener.onMessage(channelId, bytes);
+        SocketListener.onMessage(channelId, bytes);
     }
 
     /**
@@ -120,8 +120,8 @@ public class NettyChannelHandler extends SimpleChannelInboundHandler<ByteBuf> {
         Channel channel = ctx.channel();
         String channelId = channel.id().asLongText();
         LOG_UTILS.error("异常处理 - 通道ID：" + channelId + cause.getMessage());
-        if (socketListener != null) {
-            socketListener.onDisconnect(channelId);
+        if (SocketListener != null) {
+            SocketListener.onDisconnect(channelId);
         }
         if (channel.isActive()) {
             ctx.close();

@@ -28,13 +28,13 @@ public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
     /**
      * 网状通道处理器
      */
-    private final SocketListener socketListener;
+    private final SocketListener SocketListener;
 
     /**
      * 构造函数
      */
-    public NettyChannelInitializer(SocketListener socketListener) {
-        this.socketListener = socketListener;
+    public NettyChannelInitializer(SocketListener SocketListener) {
+        this.SocketListener = SocketListener;
     }
 
     /**
@@ -48,7 +48,7 @@ public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
 
         // 服务器的逻辑
-        pipeline.addLast(new NettyChannelHandler(socketListener));
+        pipeline.addLast(new NettyChannelHandler(SocketListener));
 
         // 处理心跳
         pipeline.addLast(new IdleStateHandler(IntegerConsts.FIVE, IntegerConsts.ZERO, IntegerConsts.ZERO, TimeUnit.MINUTES));

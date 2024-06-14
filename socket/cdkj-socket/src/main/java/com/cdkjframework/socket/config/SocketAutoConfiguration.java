@@ -22,8 +22,8 @@ import org.springframework.context.annotation.Lazy;
  * @Version: 1.0
  */
 @Lazy(false)
+@Configuration
 @RequiredArgsConstructor
-@Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(SocketConfig.class)
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(SocketMarkerConfiguration.Marker.class)
