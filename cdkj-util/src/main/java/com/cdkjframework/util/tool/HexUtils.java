@@ -228,10 +228,12 @@ public class HexUtils {
   }
 
   /**
-   * @param data byte数组
-   * @return String 转换后的字符串
-   * 将byte[]数组转换为String字符串
-   */
+	 * 字节转十六进制
+	 *
+	 * @param data byte数组
+	 * @return String 转换后的字符串
+	 * 将byte[]数组转换为String字符串
+	 */
   public static String byteToHexString(byte[] data) {
     StringBuffer result = new StringBuffer();
     for (int i = 0; i < data.length; i++) {
@@ -239,6 +241,16 @@ public class HexUtils {
     }
     return result.toString();
   }
+	/**
+	 * 字节转十六进制
+	 *
+	 * @param data byte数组
+	 * @return String 转换后的字符串
+	 * 将byte[]数组转换为String字符串
+	 */
+	public static String byteToHexString(byte data) {
+		return Integer.toHexString((data & 0xFF) | 0x100).toUpperCase().substring(1, 3);
+	}
 
   /**
    * 将字节转换为字符串
