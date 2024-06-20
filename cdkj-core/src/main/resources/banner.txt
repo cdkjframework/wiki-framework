@@ -1,16 +1,15 @@
-${AnsiColor.BRIGHT_GREEN}
+${AnsiColor.BRIGHT_YELLOW}
 
-                                                   _ _ _ _ _
-                                                  |  _ _ _ _|
-    _ _ _ _    _ _ _ _       _    _        _ _    | |            _           _ _           _
-   /  _ _ _|  |  _ _   \    | |  / /      |_  |   | | _ _ _     \ \         / _ \         / /
- /  /         | |    \  \   | | / /         | |   | | _ _ _|     \ \       / / \ \       / /
-|  |          | |     \  \  | |/ /          | |   | |             \ \     / /   \ \     / /
-|  |          | |     /  /  | |\ \   _      | |   | |              \ \   / /     \ \   / /
- \  \_ _ _    | | _ _/  /   | | \ \  \ \_ _ / /   | |               \ \_/ /       \ \_/ /
-  \_ _ _ _|   |_ _ _ _ /    |_|  \_\  \_ _ _ /    |_|                \ _ /         \ _ /
+             _   _        _   ______
+            | | | |      (_) |  ____|
+   ___    __| | | | __    _  | |__    __      __
+  / __|  / _` | | |/ /   | | |  __|   \ \ /\ / /
+ | (__  | (_| | |   <    | | | |       \ V  V /
+  \___|  \__,_| |_|\_\   | | |_|        \_/\_/
+                        _/ |
+                       |__/
 
-${AnsiColor.BRIGHT_BLUE}
+${AnsiColor.BRIGHT_YELLOW}
 Application Name: ${spring.application.name}
 Application Profile: ${spring.profiles.active}
 Server Port: ${server.port}

@@ -2,6 +2,7 @@ package com.cdkjframework.socket.handler;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.socket.NettySocketUtils;
+import com.cdkjframework.socket.listener.SocketListener;
 import com.cdkjframework.util.log.LogUtils;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,32 +19,44 @@ import io.netty.handler.timeout.IdleStateEvent;
  */
 public class NettyHeartbeatHandler extends ChannelInboundHandlerAdapter {
 
-    /**
-     * 日志
-     */
-    private LogUtils logUtils = LogUtils.getLogger(NettyHeartbeatHandler.class);
+	/**
+	 * 监听数据
+	 */
+	private final SocketListener listener;
 
-    /**
-     * 用户事件已触发
-     *
-     * @param ctx 通道处理程序上下文
-     * @param evt 事件
-     * @throws Exception 异常信息
-     */
-    @Override
-    public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent) {
-            Channel channel = ctx.channel();
-            String channelId = channel.id().asLongText();
+	/**
+	 * 日志
+	 */
+	private LogUtils logUtils = LogUtils.getLogger(NettyHeartbeatHandler.class);
 
-            // 该通道非法
-            if (!NettySocketUtils.onlineChannelsHeart.containsKey(channelId)) {
-                channel.close().sync();
-                return;
-            }
-            IdleStateEvent event = (IdleStateEvent) evt;
+	/**
+	 * 构造函数
+	 */
+	public NettyHeartbeatHandler(SocketListener listener) {
+		this.listener = listener;
+	}
 
-            switch (event.state()) {
+	/**
+	 * 用户事件已触发
+	 *
+	 * @param ctx 通道处理程序上下文
+	 * @param evt 事件
+	 * @throws Exception 异常信息
+	 */
+	@Override
+	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+		if (evt instanceof IdleStateEvent) {
+			Channel channel = ctx.channel();
+			String channelId = channel.id().asLongText();
+
+			// 该通道非法
+			if (!NettySocketUtils.onlineChannelsHeart.containsKey(channelId)) {
+				channel.close().sync();
+				return;
+			}
+			IdleStateEvent event = (IdleStateEvent) evt;
+
+			switch (event.state()) {
                 // 进入读写空闲
                 case ALL_IDLE:
                     // 空闲60s之后触发 (心跳包丢失)
