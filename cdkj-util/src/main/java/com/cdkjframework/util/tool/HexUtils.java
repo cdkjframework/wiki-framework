@@ -200,13 +200,15 @@ public class HexUtils {
   }
 
   /**
-   * @param ch    十六进制char
-   * @param index 十六进制字符在字符数组中的位置
-   * @return 一个整数
-   * @throws RuntimeException 当ch不是一个合法的十六进制字符时，抛出运行时异常
-   * @author Herman.Xiong
-   * @date 2014年5月5日 17:08:46
-   * 将十六进制字符转换成一个整数
+	 * 字节转换为整数
+	 *
+	 * @param ch    十六进制char
+	 * @param index 十六进制字符在字符数组中的位置
+	 * @return 一个整数
+	 * @throws RuntimeException 当ch不是一个合法的十六进制字符时，抛出运行时异常
+	 * @author Herman.Xiong
+	 * @date 2014年5月5日 17:08:46
+	 * 将十六进制字符转换成一个整数
 	 */
 	protected static int toDigit(char ch, int index) {
 		int digit = Character.digit(ch, IntegerConsts.SIXTEEN);
