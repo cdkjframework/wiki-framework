@@ -207,40 +207,51 @@ public class HexUtils {
    * @author Herman.Xiong
    * @date 2014年5月5日 17:08:46
    * 将十六进制字符转换成一个整数
-   */
-  protected static int toDigit(char ch, int index) {
-    int digit = Character.digit(ch, IntegerConsts.SIXTEEN);
-    if (digit == -1) {
-      throw new RuntimeException("非法16进制字符 " + ch
-          + " 在索引 " + index);
-    }
-    return digit;
-  }
+	 */
+	protected static int toDigit(char ch, int index) {
+		int digit = Character.digit(ch, IntegerConsts.SIXTEEN);
+		if (digit == -1) {
+			throw new RuntimeException("非法16进制字符 " + ch
+					+ " 在索引 " + index);
+		}
+		return digit;
+	}
 
-  /**
-   * 16进制转10进制
-   *
-   * @param hex 16进制字符
-   * @return 返回结果
-   */
-  public static int toDigit(String hex) {
-    return Integer.parseInt(hex, IntegerConsts.SIXTEEN);
-  }
+	/**
+	 * 16进制转10进制
+	 *
+	 * @param hex 16进制字符
+	 * @return 返回结果
+	 */
+	public static int toDigit(String hex) {
+		return Integer.parseInt(hex, IntegerConsts.SIXTEEN);
+	}
 
-  /**
+	/**
+	 * 16进制转 long
+	 *
+	 * @param hex 16进制字符
+	 * @return 返回结果
+	 */
+	public static Long toLong(String hex) {
+		return Long.parseLong(hex, IntegerConsts.SIXTEEN);
+	}
+
+	/**
 	 * 字节转十六进制
 	 *
 	 * @param data byte数组
 	 * @return String 转换后的字符串
 	 * 将byte[]数组转换为String字符串
 	 */
-  public static String byteToHexString(byte[] data) {
-    StringBuffer result = new StringBuffer();
-    for (int i = 0; i < data.length; i++) {
-      result.append(Integer.toHexString((data[i] & 0xFF) | 0x100).toUpperCase().substring(1, 3));
-    }
-    return result.toString();
-  }
+	public static String byteToHexString(byte[] data) {
+		StringBuffer result = new StringBuffer();
+		for (int i = 0; i < data.length; i++) {
+			result.append(Integer.toHexString((data[i] & 0xFF) | 0x100).toUpperCase().substring(1, 3));
+		}
+		return result.toString();
+	}
+
 	/**
 	 * 字节转十六进制
 	 *
@@ -294,55 +305,73 @@ public class HexUtils {
         baKeyword[i] = (byte) (0xff & Integer.parseInt(str.substring(i * 2, i * 2 + 2), 16));
       } catch (Exception e) {
         e.printStackTrace();
-      }
-    }
-    try {
-      str = new String(baKeyword, "UTF-8");
-      new String();
-    } catch (Exception e1) {
-      e1.printStackTrace();
-    }
-    return str;
-  }
+			}
+		}
+		try {
+			str = new String(baKeyword, "UTF-8");
+			new String();
+		} catch (Exception e1) {
+			e1.printStackTrace();
+		}
+		return str;
+	}
 
-  /**
-   * 字符串转化成为16进制字符串
-   *
-   * @param str 字符串
-   * @return 返回结果
-   */
-  public static String strToHex(String str) {
-    String strValue = StringUtils.Empty;
-    for (int i = 0; i < str.length(); i++) {
-      int ch = (int) str.charAt(i);
-      String s4 = Integer.toHexString(ch);
-      strValue = strValue + s4;
-    }
-    return strValue;
-  }
+	/**
+	 * 字符串转化成为16进制字符串
+	 *
+	 * @param str 字符串
+	 * @return 返回结果
+	 */
+	public static String strToHex(String str) {
+		String strValue = StringUtils.Empty;
+		for (int i = 0; i < str.length(); i++) {
+			int ch = (int) str.charAt(i);
+			String s4 = Integer.toHexString(ch);
+			strValue = strValue + s4;
+		}
+		return strValue;
+	}
 
-  /**
-   * 10进制转换为16进制
-   *
-   * @param n           整数
-   * @param toLowerCase 是否大写
-   * @return: 返回16进制字符串
-   */
-  public static String intToHex(int n, boolean toLowerCase) {
-    StringBuffer buffer = new StringBuffer();
-    String hex;
-    char[] b = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-    while (n != 0) {
-      buffer = buffer.append(b[n % 16]);
-      n = n / 16;
-    }
-    hex = buffer.reverse().toString();
-    if ("".equals(hex)) {
-      hex = "00";
-    }
-    if (hex.length() % IntegerConsts.TWO > IntegerConsts.ZERO) {
-      hex = "0" + hex;
-    }
-    return toLowerCase ? hex.toUpperCase() : hex;
-  }
+	/**
+	 * 10进制转换为16进制
+	 *
+	 * @param n           整数
+	 * @param toUpperCase 是否大写
+	 * @return: 返回16进制字符串
+	 */
+	public static String intToHex(int n, boolean toUpperCase) {
+		StringBuffer buffer = new StringBuffer();
+		String hex;
+		char[] b = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+		while (n != 0) {
+			buffer = buffer.append(b[n % 16]);
+			n = n / 16;
+		}
+		hex = buffer.reverse().toString();
+		if ("".equals(hex)) {
+			hex = "00";
+		}
+		if (hex.length() % IntegerConsts.TWO > IntegerConsts.ZERO) {
+			hex = "0" + hex;
+		}
+		return toUpperCase ? hex.toUpperCase() : hex;
+	}
+
+	/**
+	 * long转16进制
+	 *
+	 * @param n           数据
+	 * @param toUpperCase 是否大写
+	 * @return
+	 */
+	public static String longToHex(long n, boolean toUpperCase) {
+		StringBuffer hex = new StringBuffer();
+		hex.append(Long.toHexString(n));
+		if (hex.length() % IntegerConsts.TWO > IntegerConsts.ZERO) {
+			hex.insert(IntegerConsts.ZERO, StringUtils.ZERO);
+		}
+
+		// 返回结果
+		return toUpperCase ? hex.toString().toLowerCase() : hex.toString();
+	}
 }
