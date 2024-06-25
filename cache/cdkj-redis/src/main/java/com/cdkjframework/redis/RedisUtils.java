@@ -71,7 +71,6 @@ public class RedisUtils {
    * @param clusterSubscribeConnection 集群订阅
    * @param redisConfig                配置
    */
-  @Autowired
   public RedisUtils(RedisAdvancedClusterAsyncCommands<String, String> clusterAsyncCommands, RedisAsyncCommands<String, String> asyncCommands, StatefulRedisPubSubConnection<String, String> redisSubscribeConnection, StatefulRedisClusterPubSubConnection<String, String> clusterSubscribeConnection, RedisConfig redisConfig) {
     config = redisConfig;
     if (clusterAsyncCommands.getStatefulConnection() != null) {
