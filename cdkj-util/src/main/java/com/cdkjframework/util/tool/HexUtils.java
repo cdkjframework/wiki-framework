@@ -374,6 +374,6 @@ public class HexUtils {
 		}
 
 		// 返回结果
-		return toUpperCase ? hex.toString().toLowerCase() : hex.toString();
+		return toUpperCase ? hex.toString().toUpperCase() : hex.toString();
 	}
 }

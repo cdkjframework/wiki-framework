@@ -69,6 +69,15 @@ public class RedisConfig {
    */
   private Integer maxWaitMillis = 0;
 
+	/**
+	 * Redis 渠道订阅
+	 */
+	private List<String> channel;
+
+	/**
+	 * Redis 模式订阅
+	 */
+	private List<String> pattern;
 
   /**
    * 连接池中的最大空闲连接

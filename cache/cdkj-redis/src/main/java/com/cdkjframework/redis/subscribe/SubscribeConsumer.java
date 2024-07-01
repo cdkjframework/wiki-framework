@@ -35,11 +35,6 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
   private static LogUtils logUtils = LogUtils.getLogger(SubscribeConsumer.class);
 
   /**
-   * 配置信息
-   */
-  private final CustomConfig customConfig;
-
-  /**
    * 配置
    */
   private final RedisConfig redisConfig;
@@ -59,8 +54,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
   /**
    * 构建函数
    */
-  public SubscribeConsumer(CustomConfig customConfig, RedisConfig redisConfig) {
-    this.customConfig = customConfig;
+  public SubscribeConsumer( RedisConfig redisConfig) {
     this.redisConfig = redisConfig;
   }
 
@@ -73,10 +67,10 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
       return;
     }
     // 渠道
-    if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
+    if (!CollectionUtils.isEmpty(redisConfig.getChannel())) {
       List<String> channelList = new ArrayList<>();
       for (String key :
-          customConfig.getChannel()) {
+					redisConfig.getChannel()) {
         key = String.format(key, redisConfig.getDatabase());
         channelList.add(getNamespaces(key));
       }
@@ -85,10 +79,10 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     }
 
     // 模式
-    if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
+    if (!CollectionUtils.isEmpty(redisConfig.getPattern())) {
       List<String> patternList = new ArrayList<>();
       for (String key :
-          customConfig.getPattern()) {
+					redisConfig.getPattern()) {
         key = String.format(key, redisConfig.getDatabase());
         patternList.add(getNamespaces(key));
       }
