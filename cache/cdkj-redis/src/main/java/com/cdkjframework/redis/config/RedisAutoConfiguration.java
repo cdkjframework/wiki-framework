@@ -37,8 +37,7 @@ import org.springframework.context.annotation.Lazy;
 		RedisClusterConfiguration.class,
 		RedisPublishConfiguration.class,
 		RedisStandaloneConfiguration.class,
-		RedisSubscribeConfiguration.class,
-		com.cdkjframework.redis.subscribe.impl.AbstractSubscribe.class})
+		RedisSubscribeConfiguration.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(RedisMarkerConfiguration.Marker.class)
 public class RedisAutoConfiguration {
@@ -47,11 +46,6 @@ public class RedisAutoConfiguration {
 	 * redis 配置
 	 */
 	private final RedisConfig redisConfig;
-
-	/**
-	 * 订阅数据
-	 */
-	private final ISubscribe subscribe;
 
 	/**
 	 * redis 配置
@@ -75,23 +69,6 @@ public class RedisAutoConfiguration {
 	 */
 	@Resource(name = "clusterSubscribeConnection")
 	private StatefulRedisClusterPubSubConnection<String, String> clusterSubscribeConnection;
-
-	/**
-	 * redis 订阅
-	 *
-	 * @return 返回订阅信息
-	 */
-	@Bean(initMethod = "start")
-	@ConditionalOnBean({
-			RedisConfiguration.class,
-			RedisClusterConfiguration.class,
-			RedisPublishConfiguration.class,
-			RedisSubscribeConfiguration.class,
-			RedisStandaloneConfiguration.class
-	})
-	public SubscribeConsumer subscribeConsumer() {
-		return new SubscribeConsumer(redisConfig, subscribe);
-	}
 
 	/**
 	 * 实例化工具
