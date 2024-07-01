@@ -2,6 +2,7 @@ package com.cdkjframework.redis.config;
 
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.connectivity.*;
+import com.cdkjframework.redis.subscribe.ISubscribe;
 import com.cdkjframework.redis.subscribe.SubscribeConsumer;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
@@ -36,7 +37,8 @@ import org.springframework.context.annotation.Lazy;
 		RedisClusterConfiguration.class,
 		RedisPublishConfiguration.class,
 		RedisStandaloneConfiguration.class,
-		RedisSubscribeConfiguration.class})
+		RedisSubscribeConfiguration.class,
+		com.cdkjframework.redis.subscribe.impl.AbstractSubscribe.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(RedisMarkerConfiguration.Marker.class)
 public class RedisAutoConfiguration {
@@ -45,6 +47,11 @@ public class RedisAutoConfiguration {
 	 * redis 配置
 	 */
 	private final RedisConfig redisConfig;
+
+	/**
+	 * 订阅数据
+	 */
+	private final ISubscribe subscribe;
 
 	/**
 	 * redis 配置
@@ -83,7 +90,7 @@ public class RedisAutoConfiguration {
 			RedisStandaloneConfiguration.class
 	})
 	public SubscribeConsumer subscribeConsumer() {
-		return new SubscribeConsumer(redisConfig);
+		return new SubscribeConsumer(redisConfig, subscribe);
 	}
 
 	/**
