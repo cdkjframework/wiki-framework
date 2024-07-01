@@ -99,11 +99,6 @@ public class WebSocketServer {
 //            cf.channel().closeFuture().sync();
         } catch (Exception e) {
             logUtils.error(" netty服务启动异常 " + e.getMessage());
-        } finally {
-            if (bossGroup != null) {
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
         }
     }
 }
