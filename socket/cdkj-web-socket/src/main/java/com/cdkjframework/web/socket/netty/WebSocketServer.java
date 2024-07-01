@@ -96,7 +96,7 @@ public class WebSocketServer {
                 }
             });
             //对关闭通道进行监听
-            cf.channel().closeFuture().sync();
+//            cf.channel().closeFuture().sync();
         } catch (Exception e) {
             logUtils.error(" netty服务启动异常 " + e.getMessage());
         } finally {

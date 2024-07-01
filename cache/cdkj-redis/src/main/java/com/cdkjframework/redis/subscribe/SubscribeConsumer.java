@@ -8,6 +8,7 @@ import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -39,7 +40,8 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
 	/**
 	 * 订阅接口
 	 */
-	private final ISubscribe subscribe;
+	@Autowired
+	private ISubscribe subscribe;
 
 	/**
 	 * 订阅
@@ -56,9 +58,8 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
 	/**
 	 * 构建函数
 	 */
-	public SubscribeConsumer(RedisConfig redisConfig, ISubscribe subscribe) {
+	public SubscribeConsumer(RedisConfig redisConfig) {
 		this.redisConfig = redisConfig;
-		this.subscribe = subscribe;
 	}
 
 	/**

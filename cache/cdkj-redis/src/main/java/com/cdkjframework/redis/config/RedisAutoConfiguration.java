@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -76,15 +77,20 @@ public class RedisAutoConfiguration {
 	 * @return 返回结果
 	 */
 	@Bean
-	@ConditionalOnBean({
-			SubscribeConsumer.class,
-			RedisConfiguration.class,
-			RedisClusterConfiguration.class,
-			RedisPublishConfiguration.class,
-			RedisSubscribeConfiguration.class,
-			RedisStandaloneConfiguration.class
-	})
 	public RedisUtils redisUtils() {
 		return new RedisUtils(clusterAsyncCommands, asyncCommands, redisSubscribeConnection, clusterSubscribeConnection, redisConfig);
+	}
+
+	/**
+	 * redis 订阅
+	 *
+	 * @return 返回订阅信息
+	 */
+	@Bean(initMethod = "start")
+	@ConditionalOnBean({
+			ISubscribe.class
+	})
+	public SubscribeConsumer subscribeConsumer() {
+		return new SubscribeConsumer(redisConfig);
 	}
 }
