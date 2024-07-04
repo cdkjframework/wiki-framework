@@ -5,11 +5,9 @@ import com.cdkjframework.entity.BaseEntity;
 import ${item};
 </#list>
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * @ProjectName: ${projectName}
@@ -21,9 +19,7 @@ import javax.persistence.*;
  * @Entity
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @Table(name = "${table}", catalog = "${dataBase}")
 public class ${className}Entity extends BaseEntity {
 

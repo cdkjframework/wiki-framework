@@ -2,7 +2,6 @@ package com.cdkjframework.swagger.config;
 
 import com.cdkjframework.swagger.SwaggerStartTrigger;
 import com.fasterxml.classmate.TypeResolver;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
