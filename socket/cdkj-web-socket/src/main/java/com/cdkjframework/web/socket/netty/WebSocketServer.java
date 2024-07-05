@@ -87,7 +87,7 @@ public class WebSocketServer {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     String message;
-                    if (cf.isSuccess()) {
+                    if (future.isSuccess()) {
                         message = "成功!";
                     } else {
                         message = "失败!";
