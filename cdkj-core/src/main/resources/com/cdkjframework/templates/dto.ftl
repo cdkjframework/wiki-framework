@@ -5,11 +5,9 @@ import com.cdkjframework.entity.base.BaseDto;
 import ${item};
 </#list>
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * @ProjectName: ${projectName}
@@ -20,9 +18,7 @@ import javax.persistence.*;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class ${className}Dto extends BaseDto {
 
     /**

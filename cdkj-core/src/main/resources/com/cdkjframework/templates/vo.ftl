@@ -5,13 +5,11 @@ import com.cdkjframework.entity.base.BaseVo;
 import ${item};
 </#list>
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * @ProjectName: ${projectName}
@@ -22,10 +20,8 @@ import javax.persistence.*;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
-@ApiModel(" ${description}")
+@Data
+@Schema(name = "${description}")
 public class ${className}Vo extends BaseVo {
 
     /**
@@ -38,7 +34,7 @@ public class ${className}Vo extends BaseVo {
     /**
      * ${item.columnDescription}
      */
-    @ApiModelProperty("${item.columnDescription}")
+    @SchemaProperty(name = "${item.columnDescription}")
     private ${item.dataType} ${item.columnName};
     </#if>
 </#list>
