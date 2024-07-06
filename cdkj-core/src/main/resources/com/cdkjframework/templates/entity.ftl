@@ -20,6 +20,9 @@ import jakarta.persistence.*;
  */
 
 @Data
+<#if jpa>
+@Entity
+</#if>
 @Table(name = "${table}", catalog = "${dataBase}")
 public class ${className}Entity extends BaseEntity {
 

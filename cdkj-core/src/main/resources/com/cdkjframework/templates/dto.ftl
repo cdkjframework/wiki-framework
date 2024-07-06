@@ -7,8 +7,6 @@ import ${item};
 
 import lombok.Data;
 
-import jakarta.persistence.*;
-
 /**
  * @ProjectName: ${projectName}
  * @Package: ${packageName}

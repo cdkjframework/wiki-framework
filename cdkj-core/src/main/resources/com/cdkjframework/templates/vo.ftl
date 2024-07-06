@@ -9,8 +9,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 
-import jakarta.persistence.*;
-
 /**
  * @ProjectName: ${projectName}
  * @Package: ${packageName}
