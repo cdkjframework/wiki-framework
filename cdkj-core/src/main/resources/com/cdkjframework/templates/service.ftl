@@ -161,7 +161,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${className}Entity entity = ${classLowName}Mapper.findEntityById(id);
         </#if>
         <#if jpa>
-        ${className}Entity entity = ${classLowName}Repository.getOne(id);
+        ${className}Entity entity = ${classLowName}Repository.getReferenceById(id);
         </#if>
         return CopyUtils.copyProperties(entity, ${className}Dto.class);
     }
@@ -186,8 +186,9 @@ public class ${className}ServiceImpl implements ${className}Service {
         </#if>
         <#if jpa>
         Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
-        Sort sort = Sort.by(Sort.Direction.DESC, "addTime");
-        Pageable pageable = PageRequest.of(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize(), sort);
+        Sort sort = Sort.by(Sort.Direction.DESC, ${className}Dto.ADD_TIME);
+        int pageIndex = ${classLowName}Dto.getPageIndex() - IntegerConsts.ONE;
+        Pageable pageable = PageRequest.of(pageIndex, ${classLowName}Dto.getPageSize(), sort);
         Page<${className}Entity> page = ${classLowName}Repository.findAll(specification, pageable);
         return PageEntity.build(${classLowName}Dto.getPageIndex(), page.getTotalElements(), page.getContent());
         </#if>

@@ -62,6 +62,11 @@ public class ChildrenEntity {
     private String tableColumnName;
 
     /**
+     * 数据库字段名称（大写）
+     */
+    private String tableColumnNameUpperCase;
+
+    /**
      * 是否可为空
      */
     private String nullable;

@@ -154,7 +154,6 @@ public class GenerateServiceImpl implements GenerateService {
       tree.setId(entity.getTableName());
       tree.setLabel(entity.getTableName());
       tree.setExplain(entity.getTableComment());
-
       // 字段
       TableColumnEntity columnEntity = new TableColumnEntity();
       columnEntity.setTableName(entity.getTableName());
@@ -165,24 +164,19 @@ public class GenerateServiceImpl implements GenerateService {
         TreeEntity treeColumn = new TreeEntity();
         treeColumn.setId(column.getColumnName());
         treeColumn.setLabel(column.getColumnName());
-        /**
-         * 替换值
-         */
-        String replacement = " ";
+        // 替换值
+        String replacement = StringUtils.BLANK_SPACE;
         treeColumn.setExplain(ConvertUtils.convertString(column.getColumnComment())
             .replace("\\n", replacement)
             .replace("\\t", replacement)
             .replace("\\s", replacement)
             .replace("\\r", replacement));
-
         // 添加子节点
         tree.getChildren().add(treeColumn);
       }
-
       // 添加节点
       treeEntityList.add(tree);
     }
-
     // 返回结果
     return treeEntityList;
   }
@@ -195,7 +189,6 @@ public class GenerateServiceImpl implements GenerateService {
    */
   @Override
   public List<TableColumnEntity> findTableColumnList(TableColumnEntity columnEntity) {
-
     int data = ConvertUtils.convertInt(customConfig.getDataBase());
     if (data == IntegerConsts.ONE) {
       return generateMapper.findTableColumnListByPostgre(columnEntity);
@@ -231,10 +224,8 @@ public class GenerateServiceImpl implements GenerateService {
         if (optional.isEmpty()) {
           continue;
         }
-
         // 找到表
         TreeEntity treeEntity = optional.get();
-
         try {
           // 模板生成
           templateGeneration(treeEntity, dataBase, fields);
@@ -246,7 +237,6 @@ public class GenerateServiceImpl implements GenerateService {
     } catch (Exception ex) {
       logUtil.error(ex.getCause(), ex.getMessage());
     }
-
     // 返回结果
     return isGenerate;
   }
@@ -488,6 +478,7 @@ public class GenerateServiceImpl implements GenerateService {
       String nullable = "YES";
       childrenEntity.setNullable(nullable.equals(column.getIsNullable()) ? String.valueOf(Boolean.TRUE) : String.valueOf(Boolean.FALSE));
       childrenEntity.setTableColumnName(column.getColumnName());
+      childrenEntity.setTableColumnNameUpperCase(column.getColumnName().toUpperCase());
       // 添加子节点
       childrenEntityList.add(childrenEntity);
     }
