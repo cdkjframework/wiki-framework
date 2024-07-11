@@ -6,6 +6,7 @@ import ${item};
 </#list>
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import jakarta.persistence.*;
 
@@ -20,6 +21,10 @@ import jakarta.persistence.*;
  */
 
 @Data
+<#if jpa>
+@Entity
+</#if>
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "${table}", catalog = "${dataBase}")
 public class ${className}Entity extends BaseEntity {
 
@@ -33,6 +38,9 @@ public class ${className}Entity extends BaseEntity {
     /**
      * ${item.columnDescription}
      */
+      <#if jpa>
+      @Column(name = "${item.tableColumnName}")
+      </#if>
     private ${item.dataType} ${item.columnName};
     </#if>
 </#list>

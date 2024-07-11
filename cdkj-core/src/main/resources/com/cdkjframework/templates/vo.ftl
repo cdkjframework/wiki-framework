@@ -8,8 +8,7 @@ import ${item};
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
-
-import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: ${projectName}
@@ -22,6 +21,7 @@ import jakarta.persistence.*;
 
 @Data
 @Schema(name = "${description}")
+@EqualsAndHashCode(callSuper = false)
 public class ${className}Vo extends BaseVo {
 
     /**

@@ -6,8 +6,7 @@ import ${item};
 </#list>
 
 import lombok.Data;
-
-import jakarta.persistence.*;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: ${projectName}
@@ -19,12 +18,21 @@ import jakarta.persistence.*;
  */
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class ${className}Dto extends BaseDto {
 
     /**
     * 序列版本UID
     */
     private static final long serialVersionUID = ${serialVersionUID};
+<#list children as item>
+    <#if item.columnShow && item.isExtension==0>
+      /**
+      * ${item.columnDescription}
+      */
+      public static final String ${item.tableColumnNameUpperCase} = "${item.columnName}";
+    </#if>
+</#list>
 
 <#list children as item>
     <#if item.columnShow && item.isExtension==0>
