@@ -7,7 +7,10 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.web.socket.WebSocket;
 import com.cdkjframework.web.socket.WebSocketUtils;
-import io.netty.channel.*;
+import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import org.springframework.stereotype.Component;
 
@@ -124,18 +127,21 @@ public class WebSocketServerHandler extends SimpleChannelInboundHandler<TextWebS
        */
       String TYPE = "heartbeat";
       if (socket == null) {
-            socket = new WebSocketEntity();
-            socket.setType(TYPE);
-            socket.setMessage("数据错误！");
-            socket.setMessage(message);
-            // 并关闭通道
-            channel.close();
-            return;
-        }
+				socket = new WebSocketEntity();
+				socket.setType(TYPE);
+				socket.setMessage("数据错误！");
+				channel.writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJsonString(socket)));
+				// 并关闭通道
+				channel.close();
+				return;
+			}
         String channelId = channel.id().asLongText();
         if (TYPE.equals(socket.getType())) {
-            return;
-        }
+					socket = new WebSocketEntity();
+					socket.setType(TYPE);
+					channel.writeAndFlush(new TextWebSocketFrame(JsonUtils.objectToJsonString(socket)));
+					return;
+				}
         socket.setClientId(channelId);
         if (StringUtils.isNullAndSpaceOrEmpty(socket.getMessage())) {
             socket.setMessage(message);
