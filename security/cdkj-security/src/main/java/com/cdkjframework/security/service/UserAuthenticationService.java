@@ -2,12 +2,12 @@ package com.cdkjframework.security.service;
 
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.AuthenticationException;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
@@ -54,21 +54,31 @@ public interface UserAuthenticationService {
    */
   SecurityUserEntity ticket(String ticket, HttpServletResponse response) throws Exception;
 
-  /**
-   * 刷新票据
-   *
-   * @param request 响应
-   * @return 返回票据
-   * @throws GlobalException              异常信息
-   * @throws UnsupportedEncodingException 异常信息
-   */
-  String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
+	/**
+	 * 刷新 token
+	 *
+	 * @param request 响应
+	 * @return 返回票据
+	 * @throws GlobalException              异常信息
+	 * @throws UnsupportedEncodingException 异常信息
+	 */
+	String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
 
-  /**
-   * 用户退出登录
-   *
-   * @param request 响应
-   * @throws GlobalException 异常信息
-   */
-  void logout(HttpServletRequest request) throws GlobalException;
+	/**
+	 * 刷新票据
+	 *
+	 * @param request 响应
+	 * @return 返回最新 token
+	 * @throws GlobalException              异常信息
+	 * @throws UnsupportedEncodingException 异常信息
+	 */
+	String refreshToken(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
+
+	/**
+	 * 用户退出登录
+	 *
+	 * @param request 响应
+	 * @throws GlobalException 异常信息
+	 */
+	void logout(HttpServletRequest request) throws GlobalException;
 }

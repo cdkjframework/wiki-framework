@@ -19,14 +19,13 @@ import com.cdkjframework.util.tool.number.ConvertUtils;
 import io.jsonwebtoken.Claims;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -193,32 +192,49 @@ public class SecurityCertificateController {
     return userAuthenticationServiceImpl.ticket(ticket, response);
   }
 
-  /**
-   * 票据认证
-   *
-   * @param request 响应
-   * @return 返回票据信息
-   * @throws UnsupportedEncodingException 异常信息
-   * @throws GlobalException              异常信息
-   */
-  @ResponseBody
-  @Operation(summary = "票据认证")
-  @GetMapping(value = "/refresh/ticket.html")
-  public ResponseBuilder refreshTicket(HttpServletRequest request) throws UnsupportedEncodingException, GlobalException {
-    String ticket = userAuthenticationServiceImpl.refreshTicket(request);
-    // 返回结果
-    return ResponseBuilder.successBuilder(ticket);
-  }
+	/**
+	 * 票据刷新
+	 *
+	 * @param request 响应
+	 * @return 返回票据信息
+	 * @throws UnsupportedEncodingException 异常信息
+	 * @throws GlobalException              异常信息
+	 */
+	@ResponseBody
+	@Operation(summary = "票据认证")
+	@GetMapping(value = "/refresh/ticket.html")
+	public ResponseBuilder refreshTicket(HttpServletRequest request) throws UnsupportedEncodingException, GlobalException {
+		String ticket = userAuthenticationServiceImpl.refreshTicket(request);
+		// 返回结果
+		return ResponseBuilder.successBuilder(ticket);
+	}
 
-  /**
-   * 扫码确认接口
-   */
-  @ResponseBody
-  @Operation(summary = "验证二维码是否已被扫码")
-  @GetMapping(value = "/confirm.html")
-  public void confirm(@RequestParam("id") String id) {
-    String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
-    RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.ONE));
+	/**
+	 * token 刷新
+	 *
+	 * @param request 响应
+	 * @return 返回票据信息
+	 * @throws UnsupportedEncodingException 异常信息
+	 * @throws GlobalException              异常信息
+	 */
+	@ResponseBody
+	@Operation(summary = "票据认证")
+	@GetMapping(value = "/refresh/token.html")
+	public ResponseBuilder refreshToken(HttpServletRequest request) throws UnsupportedEncodingException, GlobalException {
+		String ticket = userAuthenticationServiceImpl.refreshTicket(request);
+		// 返回结果
+		return ResponseBuilder.successBuilder(ticket);
+	}
+
+	/**
+	 * 扫码确认接口
+	 */
+	@ResponseBody
+	@Operation(summary = "验证二维码是否已被扫码")
+	@GetMapping(value = "/confirm.html")
+	public void confirm(@RequestParam("id") String id) {
+		String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
+		RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.ONE));
   }
 
   /**

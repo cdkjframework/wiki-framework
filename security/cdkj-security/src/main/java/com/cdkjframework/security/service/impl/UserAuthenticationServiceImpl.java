@@ -182,40 +182,68 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
    */
   @Override
   public String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException {
-    String jwtToken = request.getHeader(AUTHORIZATION);
-    // 验证TOKEN有效性
-    String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
+		String jwtToken = request.getHeader(AUTHORIZATION);
+		// 验证TOKEN有效性
+		String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
 
-    // 票据 token 关系
-    String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + tokenValue;
-    // 存储票据信息
-    RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.SIXTY);
+		// 票据 token 关系
+		String ticketKey = CacheConsts.USER_PREFIX + BusinessConsts.HEADER_TOKEN + StringUtils.HORIZONTAL + tokenValue;
+		// 存储票据信息
+		RedisUtils.syncSet(ticketKey, jwtToken, IntegerConsts.SIXTY);
 
-    // 返回票据
-    return URLEncoder.encode(AesUtils.base64Encode(tokenValue), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
-  }
+		// 返回票据
+		return URLEncoder.encode(AesUtils.base64Encode(tokenValue), StandardCharsets.UTF_8.toString()) + TICKET_SUFFIX;
+	}
 
-  /**
-   * 用户退出登录
-   *
-   * @param request 响应
-   * @throws GlobalException 异常信息
-   */
-  @Override
-  public void logout(HttpServletRequest request) throws GlobalException {
-    String jwtToken = request.getHeader(AUTHORIZATION);
-    // 验证TOKEN有效性
-    String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
-    // 先读取用户信息
-    String key = CacheConsts.USER_LOGIN + tokenValue;
-    String jsonCache = RedisUtils.syncGet(key);
-    if (StringUtils.isNullAndSpaceOrEmpty(jsonCache)) {
-      return;
-    }
-    UserEntity user = JsonUtils.jsonStringToBean(jsonCache, UserEntity.class);
-    // 删除 用户信息
-    RedisUtils.syncDel(key);
-    // 删除 资源
+	/**
+	 * 刷新票据
+	 *
+	 * @param request 响应
+	 * @return 返回最新 token
+	 * @throws GlobalException              异常信息
+	 * @throws UnsupportedEncodingException 异常信息
+	 */
+	@Override
+	public String refreshToken(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException {
+		String jwtToken = request.getHeader(AUTHORIZATION);
+		// 验证 TOKEN 有效性
+		String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
+		if (StringUtils.isNotNullAndEmpty(tokenValue)) {
+			// 用户信息
+			String key = CacheConsts.USER_LOGIN + tokenValue;
+			RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
+			// 删除资源
+			key = CacheConsts.USER_RESOURCE + tokenValue;
+			RedisUtils.syncDel(key);
+			// 删除用户全部资源
+			key = CacheConsts.USER_RESOURCE_ALL + tokenValue;
+			RedisUtils.syncDel(key);
+			// 删除用户登录信息
+		}
+		return null;
+	}
+
+	/**
+	 * 用户退出登录
+	 *
+	 * @param request 响应
+	 * @throws GlobalException 异常信息
+	 */
+	@Override
+	public void logout(HttpServletRequest request) throws GlobalException {
+		String jwtToken = request.getHeader(AUTHORIZATION);
+		// 验证TOKEN有效性
+		String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
+		// 先读取用户信息
+		String key = CacheConsts.USER_LOGIN + tokenValue;
+		String jsonCache = RedisUtils.syncGet(key);
+		if (StringUtils.isNullAndSpaceOrEmpty(jsonCache)) {
+			return;
+		}
+		UserEntity user = JsonUtils.jsonStringToBean(jsonCache, UserEntity.class);
+		// 删除 用户信息
+		RedisUtils.syncDel(key);
+		// 删除 资源
     key = CacheConsts.USER_RESOURCE + tokenValue;
     RedisUtils.syncDel(key);
     // 删除 用户全部资源
