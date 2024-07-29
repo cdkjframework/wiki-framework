@@ -14,6 +14,7 @@ import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.*;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
+import com.cdkjframework.util.encrypts.Md5Utils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import jakarta.servlet.ServletException;
@@ -35,10 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 
@@ -196,29 +194,24 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 	}
 
 	/**
-	 * 刷新票据
+	 * token 刷新
 	 *
-	 * @param request 响应
+	 * @param request  请求
+	 * @param response 响应
 	 * @return 返回最新 token
 	 * @throws GlobalException              异常信息
 	 * @throws UnsupportedEncodingException 异常信息
 	 */
 	@Override
-	public String refreshToken(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException {
+	public String refreshToken(HttpServletRequest request, HttpServletResponse response) throws GlobalException, UnsupportedEncodingException {
 		String jwtToken = request.getHeader(AUTHORIZATION);
 		// 验证 TOKEN 有效性
 		String tokenValue = JwtUtils.checkToken(jwtToken, customConfig.getJwtKey(), StringUtils.Empty);
 		if (StringUtils.isNotNullAndEmpty(tokenValue)) {
 			// 用户信息
 			String key = CacheConsts.USER_LOGIN + tokenValue;
-			RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
-			// 删除资源
-			key = CacheConsts.USER_RESOURCE + tokenValue;
-			RedisUtils.syncDel(key);
-			// 删除用户全部资源
-			key = CacheConsts.USER_RESOURCE_ALL + tokenValue;
-			RedisUtils.syncDel(key);
-			// 删除用户登录信息
+			SecurityUserEntity user = RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
+			buildJwtToken(user, response);
 		}
 		return null;
 	}
@@ -244,13 +237,45 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 		// 删除 用户信息
 		RedisUtils.syncDel(key);
 		// 删除 资源
-    key = CacheConsts.USER_RESOURCE + tokenValue;
-    RedisUtils.syncDel(key);
-    // 删除 用户全部资源
-    key = CacheConsts.USER_RESOURCE_ALL + user.getId();
-    RedisUtils.syncDel(key);
-    // 删除 用户工作流引擎
-    key = CacheConsts.WORK_FLOW + user.getId();
-    RedisUtils.syncDel(key);
-  }
+		key = CacheConsts.USER_RESOURCE + tokenValue;
+		RedisUtils.syncDel(key);
+		// 删除 用户全部资源
+		key = CacheConsts.USER_RESOURCE_ALL + user.getId();
+		RedisUtils.syncDel(key);
+		// 删除 用户工作流引擎
+		key = CacheConsts.WORK_FLOW + user.getId();
+		RedisUtils.syncDel(key);
+	}
+
+	/**
+	 * 生成 jwt token
+	 *
+	 * @param user     用户实体
+	 * @param response 响应
+	 */
+	private void buildJwtToken(SecurityUserEntity user, HttpServletResponse response) throws UnsupportedEncodingException {
+		// 生成 JWT token
+		Map<String, Object> map = new HashMap<>(IntegerConsts.FOUR);
+		map.put(BusinessConsts.LOGIN_NAME, user.getUsername());
+		long time = System.currentTimeMillis() / IntegerConsts.ONE_THOUSAND;
+		map.put(BusinessConsts.TIME, time);
+		map.put(BusinessConsts.USER_NAME, user.getUsername());
+		map.put(BusinessConsts.USER_TYPE, user.getUserType());
+		map.put(BusinessConsts.DISPLAY_NAME, user.getDisplayName());
+		// 暂不需要该参数
+		String userAgent = StringUtils.Empty;
+		StringBuilder builder = new StringBuilder();
+		// 加密 token 参数
+		String TOKEN_ENCRYPTION = "loginName=%s&effective=%s&time=%s&userAgent=%s";
+		builder.append(String.format(TOKEN_ENCRYPTION,
+				user.getUsername(), EFFECTIVE, time, userAgent));
+		String token = Md5Utils.getMd5(builder.toString());
+		map.put(BusinessConsts.HEADER_TOKEN, token);
+		String jwtToken = JwtUtils.createJwt(map, customConfig.getJwtKey());
+		response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
+
+		// 用户信息写入缓存
+		String key = CacheConsts.USER_LOGIN + token;
+		RedisUtils.syncEntitySet(key, user, EFFECTIVE);
+	}
 }

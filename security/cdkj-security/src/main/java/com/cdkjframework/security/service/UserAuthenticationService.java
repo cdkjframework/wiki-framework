@@ -1,5 +1,6 @@
 package com.cdkjframework.security.service;
 
+import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import jakarta.servlet.ServletException;
@@ -22,30 +23,35 @@ import java.io.UnsupportedEncodingException;
  */
 public interface UserAuthenticationService {
 
-  /**
-   * 获取登录参数
-   */
-  String GRANT_TYPE = "grantType";
+	/**
+	 * 获取登录参数
+	 */
+	String GRANT_TYPE = "grantType";
 
-  /**
-   * 授权常量
-   */
-  String AUTHORIZATION = "token";
+	/**
+	 * 有效时间
+	 */
+	long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
 
-  /**
-   * 身份权限验证
-   *
-   * @param userName  用户名
-   * @param sessionId 会话id
-   * @return 返回权限
-   * @throws AuthenticationException 权限异常
-   * @throws ServletException        权限异常
-   * @throws IOException             权限异常
-   */
-  Authentication authenticate(String userName, String sessionId) throws AuthenticationException, IOException, ServletException;
+	/**
+	 * 授权常量
+	 */
+	String AUTHORIZATION = "token";
 
-  /**
-   * 票据认证
+	/**
+	 * 身份权限验证
+	 *
+	 * @param userName  用户名
+	 * @param sessionId 会话id
+	 * @return 返回权限
+	 * @throws AuthenticationException 权限异常
+	 * @throws ServletException        权限异常
+	 * @throws IOException             权限异常
+	 */
+	Authentication authenticate(String userName, String sessionId) throws AuthenticationException, IOException, ServletException;
+
+	/**
+	 * 票据认证
    *
    * @param ticket   票据
    * @param response 响应
@@ -65,14 +71,15 @@ public interface UserAuthenticationService {
 	String refreshTicket(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
 
 	/**
-	 * 刷新票据
+	 * token 刷新
 	 *
-	 * @param request 响应
+	 * @param request  请求
+	 * @param response 响应
 	 * @return 返回最新 token
 	 * @throws GlobalException              异常信息
 	 * @throws UnsupportedEncodingException 异常信息
 	 */
-	String refreshToken(HttpServletRequest request) throws GlobalException, UnsupportedEncodingException;
+	String refreshToken(HttpServletRequest request, HttpServletResponse response) throws GlobalException, UnsupportedEncodingException;
 
 	/**
 	 * 用户退出登录
