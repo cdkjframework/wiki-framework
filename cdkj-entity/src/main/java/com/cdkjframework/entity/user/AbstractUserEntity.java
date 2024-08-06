@@ -75,38 +75,51 @@ public abstract class AbstractUserEntity extends BaseEntity {
      * 性别(1 男,2 女)
      */
     private Integer sex;
-    /**
-     * 生日
-     */
-    private LocalDate birthday;
+	/**
+	 * 生日
+	 */
+	private LocalDate birthday;
 
-    /**
-     * 当前所在组织ID
-     */
-    private String currentOrganizationId;
+	/**
+	 * 当前所在组织ID
+	 */
+	private String currentOrganizationId;
 
-    /**
-     * 机构类型0：普通，1：评估细分
-     */
-    private Integer organizationType;
+	/**
+	 * 机构类型0：普通，1：评估细分
+	 */
+	private Integer organizationType;
 
-    /**
-     * 是否开启两级权限 0默认值（0：未开启，1:开启）
-     */
-    private Integer permissions;
+	/**
+	 * 是否开启两级权限 0默认值（0：未开启，1:开启）
+	 */
+	private Integer permissions;
 
-    /**
-     * 床位是否 对多对
-     */
-    private Integer bedMores;
+	/**
+	 * 床位是否 对多对
+	 */
+	private Integer bedMores;
 
-    /**
-     * 余额共享
-     */
-    private Integer balanceShare;
+	/**
+	 * 余额共享
+	 */
+	private Integer balanceShare;
 
-    /**
-     * 备注
-     */
-    private String remark;
+	/**
+	 * 省_id
+	 */
+	private String provinceId;
+	/**
+	 * 市_id
+	 */
+	private String cityId;
+	/**
+	 * 区（县）id
+	 */
+	private String countyId;
+
+	/**
+	 * 备注
+	 */
+	private String remark;
 }
