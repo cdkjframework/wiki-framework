@@ -71,6 +71,11 @@ public class JpaConfig {
     private String dialect;
 
     /**
+     * 平台
+     */
+    private String platform;
+
+    /**
      * 命名策略
      */
     private String namingStrategy;
