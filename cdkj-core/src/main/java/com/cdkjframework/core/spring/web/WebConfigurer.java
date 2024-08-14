@@ -1,31 +1,10 @@
 package com.cdkjframework.core.spring.web;
 
-import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.util.date.LocalDateUtils;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.StringHttpMessageConverter;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -39,13 +18,27 @@ import java.util.List;
 @Component
 public class WebConfigurer implements WebMvcConfigurer {
 
-  /**
-   * 扩展消息转换器
-   *
-   * @param converters 转换器
-   */
-  @Override
-  public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+	/**
+	 * 添加资源处理程序
+	 *
+	 * @param registry 注册
+	 */
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		// swagger 配置
+		registry.
+				addResourceHandler("/swagger-ui/**")
+				.addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
+				.resourceChain(false);
+	}
+
+	/**
+	 * 扩展消息转换器
+	 *
+	 * @param converters 转换器
+	 */
+	@Override
+	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
 //    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 //    // 全局配置序列化返回 JSON 处理
 //    JavaTimeModule javaTimeModule = new JavaTimeModule();
