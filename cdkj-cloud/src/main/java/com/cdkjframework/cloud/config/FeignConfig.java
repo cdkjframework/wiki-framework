@@ -2,7 +2,6 @@ package com.cdkjframework.cloud.config;
 
 import com.cdkjframework.cloud.client.FeignClient;
 import com.cdkjframework.cloud.service.FeignService;
-import com.cdkjframework.constant.IntegerConsts;
 import feign.Request;
 import feign.Retryer;
 import lombok.RequiredArgsConstructor;
@@ -32,42 +31,40 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class FeignConfig extends FeignApiInterceptor {
 
-  /**
-   * 默认值：70s
-   */
-  private final int CONNECT_TIMEOUT_MILLIS = IntegerConsts.ONE_THOUSAND * IntegerConsts.SEVENTY,
-      READ_TIMEOUT_MILLIS = CONNECT_TIMEOUT_MILLIS;
+	/**
+	 * 配置
+	 */
+	private final CloudConfig config;
 
-  /**
-   * Feign服务接口
-   */
-  private final FeignService feignServiceImpl;
+	/**
+	 * Feign服务接口
+	 */
+	private final FeignService feignServiceImpl;
 
-  /**
-   * feign Retryer
-   *
-   * @return 返回 Retryer
-   */
-  @Bean
-  public Retryer feignRetryer() {
-    return new Retryer.Default(IntegerConsts.ONE_HUNDRED,
-        TimeUnit.SECONDS.toMillis(IntegerConsts.TEN),
-        IntegerConsts.THREE);
-  }
+	/**
+	 * feign Retryer
+	 *
+	 * @return 返回 Retryer
+	 */
+	@Bean
+	public Retryer feignRetryer() {
+		return new Retryer.Default(config.getPeriod(), TimeUnit.SECONDS.toMillis(config.getMaxPeriod()), config.getMaxAttempts());
+	}
 
-  /**
-   * feignOption
-   *
-   * @return 返回 Request.Options
-   */
-  @Bean
-  public Request.Options feignOption() {
-    return new Request.Options(CONNECT_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS, READ_TIMEOUT_MILLIS, TimeUnit.MILLISECONDS, Boolean.TRUE);
-  }
+	/**
+	 * feignOption
+	 *
+	 * @return 返回 Request.Options
+	 */
+	@Bean
+	public Request.Options feignOption() {
+		return new Request.Options(config.getConnectTimeout(), TimeUnit.MILLISECONDS, config.getReadTimeout(),
+				TimeUnit.MILLISECONDS, config.isFollowRedirects());
+	}
 
-  /**
-   * 默认不注入，如果yml配置里有 com.cdkjframework.cloud.client.FeignClient 才注入
-   *
+	/**
+	 * 默认不注入，如果yml配置里有 com.cdkjframework.cloud.client.FeignClient 才注入
+	 *
    * @return 返回结果
    * @throws NoSuchAlgorithmException 异常信息
    * @throws KeyManagementException   异常信息
