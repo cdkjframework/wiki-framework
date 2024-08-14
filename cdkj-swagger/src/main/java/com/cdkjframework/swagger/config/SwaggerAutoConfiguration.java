@@ -49,6 +49,11 @@ public class SwaggerAutoConfiguration {
    */
   private final TypeResolver resolver;
 
+	@Bean(initMethod = "openAPI")
+	public SwaggerStartTrigger swaggerOpenApi() {
+		return new SwaggerStartTrigger(swaggerConfig, resolver);
+	}
+
   /**
    * swagger启动触发器
    *
