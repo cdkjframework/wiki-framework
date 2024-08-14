@@ -1,6 +1,7 @@
 package com.cdkjframework.swagger.config;
 
 import com.cdkjframework.swagger.SwaggerStartTrigger;
+import com.cdkjframework.swagger.handler.SpringfoxHandler;
 import com.fasterxml.classmate.TypeResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
@@ -25,7 +26,7 @@ import org.springframework.context.annotation.Lazy;
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({SwaggerConfig.class})
-@AutoConfigureAfter({WebClientAutoConfiguration.class})
+@AutoConfigureAfter({WebClientAutoConfiguration.class, SpringfoxHandler.class})
 @ConditionalOnBean(SwaggerMarkerConfiguration.Marker.class)
 public class SwaggerAutoConfiguration {
 
