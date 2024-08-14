@@ -16,6 +16,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import jakarta.annotation.Resource;
+
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -73,7 +74,12 @@ public class JpaConfiguration {
     Map<String, Object> jpaProperties = new HashMap<>(IntegerConsts.SEVEN);
     jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
     jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
-    jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
+    if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getDialect())) {
+      jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
+    }
+    if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getPlatform())) {
+      jpaProperties.put("hibernate.transaction.jta.platform", jpaReadConfig.getPlatform());
+    }
     jpaProperties.put("spring.jpa.open-in-view", jpaReadConfig.isOpenInView());
     jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
     jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
