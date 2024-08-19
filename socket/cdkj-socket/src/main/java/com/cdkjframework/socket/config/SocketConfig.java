@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.web.socket.config
- * @ClassName: WebSocketConfig
- * @Description: webSocket配置
+ * @ClassName: SocketConfig
+ * @Description: socket配置
  * @Author: xiaLin
  * @Version: 1.0
  */

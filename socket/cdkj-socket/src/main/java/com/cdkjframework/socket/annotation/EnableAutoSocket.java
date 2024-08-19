@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.swagger.annotation
  * @ClassName: EnableAutoSocket
- * @Description: java类作用描述
+ * @Description: socket 启动注解
  * @Author: xiaLin
  * @Date: 2023/7/18 9:20
  * @Version: 1.0
