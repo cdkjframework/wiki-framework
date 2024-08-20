@@ -161,11 +161,29 @@ public class JwtUtils {
   }
 
   public static void main(String[] args) {
-    Map<String, Object> map = new HashMap<String, Object>(61);
-    map.put("token", "13e3fa74-ba00-4609-98d3-7d7215020300");
+    // 生成 JWT token
+    Map<String, Object> map = new HashMap<>(IntegerConsts.FOUR);
+    map.put(BusinessConsts.LOGIN_NAME, "username");
+    long time = System.currentTimeMillis() / IntegerConsts.ONE_THOUSAND;
+    map.put(BusinessConsts.TIME, time);
+    map.put(BusinessConsts.USER_NAME, "username");
+    map.put(BusinessConsts.USER_TYPE, "userType");
+    map.put(BusinessConsts.DISPLAY_NAME, "displayName");
+    // 暂不需要该参数
+    String userAgent = StringUtils.Empty;
+    StringBuilder builder = new StringBuilder();
+    /**
+     * 加密 token 参数
+     */
+    long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
+    String TOKEN_ENCRYPTION = "loginName=%s&effective=%s&time=%s&userAgent=%s";
+    builder.append(String.format(TOKEN_ENCRYPTION,
+        "username", EFFECTIVE, time, userAgent));
+    String tokenValue = Md5Utils.getMd5(builder.toString());
+    map.put(BusinessConsts.HEADER_TOKEN, tokenValue);
 
     //密钥
-    String key = "ht-oms-project-jwt";
+    String key = "cdkj-framework-jwt";
     String token = JwtUtils.createJwt(map, key, System.currentTimeMillis() + 10000);
 
     try {
