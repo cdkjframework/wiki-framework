@@ -12,38 +12,44 @@
   <artifactId>cdkj-swagger</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>javax.servlet</groupId>
-      <artifactId>javax.servlet-api</artifactId>
-    </dependency>
-    <!-- begin swagger3 -->
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-boot-starter</artifactId>
-      <exclusions>
-        <exclusion>
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>javax.servlet-api</artifactId>
+      </dependency>
+      <!-- begin knife4j -->
+      <dependency>
+          <groupId>com.github.xiaoymin</groupId>
+          <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+      </dependency>
+      <!-- end knife4j -->
+      <!-- begin swagger3 -->
+      <dependency>
           <groupId>io.springfox</groupId>
-          <artifactId>springfox-swagger2</artifactId>
-        </exclusion>
-        <exclusion>
+          <artifactId>springfox-boot-starter</artifactId>
+          <exclusions>
+              <exclusion>
+                  <groupId>io.springfox</groupId>
+                  <artifactId>springfox-swagger2</artifactId>
+              </exclusion>
+              <exclusion>
+                  <groupId>io.springfox</groupId>
+                  <artifactId>springfox-swagger-ui</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+      <dependency>
           <groupId>io.springfox</groupId>
           <artifactId>springfox-swagger-ui</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>io.springfox</groupId>
-      <artifactId>springfox-swagger-ui</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.github.xiaoymin</groupId>
-      <artifactId>knife4j-spring-boot-starter</artifactId>
-    </dependency>
-    <!-- end swagger3 -->
-    <dependency>
-      <groupId>com.cdkjframework</groupId>
-      <artifactId>cdkj-util</artifactId>
-    </dependency>
+      </dependency>
+      <dependency>
+          <groupId>com.github.xiaoymin</groupId>
+          <artifactId>knife4j-spring-boot-starter</artifactId>
+      </dependency>
+      <!-- end swagger3 -->
+      <dependency>
+          <groupId>com.cdkjframework</groupId>
+          <artifactId>cdkj-util</artifactId>
+      </dependency>
   </dependencies>
 
   <build>

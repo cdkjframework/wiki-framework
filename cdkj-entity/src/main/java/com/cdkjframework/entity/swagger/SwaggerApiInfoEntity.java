@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.entity
@@ -29,5 +31,5 @@ public class SwaggerApiInfoEntity {
     /**
      * api 扫描的包
      */
-    private String basePackage;
+    private List<String> basePackage;
 }

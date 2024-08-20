@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @ClassName: NettyChannelInitializer
  * @Author: frank
  * @Version: 1.0
- * @Description:
+ * @Description: Netty通道初始化器
  */
 @Component
 @ChannelHandler.Sharable

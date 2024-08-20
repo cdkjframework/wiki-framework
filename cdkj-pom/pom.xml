@@ -34,8 +34,9 @@
       <spring.platform.version>Cairo-SR8</spring.platform.version>
       <spring.version>6.1.8</spring.version>
       <spring-plugin-core.version>3.0.0</spring-plugin-core.version>
+      <knife4j.version>4.4.0</knife4j.version>
+      <knife4j-starter.version>3.0.3</knife4j-starter.version>
       <swagger.version>3.0.0</swagger.version>
-      <knife4j.version>3.0.3</knife4j.version>
       <swagger-annotations.version>2.2.22</swagger-annotations.version>
       <swagger-models.version>2.2.22</swagger-models.version>
       <swagger2markup.version>1.3.3</swagger2markup.version>
@@ -613,47 +614,53 @@
         <version>${flowable.version}</version>
       </dependency>
       <!-- flowable 集成依赖 rest，logic，conf -->
-      <dependency>
-        <groupId>org.flowable</groupId>
-        <artifactId>flowable-ui-modeler-rest</artifactId>
-        <version>${flowable.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.flowable</groupId>
-        <artifactId>flowable-ui-modeler-logic</artifactId>
-        <version>${flowable.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.flowable</groupId>
-        <artifactId>flowable-ui-modeler-conf</artifactId>
-        <version>${flowable.version}</version>
-      </dependency>
-
-      <!-- begin swagger3 -->
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-boot-starter</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <!-- end swagger3 -->
-      <!-- begin swagger2 -->
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger2</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.springfox</groupId>
-        <artifactId>springfox-swagger-ui</artifactId>
-        <version>${swagger.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.xiaoymin</groupId>
-        <artifactId>knife4j-spring-boot-starter</artifactId>
-        <version>${knife4j.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>io.swagger.core.v3</groupId>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-ui-modeler-rest</artifactId>
+            <version>${flowable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-ui-modeler-logic</artifactId>
+            <version>${flowable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-ui-modeler-conf</artifactId>
+            <version>${flowable.version}</version>
+        </dependency>
+        <!-- begin knife4j -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j-starter.version}</version>
+        </dependency>
+        <!-- end knife4j -->
+        <!-- begin swagger3 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-boot-starter</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <!-- end swagger3 -->
+        <!-- begin swagger2 -->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>${swagger.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger.core.v3</groupId>
         <artifactId>swagger-annotations</artifactId>
         <version>${swagger-annotations.version}</version>
       </dependency>

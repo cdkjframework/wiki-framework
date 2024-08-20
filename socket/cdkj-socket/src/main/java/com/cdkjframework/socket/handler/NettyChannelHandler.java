@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @ClassName: NettyChannelHandler
  * @Author: frank
  * @Version: 1.0
- * @Description:
+ * @Description: Netty通道处理器
  */
 @Component
 @ChannelHandler.Sharable

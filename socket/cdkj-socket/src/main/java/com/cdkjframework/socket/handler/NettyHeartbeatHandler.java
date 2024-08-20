@@ -13,7 +13,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  * @ProjectName: com.lesmarthome.iot
  * @Package: com.lesmarthome.iot.netty.handler
  * @ClassName: TcpHeartbeatHandler
- * @Description: java类作用描述
+ * @Description: Netty心跳处理器
  * @Author: xiaLin
  * @Version: 1.0
  */

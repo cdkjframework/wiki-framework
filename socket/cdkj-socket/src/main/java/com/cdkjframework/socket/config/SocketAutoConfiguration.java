@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Lazy;
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.socket.config
  * @ClassName: SocketAutoConfiguration
- * @Description: java类作用描述
+ * @Description: Socket自动配置
  * @Author: xiaLin
  * @Date: 2023/7/18 9:26
  * @Version: 1.0
