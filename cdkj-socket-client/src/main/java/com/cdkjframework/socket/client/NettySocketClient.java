@@ -12,6 +12,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import org.springframework.stereotype.Component;
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * @ProjectName: cdkj-framework
  * @Package: com.cdkjframework.socket.client
@@ -44,7 +46,7 @@ public class NettySocketClient {
             bootstrap.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new ClientHandler());
+//                    ch.pipeline().addLast(new ClientHandler());
                 }
             });
 
@@ -59,7 +61,9 @@ public class NettySocketClient {
             future.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally{
+        } catch (UnsupportedEncodingException e) {
+					throw new RuntimeException(e);
+				} finally{
             workerGroup.shutdownGracefully();
         }
     }
