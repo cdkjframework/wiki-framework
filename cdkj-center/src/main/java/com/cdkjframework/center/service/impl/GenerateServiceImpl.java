@@ -21,7 +21,6 @@ import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.meta.ClassMetadataUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import freemarker.template.TemplateException;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -41,7 +40,6 @@ import java.util.stream.Collectors;
  */
 
 @Service
-@RequiredArgsConstructor
 public class GenerateServiceImpl implements GenerateService {
   /**
    * 环境
@@ -64,26 +62,35 @@ public class GenerateServiceImpl implements GenerateService {
    */
   private LogUtils logUtil = LogUtils.getLogger(GenerateServiceImpl.class);
 
-  /**
-   * 生成 mapper
-   */
-  private final GenerateMapper generateMapper;
+	/**
+	 * 生成 mapper
+	 */
+	private final GenerateMapper generateMapper;
 
-  /**
-   * 获取实例
-   */
-  private FreemarkerUtils freemarker = FreemarkerUtils.getInstance(customConfig);
+	/**
+	 * 获取实例
+	 */
+	private FreemarkerUtils freemarker;
 
-  /**
-   * 获取数据库
-   *
-   * @return 返回结果
-   */
-  @Override
-  public DatabaseEntity findDatabase() {
-    if (StringUtils.isNullAndSpaceOrEmpty(active) && !DEFAULT_ACTIVE.equals(active.toLowerCase())) {
-      return new DatabaseEntity();
-    }
+	/**
+	 * 构建函数
+	 */
+	public GenerateServiceImpl(CustomConfig customConfig, GenerateMapper generateMapper) {
+		this.customConfig = customConfig;
+		this.generateMapper = generateMapper;
+		freemarker = FreemarkerUtils.getInstance(customConfig);
+	}
+
+	/**
+	 * 获取数据库
+	 *
+	 * @return 返回结果
+	 */
+	@Override
+	public DatabaseEntity findDatabase() {
+		if (StringUtils.isNullAndSpaceOrEmpty(active) && !DEFAULT_ACTIVE.equals(active.toLowerCase())) {
+			return new DatabaseEntity();
+		}
 
     // 获取当前用户数据库
     List<DatabaseEntity> myDataBase;
