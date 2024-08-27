@@ -29,6 +29,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -741,44 +743,62 @@ public class FileUtils {
    * @return 返回结果
    */
   public static boolean validFileTypeByMagicNumber(InputStream inputStream, List<FileTypeEnums> typeEnums) {
-    for (FileTypeEnums fileType :
-            typeEnums) {
-      byte[] magicNumbers = null;
-      switch (fileType) {
-        case PNG:
-          magicNumbers = FileTypeConsts.PNG;
-          break;
-        case GIF:
-          magicNumbers = FileTypeConsts.GIF;
-          break;
-        case JPG:
-          magicNumbers = FileTypeConsts.JPG;
-          break;
-        case BMP:
-          magicNumbers = FileTypeConsts.BMP;
-          break;
-        case TAR:
-          magicNumbers = FileTypeConsts.TAR;
-          break;
-        case ZIP:
-          magicNumbers = FileTypeConsts.ZIP;
-          break;
-      }
-      if (magicNumbers == null) {
-        continue;
-      }
-      byte[] header = new byte[magicNumbers.length];
-      try {
-        inputStream.read(header);
-        for (int i = 0; i < magicNumbers.length; i++) {
-          if (magicNumbers[i] != header[i]) {
-            return false;
-          }
-        }
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return true;
-  }
+		for (FileTypeEnums fileType :
+				typeEnums) {
+			byte[] magicNumbers = null;
+			switch (fileType) {
+				case PNG:
+					magicNumbers = FileTypeConsts.PNG;
+					break;
+				case GIF:
+					magicNumbers = FileTypeConsts.GIF;
+					break;
+				case JPG:
+					magicNumbers = FileTypeConsts.JPG;
+					break;
+				case BMP:
+					magicNumbers = FileTypeConsts.BMP;
+					break;
+				case TAR:
+					magicNumbers = FileTypeConsts.TAR;
+					break;
+				case ZIP:
+					magicNumbers = FileTypeConsts.ZIP;
+					break;
+			}
+			if (magicNumbers == null) {
+				continue;
+			}
+			byte[] header = new byte[magicNumbers.length];
+			try {
+				inputStream.read(header);
+				for (int i = 0; i < magicNumbers.length; i++) {
+					if (magicNumbers[i] != header[i]) {
+						return false;
+					}
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 计算文件的 MD5 哈希值
+	 *
+	 * @param fileBytes 文件字节数组
+	 * @return MD5 哈希值
+	 * @throws NoSuchAlgorithmException 如果找不到指定的加密算法，则抛出此异常
+	 */
+	public static String calculateHash(byte[] fileBytes) throws NoSuchAlgorithmException {
+		String algorithm = "MD5";
+		MessageDigest md = MessageDigest.getInstance(algorithm);
+		byte[] digest = md.digest(fileBytes);
+		StringBuilder sb = new StringBuilder();
+		for (byte b : digest) {
+			sb.append(String.format("%02x", b));
+		}
+		return sb.toString();
+	}
 }

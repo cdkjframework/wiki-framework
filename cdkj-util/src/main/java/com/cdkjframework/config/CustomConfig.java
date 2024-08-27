@@ -225,4 +225,9 @@ public class CustomConfig {
    * 目录模板
    */
   private String templatePath;
+
+	/**
+	 * 文件大小（KB为单位）
+	 */
+	private Long maxFileSize;
 }

@@ -34,11 +34,6 @@ import java.util.stream.Collectors;
 public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAdvice {
 
   /**
-   * 日志
-   */
-  private LogUtils logUtils = LogUtils.getLogger(GlobalRequestHandler.class);
-
-  /**
    * 参数列表
    */
   private static List<String> parameterList;
@@ -159,9 +154,7 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
     }
 
     if (!encryption && customConfig.isJson()) {
-      /**
-       * 数据类型
-       */
+      // 数据类型
       String DATA_TYPE = "java.util.ArrayList";
       if (DATA_TYPE.equals(o.getClass().getName())) {
         return JsonUtils.parseArray(json);

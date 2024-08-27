@@ -28,11 +28,6 @@ import java.nio.charset.StandardCharsets;
 public class HttpInputMessageAdvice implements HttpInputMessage {
 
     /**
-     * 日志
-     */
-    private final LogUtils LOG_UTILS = LogUtils.getLogger(HttpInputMessageAdvice.class);
-
-    /**
      * 头部信息
      */
     private HttpHeaders headers;
