@@ -79,7 +79,7 @@ public class DesensitizationUtils {
 	 * @return 返回结果
 	 */
 	public static <T> void encode(T keywords, String... fields) {
-		entityProcess(keywords, true, fields);
+		entityProcess(keywords, Boolean.TRUE, fields);
 	}
 
 	/**
