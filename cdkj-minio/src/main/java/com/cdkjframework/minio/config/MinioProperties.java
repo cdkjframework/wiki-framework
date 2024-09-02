@@ -19,9 +19,19 @@ import org.springframework.context.annotation.Configuration;
 public class MinioProperties {
 
 	/**
+	 * 访问域名
+	 */
+	private String domain;
+
+	/**
 	 * 存储端点
 	 */
 	private String endpoint;
+
+	/**
+	 * 端口
+	 */
+	private Integer port;
 
 	/**
 	 * 访问密钥

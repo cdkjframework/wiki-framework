@@ -12,10 +12,6 @@
   <artifactId>cdkj-swagger</artifactId>
 
   <dependencies>
-      <dependency>
-          <groupId>javax.servlet</groupId>
-          <artifactId>javax.servlet-api</artifactId>
-      </dependency>
       <!-- begin knife4j -->
       <dependency>
           <groupId>com.github.xiaoymin</groupId>

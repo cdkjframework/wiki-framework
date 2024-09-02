@@ -133,7 +133,7 @@ public class MinioUtils {
 			return StringUtils.Empty;
 		}
 		int slashIndex = input.indexOf(StringUtils.BACKSLASH);
-		if (slashIndex != -1 && slashIndex < input.length() - IntegerConsts.ONE) {
+		if (slashIndex != IntegerConsts.MINUS_ONE && slashIndex < input.length() - IntegerConsts.ONE) {
 			return input.substring(slashIndex + IntegerConsts.ONE);
 		}
 		return StringUtils.Empty;
@@ -144,14 +144,14 @@ public class MinioUtils {
 	 *
 	 * @return true：存在，false：不存在
 	 */
-	private boolean bucketExists(String bucketName) throws Exception {
+	private static boolean bucketExists(String bucketName) throws Exception {
 		return client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
 	}
 
 	/**
 	 * 如果一个桶不存在，则创建该桶
 	 */
-	public void createBucket(String bucketName) throws Exception {
+	public static void createBucket(String bucketName) throws Exception {
 		if (!bucketExists(bucketName)) {
 			client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
 		}
@@ -160,7 +160,7 @@ public class MinioUtils {
 	/**
 	 * 获取 Bucket 的相关信息
 	 */
-	public Optional<Bucket> getBucketInfo(String bucketName) throws Exception {
+	public static Optional<Bucket> getBucketInfo(String bucketName) throws Exception {
 		return client.listBuckets().stream().filter(b -> b.name().equals(bucketName)).findFirst();
 	}
 
@@ -174,8 +174,8 @@ public class MinioUtils {
 	 * @return
 	 * @throws Exception
 	 */
-	public ObjectWriteResponse uploadFile(String bucketName, MultipartFile file,
-																				String fileName, ContentTypeEnums contentType) throws Exception {
+	public static ObjectWriteResponse uploadFile(String bucketName, MultipartFile file,
+																							 String fileName, ContentTypeEnums contentType) throws Exception {
 		InputStream inputStream = file.getInputStream();
 		return client.putObject(
 				PutObjectArgs.builder()
@@ -197,16 +197,16 @@ public class MinioUtils {
 	 * @param md5         整体文件MD5
 	 * @return 剩余未上传的文件索引集合
 	 */
-	public ResponseBuilder uploadFileFragment(MultipartFile file,
-																						Integer currIndex, Integer totalPieces, String md5) throws Exception {
+	public static ResponseBuilder uploadFileFragment(MultipartFile file,
+																									 Integer currIndex, Integer totalPieces, String md5) throws Exception {
 		checkNull(currIndex, totalPieces, md5);
 		// 把当前分片上传至临时桶
-		if (!this.bucketExists(DEFAULT_TEMP_BUCKET_NAME)) {
-			this.createBucket(DEFAULT_TEMP_BUCKET_NAME);
+		if (!bucketExists(DEFAULT_TEMP_BUCKET_NAME)) {
+			createBucket(DEFAULT_TEMP_BUCKET_NAME);
 		}
-		this.uploadFileStream(DEFAULT_TEMP_BUCKET_NAME, getFileTempPath(md5, currIndex, totalPieces), file.getInputStream());
+		uploadFileStream(DEFAULT_TEMP_BUCKET_NAME, getFileTempPath(md5, currIndex, totalPieces), file.getInputStream());
 		// 得到已上传的文件索引
-		Iterable<Result<Item>> results = this.getFilesByPrefix(DEFAULT_TEMP_BUCKET_NAME, md5.concat(StringUtils.BACKSLASH), Boolean.FALSE);
+		Iterable<Result<Item>> results = getFilesByPrefix(DEFAULT_TEMP_BUCKET_NAME, md5.concat(StringUtils.BACKSLASH), Boolean.FALSE);
 		Set<Integer> savedIndex = Sets.newHashSet();
 		boolean fileExists = Boolean.FALSE;
 		for (Result<Item> item : results) {
@@ -218,7 +218,7 @@ public class MinioUtils {
 		}
 		// 得到未上传的文件索引
 		Set<Integer> remainIndex = Sets.newTreeSet();
-		for (int i = 0; i < totalPieces; i++) {
+		for (int i = IntegerConsts.ZERO; i < totalPieces; i++) {
 			if (!savedIndex.contains(i)) {
 				remainIndex.add(i);
 			}
@@ -227,7 +227,7 @@ public class MinioUtils {
 			return ResponseBuilder.failBuilder("index [" + currIndex + "] exists");
 		}
 		// 还剩一个索引未上传，当前上传索引刚好是未上传索引，上传完当前索引后就完全结束了。
-		if (remainIndex.size() == 1 && remainIndex.contains(currIndex)) {
+		if (remainIndex.size() == IntegerConsts.ONE && remainIndex.contains(currIndex)) {
 			return ResponseBuilder.successBuilder("completed");
 		}
 		return ResponseBuilder.failBuilder("index [" + currIndex + "] has been uploaded");
@@ -243,11 +243,11 @@ public class MinioUtils {
 	 * @param md5         文件md5
 	 * @return minio原生对象，记录了文件上传信息
 	 */
-	public boolean composeFileFragment(String bucketName, String targetName,
-																		 Integer totalPieces, String md5) throws Exception {
+	public static boolean composeFileFragment(String bucketName, String targetName,
+																						Integer totalPieces, String md5) throws Exception {
 		checkNull(bucketName, targetName, totalPieces, md5);
 		// 检查文件索引是否都上传完毕
-		Iterable<Result<Item>> results = this.getFilesByPrefix(DEFAULT_TEMP_BUCKET_NAME, md5.concat(StringUtils.BACKSLASH), false);
+		Iterable<Result<Item>> results = getFilesByPrefix(DEFAULT_TEMP_BUCKET_NAME, md5.concat(StringUtils.BACKSLASH), false);
 		Set<String> savedIndex = Sets.newTreeSet();
 		for (Result<Item> item : results) {
 			savedIndex.add(item.get().objectName());
@@ -267,11 +267,11 @@ public class MinioUtils {
 							.sources(sourceObjectList)
 							.build());
 			// 上传成功，则删除所有的临时分片文件
-			List<String> filePaths = Stream.iterate(0, i -> ++i)
+			List<String> filePaths = Stream.iterate(IntegerConsts.ZERO, i -> ++i)
 					.limit(totalPieces)
-					.map(i -> this.getFileTempPath(md5, i, totalPieces))
+					.map(i -> getFileTempPath(md5, i, totalPieces))
 					.collect(Collectors.toList());
-			Iterable<Result<DeleteError>> deleteResults = this.removeFiles(DEFAULT_TEMP_BUCKET_NAME, filePaths);
+			Iterable<Result<DeleteError>> deleteResults = removeFiles(DEFAULT_TEMP_BUCKET_NAME, filePaths);
 			// 遍历错误集合（无元素则成功）
 			for (Result<DeleteError> result : deleteResults) {
 				DeleteError error = result.get();
@@ -306,12 +306,12 @@ public class MinioUtils {
 	 * @param fileName    文件名
 	 * @param inputStream 文件流
 	 */
-	public ObjectWriteResponse uploadFileStream(String bucketName, String fileName, InputStream inputStream) throws Exception {
+	public static ObjectWriteResponse uploadFileStream(String bucketName, String fileName, InputStream inputStream) throws Exception {
 		return client.putObject(
 				PutObjectArgs.builder()
 						.bucket(bucketName)
 						.object(fileName)
-						.stream(inputStream, inputStream.available(), -1)
+						.stream(inputStream, inputStream.available(), IntegerConsts.MINUS_ONE)
 						.build());
 	}
 
@@ -322,7 +322,7 @@ public class MinioUtils {
 	 * @param fileName   文件名
 	 * @return true: 存在
 	 */
-	public boolean isFileExist(String bucketName, String fileName) {
+	public static boolean isFileExist(String bucketName, String fileName) {
 		boolean exist = true;
 		try {
 			client.statObject(StatObjectArgs.builder().bucket(bucketName).object(fileName).build());
@@ -361,20 +361,22 @@ public class MinioUtils {
 	}
 
 	/**
-	 * 创建目录
+	 * 获取路径下文件列表
 	 *
 	 * @param bucketName 存储桶
-	 * @param folderName 目录路径：本项目约定路径是以"/"开头，不以"/"结尾
+	 * @param prefix     文件名称
+	 * @param recursive  是否递归查找，false：模拟文件夹结构查找
+	 * @return 二进制流
 	 */
-	public ObjectWriteResponse createFolder(String bucketName, String folderName) throws Exception {
-		// 这是minio的bug，只有在路径的尾巴加上"/"，才能当成文件夹。
-		folderName = addTail(folderName);
-		return client.putObject(
-				PutObjectArgs.builder()
+	public static Iterable<Result<Item>> getFilesByPrefix(String bucketName, String prefix,
+																												boolean recursive) {
+		return client.listObjects(
+				ListObjectsArgs.builder()
 						.bucket(bucketName)
-						.object(folderName)
-						.stream(new ByteArrayInputStream(new byte[]{}), 0, -1)
+						.prefix(prefix)
+						.recursive(recursive)
 						.build());
+
 	}
 
 	/**
@@ -415,22 +417,18 @@ public class MinioUtils {
 	}
 
 	/**
-	 * 获取路径下文件列表
+	 * 批量删除文件
 	 *
-	 * @param bucketName 存储桶
-	 * @param prefix     文件名称
-	 * @param recursive  是否递归查找，false：模拟文件夹结构查找
-	 * @return 二进制流
+	 * @param bucketName        存储桶
+	 * @param filePaths<String> 需要删除的文件列表
+	 * @return Result
 	 */
-	public Iterable<Result<Item>> getFilesByPrefix(String bucketName, String prefix,
-																								 boolean recursive) {
-		return client.listObjects(
-				ListObjectsArgs.builder()
-						.bucket(bucketName)
-						.prefix(prefix)
-						.recursive(recursive)
-						.build());
-
+	public static Iterable<Result<DeleteError>> removeFiles(String bucketName, List<String> filePaths) {
+		List<DeleteObject> objectPaths = filePaths.stream()
+				.map(filePath -> new DeleteObject(filePath))
+				.collect(Collectors.toList());
+		return client.removeObjects(
+				RemoveObjectsArgs.builder().bucket(bucketName).objects(objectPaths).build());
 	}
 
 	/**
@@ -515,18 +513,19 @@ public class MinioUtils {
 	}
 
 	/**
-	 * 批量删除文件
+	 * 获得文件外链
 	 *
-	 * @param bucketName        存储桶
-	 * @param filePaths<String> 需要删除的文件列表
-	 * @return Result
+	 * @param bucketName 存储桶
+	 * @param fileName   文件名
+	 * @return url 返回地址
+	 * @throws Exception
 	 */
-	public Iterable<Result<DeleteError>> removeFiles(String bucketName, List<String> filePaths) {
-		List<DeleteObject> objectPaths = filePaths.stream()
-				.map(filePath -> new DeleteObject(filePath))
-				.collect(Collectors.toList());
-		return client.removeObjects(
-				RemoveObjectsArgs.builder().bucket(bucketName).objects(objectPaths).build());
+	public static String getPresignedObjectUrl(String bucketName, String fileName) throws Exception {
+		GetPresignedObjectUrlArgs args = GetPresignedObjectUrlArgs.builder()
+				.bucket(bucketName)
+				.object(fileName)
+				.method(Method.GET).build();
+		return client.getPresignedObjectUrl(args);
 	}
 
 	/**
@@ -549,22 +548,6 @@ public class MinioUtils {
 	}
 
 	/**
-	 * 获得文件外链
-	 *
-	 * @param bucketName 存储桶
-	 * @param fileName   文件名
-	 * @return url 返回地址
-	 * @throws Exception
-	 */
-	public String getPresignedObjectUrl(String bucketName, String fileName) throws Exception {
-		GetPresignedObjectUrlArgs args = GetPresignedObjectUrlArgs.builder()
-				.bucket(bucketName)
-				.object(fileName)
-				.method(Method.GET).build();
-		return client.getPresignedObjectUrl(args);
-	}
-
-	/**
 	 * 通过文件的md5，以及分片文件的索引，构造分片文件的临时存储路径
 	 *
 	 * @param md5         文件md5
@@ -572,7 +555,7 @@ public class MinioUtils {
 	 * @param totalPieces 总分片
 	 * @return 临时存储路径
 	 */
-	private String getFileTempPath(String md5, Integer currIndex, Integer totalPieces) {
+	private static String getFileTempPath(String md5, Integer currIndex, Integer totalPieces) {
 
 		int zeroCnt = countDigits(totalPieces) - countDigits(currIndex);
 		StringBuilder name = new StringBuilder(md5);
@@ -582,6 +565,23 @@ public class MinioUtils {
 		}
 		name.append(currIndex);
 		return name.toString();
+	}
+
+	/**
+	 * 创建目录
+	 *
+	 * @param bucketName 存储桶
+	 * @param folderName 目录路径：本项目约定路径是以"/"开头，不以"/"结尾
+	 */
+	public ObjectWriteResponse createFolder(String bucketName, String folderName) throws Exception {
+		// 这是minio的bug，只有在路径的尾巴加上"/"，才能当成文件夹。
+		folderName = addTail(folderName);
+		return client.putObject(
+				PutObjectArgs.builder()
+						.bucket(bucketName)
+						.object(folderName)
+						.stream(new ByteArrayInputStream(new byte[]{}), IntegerConsts.ZERO, IntegerConsts.MINUS_ONE)
+						.build());
 	}
 
 }

@@ -1,1 +1,1 @@
-com.cdkjframework.swagger.config.SwaggerAutoConfiguration
+com.cdkjframework.minio.config.MinioAutoConfiguration

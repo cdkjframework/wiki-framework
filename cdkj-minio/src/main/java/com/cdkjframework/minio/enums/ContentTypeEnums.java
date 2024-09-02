@@ -1,5 +1,8 @@
 package com.cdkjframework.minio.enums;
 
+import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.util.tool.StringUtils;
+
 /**
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.minio.enums
@@ -51,10 +54,11 @@ public enum ContentTypeEnums {
 	 * @return 返回结果
 	 */
 	public static String formContentType(String suffix) {
-		if (suffix == null || "".equals(suffix.trim())) {
+		if (StringUtils.isNullAndSpaceOrEmpty(suffix)) {
 			return DEFAULT.getValue();
 		}
-		suffix = suffix.substring(suffix.lastIndexOf(".") + 1);
+		int beginIndex = suffix.lastIndexOf(StringUtils.POINT) + IntegerConsts.ONE;
+		suffix = suffix.substring(beginIndex);
 		for (ContentTypeEnums value : ContentTypeEnums.values()) {
 			if (suffix.equalsIgnoreCase(value.getSuffix())) {
 				return value.getValue();

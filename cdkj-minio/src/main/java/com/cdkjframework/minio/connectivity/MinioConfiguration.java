@@ -33,9 +33,13 @@ public class MinioConfiguration {
 	 */
 	@Bean(name = "start")
 	public void start() {
-		MinioClient client = MinioClient.builder()
-				// 服务端IP+端口
-				.endpoint(minioProperties.getEndpoint())
+		MinioClient.Builder builder = MinioClient.builder();
+		if (minioProperties.getPort() == null) {
+			builder.endpoint(minioProperties.getEndpoint());
+		} else {
+			builder.endpoint(minioProperties.getEndpoint(), minioProperties.getPort(), Boolean.FALSE);
+		}
+		MinioClient client = builder
 				// 服务端用户名 、 服务端密码
 				.credentials(minioProperties.getAccessKey(), minioProperties.getSecretKey())
 				.build();
