@@ -2,6 +2,7 @@ package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
  */
 
 @Data
+@EqualsAndHashCode(callSuper = false)
 public abstract class AbstractUserEntity extends BaseEntity {
 
     /**

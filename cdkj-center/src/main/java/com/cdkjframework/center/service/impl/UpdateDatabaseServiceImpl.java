@@ -10,8 +10,8 @@ import com.cdkjframework.entity.generate.template.TableEntity;
 import com.cdkjframework.util.tool.CopyUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,8 +44,8 @@ public class UpdateDatabaseServiceImpl implements UpdateDatabaseService {
      *
      * @param layoutEntityList 元数据注释
      */
-    @Override
-    @Transactional(rollbackOn = {Exception.class, SQLSyntaxErrorException.class})
+		@Override
+		@Transactional(rollbackFor = {Exception.class, SQLSyntaxErrorException.class})
     public void updateEntityTable(List<TableLayoutEntity> layoutEntityList) {
         TableLayoutEntity layoutEntity = layoutEntityList.get(0);
         TableEntity entity = new TableEntity();

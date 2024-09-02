@@ -29,6 +29,7 @@
         <module>socket</module>
         <module>security</module>
         <module>queue</module>
+        <module>cdkj-minio</module>
     </modules>
 
     <parent>

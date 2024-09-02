@@ -102,32 +102,33 @@
       <lettuce-search.version>3.1.2</lettuce-search.version>
       <redis-json.version>4.0.0</redis-json.version>
       <commons-pool2.version>2.12.0</commons-pool2.version>
-    <beanutils.version>2.7.0</beanutils.version>
-    <fileupload.version>1.5</fileupload.version>
-    <kryo.version>4.0.2</kryo.version>
-    <asm.version>9.7</asm.version>
-    <kryo.erializers.version>0.42</kryo.erializers.version>
-    <jakarta.servlet.version>6.1.0-M2</jakarta.servlet.version>
-    <jakarta.mail.version>2.0.1</jakarta.mail.version>
-    <mailapi.version>2.1.3</mailapi.version>
-    <jackson.annotations.version>2.17.1</jackson.annotations.version>
-    <woodstox-core.version>6.6.2</woodstox-core.version>
-    <jackson-datatype-jsr310.version>2.17.1</jackson-datatype-jsr310.version>
-    <xstream.version>1.4.20</xstream.version>
-    <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
-    <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
-    <lombok.version>1.18.32</lombok.version>
-    <commons.io.version>2.16.1</commons.io.version>
-    <commons-lang.version>2.6</commons-lang.version>
+      <beanutils.version>2.7.0</beanutils.version>
+      <minio.version>8.5.12</minio.version>
+      <fileupload.version>1.5</fileupload.version>
+      <kryo.version>4.0.2</kryo.version>
+      <asm.version>9.7</asm.version>
+      <kryo.erializers.version>0.42</kryo.erializers.version>
+      <jakarta.servlet.version>6.1.0-M2</jakarta.servlet.version>
+      <jakarta.mail.version>2.0.1</jakarta.mail.version>
+      <mailapi.version>2.1.3</mailapi.version>
+      <jackson.annotations.version>2.17.1</jackson.annotations.version>
+      <woodstox-core.version>6.6.2</woodstox-core.version>
+      <jackson-datatype-jsr310.version>2.17.1</jackson-datatype-jsr310.version>
+      <xstream.version>1.4.20</xstream.version>
+      <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
+      <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
+      <lombok.version>1.18.32</lombok.version>
+      <commons.io.version>2.16.1</commons.io.version>
+      <commons-lang.version>2.6</commons-lang.version>
 
-    <apache.mina.version>3.0.0-M2</apache.mina.version>
-    <java.jwt.version>3.8.1</java.jwt.version>
-    <bcpkix-jdk18on.version>1.78.1</bcpkix-jdk18on.version>
-    <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
-    <jjwt.version>0.9.1</jjwt.version>
-    <validation-api.version>2.0.1.Final</validation-api.version>
-    <io.netty.version>4.1.110.Final</io.netty.version>
-    <ulid-creator.version>5.1.0</ulid-creator.version>
+      <apache.mina.version>3.0.0-M2</apache.mina.version>
+      <java.jwt.version>3.8.1</java.jwt.version>
+      <bcpkix-jdk18on.version>1.78.1</bcpkix-jdk18on.version>
+      <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
+      <jjwt.version>0.9.1</jjwt.version>
+      <validation-api.version>2.0.1.Final</validation-api.version>
+      <io.netty.version>4.1.110.Final</io.netty.version>
+      <ulid-creator.version>5.1.0</ulid-creator.version>
   </properties>
 
   <dependencyManagement>
@@ -693,165 +694,171 @@
         </exclusions>
       </dependency>
       <dependency>
-        <groupId>io.github.swagger2markup</groupId>
-        <artifactId>markup-document-builder</artifactId>
-        <version>${swagger2markup-builder.version}</version>
-        <exclusions>
-          <exclusion>
+          <groupId>io.github.swagger2markup</groupId>
+          <artifactId>markup-document-builder</artifactId>
+          <version>${swagger2markup-builder.version}</version>
+          <exclusions>
+              <exclusion>
+                  <groupId>nl.jworks.markdown_to_asciidoc</groupId>
+                  <artifactId>markdown_to_asciidoc</artifactId>
+              </exclusion>
+          </exclusions>
+      </dependency>
+        <dependency>
             <groupId>nl.jworks.markdown_to_asciidoc</groupId>
             <artifactId>markdown_to_asciidoc</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>nl.jworks.markdown_to_asciidoc</groupId>
-        <artifactId>markdown_to_asciidoc</artifactId>
-        <version>${jworks.version}</version>
-        <exclusions>
-          <exclusion>
+            <version>${jworks.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.pegdown</groupId>
+                    <artifactId>pegdown</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>ch.netzwerg</groupId>
+            <artifactId>paleo-core</artifactId>
+            <version>${paleo-core.version}</version>
+        </dependency>
+        <dependency>
             <groupId>org.pegdown</groupId>
             <artifactId>pegdown</artifactId>
-          </exclusion>
-        </exclusions>
-      </dependency>
-      <dependency>
-        <groupId>ch.netzwerg</groupId>
-        <artifactId>paleo-core</artifactId>
-        <version>${paleo-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.pegdown</groupId>
-        <artifactId>pegdown</artifactId>
-        <version>${pegdown.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.asciidoctor</groupId>
-        <artifactId>asciidoctorj-pdf</artifactId>
-        <version>${asciidoctor.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.jetbrains.kotlin</groupId>
-        <artifactId>kotlin-stdlib</artifactId>
-        <version>${kotlin-stdlib.version}</version>
-      </dependency>
-      <!-- end swagger2 -->
-      <!-- Redis begin -->
-      <dependency>
-        <groupId>io.lettuce</groupId>
-        <artifactId>lettuce-core</artifactId>
-        <version>${lettuce-core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.redislabs</groupId>
-        <artifactId>lettusearch</artifactId>
-        <version>${lettuce-search.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.commons</groupId>
-        <artifactId>commons-pool2</artifactId>
-        <version>${commons-pool2.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-beanutils</groupId>
-        <artifactId>commons-beanutils</artifactId>
-        <version>${beanutils.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>redis.clients</groupId>
-        <artifactId>jedis</artifactId>
-        <version>${redis-json.version}</version>
-      </dependency>
-      <!-- Redis end -->
+            <version>${pegdown.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj-pdf</artifactId>
+            <version>${asciidoctor.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib</artifactId>
+            <version>${kotlin-stdlib.version}</version>
+        </dependency>
+        <!-- end swagger2 -->
+        <!-- Redis begin -->
+        <dependency>
+            <groupId>io.lettuce</groupId>
+            <artifactId>lettuce-core</artifactId>
+            <version>${lettuce-core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.redislabs</groupId>
+            <artifactId>lettusearch</artifactId>
+            <version>${lettuce-search.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+            <version>${commons-pool2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>${beanutils.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>${redis-json.version}</version>
+        </dependency>
+        <!-- Redis end -->
+        <!-- MinIO -->
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>${minio.version}</version>
+        </dependency>
 
-      <dependency>
-        <groupId>commons-fileupload</groupId>
-        <artifactId>commons-fileupload</artifactId>
-        <version>${fileupload.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-io</groupId>
-        <artifactId>commons-io</artifactId>
-        <version>${commons.io.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>commons-lang</groupId>
-        <artifactId>commons-lang</artifactId>
-        <version>${commons-lang.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.jackson.core</groupId>
-        <artifactId>jackson-annotations</artifactId>
-        <version>${jackson.annotations.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.fasterxml.woodstox</groupId>
-        <artifactId>woodstox-core</artifactId>
-        <version>${woodstox-core.version}</version>
-      </dependency>
-      <!--            <dependency>-->
-      <!--                <groupId>com.fasterxml.jackson.datatype</groupId>-->
-      <!--                <artifactId>jackson-datatype-jsr310</artifactId>-->
-      <!--                <version>${jackson-datatype-jsr310.version}</version>-->
-      <!--            </dependency>-->
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <version>${fileupload.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
+            <version>${commons-lang.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.annotations.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.woodstox</groupId>
+            <artifactId>woodstox-core</artifactId>
+            <version>${woodstox-core.version}</version>
+        </dependency>
+        <!--            <dependency>-->
+        <!--                <groupId>com.fasterxml.jackson.datatype</groupId>-->
+        <!--                <artifactId>jackson-datatype-jsr310</artifactId>-->
+        <!--                <version>${jackson-datatype-jsr310.version}</version>-->
+        <!--            </dependency>-->
 
-      <!-- 条形码 -->
-      <dependency>
-        <groupId>net.sf.barcode4j</groupId>
-        <artifactId>barcode4j</artifactId>
-        <version>${barcode4j.version}</version>
-      </dependency>
-      <!--google-->
-      <dependency>
-        <groupId>com.google.zxing</groupId>
-        <artifactId>core</artifactId>
-        <version>${google.core.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>${google.guava.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>${google.gson.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.google.common</groupId>
-        <artifactId>google-collect</artifactId>
-        <version>${google-collect.version}</version>
-      </dependency>
-      <!-- jwt end -->
-      <dependency>
-        <groupId>org.jdom</groupId>
-        <artifactId>jdom2</artifactId>
-        <version>${jdom2.version}</version>
-      </dependency>
-      <!-- 加密工具 -->
-      <dependency>
-        <groupId>org.bouncycastle</groupId>
-        <artifactId>bcpkix-jdk18on</artifactId>
-        <version>${bcpkix-jdk18on.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.bouncycastle</groupId>
-        <artifactId>bcprov-jdk18on</artifactId>
-        <version>${bcprov-jdk18on.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.core-lib</groupId>
-        <artifactId>xjar</artifactId>
-        <version>${xjar.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.github.core-lib</groupId>
-        <artifactId>loadkit</artifactId>
-        <version>${loadkit.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.esotericsoftware</groupId>
-        <artifactId>kryo</artifactId>
-        <version>${kryo.version}</version>
+        <!-- 条形码 -->
+        <dependency>
+            <groupId>net.sf.barcode4j</groupId>
+            <artifactId>barcode4j</artifactId>
+            <version>${barcode4j.version}</version>
+        </dependency>
+        <!--google-->
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>${google.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${google.guava.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${google.gson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.common</groupId>
+            <artifactId>google-collect</artifactId>
+            <version>${google-collect.version}</version>
+        </dependency>
+        <!-- jwt end -->
+        <dependency>
+            <groupId>org.jdom</groupId>
+            <artifactId>jdom2</artifactId>
+            <version>${jdom2.version}</version>
+        </dependency>
+        <!-- 加密工具 -->
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>${bcpkix-jdk18on.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcprov-jdk18on</artifactId>
+            <version>${bcprov-jdk18on.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.core-lib</groupId>
+            <artifactId>xjar</artifactId>
+            <version>${xjar.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.core-lib</groupId>
+            <artifactId>loadkit</artifactId>
+            <version>${loadkit.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.esotericsoftware</groupId>
+            <artifactId>kryo</artifactId>
+            <version>${kryo.version}</version>
       </dependency>
       <dependency>
         <groupId>org.ow2.asm</groupId>
