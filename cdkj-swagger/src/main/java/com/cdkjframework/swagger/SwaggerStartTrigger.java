@@ -150,7 +150,7 @@ public class SwaggerStartTrigger {
 					() -> {
 						GroupedOpenApi openApi = GroupedOpenApi.builder()
 								.group(entity.getGroupName())
-								.packagesToScan(entity.getBasePackage())
+								.packagesToScan(entity.getBasePackage().toArray(new String[entity.getBasePackage().size()]))
 								.pathsToMatch()
 								.addOpenApiCustomizer(customizer -> {
 									customizer.setInfo(apiInfo());

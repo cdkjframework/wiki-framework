@@ -23,8 +23,6 @@ import java.lang.reflect.Type;
 @ControllerAdvice
 public class GlobalRequestHandler extends BodyHandler implements RequestBodyAdvice {
 
-    private LogUtils logUtils = LogUtils.getLogger(GlobalRequestHandler.class);
-
     /**
      * 验证是否修改
      *
