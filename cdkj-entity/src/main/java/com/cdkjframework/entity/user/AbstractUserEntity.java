@@ -112,7 +112,8 @@ public abstract class AbstractUserEntity extends BaseEntity {
   /**
    * 微信唯一ID
    */
-  private String unionId;/**
+  private String unionId;
+  /**
    * 省_id
    */
   private String provinceId;

@@ -115,6 +115,7 @@
         <jjwt.version>0.9.1</jjwt.version>
         <validation-api.version>2.0.1.Final</validation-api.version>
         <io.netty.version>4.1.52.Final</io.netty.version>
+        <java-websocket.version>1.5.7</java-websocket.version>
         <ulid-creator.version>5.1.0</ulid-creator.version>
 
         <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
@@ -817,6 +818,11 @@
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.java-websocket</groupId>
+                <artifactId>Java-WebSocket</artifactId>
+                <version>${java-websocket.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.netty</groupId>
