@@ -121,14 +121,15 @@
       <commons.io.version>2.16.1</commons.io.version>
       <commons-lang.version>2.6</commons-lang.version>
 
-      <apache.mina.version>3.0.0-M2</apache.mina.version>
-      <java.jwt.version>3.8.1</java.jwt.version>
-      <bcpkix-jdk18on.version>1.78.1</bcpkix-jdk18on.version>
-      <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
-      <jjwt.version>0.9.1</jjwt.version>
-      <validation-api.version>2.0.1.Final</validation-api.version>
-      <io.netty.version>4.1.110.Final</io.netty.version>
-      <ulid-creator.version>5.1.0</ulid-creator.version>
+    <apache.mina.version>3.0.0-M2</apache.mina.version>
+    <java.jwt.version>3.8.1</java.jwt.version>
+    <bcpkix-jdk18on.version>1.78.1</bcpkix-jdk18on.version>
+    <bcprov-jdk18on.version>1.78.1</bcprov-jdk18on.version>
+    <jjwt.version>0.9.1</jjwt.version>
+    <validation-api.version>2.0.1.Final</validation-api.version>
+    <io.netty.version>4.1.110.Final</io.netty.version>
+    <java-websocket.version>1.5.7</java-websocket.version>
+    <ulid-creator.version>5.1.0</ulid-creator.version>
   </properties>
 
   <dependencyManagement>
@@ -910,6 +911,11 @@
         <groupId>org.mockito</groupId>
         <artifactId>mockito-core</artifactId>
         <version>${mockito.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.java-websocket</groupId>
+        <artifactId>Java-WebSocket</artifactId>
+        <version>${java-websocket.version}</version>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
