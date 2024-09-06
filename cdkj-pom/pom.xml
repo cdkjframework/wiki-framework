@@ -34,7 +34,7 @@
       <spring.platform.version>Cairo-SR8</spring.platform.version>
       <spring.version>6.1.8</spring.version>
       <spring-plugin-core.version>3.0.0</spring-plugin-core.version>
-      <knife4j.version>4.4.0</knife4j.version>
+      <knife4j.version>4.5.0</knife4j.version>
       <knife4j-starter.version>3.0.3</knife4j-starter.version>
       <swagger.version>3.0.0</swagger.version>
       <swagger-annotations.version>2.2.22</swagger-annotations.version>
