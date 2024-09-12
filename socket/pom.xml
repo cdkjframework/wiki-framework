@@ -19,6 +19,7 @@
         <module>cdkj-socket-client</module>
         <module>cdkj-web-socket</module>
         <module>cdkj-web-socket-client</module>
+        <module>cdkj-sse</module>
     </modules>
 
     <properties>
