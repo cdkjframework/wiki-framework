@@ -27,35 +27,34 @@ import java.util.*;
 
 public class CopyUtils {
 
-    /**
-     * 日志
-     */
-    private static LogUtils logUtil = LogUtils.getLogger(CopyUtils.class);
+	/**
+	 * 数据类型
+	 */
+	private static final List<String> DATA_TYPE = List.of("java.util.ArrayList", "java.util.List");
 
-    /**
-		 * 数据类型
-		 */
-		private static final List<String> DATA_TYPE = List.of("java.util.ArrayList", "java.util.List");
+	/**
+	 * 类的类型
+	 */
+	private static final String CLASS_TYPE = "java";
+	/**
+	 * 日志
+	 */
+	private static LogUtils logUtil = LogUtils.getLogger(CopyUtils.class);
 
-    /**
-     * 类的类型
-     */
-    private static final String CLASS_TYPE = "java";
-
-    /**
-     * 获取到空值列
-     *
-     * @param source 原数据源
-     * @return 返回结果
-     */
-    public static <S> String[] getNullPropertyNames(S source) {
-        if (source == null) {
-            return new String[]{};
-        }
-        //包装 bean
-        final BeanWrapper wrapper = new BeanWrapperImpl(source);
-        //获取属性描述符
-        PropertyDescriptor[] propertyList = wrapper.getPropertyDescriptors();
+	/**
+	 * 获取到空值列
+	 *
+	 * @param source 原数据源
+	 * @return 返回结果
+	 */
+	public static <S> String[] getNullPropertyNames(S source) {
+		if (source == null) {
+			return new String[]{};
+		}
+		//包装 bean
+		final BeanWrapper wrapper = new BeanWrapperImpl(source);
+		//获取属性描述符
+		PropertyDescriptor[] propertyList = wrapper.getPropertyDescriptors();
 
         //记录信息
         Set<String> emptyNames = new HashSet<String>();
@@ -295,7 +294,7 @@ public class CopyUtils {
 							} else {
 								clazz = targetField.getType().getDeclaredConstructor().newInstance();
 							}
-							if (!clazz.getClass().getName().contains("java.")) {
+							if (!clazz.getClass().getName().startsWith(CLASS_TYPE)) {
 								copyProperties(value, clazz);
 							}
 							ReflectionUtils.setFieldValue(target, targetField, clazz);
