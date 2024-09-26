@@ -421,7 +421,7 @@ public class GenerateServiceImpl implements GenerateService {
           .collect(Collectors.toList());
       ChildrenEntity childrenEntity = new ChildrenEntity();
       if (CollectUtils.isNotEmpty(list)) {
-        childrenEntity.setColumnShow(Boolean.TRUE);
+        childrenEntity.setColumnShow(Boolean.FALSE);
       }
       childrenEntity.setColumnName(columnName);
       if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {

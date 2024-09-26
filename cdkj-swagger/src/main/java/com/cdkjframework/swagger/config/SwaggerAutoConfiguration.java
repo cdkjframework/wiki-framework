@@ -41,14 +41,9 @@ public class SwaggerAutoConfiguration {
    */
   private final SwaggerConfig swaggerConfig;
 
-  /**
-   * 类型解析程序
-   */
-  private final TypeResolver resolver;
-
 	@Bean(initMethod = "openAPI")
 	public SwaggerStartTrigger swaggerOpenApi() {
-		return new SwaggerStartTrigger(swaggerConfig, resolver);
+		return new SwaggerStartTrigger(swaggerConfig);
 	}
 
   /**
@@ -59,7 +54,7 @@ public class SwaggerAutoConfiguration {
   @Bean(initMethod = "start")
   @ConditionalOnMissingBean
   public SwaggerStartTrigger swaggerStartTrigger() {
-    return new SwaggerStartTrigger(swaggerConfig, resolver);
+    return new SwaggerStartTrigger(swaggerConfig);
   }
 
 	/**
@@ -80,9 +75,9 @@ public class SwaggerAutoConfiguration {
 			 */
 			@Override
 			public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-				if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
-					customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
-				}
+//				if (bean instanceof WebMvcRequestHandlerProvider || bean instanceof WebFluxRequestHandlerProvider) {
+//					customizeSpringfoxHandlerMappings(getHandlerMappings(bean));
+//				}
 				return bean;
 			}
 

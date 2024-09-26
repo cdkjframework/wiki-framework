@@ -9,7 +9,6 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CollectUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import com.fasterxml.classmate.TypeResolver;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -24,15 +23,6 @@ import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.Ordered;
-import springfox.documentation.builders.RequestParameterBuilder;
-import springfox.documentation.builders.ResponseBuilder;
-import springfox.documentation.schema.AlternateTypeRule;
-import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ScalarType;
-import springfox.documentation.schema.WildcardType;
-import springfox.documentation.service.ParameterType;
-import springfox.documentation.service.RequestParameter;
-import springfox.documentation.service.Response;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -60,30 +50,24 @@ public class SwaggerStartTrigger {
 	private final SwaggerConfig swaggerConfig;
 
 	/**
-	 * 类型解析程序
-	 */
-	private final TypeResolver typeResolver;
-
-	/**
 	 * 构建函数
 	 */
-	public SwaggerStartTrigger(SwaggerConfig swaggerConfig, TypeResolver typeResolver) {
+	public SwaggerStartTrigger(SwaggerConfig swaggerConfig) {
 		this.swaggerConfig = swaggerConfig;
-		this.typeResolver = typeResolver;
 	}
 
-	/**
-	 * 生成通用响应信息
-	 *
-	 * @return 返回结果
-	 */
-	private static List<Response> getGlobalResponseMessage() {
-		List<Response> responses = new ArrayList<>();
-		responses.add(new ResponseBuilder().code("404").description("找不到资源").build());
-
-		// 返回结果
-		return responses;
-	}
+//	/**
+//	 * 生成通用响应信息
+//	 *
+//	 * @return 返回结果
+//	 */
+//	private static List<Response> getGlobalResponseMessage() {
+//		List<Response> responses = new ArrayList<>();
+//		responses.add(new ResponseBuilder().code("404").description("找不到资源").build());
+//
+//		// 返回结果
+//		return responses;
+//	}
 
 	/**
 	 * 创建API应用
@@ -107,40 +91,8 @@ public class SwaggerStartTrigger {
 		} else {
 			headerEntityList = new ArrayList<>();
 		}
-		// 备用类型规则
-		List<String> resolve = swaggerConfig.getResolve();
-		AlternateTypeRule[] alternateTypeRules;
-		if (CollectUtils.isNotEmpty(resolve)) {
-			alternateTypeRules = new AlternateTypeRule[resolve.size()];
-			for (String key :
-					resolve) {
-				try {
-					Type type = Class.forName(key);
-					alternateTypeRules[resolve.indexOf(key)] = AlternateTypeRules.newRule(
-							typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
-							typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
-				} catch (ClassNotFoundException e) {
-					LOG_UTILS.error(e);
-				}
-			}
-		} else {
-			alternateTypeRules = null;
-		}
+
 		final boolean hidden = swaggerConfig.getHidden();
-		//设置 header
-		List<RequestParameter> parameters = new ArrayList<>();
-		String[] headers = new String[headerEntityList.size()];
-		for (SwaggerHeaderEntity header :
-				headerEntityList) {
-			headers[headerEntityList.indexOf(header)] = header.getHeaderName();
-			RequestParameterBuilder builderPar = new RequestParameterBuilder();
-			builderPar.name(header.getHeaderName())
-					.description(header.getDescription())
-					.in(ParameterType.HEADER)
-					.query(q -> q.model(m -> m.scalarModel(ScalarType.STRING)))
-					.required(Boolean.FALSE).build();
-			parameters.add(builderPar.build());
-		}
 
 		for (SwaggerApiInfoEntity entity :
 				apiInfoEntityList) {
@@ -155,11 +107,11 @@ public class SwaggerStartTrigger {
 								.addOpenApiCustomizer(customizer -> {
 									customizer.setInfo(apiInfo());
 								})
-								.addRouterOperationCustomizer((routerOperation, handlerMethod) -> {
-									routerOperation.setHeaders(headers);
-									return routerOperation;
-								})
-								.headersToMatch(headers)
+//								.addRouterOperationCustomizer((routerOperation, handlerMethod) -> {
+//									routerOperation.setHeaders(headers);
+//									return routerOperation;
+//								})
+//								.headersToMatch(headers)
 								.build();
 						// 返回结果
 						return openApi;
