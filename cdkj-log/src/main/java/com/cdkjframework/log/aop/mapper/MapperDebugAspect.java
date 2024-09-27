@@ -46,23 +46,23 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 	/**
 	 * 当前机构ID
 	 */
-	private static String ORGANIZATION_ID;
+	private static final String ORGANIZATION_ID;
 	/**
 	 * 顶级机构ID
 	 */
-	private static String TOP_ORGANIZATION_ID;
+	private static final String TOP_ORGANIZATION_ID;
 	/**
 	 * 方法
 	 */
-	private static List<String> methods = new ArrayList<>();
+	private static final List<String> METHODS = new ArrayList<>();
 	/**
 	 * 修改字段
 	 */
-	private static List<String> modifyField = new ArrayList<>();
+	private static final List<String> MODIFY_FIELD = new ArrayList<>();
 	/**
 	 * 添加修改字段
 	 */
-	private static List<String> insertField = new ArrayList<>();
+	private static final List<String> INSERT_FIELD = new ArrayList<>();
 
 	/**
 	 * 静态变量
@@ -70,23 +70,23 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 	static {
 		TOP_ORGANIZATION_ID = "topOrganizationId";
 		ORGANIZATION_ID = "organizationId";
-		methods.add("modifyBatch");
-		methods.add("modify");
-		methods.add("insertBatch");
-		methods.add("insert");
-		methods.add("save");
-		methods.add("saveAll");
-		insertField.add("id");
-		insertField.add("status");
-		insertField.add("deleted");
-		insertField.add("addTime");
-		insertField.add("addUserId");
-		insertField.add("addUserName");
-		insertField.add("organizationId");
-		insertField.add("topOrganizationId");
-		modifyField.add("editTime");
-		modifyField.add("editUserId");
-		modifyField.add("editUserName");
+		METHODS.add("modifyBatch");
+		METHODS.add("modify");
+		METHODS.add("insertBatch");
+		METHODS.add("insert");
+		METHODS.add("save");
+		METHODS.add("saveAll");
+		INSERT_FIELD.add("id");
+		INSERT_FIELD.add("status");
+		INSERT_FIELD.add("deleted");
+		INSERT_FIELD.add("addTime");
+		INSERT_FIELD.add("addUserId");
+		INSERT_FIELD.add("addUserName");
+		INSERT_FIELD.add("organizationId");
+		INSERT_FIELD.add("topOrganizationId");
+		MODIFY_FIELD.add("editTime");
+		MODIFY_FIELD.add("editUserId");
+		MODIFY_FIELD.add("editUserName");
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 	/**
 	 * 日志
 	 */
-	private LogUtils logUtils = LogUtils.getLogger(MapperDebugAspect.class);
+	private final LogUtils LOG_UTILS = LogUtils.getLogger(MapperDebugAspect.class);
 
 	/**
 	 * 切入点
@@ -136,7 +136,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 		if (args.length > 0) {
 			MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
 			String methodName = methodSignature.getName();
-			Optional<String> optional = methods.stream()
+			Optional<String> optional = METHODS.stream()
 					.filter(f -> f.equals(methodName))
 					.findFirst();
 			if (optional.isPresent()) {
@@ -146,11 +146,11 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 		}
 		for (int i = 0; i < args.length; i++) {
 			Object parameter = args[i];
-			final String FILTER_CLASS_ENT_NAME = "Entity";
+			final String filterClassEntName = "Entity";
 			String className = parameter.getClass().getName();
 			Class targetClass = Class.forName(className);
 			// 实体数据封装
-			if (className.endsWith(FILTER_CLASS_ENT_NAME)) {
+			if (className.endsWith(filterClassEntName)) {
 				JSONObject jsonObject;
 				if (methodEnums == null) {
 					jsonObject = buildEntityData(parameter, user);
@@ -184,7 +184,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 			object = joinPoint.proceed(args);
 			buildDataDecryption(object);
 		} catch (Exception ex) {
-			logUtils.error(ex.getMessage());
+			LOG_UTILS.error(ex.getMessage());
 			throw new GlobalRuntimeException(ex, ex.getMessage());
 		}
 		return object;
@@ -198,7 +198,7 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 	 * @throws Throwable 异常信息
 	 */
 	@Override
-	public Object JoinPoint(JoinPoint joinPoint) throws Throwable {
+	public Object joinPoint(JoinPoint joinPoint) throws Throwable {
 		return joinPoint;
 	}
 
@@ -297,8 +297,8 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 			if (optional.isEmpty()) {
 				return parameter;
 			}
-			StringBuffer buffer = new StringBuffer();
-			char[] charArray = parameter.toString().toCharArray();
+			StringBuilder buffer = new StringBuilder();
+			char[] charArray = parameter.toCharArray();
 			for (char c :
 					charArray) {
 				buffer.append(DesensitizationUtils.encode(String.valueOf(c)));
@@ -322,10 +322,9 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 		JSONObject jsonObject = JsonUtils.beanToJsonObject(parameter);
 		try {
 			if (methodEnums != null) {
-				String ID = "id";
-				String id = jsonObject.getString(ID);
+				String ID = "id", id = jsonObject.getString(ID);
 				boolean jpa = (methodEnums == MethodEnums.save || methodEnums == MethodEnums.saveAll) && StringUtils.isNullAndSpaceOrEmpty(id);
-				List<String> replaceList = (methodEnums == MethodEnums.insert || methodEnums == MethodEnums.insertBatch || jpa) ? insertField : modifyField;
+				List<String> replaceList = (methodEnums == MethodEnums.insert || methodEnums == MethodEnums.insertBatch || jpa) ? INSERT_FIELD : MODIFY_FIELD;
 				for (String key :
 						replaceList) {
 					Object value = jsonObject.get(key);
@@ -396,13 +395,13 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 					if (StringUtils.isNullAndSpaceOrEmpty(value)) {
 						continue;
 					}
-					StringBuffer buffer = new StringBuffer();
+					StringBuilder builder = new StringBuilder();
 					char[] charArray = value.toString().toCharArray();
 					for (char c :
 							charArray) {
-						buffer.append(DesensitizationUtils.encode(String.valueOf(c)));
+						builder.append(DesensitizationUtils.encode(String.valueOf(c)));
 					}
-					jsonObject.put(field, user.getOrganizationId());
+					jsonObject.put(field, builder.toString());
 				}
 			}
 		} catch (Exception ex) {
