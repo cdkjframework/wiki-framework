@@ -388,25 +388,38 @@ public class MapperDebugAspect extends AbstractBaseAopAspect {
 				}
 			}
 			// 处理数据加密
-			if (customConfig.isData() && CollectUtils.isNotEmpty(customConfig.getFields())) {
-				for (String field :
-						customConfig.getFields()) {
-					Object value = jsonObject.get(field);
-					if (StringUtils.isNullAndSpaceOrEmpty(value)) {
-						continue;
-					}
-					StringBuilder builder = new StringBuilder();
-					char[] charArray = value.toString().toCharArray();
-					for (char c :
-							charArray) {
-						builder.append(DesensitizationUtils.encode(String.valueOf(c)));
-					}
-					jsonObject.put(field, builder.toString());
-				}
-			}
+			jsonObject = buildDataDecryption(jsonObject);
 		} catch (Exception ex) {
 			throw new GlobalRuntimeException(ex, ex.getMessage());
 		}
+		return jsonObject;
+	}
+
+	/**
+	 * 构造数据解密
+	 *
+	 * @param jsonObject 参数
+	 * @return 返回结果
+	 */
+	private JSONObject buildDataDecryption(JSONObject jsonObject) {
+		if (!customConfig.isData() || CollectUtils.isEmpty(customConfig.getFields())) {
+			return jsonObject;
+		}
+		for (String field :
+				customConfig.getFields()) {
+			Object value = jsonObject.get(field);
+			if (StringUtils.isNullAndSpaceOrEmpty(value)) {
+				continue;
+			}
+			StringBuilder builder = new StringBuilder();
+			char[] charArray = value.toString().toCharArray();
+			for (char c :
+					charArray) {
+				builder.append(DesensitizationUtils.encode(String.valueOf(c)));
+			}
+			jsonObject.put(field, builder.toString());
+		}
+		// 返回结果
 		return jsonObject;
 	}
 
