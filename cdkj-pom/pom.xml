@@ -32,7 +32,7 @@
       <spring.consul.version>4.1.2</spring.consul.version>
       <spring.cloud.version>2023.0.3</spring.cloud.version>
       <spring.platform.version>Cairo-SR8</spring.platform.version>
-      <spring.version>6.1.8</spring.version>
+      <spring.version>6.1.13</spring.version>
       <spring-plugin-core.version>3.0.0</spring-plugin-core.version>
       <knife4j.version>4.5.0</knife4j.version>
       <knife4j-starter.version>3.0.3</knife4j-starter.version>
@@ -269,6 +269,17 @@
         <artifactId>cdkj-kafka-client</artifactId>
         <version>${cdkj.version}</version>
       </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
       <dependency>
         <groupId>org.apache.commons</groupId>
