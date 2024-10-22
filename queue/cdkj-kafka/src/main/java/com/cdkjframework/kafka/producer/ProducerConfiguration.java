@@ -2,6 +2,8 @@ package com.cdkjframework.kafka.producer;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.kafka.producer.config.KafkaConfig;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.apache.kafka.clients.CommonClientConfigs;
@@ -29,16 +31,20 @@ import java.util.Map;
 @Configuration
 @RequiredArgsConstructor
 public class ProducerConfiguration {
+	/**
+	 * 日志
+	 */
+	private final LogUtils logUtils = LogUtils.getLogger(ProducerConfiguration.class);
 
-  /**
-   * 配置
-   */
-  private final KafkaConfig kafkaConfig;
+	/**
+	 * 配置
+	 */
+	private final KafkaConfig kafkaConfig;
 
-  /**
-   * Producer Template 配置
-   */
-  @Bean(name = "kafkaTemplate")
+	/**
+	 * Producer Template 配置
+	 */
+	@Bean(name = "kafkaTemplate")
   public KafkaTemplate<String, String> kafkaTemplate() {
     return new KafkaTemplate<>(producerFactory());
   }
@@ -102,7 +108,6 @@ public class ProducerConfiguration {
       String JAAS_CONFIG = "org.apache.kafka.common.security.plain.PlainLoginModule required username=%s password=%s;";
       props.put(SaslConfigs.SASL_JAAS_CONFIG, String.format(JAAS_CONFIG, kafkaConfig.getUsername(), kafkaConfig.getPassword()));
     }
-
     return props;
   }
 
