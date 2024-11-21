@@ -51,7 +51,7 @@
       <poi.version>5.2.5</poi.version>
       <xmlbeans.version>5.2.1</xmlbeans.version>
       <poi-schemas.version>4.1.2</poi-schemas.version>
-      <easypoi.version>4.1.0</easypoi.version>
+      <easypoi.version>5.3.0</easypoi.version>
       <mybatis.starter.version>3.0.3</mybatis.starter.version>
       <mybatis.version>3.5.16</mybatis.version>
       <mybatis-spring.version>3.0.3</mybatis-spring.version>
@@ -95,7 +95,7 @@
       <objenesis.version>3.4</objenesis.version>
 
       <itextpdf.version>5.5.13.3</itextpdf.version>
-      <easyexcel.version>3.3.4</easyexcel.version>
+      <easyexcel.version>4.0.3</easyexcel.version>
       <flowable.version>6.5.0</flowable.version>
       <logback.version>1.5.6</logback.version>
       <lettuce-core.version>6.3.2.RELEASE</lettuce-core.version>
