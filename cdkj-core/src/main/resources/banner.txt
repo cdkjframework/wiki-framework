@@ -1,16 +1,13 @@
-${AnsiColor.BRIGHT_YELLOW}
+${AnsiColor.BRIGHT_YELLOW}             _   _        _   ______
+${AnsiColor.BRIGHT_YELLOW}            | | | |      (_) |  ____|
+${AnsiColor.BRIGHT_YELLOW}   ___    __| | | | __    _  | |__    __      __
+${AnsiColor.BRIGHT_YELLOW}  / __|  / _` | | |/ /   | | |  __|   \ \ /\ / /
+${AnsiColor.BRIGHT_YELLOW} | (__  | (_| | |   <    | | | |       \ V  V /
+${AnsiColor.BRIGHT_YELLOW}  \___|  \__,_| |_|\_\   | | |_|        \_/\_/
+${AnsiColor.BRIGHT_YELLOW}                        _/ |
+${AnsiColor.BRIGHT_YELLOW}                       |__/
 
-             _   _        _   ______
-            | | | |      (_) |  ____|
-   ___    __| | | | __    _  | |__    __      __
-  / __|  / _` | | |/ /   | | |  __|   \ \ /\ / /
- | (__  | (_| | |   <    | | | |       \ V  V /
-  \___|  \__,_| |_|\_\   | | |_|        \_/\_/
-                        _/ |
-                       |__/
-
-${AnsiColor.BRIGHT_YELLOW}
-Application Name: ${spring.application.name}
-Application Profile: ${spring.profiles.active}
-Server Port: ${server.port}
-Spring Boot Version: ${spring-boot.version}
+${AnsiColor.BRIGHT_RED}Application Name: ${spring.application.name}
+${AnsiColor.BRIGHT_RED}Application Profile: ${spring.profiles.active}
+${AnsiColor.BRIGHT_RED}Server Port: ${server.port}
+${AnsiColor.BRIGHT_RED}Spring Boot Version: ${spring-boot.version}
