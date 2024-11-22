@@ -7,7 +7,7 @@ ${AnsiColor.BRIGHT_YELLOW}  \___|  \__,_| |_|\_\   | | |_|        \_/\_/
 ${AnsiColor.BRIGHT_YELLOW}                        _/ |
 ${AnsiColor.BRIGHT_YELLOW}                       |__/
 
-${AnsiColor.BRIGHT_RED}Application Name: ${spring.application.name}
-${AnsiColor.BRIGHT_RED}Application Profile: ${spring.profiles.active}
-${AnsiColor.BRIGHT_RED}Server Port: ${server.port}
-${AnsiColor.BRIGHT_RED}Spring Boot Version: ${spring-boot.version}
+${AnsiColor.BLUE}   Application Name: ${spring.application.name}
+${AnsiColor.BLUE}Application Profile: ${spring.profiles.active}
+${AnsiColor.BLUE}        Server Port: ${server.port}
+${AnsiColor.BLUE}Spring Boot Version: ${spring-boot.version}
