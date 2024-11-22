@@ -57,7 +57,7 @@ public class KafkaClientConfig {
   /**
    * 人锁
    */
-  private Integer maxBlock = 6000;
+  private Integer maxBlock = 60000;
 
   /**
    * acks

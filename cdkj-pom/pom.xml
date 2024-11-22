@@ -114,7 +114,7 @@
       <jackson.annotations.version>2.17.1</jackson.annotations.version>
       <woodstox-core.version>6.6.2</woodstox-core.version>
       <jackson-datatype-jsr310.version>2.17.1</jackson-datatype-jsr310.version>
-      <xstream.version>1.4.20</xstream.version>
+      <xstream.version>1.4.21</xstream.version>
       <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
       <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
       <lombok.version>1.18.32</lombok.version>
