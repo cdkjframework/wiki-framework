@@ -6,13 +6,13 @@
 * @Author: ${author}
 * @Version: 1.0
 */
-export interface ${className}<T = any> {
+export interface ${className} extends BaseModel<${className}> {
 <#list children as item>
     <#if item.columnShow && item.isExtension==0>
         /**
         * ${item.columnDescription}
         */
-        private ${item.dataType} ${item.columnName};
+        ${item.columnName}?: ${item.htmlDataType};
     </#if>
 </#list>
 }

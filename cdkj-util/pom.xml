@@ -116,7 +116,12 @@
           <artifactId>bcpkix-jdk18on</artifactId>
       </dependency>
       <!-- 加密 end-->
-
+      <!-- 日志 start-->
+      <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-logging</artifactId>
+      </dependency>
+      <!-- 日志-->
       <!-- 加载 freemarker -->
       <dependency>
           <groupId>org.springframework.boot</groupId>

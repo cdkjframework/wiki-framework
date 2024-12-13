@@ -89,82 +89,113 @@ public class FileUtils {
     }
 
     /**
-     * 保存文件
-     *
-     * @param inputStream 文件流
-     * @param fileName    文件路径
-     * @param catalog     自定义文件路径
-     * @param fileName    文件名称
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    public static boolean saveFile(InputStream inputStream, String catalog, String fileName) throws GlobalException {
-        return saveFile(inputStream, StringUtils.Empty, catalog, fileName);
-    }
+		 * 保存文件
+		 *
+		 * @param inputStream 文件流
+		 * @param fileName    文件路径
+		 * @param catalog     自定义文件路径
+		 * @param fileName    文件名称
+		 * @return 返回结果
+		 * @throws GlobalException 异常信息
+		 */
+		public static boolean saveFile(InputStream inputStream, String catalog, String fileName) throws GlobalException {
+			return saveFile(inputStream, StringUtils.Empty, catalog, fileName);
+		}
 
-    /**
-     * 保存文件
-     *
-     * @param character     文件内容
-     * @param directoryPath 文件路径
-     * @param catalog       自定义文件路径
-     * @param fileName      文件名称
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    public static boolean saveFile(String character, String directoryPath, String catalog, String fileName) throws GlobalException {
-        InputStream inputStream = new ByteArrayInputStream(character.getBytes());
-        return saveFile(inputStream, directoryPath, catalog, fileName);
-    }
+	/**
+	 * 保存文件
+	 *
+	 * @param character     文件内容
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(String character, String directoryPath, String catalog, String fileName) throws GlobalException {
+		InputStream inputStream = new ByteArrayInputStream(character.getBytes());
+		return saveFile(inputStream, directoryPath, catalog, fileName);
+	}
 
-    /**
-     * 保存文件
-     *
-     * @param inputStream   文件流
-     * @param directoryPath 文件路径
-     * @param catalog       自定义文件路径
-     * @param fileName      文件名称
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName) throws GlobalException {
-        OutputStream outputStream = null;
-        try {
-            directoryPath = splicingPath(directoryPath, catalog);
+	/**
+	 * 保存文件
+	 *
+	 * @param character     文件内容
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @param append        是否追加
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(String character, String directoryPath, String catalog, String fileName, boolean append) throws GlobalException {
+		InputStream inputStream = new ByteArrayInputStream(character.getBytes());
+		return saveFile(inputStream, directoryPath, catalog, fileName, append);
+	}
 
-            //读取文件路径
-            File file = new File(directoryPath);
-            if (!file.exists()) {
-                file.mkdirs();
-                fileUnModified(file);
-            }
+	/**
+	 * 保存文件
+	 *
+	 * @param inputStream   文件流
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName) throws GlobalException {
+		return saveFile(inputStream, directoryPath, catalog, fileName, Boolean.TRUE);
+	}
 
-            // 1K的数据缓冲
-            byte[] bytes = new byte[IntegerConsts.BYTE_LENGTH];
-            // 读取到的数据长度
-            int len;
+	/**
+	 * 保存文件
+	 *
+	 * @param inputStream   文件流
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @param append        是否追加
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName, boolean append) throws GlobalException {
+		OutputStream outputStream = null;
+		try {
+			directoryPath = splicingPath(directoryPath, catalog);
 
-            String name = file.getPath() + File.separator + fileName;
-            outputStream = new FileOutputStream(name, true);
-            // 开始读取
-            while ((len = inputStream.read(bytes)) != IntegerConsts.MINUS_ONE) {
-                outputStream.write(bytes, IntegerConsts.ZERO, len);
-            }
-            return true;
-        } catch (Exception ex) {
-            logUtil.error(ex);
-            throw new GlobalException(ex.getMessage());
-        } finally {
-            // 完毕，关闭所有链接
-            try {
-                outputStream.close();
-                inputStream.close();
-            } catch (IOException e) {
-                logUtil.error(e);
-                throw new GlobalException(e.getMessage());
-            }
-        }
-    }
+			//读取文件路径
+			File file = new File(directoryPath);
+			if (!file.exists()) {
+				file.mkdirs();
+				fileUnModified(file);
+			}
+
+			// 1K的数据缓冲
+			byte[] bytes = new byte[IntegerConsts.BYTE_LENGTH];
+			// 读取到的数据长度
+			int len;
+
+			String name = file.getPath() + File.separator + fileName;
+			outputStream = new FileOutputStream(name, append);
+			// 开始读取
+			while ((len = inputStream.read(bytes)) != IntegerConsts.MINUS_ONE) {
+				outputStream.write(bytes, IntegerConsts.ZERO, len);
+			}
+			return true;
+		} catch (Exception ex) {
+			logUtil.error(ex);
+			throw new GlobalException(ex.getMessage());
+		} finally {
+			// 完毕，关闭所有链接
+			try {
+				outputStream.close();
+				inputStream.close();
+			} catch (IOException e) {
+				logUtil.error(e);
+				throw new GlobalException(e.getMessage());
+			}
+		}
+	}
 
     /**
      * 读取文件

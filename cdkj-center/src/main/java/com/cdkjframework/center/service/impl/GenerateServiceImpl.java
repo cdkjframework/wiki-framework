@@ -24,7 +24,6 @@ import com.cdkjframework.util.tool.number.ConvertUtils;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -266,43 +265,48 @@ public class GenerateServiceImpl implements GenerateService {
         }
         if (StringUtils.isNotNullAndEmpty(path)) {
           switch (temp.getTemplateName()) {
-            case "vo":
-              path.append("entity/");
-              path.append(pathList.get(IntegerConsts.ZERO));
-              break;
-            case "dto":
-              path.append("entity/");
-              path.append(pathList.get(IntegerConsts.ONE));
-              break;
-            case "entity":
-            case "extend":
-              path.append("entity/");
-              path.append(pathList.get(IntegerConsts.TWO));
-              break;
-            case "controller":
-              path.append(pathList.get(IntegerConsts.THREE));
-              break;
-            case "service":
-            case "interface":
-              path.append(pathList.get(IntegerConsts.FOUR));
-              break;
-            case "repository":
-            case "repositoryInt":
-              if (entity.getMyBatis()) {
-                path.append(pathList.get(IntegerConsts.SEVEN));
-              } else {
-                path.append(pathList.get(IntegerConsts.FIVE));
-              }
-              break;
-            case "mapper":
-              path.append(pathList.get(IntegerConsts.FIVE));
-              break;
-            case "mapperXml":
-            case "extendXml":
-              path.append(pathList.get(IntegerConsts.SIX));
-              isXml = true;
-              break;
-          }
+						case "vo":
+						case "ui/vo":
+						case "ui/form":
+						case "ui/table":
+							path.append("entity/");
+							path.append(pathList.get(IntegerConsts.ZERO));
+							break;
+						case "dto":
+							path.append("entity/");
+							path.append(pathList.get(IntegerConsts.ONE));
+							break;
+						case "entity":
+						case "extend":
+							path.append("entity/");
+							path.append(pathList.get(IntegerConsts.TWO));
+							break;
+						case "controller":
+							path.append(pathList.get(IntegerConsts.THREE));
+							break;
+						case "service":
+						case "interface":
+							path.append(pathList.get(IntegerConsts.FOUR));
+							break;
+						case "repository":
+						case "repositoryInt":
+							if (entity.getMyBatis()) {
+								path.append(pathList.get(IntegerConsts.SEVEN));
+							} else {
+								path.append(pathList.get(IntegerConsts.FIVE));
+							}
+							break;
+						case "mapper":
+							path.append(pathList.get(IntegerConsts.FIVE));
+							break;
+						case "mapperXml":
+						case "extendXml":
+							path.append(pathList.get(IntegerConsts.SIX));
+							isXml = true;
+							break;
+						default:
+							break;
+					}
           path.append("/src/main/");
           if (isXml) {
             path.append("resources/");
@@ -352,7 +356,7 @@ public class GenerateServiceImpl implements GenerateService {
     // 文件名
     String fileName = entity.getClassName() + suffix;
     // 保存文件
-    FileUtils.saveFile(html, path, cateLog, fileName);
+		FileUtils.saveFile(html, path, cateLog, fileName, Boolean.FALSE);
   }
 
   /**
@@ -441,37 +445,38 @@ public class GenerateServiceImpl implements GenerateService {
         MySqlJdbcTypeContrastEnums jdbcTypeContrastEnum;
         if (columnName.equals(dataType.toUpperCase())) {
           jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums.VARCHAR;
-        } else {
-          jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums
-              .valueOf(dataType.toUpperCase());
-        }
-        childrenEntity.setColumnType(jdbcTypeContrastEnum.getCode());
-        // Java 数据类型
-        MySqlDataTypeContrastEnums contrastEnum;
-        if (columnName.equals(dataType.toUpperCase())) {
-          contrastEnum = MySqlDataTypeContrastEnums.VARCHAR;
-        } else {
-          contrastEnum = MySqlDataTypeContrastEnums
-              .valueOf(dataType.toUpperCase());
-        }
-        if (keyIsShow) {
-          entity.setIntTemplate(contrastEnum.equals(MySqlDataTypeContrastEnums.BIGINT) ||
-              contrastEnum.equals(MySqlDataTypeContrastEnums.INT) ||
-              contrastEnum.equals(MySqlDataTypeContrastEnums.ID) ||
-              contrastEnum.equals(MySqlDataTypeContrastEnums.INT2));
-        }
-        childrenEntity.setDataType(contrastEnum.getValue());
-        String code = contrastEnum.getCode();
-        if (!entity.getLeading().contains(code) && StringUtils.isNotNullAndEmpty(code)) {
-          entity.getLeading().add(code);
-        }
-        // 记录是否为生成扩展字段
-        if (MySqlDataTypeContrastEnums.DATE.equals(contrastEnum) ||
-            MySqlDataTypeContrastEnums.TIMESTAMP.equals(contrastEnum) ||
-            MySqlDataTypeContrastEnums.DATETIME.equals(contrastEnum)) {
-          columnExtension(childrenEntityList, column, contrastEnum);
-        }
-      }
+				} else {
+					jdbcTypeContrastEnum = MySqlJdbcTypeContrastEnums
+							.valueOf(dataType.toUpperCase());
+				}
+				childrenEntity.setColumnType(jdbcTypeContrastEnum.getCode());
+				// Java 数据类型
+				MySqlDataTypeContrastEnums contrastEnum;
+				if (columnName.equals(dataType.toUpperCase())) {
+					contrastEnum = MySqlDataTypeContrastEnums.VARCHAR;
+				} else {
+					contrastEnum = MySqlDataTypeContrastEnums
+							.valueOf(dataType.toUpperCase());
+				}
+				if (keyIsShow) {
+					entity.setIntTemplate(contrastEnum.equals(MySqlDataTypeContrastEnums.BIGINT) ||
+							contrastEnum.equals(MySqlDataTypeContrastEnums.INT) ||
+							contrastEnum.equals(MySqlDataTypeContrastEnums.ID) ||
+							contrastEnum.equals(MySqlDataTypeContrastEnums.INT2));
+				}
+				childrenEntity.setDataType(contrastEnum.getValue());
+				childrenEntity.setHtmlDataType(contrastEnum.getNode());
+				String code = contrastEnum.getText();
+				if (!entity.getLeading().contains(code) && StringUtils.isNotNullAndEmpty(code)) {
+					entity.getLeading().add(code);
+				}
+				// 记录是否为生成扩展字段
+				if (MySqlDataTypeContrastEnums.DATE.equals(contrastEnum) ||
+						MySqlDataTypeContrastEnums.TIMESTAMP.equals(contrastEnum) ||
+						MySqlDataTypeContrastEnums.DATETIME.equals(contrastEnum)) {
+					columnExtension(childrenEntityList, column, contrastEnum);
+				}
+			}
       childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()));
       childrenEntity.setFunColumnName(StringUtils.classFormat(column.getColumnName()));
       childrenEntity.setLength(StringUtils.isNullAndSpaceOrEmpty(column.getCharacterMaximumLength()) ? StringUtils.NEGATIVE_ONE : column.getCharacterMaximumLength());
@@ -494,31 +499,33 @@ public class GenerateServiceImpl implements GenerateService {
    */
   private void columnExtension(List<ChildrenEntity> childrenEntityList, TableColumnEntity column,
                                MySqlDataTypeContrastEnums contrastEnum) {
-    // 扩展字段开始
-    ChildrenEntity childrenEntity = new ChildrenEntity();
-    childrenEntity.setIsExtension(1);
-    if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
-      childrenEntity.setColumnDescription(column.getColumnComment());
-    } else {
-      childrenEntity.setColumnDescription(StringUtils.Empty);
-    }
-    childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "Start");
-    childrenEntity.setDataType(contrastEnum.getValue());
+		// 扩展字段开始
+		ChildrenEntity childrenEntity = new ChildrenEntity();
+		childrenEntity.setIsExtension(1);
+		if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+			childrenEntity.setColumnDescription(column.getColumnComment());
+		} else {
+			childrenEntity.setColumnDescription(StringUtils.Empty);
+		}
+		childrenEntity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "Start");
+		childrenEntity.setDataType(contrastEnum.getValue());
+		childrenEntity.setHtmlDataType(contrastEnum.getNode());
 
 
-    childrenEntityList.add(childrenEntity);
-    // 扩展字段结束
-    ChildrenEntity entity = new ChildrenEntity();
-    entity.setIsExtension(1);
-    if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
-      entity.setColumnDescription(column.getColumnComment());
-    } else {
-      entity.setColumnDescription(StringUtils.Empty);
-    }
-    entity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "End");
-    entity.setDataType(contrastEnum.getValue());
+		childrenEntityList.add(childrenEntity);
+		// 扩展字段结束
+		ChildrenEntity entity = new ChildrenEntity();
+		entity.setIsExtension(IntegerConsts.ONE);
+		if (StringUtils.isNotNullAndEmpty(column.getColumnComment())) {
+			entity.setColumnDescription(column.getColumnComment());
+		} else {
+			entity.setColumnDescription(StringUtils.Empty);
+		}
+		entity.setColumnName(StringUtils.attributeNameFormat(column.getColumnName()) + "End");
+		entity.setDataType(contrastEnum.getValue());
+		entity.setHtmlDataType(contrastEnum.getNode());
 
-    // 添加子节点
-    childrenEntityList.add(entity);
-  }
+		// 添加子节点
+		childrenEntityList.add(entity);
+	}
 }

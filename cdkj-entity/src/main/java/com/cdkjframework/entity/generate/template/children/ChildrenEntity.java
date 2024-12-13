@@ -1,9 +1,6 @@
 package com.cdkjframework.entity.generate.template.children;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @ProjectName: cdkjframework
@@ -36,25 +33,30 @@ public class ChildrenEntity {
      */
     private boolean columnShow = true;
 
-    /**
-     * 是否为扩展字段
-     */
-    private int isExtension = 0;
+	/**
+	 * 是否为扩展字段
+	 */
+	private int isExtension = 0;
 
-    /**
-     * 字段类型
-     */
-    private String dataType;
+	/**
+	 * 字段类型
+	 */
+	private String dataType;
 
-    /**
-     * 字段数据库类型
-     */
-    private String columnType;
+	/**
+	 * 字段数据类型
+	 */
+	private String htmlDataType;
 
-    /**
-     * 字段 GET/SET 方法名称
-     */
-    private String funColumnName;
+	/**
+	 * 字段数据库类型
+	 */
+	private String columnType;
+
+	/**
+	 * 字段 GET/SET 方法名称
+	 */
+	private String funColumnName;
 
     /**
      * 数据库字段名称
