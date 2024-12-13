@@ -1,6 +1,4 @@
 /**
-* @ProjectName: ${projectName}
-* @Package: ${packageName}
 * @ClassName: ${className}
 * @Description: ${description}
 * @Author: ${author}
