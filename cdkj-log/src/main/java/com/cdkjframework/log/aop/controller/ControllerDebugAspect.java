@@ -7,6 +7,7 @@ import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.PageEntity;
 import com.cdkjframework.entity.log.LogRecordDto;
+import com.cdkjframework.entity.log.LogRecordEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
@@ -238,7 +239,8 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
         logRecordDto.setParameter(GzipUtils.compress(logRecordDto.getParameter()));
         logRecordDto.setResult(GzipUtils.compress(logRecordDto.getResult()));
         logRecordDto.setResultErrorMessage(GzipUtils.compress(logRecordDto.getResultErrorMessage()));
-        mongoDbRepository.save(logRecordDto);
+				LogRecordEntity logRecord = CopyUtils.copyProperties(logRecordDto, LogRecordEntity.class);
+        mongoDbRepository.save(logRecord);
       } catch (Exception ex) {
         logUtils.error("写入日志出错：");
         logUtils.error(ex.getStackTrace(), ex.getMessage());
