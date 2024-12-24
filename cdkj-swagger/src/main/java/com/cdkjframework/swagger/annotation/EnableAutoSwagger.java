@@ -1,6 +1,7 @@
 package com.cdkjframework.swagger.annotation;
 
 import com.cdkjframework.swagger.config.SwaggerMarkerConfiguration;
+import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -17,6 +18,7 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@EnableKnife4j
 @Import({SwaggerMarkerConfiguration.class})
 public @interface EnableAutoSwagger {
 }
