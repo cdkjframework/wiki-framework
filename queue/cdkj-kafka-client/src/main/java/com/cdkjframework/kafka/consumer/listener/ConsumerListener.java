@@ -53,7 +53,6 @@ public class ConsumerListener {
   public ConsumerListener(ConsumerService consumerService, KafkaClientConfig kafkaClientConfig) {
     this.consumerService = consumerService;
     this.kafkaClientConfig = kafkaClientConfig;
-    createTopic();
   }
 
   /**

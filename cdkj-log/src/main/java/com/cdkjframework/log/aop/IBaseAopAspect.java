@@ -35,7 +35,7 @@ public interface IBaseAopAspect {
      * @return 返回结果
      * @throws Throwable 异常信息
      */
-    Object JoinPoint(JoinPoint joinPoint) throws Throwable;
+    Object joinPoint(JoinPoint joinPoint) throws Throwable;
 
     /**
      * 获取参数

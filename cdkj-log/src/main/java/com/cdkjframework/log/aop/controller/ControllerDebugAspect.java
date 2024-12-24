@@ -21,7 +21,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -110,7 +112,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
       }
     }
 
-    Object result = null;
+		Object result;
     try {
       result = joinPoint.proceed(args);
       if (!isLog) {
@@ -121,7 +123,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
       } else {
         String resultJson = JsonUtils.objectToJsonString(result);
         if (result.getClass().getName().contains(NAME)) {
-          PageEntity builder = JsonUtils.jsonStringToBean(resultJson, PageEntity.class);
+					var builder = JsonUtils.jsonStringToBean(resultJson, PageEntity.class);
           logRecordDto.setExecutionState(builder.getCode());
         } else {
           logRecordDto.setExecutionState(IntegerConsts.ZERO);
@@ -145,17 +147,17 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
     return result;
   }
 
-  /**
-   * 进程解析
-   *
-   * @param joinPoint 进程连接点
-   * @return 返回结果
-   * @throws Throwable 异常信息
-   */
-  @Override
-  public Object JoinPoint(JoinPoint joinPoint) throws Throwable {
-    return joinPoint;
-  }
+	/**
+	 * 进程解析
+	 *
+	 * @param joinPoint 进程连接点
+	 * @return 返回结果
+	 * @throws Throwable 异常信息
+	 */
+	@Override
+	public Object joinPoint(JoinPoint joinPoint) throws Throwable {
+		return joinPoint;
+	}
 
   /**
    * 构造日志记录
@@ -170,7 +172,7 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
       if (request != null) {
         logRecordDto.setServletPath(servletPath);
         AnalysisUtils.requestHandle(logRecordDto);
-        StringBuffer serverHost = new StringBuffer(request.getScheme());
+				StringBuilder serverHost = new StringBuilder(request.getScheme());
         serverHost.append(StringUtils.COLON);
         serverHost.append(StringUtils.BACKSLASH);
         serverHost.append(StringUtils.BACKSLASH);
@@ -185,24 +187,24 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
           logRecordDto = null;
         }
       }
-      if (logRecordDto == null) {
-        return false;
-      }
-      logRecordDto.setId(GeneratedValueUtils.getUuidString());
-      logRecordDto.setAddTime(System.currentTimeMillis());
-      logRecordDto.setOperatorName(user.getDisplayName());
-      logRecordDto.setUserName(user.getLoginName());
-      logRecordDto.setClientIp(HttpServletUtils.getRemoteAddr());
+			if (logRecordDto == null) {
+				return false;
+			}
+			logRecordDto.setId(GeneratedValueUtils.getUuidString());
+			logRecordDto.setAddTime(System.currentTimeMillis());
+			logRecordDto.setOperatorName(user.getDisplayName());
+			logRecordDto.setUserName(user.getLoginName());
+			logRecordDto.setClientIp(HttpServletUtils.getRemoteAddr());
 
-      String organizationCode = StringUtils.HORIZONTAL + user.getOrganizationCode();
-      final String LOG_PREFIX = "LOG" + organizationCode;
-      String number = RedisNumbersUtils.generateDocumentNumber(LOG_PREFIX, IntegerConsts.FOUR);
-      logRecordDto.setSerialNumber(number.replace(organizationCode, StringUtils.Empty));
-      logRecordDto.setTopOrganizationId(user.getTopOrganizationId());
-      logRecordDto.setTopOrganizationCode(user.getTopOrganizationCode());
-      logRecordDto.setOrganizationId(user.getOrganizationId());
-      logRecordDto.setOrganizationCode(user.getOrganizationCode());
-    } catch (GlobalException ex) {
+			String organizationCode = StringUtils.HORIZONTAL + user.getOrganizationCode();
+			final String logPrefix = "LOG" + organizationCode;
+			String number = RedisNumbersUtils.generateDocumentNumber(logPrefix, IntegerConsts.FOUR);
+			logRecordDto.setSerialNumber(number.replace(organizationCode, StringUtils.Empty));
+			logRecordDto.setTopOrganizationId(user.getTopOrganizationId());
+			logRecordDto.setTopOrganizationCode(user.getTopOrganizationCode());
+			logRecordDto.setOrganizationId(user.getOrganizationId());
+			logRecordDto.setOrganizationCode(user.getOrganizationCode());
+		} catch (GlobalException ex) {
       logUtils.error(ex.getMessage());
     }
     // 返回不需要记录日志
@@ -214,10 +216,10 @@ public class ControllerDebugAspect extends AbstractBaseAopAspect {
    */
   private class LogQueue implements Runnable {
 
-    /**
-     * 日志信息
-     */
-    private LogRecordDto logRecordDto;
+		/**
+		 * 日志信息
+		 */
+		private final LogRecordDto logRecordDto;
 
     /**
      * 构造函数

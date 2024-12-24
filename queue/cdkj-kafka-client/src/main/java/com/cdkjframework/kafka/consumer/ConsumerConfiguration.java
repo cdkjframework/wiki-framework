@@ -118,6 +118,8 @@ public class ConsumerConfiguration {
     propsMap.put(ConsumerConfig.GROUP_ID_CONFIG, kafkaClientConfig.getGroupId());
     // 是否自动提交offset偏移量(默认true)
     propsMap.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, kafkaClientConfig.isEnableAutoCommit());
+		// 生产者空间不足时，send()被阻塞的时间，默认60s
+		propsMap.put(ConsumerConfig.METADATA_MAX_AGE_CONFIG, kafkaClientConfig.getMaxBlock());
     // 心跳机制
     propsMap.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, kafkaClientConfig.getMaxPollInterval());
     // 每次读取最大记录

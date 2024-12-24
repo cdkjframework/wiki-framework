@@ -7,18 +7,18 @@
   <groupId>com.cdkjframework</groupId>
   <artifactId>cdkj-pom</artifactId>
   <description>cdkj-framework 框架依赖包</description>
-  <version>1.0.7</version>
+  <version>1.0.8</version>
   <packaging>pom</packaging>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>3.2.6</version>
-    <relativePath/>
+        <version>3.3.5</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
 
   <properties>
-      <cdkj.version>1.0.7</cdkj.version>
+      <cdkj.version>1.0.8</cdkj.version>
       <compress.version>1.26.2</compress.version>
       <codecentric.version>2.3.1</codecentric.version>
       <ribbon.version>2.7.18</ribbon.version>
@@ -32,7 +32,7 @@
       <spring.consul.version>4.1.2</spring.consul.version>
       <spring.cloud.version>2023.0.3</spring.cloud.version>
       <spring.platform.version>Cairo-SR8</spring.platform.version>
-      <spring.version>6.1.8</spring.version>
+      <spring.version>6.1.13</spring.version>
       <spring-plugin-core.version>3.0.0</spring-plugin-core.version>
       <knife4j.version>4.5.0</knife4j.version>
       <knife4j-starter.version>3.0.3</knife4j-starter.version>
@@ -51,7 +51,7 @@
       <poi.version>5.2.5</poi.version>
       <xmlbeans.version>5.2.1</xmlbeans.version>
       <poi-schemas.version>4.1.2</poi-schemas.version>
-      <easypoi.version>4.1.0</easypoi.version>
+      <easypoi.version>5.3.0</easypoi.version>
       <mybatis.starter.version>3.0.3</mybatis.starter.version>
       <mybatis.version>3.5.16</mybatis.version>
       <mybatis-spring.version>3.0.3</mybatis-spring.version>
@@ -95,7 +95,7 @@
       <objenesis.version>3.4</objenesis.version>
 
       <itextpdf.version>5.5.13.3</itextpdf.version>
-      <easyexcel.version>3.3.4</easyexcel.version>
+      <easyexcel.version>4.0.3</easyexcel.version>
       <flowable.version>6.5.0</flowable.version>
       <logback.version>1.5.6</logback.version>
       <lettuce-core.version>6.3.2.RELEASE</lettuce-core.version>
@@ -114,7 +114,7 @@
       <jackson.annotations.version>2.17.1</jackson.annotations.version>
       <woodstox-core.version>6.6.2</woodstox-core.version>
       <jackson-datatype-jsr310.version>2.17.1</jackson-datatype-jsr310.version>
-      <xstream.version>1.4.20</xstream.version>
+      <xstream.version>1.4.21</xstream.version>
       <spring.integration.stream.version>5.1.6.RELEASE</spring.integration.stream.version>
       <spring.integration.mqtt.version>5.1.6.RELEASE</spring.integration.mqtt.version>
       <lombok.version>1.18.32</lombok.version>
@@ -269,6 +269,17 @@
         <artifactId>cdkj-kafka-client</artifactId>
         <version>${cdkj.version}</version>
       </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
 
       <dependency>
         <groupId>org.apache.commons</groupId>

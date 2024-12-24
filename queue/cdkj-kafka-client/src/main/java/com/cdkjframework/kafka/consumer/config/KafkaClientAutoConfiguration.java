@@ -1,12 +1,9 @@
 package com.cdkjframework.kafka.consumer.config;
 
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.kafka.consumer.ConsumerConfiguration;
 import com.cdkjframework.kafka.consumer.service.ConsumerService;
 import com.cdkjframework.kafka.consumer.listener.ConsumerListener;
 import lombok.RequiredArgsConstructor;
-import org.apache.kafka.clients.admin.AdminClient;
-import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -16,10 +13,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
 /**
  * @ProjectName: cdkj-framework
