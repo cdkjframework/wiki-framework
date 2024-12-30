@@ -7,7 +7,6 @@ import com.aliyuncs.exceptions.ServerException;
 import com.cdkjframework.config.SmsConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.constant.sms.SmsConfigureConsts;
-import com.cdkjframework.datasource.mongodb.repository.IMongoRepository;
 import com.cdkjframework.entity.sms.*;
 import com.cdkjframework.entity.sms.data.SmsEntity;
 import com.cdkjframework.entity.user.BmsConfigureEntity;
@@ -20,8 +19,6 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
@@ -58,28 +55,16 @@ public class AliCloudSmsUtils implements ApplicationRunner {
     private static SmsConfig config;
 
     /**
-     * mongo接口
-     */
-    private static IMongoRepository mongoRepository;
-
-    /**
      * 读取配置
      */
     private final SmsConfig smsConfig;
 
     /**
-     * mongo接口
-     */
-    private final IMongoRepository repository;
-
-    /**
      * 构造函数
      *
-     * @param repository mongo接口
      * @param smsConfig  短信配置
      */
-    public AliCloudSmsUtils(IMongoRepository repository, SmsConfig smsConfig) {
-        this.repository = repository;
+    public AliCloudSmsUtils(SmsConfig smsConfig) {
         this.smsConfig = smsConfig;
     }
 
@@ -318,7 +303,6 @@ public class AliCloudSmsUtils implements ApplicationRunner {
         sms.setId(GeneratedValueUtils.getUuidString());
         sms.setStatus(IntegerConsts.ZERO);
         sms.setDeleted(IntegerConsts.ZERO);
-        mongoRepository.save(sms);
         return smsResponse;
     }
 
@@ -371,7 +355,6 @@ public class AliCloudSmsUtils implements ApplicationRunner {
             sms.setId(GeneratedValueUtils.getUuidString());
             sms.setStatus(IntegerConsts.ZERO);
             sms.setDeleted(IntegerConsts.ZERO);
-            mongoRepository.save(sms);
         }
         return smsResponse;
     }
@@ -445,13 +428,6 @@ public class AliCloudSmsUtils implements ApplicationRunner {
         SmsTemplateEntity template = null;
         if (StringUtils.isNullAndSpaceOrEmpty(smsResponse.getCode()) ||
                 AliSmsEnums.OK.getValue().equals(smsResponse.getCode())) {
-            Query query = new Query();
-            Criteria criteria = Criteria.where("templateCode").is(smsResponse.getTemplateCode());
-            if (StringUtils.isNotNullAndEmpty(smsTemplate.getOrganizationId())) {
-                criteria.and("organizationId").is(smsTemplate.getOrganizationId());
-            }
-            query.addCriteria(criteria);
-            template = mongoRepository.findEntity(query, SmsTemplateEntity.class);
         }
         if (template != null && StringUtils.isNotNullAndEmpty(template.getId())) {
             smsTemplate.setId(template.getId());
@@ -464,7 +440,6 @@ public class AliCloudSmsUtils implements ApplicationRunner {
             smsTemplate.setAddTime(LocalDateTime.now());
             smsTemplate.setStatus(IntegerConsts.ZERO);
         }
-        mongoRepository.save(smsTemplate);
     }
 
     /**
@@ -478,13 +453,6 @@ public class AliCloudSmsUtils implements ApplicationRunner {
         SmsSignEntity sign = null;
         if (StringUtils.isNullAndSpaceOrEmpty(smsResponse.getCode()) ||
                 AliSmsEnums.OK.getValue().equals(smsResponse.getCode())) {
-            Query query = new Query();
-            Criteria criteria = Criteria.where("signName").is(smsResponse.getSignName());
-            if (StringUtils.isNotNullAndEmpty(smsSign.getOrganizationId())) {
-                criteria.and("organizationId").is(smsSign.getOrganizationId());
-            }
-            query.addCriteria(criteria);
-            sign = mongoRepository.findEntity(query, SmsSignEntity.class);
         }
         if (sign != null && StringUtils.isNotNullAndEmpty(sign.getId())) {
             smsSign.setId(sign.getId());
@@ -495,7 +463,6 @@ public class AliCloudSmsUtils implements ApplicationRunner {
             smsSign.setId(GeneratedValueUtils.getUuidString());
             smsSign.setStatus(IntegerConsts.ZERO);
         }
-        mongoRepository.save(smsSign);
     }
 
     /**
@@ -508,6 +475,5 @@ public class AliCloudSmsUtils implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
         config = smsConfig;
         signName = smsConfig.getSignName();
-        mongoRepository = repository;
     }
 }
