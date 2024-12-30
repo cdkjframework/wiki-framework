@@ -1,3 +1,4 @@
+import type {BaseModel} from "@/model/BaseModel";
 /**
 * @ClassName: ${className}
 * @Description: ${description}

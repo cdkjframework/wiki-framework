@@ -267,8 +267,8 @@ public class GenerateServiceImpl implements GenerateService {
           switch (temp.getTemplateName()) {
 						case "vo":
 						case "ui/vo":
-						case "ui/form":
-						case "ui/table":
+						case "ui/form/form":
+						case "ui/table/table":
 							path.append("entity/");
 							path.append(pathList.get(IntegerConsts.ZERO));
 							break;
