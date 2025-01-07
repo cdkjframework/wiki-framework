@@ -1,22 +1,13 @@
 package com.cdkjframework.util.log;
 
-import com.cdkjframework.config.CustomConfig;
-import com.cdkjframework.config.LogConfig;
-import com.cdkjframework.constant.IntegerConsts;
+import ch.qos.logback.classic.Level;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
-import com.cdkjframework.util.files.FileUtils;
-import com.cdkjframework.util.tool.HostUtils;
-import com.cdkjframework.util.tool.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static ch.qos.logback.classic.Level.*;
 
 /**
  * @ProjectName: com.cdkjframework.core
@@ -30,434 +21,324 @@ import java.util.logging.Logger;
 @Component
 public class LogUtils {
 
-  /**
-   * 日志
-   */
-  private Logger logger;
+	/**
+	 * 换行符号
+	 */
+	private final String NEW_LINE = System.getProperty("line.separator");
 
-  /**
-   * 自定义配置
-   */
-  private static volatile LogConfig customConfig;
+	/**
+	 * 目标值
+	 */
+	private final String TARGET = "{}";
+	/**
+	 * 替换值
+	 */
+	private final String REPLACE = "%s";
 
-  /**
-   * 换行符号
-   */
-  private final String NEW_LINE = System.getProperty("line.separator");
+	/**
+	 * 日志
+	 */
+	private Logger logger;
 
-  /**
-   * 目标值
-   */
-  private final String TARGET = "{}";
+	/**
+	 * 构造函数
+	 *
+	 * @param name 输出名称
+	 */
+	private LogUtils(String name) {
+		logger = LoggerFactory.getLogger(name);
+	}
 
-  /**
-   * 替换值
-   */
-  private final String REPLACE = "%s";
+	/**
+	 * getLogger
+	 *
+	 * @param clazz 类
+	 */
+	public static LogUtils getLogger(Class clazz) {
+		return getLogger(clazz.getName());
+	}
 
-  /**
-   * 日志级别
-   */
-  private final List<String> LEVEL = Arrays.asList("ERROR", "WARN", "INFO", "DEBUG", "TRACE");
+	/**
+	 * getLogger
+	 *
+	 * @param name 类
+	 */
+	public static LogUtils getLogger(String name) {
+		return new LogUtils(name);
+	}
 
-  /**
-   * 静态初始化
-   */
-  static {
-    customConfig = new LogConfig();
-  }
+	/**
+	 * 调试输出日志
+	 *
+	 * @param format    格式
+	 * @param arguments 内容
+	 */
+	public void debug(String format, Object... arguments) {
+		debug(String.format(format.replace(TARGET, REPLACE), arguments));
+	}
 
-  /**
-   * 构造函数
-   */
-  public LogUtils() {
-  }
+	/**
+	 * 调试输出日志
+	 *
+	 * @param message 错误信息
+	 */
+	public void debug(String message) {
+		debug(null, message);
+	}
 
-  /**
-   * 构造函数
-   */
-  @Autowired
-  public LogUtils(LogConfig config) {
-    LogUtils.customConfig = config;
-  }
+	/**
+	 * 调试输出日志
+	 *
+	 * @param throwable 错误信息
+	 * @param message   错误信息
+	 */
+	public void debug(Throwable throwable, String message) {
+		if (throwable != null) {
+			logThrowable(DEBUG_INT, throwable, message);
+		} else {
+			logThrowable(DEBUG_INT, message);
+		}
+	}
 
-  /**
-   * 构造函数
-   *
-   * @param name 输出名称
-   */
-  public LogUtils(String name) {
-    logger = Logger.getLogger(name);
-  }
+	/**
+	 * 日志信息输出
+	 *
+	 * @param format    格式
+	 * @param arguments 内容
+	 */
+	public void info(String format, Object... arguments) {
+		info(String.format(format.replace(TARGET, REPLACE), arguments));
+	}
 
-  /**
-   * getLogger
-   *
-   * @param clazz 类
-   */
-  public static LogUtils getLogger(Class clazz) {
-    return getLogger(clazz.getName());
-  }
+	/**
+	 * 信息输出日志
+	 *
+	 * @param msg 错误信息
+	 */
+	public void info(String msg) {
+		info(null, msg);
+	}
 
-  /**
-   * getLogger
-   *
-   * @param name 类
-   */
-  public static LogUtils getLogger(String name) {
-    return new LogUtils(name);
-  }
+	/**
+	 * 信息输出日志
+	 *
+	 * @param throwable 错误信息
+	 * @param msg       错误信息
+	 */
+	public void info(Throwable throwable, String msg) {
+		if (throwable != null) {
+			logThrowable(INFO_INT, throwable, msg);
+		} else {
+			logThrowable(INFO_INT, msg);
+		}
+	}
 
-  /**
-   * 调试输出日志
-   *
-   * @param format    格式
-   * @param arguments 内容
-   */
-  public void debug(String format, Object... arguments) {
-    debug(String.format(format.replace(TARGET, REPLACE), arguments));
-  }
+	/**
+	 * 警告日志
+	 *
+	 * @param msg 日志信息
+	 */
+	public void warn(String msg) {
+		warn(null, msg);
+	}
 
-  /**
-   * 调试输出日志
-   *
-   * @param msg 错误信息
-   */
-  public void debug(String msg) {
-    debug(null, msg);
-  }
+	/**
+	 * 警告日志
+	 *
+	 * @param throwable 错误信息
+	 * @param msg       日志信息
+	 */
+	public void warn(Throwable throwable, String msg) {
+		if (throwable != null) {
+			logThrowable(INFO_INT, throwable, msg);
+		} else {
+			logThrowable(INFO_INT, msg);
+		}
+	}
 
-  /**
-   * 调试输出日志
-   *
-   * @param throwable 错误信息
-   * @param msg       错误信息
-   */
-  public void debug(Throwable throwable, String msg) {
-    if (throwable != null) {
-      logThrowable(Level.CONFIG, throwable, msg);
-    } else {
-      logThrowable(Level.CONFIG, msg);
-    }
-  }
+	/**
+	 * 错误输出日志
+	 *
+	 * @param format    格式
+	 * @param arguments 内容
+	 */
+	public void error(String format, Object... arguments) {
+		error(String.format(format.replace(TARGET, REPLACE), arguments));
+	}
 
-  /**
-   * 日志信息输出
-   *
-   * @param format    格式
-   * @param arguments 内容
-   */
-  public void info(String format, Object... arguments) {
-    info(String.format(format.replace(TARGET, REPLACE), arguments));
-  }
+	/**
+	 * 错误输出日志
+	 *
+	 * @param msg 错误信息
+	 */
+	public void error(String msg) {
+		error((Throwable) null, msg);
+	}
 
-  /**
-   * 信息输出日志
-   *
-   * @param msg 错误信息
-   */
-  public void info(String msg) {
-    info(null, msg);
-  }
+	/**
+	 * 错误输出日志
+	 *
+	 * @param throwable 错误信息
+	 * @param msg       错误信息
+	 */
+	public void error(Throwable throwable, String msg) {
+		if (throwable == null) {
+			logThrowable(ERROR_INT, msg);
+		} else {
+			logThrowable(ERROR_INT, throwable, msg);
+		}
+	}
 
-  /**
-   * 信息输出日志
-   *
-   * @param throwable 错误信息
-   * @param msg       错误信息
-   */
-  public void info(Throwable throwable, String msg) {
-    if (throwable != null) {
-      logThrowable(Level.INFO, throwable, msg);
-    } else {
-      logThrowable(Level.INFO, msg);
-    }
-  }
+	/**
+	 * 错误输出日志
+	 *
+	 * @param stackTraceElements 错误信息
+	 * @param msg                错误信息
+	 */
+	public void error(StackTraceElement[] stackTraceElements, String msg) {
+		if (stackTraceElements == null) {
+			logThrowable(ERROR_INT, msg);
+		} else {
+			log(ERROR_INT, stackTraceElements, msg);
+		}
+	}
 
-  /**
-   * 警告日志
-   *
-   * @param msg 日志信息
-   */
-  public void warn(String msg) {
-    warn(null, msg);
-  }
+	/**
+	 * 错误输出日志
+	 *
+	 * @param ex 错误信息
+	 */
+	public void error(Exception ex) {
+		if (ex.getCause() == null) {
+			log(ERROR_INT, ex.getStackTrace(), ex.getMessage());
+		} else {
+			error(ex.getCause(), ex.getMessage());
+		}
+	}
 
-  /**
-   * 警告日志
-   *
-   * @param throwable 错误信息
-   * @param msg       日志信息
-   */
-  public void warn(Throwable throwable, String msg) {
-    if (throwable != null) {
-      logThrowable(Level.INFO, throwable, msg);
-    } else {
-      logThrowable(Level.INFO, msg);
-    }
-  }
+	/**
+	 * 写入日志
+	 *
+	 * @param level             等级
+	 * @param stackTraceElement 错误信息
+	 * @param message           错误信息
+	 */
+	private void log(int level, StackTraceElement[] stackTraceElement, String message) {
+		try {
+			StringBuilder builder;
+			if (stackTraceElement != null) {
+				builder = new StringBuilder(message);
+				builder.append(NEW_LINE);
+				ch.qos.logback.classic.Level levels = ch.qos.logback.classic.Level.toLevel(level);
+				buildExceptionLog(builder, levels, stackTraceElement);
+			} else {
+				builder = new StringBuilder(message);
+			}
+			switch (level) {
+				case ERROR_INT:
+					logger.error(builder.toString());
+					break;
+				case WARN_INT:
+					logger.warn(builder.toString());
+					break;
+				case INFO_INT:
+					logger.info(builder.toString());
+					break;
+				case DEBUG_INT:
+					logger.debug(builder.toString());
+					break;
+				case TRACE_INT:
+					logger.trace(builder.toString());
+					break;
+				default:
+					break;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-  /**
-   * 错误输出日志
-   *
-   * @param format    格式
-   * @param arguments 内容
-   */
-  public void error(String format, Object... arguments) {
-    error(String.format(format.replace(TARGET, REPLACE), arguments));
-  }
+	/**
+	 * 写入日志
+	 *
+	 * @param throwable 错误信息
+	 * @param message   错误信息
+	 */
+	private void logThrowable(int level, Throwable throwable, String message) {
+		try {
+			switch (level) {
+				case ERROR_INT:
+					if (throwable == null) {
+						logger.error(message);
+					} else {
+						logger.error(message, throwable);
+					}
+					break;
+				case WARN_INT:
+					if (throwable == null) {
+						logger.warn(message);
+					} else {
+						logger.warn(message, throwable);
+					}
+					break;
+				case INFO_INT:
+					if (throwable == null) {
+						logger.info(message);
+					} else {
+						logger.info(message, throwable);
+					}
+					break;
+				case DEBUG_INT:
+					if (throwable == null) {
+						logger.debug(message);
+					} else {
+						logger.debug(message, throwable);
+					}
+					break;
+				case TRACE_INT:
+					if (throwable == null) {
+						logger.trace(message);
+					} else {
+						logger.trace(message, throwable);
+					}
+					break;
+				default:
+					break;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-  /**
-   * 错误输出日志
-   *
-   * @param msg 错误信息
-   */
-  public void error(String msg) {
-    error((Throwable) null, msg);
-  }
+	/**
+	 * 写入日志
+	 *
+	 * @param level   等级
+	 * @param message 错误信息
+	 */
+	private void logThrowable(int level, String message) {
+		try {
+			logThrowable(level, null, message);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 
-  /**
-   * 错误输出日志
-   *
-   * @param throwable 错误信息
-   * @param msg       错误信息
-   */
-  public void error(Throwable throwable, String msg) {
-    if (throwable == null) {
-      logThrowable(Level.SEVERE, msg);
-    } else {
-      logThrowable(Level.SEVERE, throwable, msg);
-    }
-  }
-
-  /**
-   * 错误输出日志
-   *
-   * @param stackTraceElements 错误信息
-   * @param msg                错误信息
-   */
-  public void error(StackTraceElement[] stackTraceElements, String msg) {
-    if (stackTraceElements == null) {
-      logThrowable(Level.SEVERE, msg);
-    } else {
-      log(Level.SEVERE, stackTraceElements, msg);
-    }
-  }
-
-  /**
-   * 错误输出日志
-   *
-   * @param ex 错误信息
-   */
-  public void error(Exception ex) {
-    if (ex.getCause() == null) {
-      log(Level.SEVERE, ex.getStackTrace(), ex.getMessage());
-    } else {
-      error(ex.getCause(), ex.getMessage());
-    }
-  }
-
-  /**
-   * 写入日志
-   *
-   * @param level             等级
-   * @param stackTraceElement 错误信息
-   * @param msg               错误信息
-   */
-  private void log(Level level, StackTraceElement[] stackTraceElement, String msg) {
-    try {
-      setLoggerLevel(logger);
-      if (stackTraceElement == null) {
-        logger.log(level, msg);
-      } else {
-        logger.log(level, msg, stackTraceElement);
-      }
-
-      //写入日志
-      writeLog(level, stackTraceElement, msg);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  /**
-   * 写入日志
-   *
-   * @param level     等级
-   * @param throwable 错误信息
-   * @param msg       错误信息
-   */
-  private void logThrowable(Level level, Throwable throwable, String msg) {
-    try {
-      setLoggerLevel(logger);
-      if (throwable == null) {
-        logger.log(level, msg);
-      } else {
-        logger.log(level, msg, throwable);
-      }
-
-      //写入日志
-      writeLog(level, throwable, msg);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  /**
-   * 写入日志
-   *
-   * @param level 等级
-   * @param msg   错误信息
-   */
-  private void logThrowable(Level level, String msg) {
-    try {
-      logThrowable(level, null, msg);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  /**
-   * 写入日志至文件系统
-   *
-   * @param level
-   * @param throwable 错误信息
-   * @param message
-   */
-  private synchronized void writeLog(Level level, Throwable throwable, String message) {
-    try {
-      //  异常信息
-      StackTraceElement[] elements = null;
-      if (throwable != null && throwable.getStackTrace() != null) {
-        elements = throwable.getStackTrace();
-      }
-
-      writeLog(level, elements, message);
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  /**
-   * 写入日志至文件系统
-   *
-   * @param level
-   * @param elements 错误信息
-   * @param message
-   */
-  private synchronized void writeLog(Level level, StackTraceElement[] elements, String message) {
-    try {
-      String application = StringUtils.Empty;
-      final String replace = "-";
-      if (StringUtils.isNotNullAndEmpty(customConfig.getApplication())) {
-        application = customConfig.getApplication().replace(".", replace) + replace;
-      }
-      // 日志文件
-      String logFileName = "log-" + application + level.getName().toLowerCase() + replace +
-          LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE) + ".log";
-      String logPath = existsCatalog(logFileName);
-      if (StringUtils.isNullAndSpaceOrEmpty(logPath)) {
-        return;
-      }
-      // 日志时间
-      StringBuilder builder = new StringBuilder(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
-      builder.append(String.format("    【%s】    ", level.getName()));
-      builder.append(String.format("%s：%s ", logger.getName(), message));
-      builder.append(NEW_LINE);
-      //  异常信息
-      if (elements != null) {
-        writeExceptionFile(builder, level, elements, logPath, logFileName);
-      } else {
-        FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
-      }
-    } catch (Exception ex) {
-      ex.printStackTrace();
-    }
-  }
-
-  /**
-   * 异常写入文件
-   *
-   * @param level       等级
-   * @param elements    异常信息
-   * @param logPath     文件路径
-   * @param logFileName 文件名称
-   */
-  private void writeExceptionFile(StringBuilder builder, Level level,
-                                  StackTraceElement[] elements, String logPath, String logFileName) throws GlobalException {
-    for (StackTraceElement element :
-        elements) {
-      builder.append(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
-      builder.append(String.format("    【%s】    ", level.getName()));
-      builder.append(String.format("%s.%s(%s：%d)", element.getClassName(),
-          element.getMethodName(), element.getFileName(), element.getLineNumber()));
-      builder.append(NEW_LINE);
-    }
-
-    // 保存文件
-    FileUtils.saveFile(builder.toString(), logPath, StringUtils.Empty, logFileName);
-  }
-
-  /**
-   * 验证目录并返回 file
-   *
-   * @param logFileName 文件名称
-   */
-  private String existsCatalog(String logFileName) {
-    // 验证目录存不存在
-    String logPath = customConfig.getLogPath();
-    /**
-     * 操作系统
-     */
-    String OS = "win";
-    if (HostUtils.getOs().startsWith(OS)) {
-      logPath = "c:" + logPath;
-    }
-    File file = new File(logPath);
-    if (!file.exists()) {
-      file.mkdirs();
-    }
-    if (!file.exists()) {
-      return "";
-    }
-
-    // 验证文件是否存在
-    String pathName = logPath + logFileName;
-    file = new File(pathName);
-    try {
-      if (!file.exists()) {
-        file.createNewFile();
-      }
-    } catch (IOException e) {
-      return "";
-    }
-    FileUtils.deleteCatalogFile(logPath, false, IntegerConsts.SEVEN);
-    return logPath;
-  }
-
-  /**
-   * 是否 debug 模式
-   *
-   * @return 返回结果
-   */
-  private void setLoggerLevel(Logger loggerLevel) {
-    int index = LEVEL.indexOf(customConfig.getLevel());
-    switch (index) {
-      case 0:
-        loggerLevel.setLevel(Level.SEVERE);
-        break;
-      case 1:
-        loggerLevel.setLevel(Level.WARNING);
-        break;
-      case 2:
-        loggerLevel.setLevel(Level.INFO);
-        break;
-      case 3:
-        loggerLevel.setLevel(Level.CONFIG);
-        break;
-      default:
-        loggerLevel.setLevel(Level.ALL);
-        break;
-    }
-  }
+	/**
+	 * 异常写入文件
+	 *
+	 * @param builder  日志信息
+	 * @param level    等级
+	 * @param elements 异常信息
+	 */
+	private void buildExceptionLog(StringBuilder builder, Level level, StackTraceElement[] elements) throws GlobalException {
+		for (StackTraceElement element :
+				elements) {
+			builder.append(LocalDateUtils.dateTimeCurrentFormatter(LocalDateUtils.DATE_HH_MM_SS_SSS));
+			builder.append(String.format("    【%s】    ", level.toString()));
+			builder.append(String.format("%s.%s(%s：%d)", element.getClassName(),
+					element.getMethodName(), element.getFileName(), element.getLineNumber()));
+			builder.append(NEW_LINE);
+		}
+	}
 }

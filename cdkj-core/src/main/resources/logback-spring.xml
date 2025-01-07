@@ -50,7 +50,7 @@
     <!-- 定义文件日志输出的appender，class="ch.qos.logback.core.rolling.RollingFileAppender"表示使用Logback框架提供的RollingFileAppender类来输出日志到文件 -->
     <appender name="DEBUG_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
-        <file>${logging.path}/web_debug.log</file>
+        <file>${logging.path}/debug.log</file>
         <!--日志文档输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
@@ -68,9 +68,6 @@
   		    <maxHistory>15</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
-        <encoder>
-            <pattern>${server.name}</pattern>
-        </encoder>
         <!-- 此日志文档只记录debug级别的 -->
         <!-- 定义日志输出级别的过滤器。在这个过滤器中，class="ch.qos.logback.classic.filter.LevelFilter"表示使用Logback框架提供的LevelFilter类来过滤日志输出，<level>debug</level>表示只输出debug级别及以上的日志 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
@@ -83,7 +80,7 @@
     <!-- 2.2 level为 INFO 日志，时间滚动输出  -->
     <appender name="INFO_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
-        <file>${logging.path}/web_info.log</file>
+        <file>${logging.path}/info.log</file>
         <!--日志文档输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
@@ -98,9 +95,6 @@
             <maxHistory>15</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
-        <encoder>
-            <pattern>${server.name}</pattern>
-        </encoder>
         <!-- 此日志文档只记录info级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>info</level>
@@ -111,7 +105,7 @@
     <!-- 2.3 level为 WARN 日志，时间滚动输出  -->
     <appender name="WARN_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
-        <file>${logging.path}/web_warn.log</file>
+        <file>${logging.path}/warn.log</file>
         <!--日志文档输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
@@ -125,9 +119,6 @@
             <maxHistory>15</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
-        <encoder>
-            <pattern>${server.name}</pattern>
-        </encoder>
         <!-- 此日志文档只记录warn级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>warn</level>
@@ -138,7 +129,7 @@
     <!-- 2.4 level为 ERROR 日志，时间滚动输出  -->
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!-- 正在记录的日志文档的路径及文档名 -->
-        <file>${logging.path}/web_error.log</file>
+        <file>${logging.path}/error.log</file>
         <!--日志文档输出格式-->
         <encoder>
             <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n</pattern>
@@ -152,9 +143,6 @@
             <maxHistory>15</maxHistory>
             <totalSizeCap>2GB</totalSizeCap>
         </rollingPolicy>
-        <encoder>
-            <pattern>${server.name}</pattern>
-        </encoder>
         <!-- 此日志文档只记录ERROR级别的 -->
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
             <level>ERROR</level>
@@ -164,20 +152,60 @@
     </appender>
     <!--     4.1 开发、测试环境:打印控制台-->
     <!-- 用于在Spring Boot应用程序中配置日志记录的标签。在这个标签中，name="dev"表示这个配置文件只在dev环境中生效，<logger name="com.myClass.controller" level="debug"/>表示为com.myClass.controller（根据业务修改）这个包下的类配置日志输出级别为debug -->
-    <springProfile name="dev,test">
-        <logger name="com.**.controller" level="debug"/>
-        <logger name="com.**.controller.**" level="debug"/>
-        <logger name="cn.**.controller" level="debug"/>
-        <logger name="cn.**.controller.**" level="debug"/>
+    <springProfile name="dev">
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="test">
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="pre">
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="pre2">
+        <root level="debug">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
     </springProfile>
     <!-- 生产环境. -->
+    <springProfile name="pro,pro2,prod,prod2">
+        <root level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="pro">
+        <root level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="pro2">
+        <root level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
+    <springProfile name="prod2">
+        <root level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
+    </springProfile>
     <springProfile name="prod">
-        <logger name="com.**.**" level="INFO" additivity="false">
-            <appender-ref ref="timeFileOutput"/>
-        </logger>
-        <logger name="cn.**.**" level="INFO" additivity="false">
-            <appender-ref ref="timeFileOutput"/>
-        </logger>
+        <root level="INFO" additivity="false">
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="FILE"/>
+        </root>
     </springProfile>
     <!-- 用于配置日志输出的标签。在这个标签中，level="info"表示日志输出级别为info，<appender-ref ref="CONSOLE"/>、<appender-ref ref="DEBUG_FILE"/>、<appender-ref ref="INFO_FILE"/>、<appender-ref ref="WARN_FILE"/>、<appender-ref ref="ERROR_FILE"/>表示将日志输出到不同的appender中，分别为控制台、debug文件、info文件、warn文件和error文件 -->
     <root level="info">
