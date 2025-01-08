@@ -42,10 +42,16 @@ public class LogUtils {
 
 	/**
 	 * 构造函数
+	 */
+	public LogUtils() {
+	}
+
+	/**
+	 * 构造函数
 	 *
 	 * @param name 输出名称
 	 */
-	public LogUtils(String name) {
+	private LogUtils(String name) {
 		logger = LoggerFactory.getLogger(name);
 	}
 
