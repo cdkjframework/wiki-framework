@@ -45,7 +45,7 @@ public class LogUtils {
 	 *
 	 * @param name 输出名称
 	 */
-	private LogUtils(String name) {
+	public LogUtils(String name) {
 		logger = LoggerFactory.getLogger(name);
 	}
 
