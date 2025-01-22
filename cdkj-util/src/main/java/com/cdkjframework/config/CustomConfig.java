@@ -239,4 +239,28 @@ public class CustomConfig {
 	 * 数据字段
 	 */
 	private List<String> fields;
+
+	/**
+	 * 静态资源
+	 */
+	private Resource resource;
+
+	@Data
+	public static class Resource {
+
+		/**
+		 * 静态资源路径
+		 */
+		private String[] locations;
+
+		/**
+		 * 路径模式
+		 */
+		private String[] pathPatterns;
+
+		/**
+		 * 缓存 默认为 false
+		 */
+		private boolean cache = false;
+	}
 }

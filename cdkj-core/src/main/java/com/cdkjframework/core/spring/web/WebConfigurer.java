@@ -1,7 +1,11 @@
 package com.cdkjframework.core.spring.web;
 
+import com.cdkjframework.config.CustomConfig;
+import com.cdkjframework.util.tool.CollectUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -16,7 +20,13 @@ import java.util.List;
  * @Version: 1.0
  */
 @Component
+@RequiredArgsConstructor
 public class WebConfigurer implements WebMvcConfigurer {
+
+	/**
+	 * 配置
+	 */
+	private final CustomConfig customConfig;
 
 	/**
 	 * 添加资源处理程序
@@ -25,11 +35,21 @@ public class WebConfigurer implements WebMvcConfigurer {
 	 */
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+		CustomConfig.Resource resource = customConfig.getResource();
+		if (resource == null) {
+			return;
+		}
 		// swagger 配置
-		registry.
-				addResourceHandler("/swagger-ui/**")
-				.addResourceLocations("classpath:/META-INF/resources/webjars/springfox-swagger-ui/")
-				.resourceChain(false);
+		ResourceHandlerRegistration registration = null;
+		if (CollectUtils.isNotEmpty(resource.getPathPatterns())) {
+			registration = registry.addResourceHandler(resource.getPathPatterns());
+			if (CollectUtils.isNotEmpty(resource.getLocations())) {
+				registration.addResourceLocations(resource.getLocations());
+			}
+		}
+		if (registration != null) {
+			registration.resourceChain(resource.isCache());
+		}
 	}
 
 	/**
