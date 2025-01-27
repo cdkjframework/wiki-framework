@@ -131,13 +131,13 @@ public class BaseEntity implements Serializable {
   /**
    * 添加用户ID
    */
-  @Column(name = "add_user_id", length = 36, nullable = false)
+  @Column(name = "add_user_id", length = 36)
   private String addUserId;
 
   /**
    * 添加用户名称
    */
-  @Column(name = "add_user_name", length = 200, nullable = false)
+  @Column(name = "add_user_name", length = 200)
   private String addUserName;
 
   /**
