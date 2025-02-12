@@ -1,8 +1,6 @@
 package com.cdkjframework.entity.swagger;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 import java.util.List;
 
@@ -15,21 +13,32 @@ import java.util.List;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class SwaggerApiInfoEntity {
 
-    /**
-     * 注册到spring生成bean的名称
-     */
-    private String beanName;
-    /**
-     * swagger API分组名称
-     */
-    private String groupName;
-    /**
-     * api 扫描的包
-     */
-    private List<String> basePackage;
+  /**
+   * 注册到spring生成bean的名称
+   */
+  private String beanName;
+  /**
+   * swagger API分组名称
+   */
+  private String groupName;
+
+  /**
+   * swagger API分组描述
+   */
+  private String description;
+  /**
+   * api 扫描的包
+   */
+  private List<String> packagesToScan;
+  /**
+   * api 路径匹配
+   */
+  private List<String> pathsToMatch;
+  /**
+   * api 标签匹配
+   */
+  private List<String> tagsToMatch;
 }

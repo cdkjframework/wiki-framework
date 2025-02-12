@@ -9,8 +9,11 @@ import ${packageName}.dto.${className}Dto;
 import ${packageName}.service.${className}Service;
 import com.cdkjframework.core.controller.WebUiController;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/${uri}")
 @RequiredArgsConstructor
-@Tag(name = "${description}")
+@Tag(name = "${className} API", description = "${description}")
 public class ${className}Controller extends WebUiController{
 
     /**
@@ -49,6 +52,9 @@ public class ${className}Controller extends WebUiController{
     @ResponseBody
     @Operation(summary = "修改数据")
     @PostMapping(value = "/modify${className}")
+    @Parameters({
+        @Parameter(in = ParameterIn.HEADER, name = "token", description = "token", required = true)
+    })
     public void modify${className}(@RequestBody ${className}Vo ${classLowName}Vo) {
         ${className}Dto ${classLowName} = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
         ${classLowName}ServiceImpl.modify${className}(${classLowName});
@@ -62,6 +68,9 @@ public class ${className}Controller extends WebUiController{
     @ResponseBody
     @Operation(summary = "添加数据")
     @PostMapping(value = "/add${className}")
+    @Parameters({
+    @Parameter(in = ParameterIn.HEADER, name = "token", description = "token", required = true)
+    })
     public void add${className}(@RequestBody ${className}Vo ${classLowName}Vo) {
         ${className}Dto ${classLowName} = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
         ${classLowName}ServiceImpl.add${className}(${classLowName});
@@ -74,6 +83,9 @@ public class ${className}Controller extends WebUiController{
     @ResponseBody
     @Operation(summary = "删除数据")
     @PostMapping(value = "/delete${className}")
+    @Parameters({
+        @Parameter(in = ParameterIn.HEADER, name = "token", description = "token", required = true)
+    })
     public void delete${className}(@RequestBody ${className}Vo ${classLowName}Vo) {
         ${className}Dto ${classLowName} = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
         ${classLowName}ServiceImpl.delete${className}(${classLowName});
@@ -88,6 +100,9 @@ public class ${className}Controller extends WebUiController{
     @ResponseBody
     @Operation(summary = "查询数据")
     @PostMapping(value = "/find${className}")
+    @Parameters({
+        @Parameter(in = ParameterIn.HEADER, name = "token", description = "token", required = true)
+    })
     public ${className}Vo find${className}(@RequestBody ${className}Vo ${classLowName}Vo){
         ${className}Dto ${classLowName}Dto = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);
         ${classLowName}Dto = ${classLowName}ServiceImpl.find${className}(${classLowName}Dto);
@@ -102,7 +117,10 @@ public class ${className}Controller extends WebUiController{
     */
     @ResponseBody
     @Operation(summary = "查询指定数据")
-    @PostMapping(value = "/find${className}ById")
+    @GetMapping(value = "/find${className}ById")
+    @Parameters({
+        @Parameter(in = ParameterIn.HEADER, name = "token", description = "token", required = true)
+    })
     public ${className}Vo find${className}ById(@RequestParam("id") String id){
         ${className}Dto ${classLowName}Dto = ${classLowName}ServiceImpl.find${className}ById(id);
         return CopyUtils.copyProperties(${classLowName}Dto, ${className}Vo.class);
@@ -117,6 +135,9 @@ public class ${className}Controller extends WebUiController{
     @ResponseBody
     @Operation(summary = "查询分页数据")
     @PostMapping(value = "/list${className}Page")
+    @Parameters({
+        @Parameter(in = ParameterIn.HEADER, name = "token", description = "token", required = true)
+    })
     public PageEntity<${className}Vo> list${className}Page(@RequestBody ${className}Vo ${classLowName}Vo) {
         // 数据转换
         ${className}Dto ${classLowName}Dto = CopyUtils.copyProperties(${classLowName}Vo, ${className}Dto.class);

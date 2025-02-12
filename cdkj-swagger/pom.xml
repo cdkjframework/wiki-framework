@@ -12,24 +12,23 @@
   <artifactId>cdkj-swagger</artifactId>
 
   <dependencies>
-      <!-- begin knife4j -->
-      <dependency>
-          <groupId>com.github.xiaoymin</groupId>
-          <artifactId>knife4j-openapi3-jakarta-spring-boot-starter</artifactId>
-      </dependency>
-      <!-- end knife4j -->
-      <dependency>
-          <groupId>com.cdkjframework</groupId>
-          <artifactId>cdkj-util</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>org.springdoc</groupId>
+      <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+      <version>2.6.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.cdkjframework</groupId>
+      <artifactId>cdkj-util</artifactId>
+    </dependency>
   </dependencies>
 
-    <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
   <build>
     <plugins>

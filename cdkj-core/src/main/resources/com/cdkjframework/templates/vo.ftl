@@ -6,7 +6,6 @@ import ${item};
 </#list>
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.media.SchemaProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -34,7 +33,7 @@ public class ${className}Vo extends BaseVo {
     /**
      * ${item.columnDescription}
      */
-    @SchemaProperty(name = "${item.columnDescription}")
+    @Schema(name = "${item.columnDescription}")
     private ${item.dataType} ${item.columnName};
     </#if>
 </#list>

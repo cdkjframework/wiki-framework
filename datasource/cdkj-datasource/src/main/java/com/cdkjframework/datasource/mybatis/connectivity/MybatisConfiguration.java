@@ -83,7 +83,7 @@ public class MybatisConfiguration {
       // 设置类型
       List<TypeHandler> typeHandlerList = new ArrayList<>();
       buildTypeHandler(typeHandlerList);
-      sqlSessionFactoryBean.setTypeHandlers(typeHandlerList.toArray(new TypeHandler[typeHandlerList.size()]));
+      sqlSessionFactoryBean.setTypeHandlers(typeHandlerList.toArray(new TypeHandler[0]));
       // 数据源
       sqlSessionFactoryBean.setDataSource(mybatisDataSource);
       // 配置信息

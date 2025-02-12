@@ -1,8 +1,13 @@
 package com.cdkjframework.util.tool;
 
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.constant.StringPool;
 import com.cdkjframework.util.log.LogUtils;
 import org.springframework.stereotype.Component;
+
+import java.io.Serializable;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @ProjectName: hongtu.slps.bms
@@ -14,17 +19,24 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class StringUtils {
+public class StringUtils implements Serializable, StringPool {
 
-  /**
-   * 空值变量
-   */
-  public final static String Empty = "";
+	/**
+	 * 字符串去除空白内容
+	 *
+	 * <ul> <li>'"<>&*+=#-; sql注入黑名单</li> <li>\n 回车</li> <li>\t 水平制表符</li> <li>\s 空格</li> <li>\r 换行</li> </ul>
+	 */
+	private static final Pattern REPLACE_BLANK = Pattern.compile("'|\"|\\<|\\>|&|\\*|\\+|=|#|-|;|\\s*|\t|\r|\n");
 
-  /**
-   * 空格
-   */
-  public final static String BLANK_SPACE = " ";
+	/**
+	 * 空值变量
+	 */
+	public final static String Empty = "";
+
+	/**
+	 * 空格
+	 */
+	public final static String BLANK_SPACE = " ";
 
   /**
    * 加号
@@ -382,4 +394,20 @@ public class StringUtils {
       return new String(padding).concat(str);
     }
   }
+
+	/**
+	 * 字符串去除空白内容：
+	 * <ul>
+	 *     <li>\n 回车</li>
+	 *     <li>\t 水平制表符</li>
+	 *     <li>\s 空格</li>
+	 *     <li>\r 换行</li>
+	 * </ul>
+	 *
+	 * @param str 字符串
+	 */
+	public static String replaceAllBlank(String str) {
+		Matcher matcher = REPLACE_BLANK.matcher(str);
+		return matcher.replaceAll("");
+	}
 }
