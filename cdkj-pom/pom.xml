@@ -97,7 +97,7 @@
       <itextpdf.version>5.5.13.3</itextpdf.version>
       <easyexcel.version>4.0.3</easyexcel.version>
       <flowable.version>6.5.0</flowable.version>
-      <cdkj-logback.version>1.5.16</cdkj-logback.version>
+      <logback.version>1.5.16</logback.version>
       <lettuce-core.version>6.3.2.RELEASE</lettuce-core.version>
       <lettuce-search.version>3.1.2</lettuce-search.version>
       <redis-json.version>4.0.0</redis-json.version>
@@ -336,6 +336,12 @@
             <type>pom</type>
             <scope>provided</scope>
         </dependency>
+
+      <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
+      </dependency>
         <!--            <dependency>-->
         <!--                <groupId>org.apache.logging.log4j</groupId>-->
         <!--                <artifactId>log4j-core</artifactId>-->
