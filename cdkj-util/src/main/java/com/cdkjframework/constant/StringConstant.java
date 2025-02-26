@@ -3,13 +3,13 @@ package com.cdkjframework.constant;
 /**
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.datasource.mybatispro.consts
- * @ClassName: StringPool
+ * @ClassName: StringUtils
  * @Description: 字条串池
  * @Author: xiaLin
  * @Date: 2025/2/6 17:36
  * @Version: 1.0
  */
-public interface StringPool {
+public interface StringConstant {
 
 	/**
 	 * 连接符
@@ -317,5 +317,5 @@ public interface StringPool {
 	/**
 	 * 换行符的 {@code byte} 数组
 	 */
-	byte[] BYTES_NEW_LINE = StringPool.NEWLINE.getBytes();
+	byte[] BYTES_NEW_LINE = StringConstant.NEWLINE.getBytes();
 }

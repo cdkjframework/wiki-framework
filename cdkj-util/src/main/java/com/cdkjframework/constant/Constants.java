@@ -11,7 +11,7 @@ import java.io.Serializable;
  * @Date: 2025/2/6 17:36
  * @Version: 1.0
  */
-public interface Constants extends StringPool, Serializable {
+public interface Constants extends StringConstant, Serializable {
 
 	/**
 	 * project name

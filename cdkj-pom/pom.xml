@@ -7,7 +7,7 @@
   <groupId>com.cdkjframework</groupId>
   <artifactId>cdkj-pom</artifactId>
   <description>cdkj-framework 框架依赖包</description>
-  <version>1.0.8</version>
+  <version>1.0.9</version>
   <packaging>pom</packaging>
 
   <parent>
@@ -18,7 +18,7 @@
   </parent>
 
   <properties>
-    <cdkj.version>1.0.8</cdkj.version>
+    <cdkj.version>1.0.9</cdkj.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>
@@ -257,6 +257,16 @@
       <dependency>
         <groupId>com.cdkjframework</groupId>
         <artifactId>cdkj-util</artifactId>
+        <version>${cdkj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.cdkjframework</groupId>
+        <artifactId>cdkj-datasource-mybatis-pro</artifactId>
+        <version>${cdkj.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.dreamroute</groupId>
+        <artifactId>mybatis-pro-core</artifactId>
         <version>${cdkj.version}</version>
       </dependency>
       <dependency>

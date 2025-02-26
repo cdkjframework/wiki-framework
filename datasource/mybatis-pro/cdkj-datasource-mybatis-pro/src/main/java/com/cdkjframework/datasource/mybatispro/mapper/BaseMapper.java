@@ -1,7 +1,7 @@
 //package com.cdkjframework.datasource.mybatispro.mapper;
 //
 //import com.cdkjframework.constant.Constants;
-//import com.cdkjframework.constant.StringPool;
+//import com.cdkjframework.constant.StringUtils;
 //import com.cdkjframework.exceptions.GlobalException;
 //import com.cdkjframework.mybatispro.core.metadata.IPage;
 //import com.cdkjframework.util.tool.AssertUtils;
@@ -126,7 +126,7 @@
 //			params.put(Constants.MP_FILL_ET, tableInfo.newInstance());
 //		}
 //		params.put(Constants.COLL, collections);
-//		return sqlSession.delete(mapperInterface.getName() + StringPool.DOT + SqlMethod.DELETE_BY_IDS.getMethod(), params);
+//		return sqlSession.delete(mapperInterface.getName() + StringUtils.DOT + SqlMethod.DELETE_BY_IDS.getMethod(), params);
 //	}
 //
 //	/**
@@ -465,7 +465,7 @@
 //		Class<?> entityClass = GenericTypeUtils.resolveTypeArguments(getClass(), BaseMapper.class)[0];
 //		TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
 //		String keyProperty = tableInfo.getKeyProperty();
-//		String statement = mybatisMapperProxy.getMapperInterface().getName() + StringPool.DOT + SqlMethod.SELECT_BY_ID.getMethod();
+//		String statement = mybatisMapperProxy.getMapperInterface().getName() + StringUtils.DOT + SqlMethod.SELECT_BY_ID.getMethod();
 //		return insertOrModify(entityList, (sqlSession, entity) -> {
 //			Object idVal = tableInfo.getPropertyValue(entity, keyProperty);
 //			return StringUtils.checkValNull(idVal) || CollectionUtils.isEmpty(sqlSession.selectList(statement, entity));

@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cdkj-framework</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <version>1.0.8</version>
+        <version>1.0.9</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -21,7 +21,6 @@
         <module>cdkj-datasource-mongodb</module>
         <module>cdkj-datasource-elasticsearch</module>
         <module>mybatis-pro</module>
-        <module>mybatis-pro/mybatis-pro-core</module>
     </modules>
 
     <repositories>

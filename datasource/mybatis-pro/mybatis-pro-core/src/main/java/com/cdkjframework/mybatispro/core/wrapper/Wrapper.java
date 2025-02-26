@@ -1,265 +1,188 @@
-//package com.cdkjframework.mybatispro.core.wrapper;
-//
-//import com.cdkjframework.mybatispro.core.conditions.query.LambdaQueryWrapper;
-//import com.cdkjframework.mybatispro.core.conditions.modify.LambdaModifyWrapper;
-//import com.cdkjframework.mybatispro.core.conditions.query.QueryWrapper;
-//import com.cdkjframework.mybatispro.core.conditions.modify.ModifyWrapper;
-//
-//import java.util.Collections;
-//import java.util.Map;
-//
-///**
-// * @ProjectName: cdkjframework
-// * @Package: com.cdkjframework.mybatispro.core.wrapper
-// * @ClassName: Wrapper
-// * @Description: 包装物
-// * @Author: xiaLin
-// * @Date: 2025/2/7 10:52
-// * @Version: 1.0
-// */
-//public class Wrapper {
-//
-//
-//    /**
-//     * 空的 EmptyWrapper
-//     */
-//    private static final QueryWrapper<?> emptyWrapper = new EmptyWrapper<>();
-//
-//    /**
-//     * 构建函数
-//     */
-//    private Wrapper() {
-//        // ignore
-//    }
-//
-//    /**
-//     * 获取 QueryWrapper&lt;T&gt;
-//     *
-//     * @param <T> 实体类泛型
-//     * @return QueryWrapper&lt;T&gt;
-//     */
-//    public static <T> QueryWrapper<T> query() {
-//        return new QueryWrapper<>();
-//    }
-//
-//    /**
-//     * 获取 QueryWrapper&lt;T&gt;
-//     *
-//     * @param entity 实体类
-//     * @param <T>    实体类泛型
-//     * @return QueryWrapper&lt;T&gt;
-//     */
-//    public static <T> QueryWrapper<T> query(T entity) {
-//        return new QueryWrapper<>(entity);
-//    }
-//
-//    /**
-//     * 获取 QueryWrapper&lt;T&gt;
-//     *
-//     * @param entityClass 实体类class
-//     * @param <T>         实体类泛型
-//     * @return QueryWrapper&lt;T&gt;
-//     */
-//    public static <T> QueryWrapper<T> query(Class<T> entityClass) {
-//        return new QueryWrapper<>(entityClass);
-//    }
-//
-//    /**
-//     * 获取 LambdaQueryWrapper&lt;T&gt;
-//     *
-//     * @param <T> 实体类泛型
-//     * @return LambdaQueryWrapper&lt;T&gt;
-//     */
-//    public static <T> LambdaQueryWrapper<T> lambdaQuery() {
-//        return new LambdaQueryWrapper<>();
-//    }
-//
-//    /**
-//     * 获取 LambdaQueryWrapper&lt;T&gt;
-//     *
-//     * @param entity 实体类
-//     * @param <T>    实体类泛型
-//     * @return LambdaQueryWrapper&lt;T&gt;
-//     */
-//    public static <T> LambdaQueryWrapper<T> lambdaQuery(T entity) {
-//        return new LambdaQueryWrapper<>(entity);
-//    }
-//
-//    /**
-//     * 获取 LambdaQueryWrapper&lt;T&gt;
-//     *
-//     * @param entityClass 实体类class
-//     * @param <T>         实体类泛型
-//     * @return LambdaQueryWrapper&lt;T&gt;
-//     * @since 3.3.1
-//     */
-//    public static <T> LambdaQueryWrapper<T> lambdaQuery(Class<T> entityClass) {
-//        return new LambdaQueryWrapper<>(entityClass);
-//    }
-//
-//    /**
-//     * 获取 UpdateWrapper&lt;T&gt;
-//     *
-//     * @param <T> 实体类泛型
-//     * @return UpdateWrapper&lt;T&gt;
-//     */
-//    public static <T> ModifyWrapper<T> update() {
-//        return new ModifyWrapper<>();
-//    }
-//
-//    /**
-//     * 获取 UpdateWrapper&lt;T&gt;
-//     *
-//     * @param entity 实体类
-//     * @param <T>    实体类泛型
-//     * @return UpdateWrapper&lt;T&gt;
-//     */
-//    public static <T> ModifyWrapper<T> update(T entity) {
-//        return new ModifyWrapper<>(entity);
-//    }
-//
-//    /**
-//     * 获取 LambdaUpdateWrapper&lt;T&gt;
-//     *
-//     * @param <T> 实体类泛型
-//     * @return LambdaUpdateWrapper&lt;T&gt;
-//     */
-//    public static <T> LambdaModifyWrapper<T> lambdaUpdate() {
-//        return new LambdaModifyWrapper<>();
-//    }
-//
-//    /**
-//     * 获取 LambdaUpdateWrapper&lt;T&gt;
-//     *
-//     * @param entity 实体类
-//     * @param <T>    实体类泛型
-//     * @return LambdaUpdateWrapper&lt;T&gt;
-//     */
-//    public static <T> LambdaModifyWrapper<T> lambdaUpdate(T entity) {
-//        return new LambdaModifyWrapper<>(entity);
-//    }
-//
-//    /**
-//     * 获取 LambdaUpdateWrapper&lt;T&gt;
-//     *
-//     * @param entityClass 实体类class
-//     * @param <T>         实体类泛型
-//     * @return LambdaUpdateWrapper&lt;T&gt;
-//     * @since 3.3.1
-//     */
-//    public static <T> LambdaModifyWrapper<T> lambdaUpdate(Class<T> entityClass) {
-//        return new LambdaModifyWrapper<>(entityClass);
-//    }
-//
-//    /**
-//     * 获取 EmptyWrapper&lt;T&gt;
-//     *
-//     * @param <T> 任意泛型
-//     * @return EmptyWrapper&lt;T&gt;
-//     * @see EmptyWrapper
-//     */
-//    @SuppressWarnings("unchecked")
-//    public static <T> QueryWrapper<T> emptyWrapper() {
-//        return (QueryWrapper<T>) emptyWrapper;
-//    }
-//
-//    /**
-//     * 一个空的QueryWrapper子类该类不包含任何条件
-//     *
-//     * @param <T>
-//     * @see QueryWrapper
-//     */
-//    private static class EmptyWrapper<T> extends QueryWrapper<T> {
-//
-//        private static final long serialVersionUID = -2515957613998092272L;
-//
-//        @Override
-//        public T getEntity() {
-//            return null;
-//        }
-//
-//        @Override
-//        public EmptyWrapper<T> setEntity(T entity) {
-//            throw new UnsupportedOperationException();
-//        }
-//
-//        @Override
-//        public QueryWrapper<T> setEntityClass(Class<T> entityClass) {
-//            throw new UnsupportedOperationException();
-//        }
-//
-//        @Override
-//        public Class<T> getEntityClass() {
-//            return null;
-//        }
-//
-//        @Override
-//        public String getSqlSelect() {
-//            return null;
-//        }
-//
-//        @Override
-//        public MergeSegments getExpression() {
-//            return null;
-//        }
-//
-//        @Override
-//        public boolean isEmptyOfWhere() {
-//            return true;
-//        }
-//
-//        @Override
-//        public boolean isEmptyOfNormal() {
-//            return true;
-//        }
-//
-//        @Override
-//        public boolean isNonEmptyOfEntity() {
-//            return !isEmptyOfEntity();
-//        }
-//
-//        @Override
-//        public boolean isEmptyOfEntity() {
-//            return true;
-//        }
-//
-//        @Override
-//        protected void initNeed() {
-//        }
-//
-//        @Override
-//        public EmptyWrapper<T> last(boolean condition, String lastSql) {
-//            throw new UnsupportedOperationException();
-//        }
-//
-//        @Override
-//        public String getSqlSegment() {
-//            return null;
-//        }
-//
-//        @Override
-//        public Map<String, Object> getParamNameValuePairs() {
-//            return Collections.emptyMap();
-//        }
-//
-//        @Override
-//        protected String columnsToString(String... columns) {
-//            return null;
-//        }
-//
-//        @Override
-//        protected String columnToString(String column) {
-//            return null;
-//        }
-//
-//        @Override
-//        protected EmptyWrapper<T> instance() {
-//            throw new UnsupportedOperationException();
-//        }
-//
-//        @Override
-//        public void clear() {
-//            throw new UnsupportedOperationException();
-//        }
-//    }
-//}
+package com.cdkjframework.mybatispro.core.wrapper;
+
+import com.cdkjframework.constant.Constants;
+import com.cdkjframework.mybatispro.core.conditions.ISqlSegment;
+import com.cdkjframework.mybatispro.core.conditions.segments.MergeSegments;
+import com.cdkjframework.mybatispro.core.conditions.segments.NormalSegmentList;
+import com.cdkjframework.mybatispro.core.metadata.TableInfo;
+import com.cdkjframework.mybatispro.core.metadata.TableInfoHelper;
+import com.cdkjframework.mybatispro.core.metadata.TableFieldInfo;
+import com.cdkjframework.util.tool.CollectUtils;
+import com.cdkjframework.util.tool.StringUtils;
+
+import java.util.Objects;
+
+/**
+ * @ProjectName: cdkjframework
+ * @Package: com.cdkjframework.mybatispro.core.wrapper
+ * @ClassName: Wrapper
+ * @Description: Java 类说明
+ * @Author: xiaLin
+ * @Version: 1.0
+ */
+public abstract class Wrapper<T> implements ISqlSegment {
+
+  /**
+   * 实体对象（子类实现）
+   *
+   * @return 泛型 T
+   */
+  public abstract T getEntity();
+
+  public String getSqlSelect() {
+    return null;
+  }
+
+  public String getSqlSet() {
+    return null;
+  }
+
+  public String getSqlComment() {
+    return null;
+  }
+
+  public String getSqlFirst() {
+    return null;
+  }
+
+  /**
+   * 获取 MergeSegments
+   */
+  public abstract MergeSegments getExpression();
+
+  /**
+   * 获取自定义SQL 简化自定义XML复杂情况
+   * <p>
+   * 使用方法: `select xxx from table` + ${ew.customSqlSegment}
+   * <p>
+   * 注意事项:
+   * 1. 逻辑删除需要自己拼接条件 (之前自定义也同样)
+   * 2. 不支持wrapper中附带实体的情况 (wrapper自带实体会更麻烦)
+   * 3. 用法 ${ew.customSqlSegment} (不需要where标签包裹,切记!)
+   * 4. ew是wrapper定义别名,不能使用其他的替换
+   */
+  public String getCustomSqlSegment() {
+    MergeSegments expression = getExpression();
+    if (Objects.nonNull(expression)) {
+      NormalSegmentList normal = expression.getNormal();
+      String sqlSegment = getSqlSegment();
+      if (StringUtils.isNotNullAndEmpty(sqlSegment)) {
+        if (normal.isEmpty()) {
+          return sqlSegment;
+        } else {
+          return Constants.WHERE + StringUtils.SPACE + sqlSegment;
+        }
+      }
+    }
+    return StringUtils.EMPTY;
+  }
+
+  /**
+   * 查询条件为空(包含entity)
+   */
+  public boolean isEmptyOfWhere() {
+    return isEmptyOfNormal() && isEmptyOfEntity();
+  }
+
+  /**
+   * 查询条件不为空(包含entity)
+   */
+  public boolean isNonEmptyOfWhere() {
+    return !isEmptyOfWhere();
+  }
+
+  @Deprecated
+  public boolean nonEmptyOfWhere() {
+    return isNonEmptyOfWhere();
+  }
+
+  /**
+   * 查询条件为空(不包含entity)
+   */
+  public boolean isEmptyOfNormal() {
+    return CollectUtils.isEmpty(getExpression().getNormal());
+  }
+
+  /**
+   * 查询条件为空(不包含entity)
+   */
+  public boolean isNonEmptyOfNormal() {
+    return !isEmptyOfNormal();
+  }
+
+  @Deprecated
+  public boolean nonEmptyOfNormal() {
+    return isNonEmptyOfNormal();
+  }
+
+  /**
+   * 深层实体判断属性
+   *
+   * @return true 不为空
+   */
+  public boolean isNonEmptyOfEntity() {
+    T entity = getEntity();
+    if (entity == null) {
+      return false;
+    }
+    TableInfo tableInfo = TableInfoHelper.getTableInfo(entity.getClass());
+    if (tableInfo == null) {
+      return false;
+    }
+    if (tableInfo.getFieldList().stream().anyMatch(e -> fieldStrategyMatch(tableInfo, entity, e))) {
+      return true;
+    }
+    return StringUtils.isNotNullAndEmpty(tableInfo.getKeyProperty()) ? Objects.nonNull(tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty())) : false;
+  }
+
+  @Deprecated
+  public boolean nonEmptyOfEntity() {
+    return isNonEmptyOfEntity();
+  }
+
+  /**
+   * 根据实体FieldStrategy属性来决定判断逻辑
+   */
+  private boolean fieldStrategyMatch(TableInfo tableInfo, T entity, TableFieldInfo e) {
+    switch (e.getWhereStrategy()) {
+      case NOT_NULL:
+        return Objects.nonNull(tableInfo.getPropertyValue(entity, e.getProperty()));
+      case IGNORED:
+        return true;
+      case ALWAYS:
+        return true;
+      case NOT_EMPTY:
+        return StringUtils.checkValNotNull(tableInfo.getPropertyValue(entity, e.getProperty()));
+      case NEVER:
+        return false;
+      default:
+        return Objects.nonNull(tableInfo.getPropertyValue(entity, e.getProperty()));
+    }
+  }
+
+  /**
+   * 深层实体判断属性
+   *
+   * @return true 为空
+   */
+  public boolean isEmptyOfEntity() {
+    return !isNonEmptyOfEntity();
+  }
+
+  /**
+   * 获取格式化后的执行sql
+   *
+   * @return sql
+   * @since 3.3.1
+   */
+  public String getTargetSql() {
+    return getSqlSegment().replaceAll("#\\{.+?}", "?");
+  }
+
+  /**
+   * 条件清空
+   *
+   * @since 3.3.1
+   */
+  abstract public void clear();
+}
