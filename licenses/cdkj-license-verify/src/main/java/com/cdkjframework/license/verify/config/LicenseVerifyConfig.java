@@ -3,6 +3,7 @@ package com.cdkjframework.license.verify.config;
 import com.cdkjframework.license.entity.LicenseVerifyEntity;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 @Data
+@RefreshScope
 @Configuration
 @ConfigurationProperties(prefix = "spring.custom.license.verify")
 public class LicenseVerifyConfig {
