@@ -1,7 +1,6 @@
-package com.cdkjframework.datasource.mybatispro.mapper;
+package com.cdkjframework.mybatispro.core.mapper;
 
 import com.cdkjframework.constant.Constants;
-import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.mybatispro.core.batch.BatchSqlSession;
 import com.cdkjframework.mybatispro.core.batch.MybatisBatch;
 import com.cdkjframework.mybatispro.core.conditions.modify.LambdaModifyWrapper;
@@ -33,9 +32,9 @@ import java.util.function.BiPredicate;
 
 /**
  * @ProjectName: cdkjframework
- * @Package: com.cdkjframework.datasource.mybatispro.mapper
- * @ClassName: BaseMapper
- * @Description: 基础Mapper
+ * @Package: com.cdkjframework.mybatispro.core.mapper
+ * @ClassName: Mapper
+ * @Description: Mapper 继承该接口后，无需编写 mapper.xml 文件，即可获得CRUD功能
  * @Author: xiaLin
  * @Date: 2025/2/6 17:33
  * @Version: 1.0
@@ -55,7 +54,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param id 主键ID
    */
   default int deleteById(Serializable id) {
-    return deleteById(id, Boolean.TRUE);
+    return deleteById(id, true);
   }
 
   /**
@@ -63,6 +62,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param useFill 是否填充
    * @param obj     主键ID或实体
+   * 
    */
   default int deleteById(Object obj, boolean useFill) {
     Class<?> entityClass = GenericTypeUtils.resolveTypeArguments(getClass(), BaseMapper.class)[0];
@@ -76,7 +76,7 @@ public interface BaseMapper<T> extends Mapper<T> {
     }
     MybatisMapperProxy<?> mybatisMapperProxy = MybatisUtils.getMybatisMapperProxy(this);
     SqlSession sqlSession = mybatisMapperProxy.getSqlSession();
-    return sqlSession.delete(mybatisMapperProxy.getMapperInterface().getName() + Constants.DOT + SqlMethod.DELETE_BY_ID.getMethod(), obj);
+    return sqlSession.delete(mybatisMapperProxy.getMapperInterface().getName() + StringUtils.DOT + SqlMethod.DELETE_BY_ID.getMethod(), obj);
   }
 
   /**
@@ -107,6 +107,19 @@ public interface BaseMapper<T> extends Mapper<T> {
    * 删除（根据ID或实体 批量删除）
    *
    * @param idList 主键ID列表或实体列表(不能为 null 以及 empty)
+   * @deprecated 3.5.7 {@link #deleteByIds(Collection)}
+   */
+  @Deprecated
+  default int deleteBatchIds(@Param(Constants.COLL) Collection<?> idList) {
+    return deleteByIds(idList);
+  }
+
+
+  /**
+   * 删除（根据ID或实体 批量删除）
+   *
+   * @param idList 主键ID列表或实体列表(不能为 null 以及 empty)
+   * 
    */
   default int deleteByIds(@Param(Constants.COLL) Collection<?> idList) {
     return deleteByIds(idList, true);
@@ -115,15 +128,19 @@ public interface BaseMapper<T> extends Mapper<T> {
   /**
    * 删除（根据ID或实体 批量删除）
    * <p>
-   * 普通删除: DELETE FROM user WHERE id IN ( ? , ? )
+   * 普通删除: DELETE FROM h2user WHERE id IN ( ? , ? )
+   * </p>
    * <p>
-   * 逻辑删除: UPDATE user SET deleted=1 WHERE id IN ( ? , ? ) AND deleted=0
+   * 逻辑删除: UPDATE h2user SET deleted=1 WHERE id IN ( ? , ? ) AND deleted=0
+   * </p>
    * <p>
-   * 逻辑删除(填充): UPDATE user SET deleted = 'xxx', deleted=1 WHERE id IN ( ? , ? ) AND deleted=0
+   * 逻辑删除(填充): UPDATE h2user SET delete_user = 'xxx', deleted=1 WHERE id IN ( ? , ? ) AND deleted=0
+   *     <ul>注意:无论参数为id还是实体,填充参数只会以方法追加的et参数为准.<ul/>
+   * </p>
    *
    * @param collections 主键ID列表或实体列表(不能为 null 以及 empty)
    * @param useFill     逻辑删除下是否填充
-   * @return 删除结果 0 失败 1 成功
+   * 
    */
   default int deleteByIds(@Param(Constants.COLL) Collection<?> collections, boolean useFill) {
     if (CollectUtils.isEmpty(collections)) {
@@ -146,7 +163,6 @@ public interface BaseMapper<T> extends Mapper<T> {
    * 根据 ID 修改
    *
    * @param entity 实体对象
-   * @return 删除结果 0 失败 1 成功
    */
   int modifyById(@Param(Constants.ENTITY) T entity);
 
@@ -162,11 +178,10 @@ public interface BaseMapper<T> extends Mapper<T> {
    * 根据 Wrapper 更新记录
    * <p>此方法无法进行自动填充,如需自动填充请使用{@link #modify(Object, Wrapper)}</p>
    *
-   * @param updateWrapper {@link ModifyWrapper} or {@link LambdaModifyWrapper}
-   * @return 更新结果 0 失败 1 成功
+   * @param modifyWrapper {@link ModifyWrapper} or {@link LambdaModifyWrapper}
    */
-  default int modify(@Param(Constants.WRAPPER) Wrapper<T> updateWrapper) {
-    return modify(null, updateWrapper);
+  default int modify(@Param(Constants.WRAPPER) Wrapper<T> modifyWrapper) {
+    return modify(null, modifyWrapper);
   }
 
   /**
@@ -174,7 +189,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param id 主键ID
    */
-  T findEntityById(Serializable id);
+  T selectById(Serializable id);
 
   /**
    * 查询（根据ID 批量查询）
@@ -182,17 +197,17 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param idList 主键ID列表(不能为 null 以及 empty)
    * @return 数据列表
    */
-  List<T> listEntityByIds(@Param(Constants.COLL) Collection<? extends Serializable> idList);
+  List<T> selectByIds(@Param(Constants.COLL) Collection<? extends Serializable> idList);
 
   /**
    * 查询（根据ID 批量查询）
    *
    * @param idList 主键ID列表(不能为 null 以及 empty)
    * @return 数据列表
-   * @deprecated 3.5.8
    */
-  default List<T> listEntityBatchIds(@Param(Constants.COLL) Collection<? extends Serializable> idList) {
-    return listEntityByIds(idList);
+  @Deprecated
+  default List<T> selectBatchIds(@Param(Constants.COLL) Collection<? extends Serializable> idList) {
+    return selectByIds(idList);
   }
 
   /**
@@ -201,15 +216,17 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param idList        idList 主键ID列表(不能为 null 以及 empty)
    * @param resultHandler resultHandler 结果处理器 {@link ResultHandler}
    */
-  void listEntityByIds(@Param(Constants.COLL) Collection<? extends Serializable> idList, ResultHandler<T> resultHandler);
+  void selectByIds(@Param(Constants.COLL) Collection<? extends Serializable> idList, ResultHandler<T> resultHandler);
 
   /**
    * @param idList        idList 主键ID列表(不能为 null 以及 empty)
    * @param resultHandler resultHandler 结果处理器 {@link ResultHandler}
+   * @since 3.5.4
+   * @deprecated 3.5.8
    */
   @Deprecated
-  default void listEntityBatchIds(@Param(Constants.COLL) Collection<? extends Serializable> idList, ResultHandler<T> resultHandler) {
-    listEntityByIds(idList, resultHandler);
+  default void selectBatchIds(@Param(Constants.COLL) Collection<? extends Serializable> idList, ResultHandler<T> resultHandler) {
+    selectByIds(idList, resultHandler);
   }
 
   /**
@@ -217,8 +234,19 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param columnMap 表字段 map 对象
    */
-  default List<T> listEntityByMap(Map<String, Object> columnMap) {
-    return this.listEntityPage(Wrappers.<T>query().allEq(columnMap));
+  default List<T> selectByMap(Map<String, Object> columnMap) {
+    return this.selectList(Wrappers.<T>query().allEq(columnMap));
+  }
+
+  /**
+   * 查询（根据 columnMap 条件）
+   *
+   * @param columnMap     表字段 map 对象
+   * @param resultHandler resultHandler 结果处理器 {@link ResultHandler}
+   * @since 3.5.4
+   */
+  default void selectByMap(Map<String, Object> columnMap, ResultHandler<T> resultHandler) {
+    this.selectList(Wrappers.<T>query().allEq(columnMap), resultHandler);
   }
 
   /**
@@ -226,10 +254,9 @@ public interface BaseMapper<T> extends Mapper<T> {
    * <p>查询一条记录，例如 qw.last("limit 1") 限制取一条记录, 注意：多条数据会报异常</p>
    *
    * @param queryWrapper 实体对象封装操作类（可以为 null）
-   * @return 数据实体对象
    */
-  default T findEntity(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper) {
-    return this.findEntity(queryWrapper, true);
+  default T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper) {
+    return this.selectOne(queryWrapper, true);
   }
 
   /**
@@ -239,8 +266,8 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param queryWrapper 实体对象封装操作类（可以为 null）
    * @param throwEx      boolean 参数，为true如果存在多个结果直接抛出异常
    */
-  default T findEntity(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, boolean throwEx) {
-    List<T> list = this.listEntityPage(queryWrapper);
+  default T selectOne(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, boolean throwEx) {
+    List<T> list = this.selectList(queryWrapper);
     int size = list.size();
     if (size == 1) {
       return list.get(0);
@@ -260,7 +287,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @return 是否存在记录
    */
   default boolean exists(Wrapper<T> queryWrapper) {
-    Long count = this.findCount(queryWrapper);
+    Long count = this.selectCount(queryWrapper);
     return null != count && count > 0;
   }
 
@@ -269,14 +296,14 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param queryWrapper 实体对象封装操作类（可以为 null）
    */
-  Long findCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+  Long selectCount(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
   /**
    * 根据 entity 条件，查询全部记录
    *
    * @param queryWrapper 实体对象封装操作类（可以为 null）
    */
-  List<T> listEntityPage(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+  List<T> selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
   /**
    * 根据 entity 条件，查询全部记录
@@ -285,7 +312,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param resultHandler 结果处理器 {@link ResultHandler}
    * @since 3.5.4
    */
-  void listEntityPage(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<T> resultHandler);
+  void selectList(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<T> resultHandler);
 
   /**
    * 根据 entity 条件，查询全部记录（并翻页）
@@ -294,7 +321,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param queryWrapper 实体对象封装操作类（可以为 null）
    * @since 3.5.3.2
    */
-  List<T> listEntityPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+  List<T> selectList(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
   /**
    * 根据 entity 条件，查询全部记录（并翻页）
@@ -304,7 +331,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param resultHandler 结果处理器 {@link ResultHandler}
    * @since 3.5.4
    */
-  void listEntityPage(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<T> resultHandler);
+  void selectList(IPage<T> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<T> resultHandler);
 
 
   /**
@@ -312,7 +339,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param queryWrapper 实体对象封装操作类
    */
-  List<Map<String, Object>> listMapPage(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+  List<Map<String, Object>> selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
   /**
    * 根据 Wrapper 条件，查询全部记录
@@ -321,15 +348,16 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param resultHandler 结果处理器 {@link ResultHandler}
    * @since 3.5.4
    */
-  void listMapPage(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<Map<String, Object>> resultHandler);
+  void selectMaps(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<Map<String, Object>> resultHandler);
 
   /**
    * 根据 Wrapper 条件，查询全部记录（并翻页）
    *
    * @param page         分页查询条件
    * @param queryWrapper 实体对象封装操作类
+   * @since 3.5.3.2
    */
-  List<Map<String, Object>> listMap(IPage<? extends Map<String, Object>> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+  List<Map<String, Object>> selectMaps(IPage<? extends Map<String, Object>> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
   /**
    * 根据 Wrapper 条件，查询全部记录（并翻页）
@@ -339,7 +367,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param resultHandler 结果处理器 {@link ResultHandler}
    * @since 3.5.4
    */
-  void listMapPage(IPage<? extends Map<String, Object>> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<Map<String, Object>> resultHandler);
+  void selectMaps(IPage<? extends Map<String, Object>> page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<Map<String, Object>> resultHandler);
 
   /**
    * 根据 Wrapper 条件，查询全部记录
@@ -347,7 +375,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param queryWrapper 实体对象封装操作类（可以为 null）
    */
-  <E> List<E> listObject(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
+  <E> List<E> selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper);
 
   /**
    * 根据 Wrapper 条件，查询全部记录
@@ -357,7 +385,7 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param resultHandler 结果处理器 {@link ResultHandler}
    * @since 3.5.4
    */
-  <E> void listObject(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<E> resultHandler);
+  <E> void selectObjs(@Param(Constants.WRAPPER) Wrapper<T> queryWrapper, ResultHandler<E> resultHandler);
 
   /**
    * 根据 entity 条件，查询全部记录（并翻页）
@@ -365,8 +393,8 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param page         分页查询条件
    * @param queryWrapper 实体对象封装操作类（可以为 null）
    */
-  default <P extends IPage<T>> P listPage(P page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper) {
-    page.setRecords(listEntityPage(page, queryWrapper));
+  default <P extends IPage<T>> P selectPage(P page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper) {
+    page.setRecords(selectList(page, queryWrapper));
     return page;
   }
 
@@ -376,8 +404,8 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param page         分页查询条件
    * @param queryWrapper 实体对象封装操作类
    */
-  default <P extends IPage<Map<String, Object>>> P listMapPage(P page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper) {
-    page.setRecords(listMap(page, queryWrapper));
+  default <P extends IPage<Map<String, Object>>> P selectMapsPage(P page, @Param(Constants.WRAPPER) Wrapper<T> queryWrapper) {
+    page.setRecords(selectMaps(page, queryWrapper));
     return page;
   }
 
@@ -387,14 +415,14 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param entity 实体对象 (不能为空)
    * 
    */
-  default boolean insertOrModify(T entity) throws GlobalException {
+  default boolean insertOrUpdate(T entity) {
     Class<?> entityClass = GenericTypeUtils.resolveTypeArguments(getClass(), BaseMapper.class)[0];
     TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
     AssertUtils.isEmptyMessage(tableInfo, "error: can not execute. because can not find cache of TableInfo for entity!");
     String keyProperty = tableInfo.getKeyProperty();
     AssertUtils.isEmptyMessage(keyProperty, "error: can not execute. because can not find column for id from entity!");
     Object idVal = tableInfo.getPropertyValue(entity, tableInfo.getKeyProperty());
-    return StringUtils.checkValNull(idVal) || Objects.isNull(findEntityById((Serializable) idVal)) ? insert(entity) > 0 : modifyById(entity) > 0;
+    return StringUtils.checkValNull(idVal) || Objects.isNull(selectById((Serializable) idVal)) ? insert(entity) > 0 : modifyById(entity) > 0;
   }
 
 
@@ -452,8 +480,8 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param entityList 实体对象集合
    * 
    */
-  default List<BatchResult> insertOrModify(Collection<T> entityList) {
-    return insertOrModify(entityList, Constants.DEFAULT_BATCH_SIZE);
+  default List<BatchResult> insertOrUpdate(Collection<T> entityList) {
+    return insertOrUpdate(entityList, Constants.DEFAULT_BATCH_SIZE);
   }
 
   /**
@@ -463,13 +491,13 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param batchSize  插入批次数量
    * 
    */
-  default List<BatchResult> insertOrModify(Collection<T> entityList, int batchSize) {
+  default List<BatchResult> insertOrUpdate(Collection<T> entityList, int batchSize) {
     MybatisMapperProxy<?> mybatisMapperProxy = MybatisUtils.getMybatisMapperProxy(this);
     Class<?> entityClass = GenericTypeUtils.resolveTypeArguments(getClass(), BaseMapper.class)[0];
     TableInfo tableInfo = TableInfoHelper.getTableInfo(entityClass);
     String keyProperty = tableInfo.getKeyProperty();
     String statement = mybatisMapperProxy.getMapperInterface().getName() + StringUtils.DOT + SqlMethod.SELECT_BY_ID.getMethod();
-    return insertOrModify(entityList, (sqlSession, entity) -> {
+    return insertOrUpdate(entityList, (sqlSession, entity) -> {
       Object idVal = tableInfo.getPropertyValue(entity, keyProperty);
       return StringUtils.checkValNull(idVal) || CollectUtils.isEmpty(sqlSession.selectList(statement, entity));
     }, batchSize);
@@ -481,8 +509,8 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param entityList 实体对象集合
    * 
    */
-  default List<BatchResult> insertOrModify(Collection<T> entityList, BiPredicate<BatchSqlSession, T> insertPredicate) {
-    return insertOrModify(entityList, insertPredicate, Constants.DEFAULT_BATCH_SIZE);
+  default List<BatchResult> insertOrUpdate(Collection<T> entityList, BiPredicate<BatchSqlSession, T> insertPredicate) {
+    return insertOrUpdate(entityList, insertPredicate, Constants.DEFAULT_BATCH_SIZE);
   }
 
   /**
@@ -492,10 +520,11 @@ public interface BaseMapper<T> extends Mapper<T> {
    * @param batchSize  插入批次数量
    * 
    */
-  default List<BatchResult> insertOrModify(Collection<T> entityList, BiPredicate<BatchSqlSession, T> insertPredicate, int batchSize) {
+  default List<BatchResult> insertOrUpdate(Collection<T> entityList, BiPredicate<BatchSqlSession, T> insertPredicate, int batchSize) {
     MybatisMapperProxy<?> mybatisMapperProxy = MybatisUtils.getMybatisMapperProxy(this);
     MybatisBatch.Method<T> method = new MybatisBatch.Method<>(mybatisMapperProxy.getMapperInterface());
     SqlSessionFactory sqlSessionFactory = MybatisUtils.getSqlSessionFactory(mybatisMapperProxy);
     return MybatisBatchUtils.saveOrUpdate(sqlSessionFactory, entityList, method.insert(), insertPredicate, method.modifyById(), batchSize);
   }
+
 }

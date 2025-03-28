@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>com.cdkjframework</groupId>
-            <artifactId>mybatis-pro-core</artifactId>
+            <artifactId>cdkj-datasource-mybatis-pro-core</artifactId>
             <version>1.0.9</version>
         </dependency>
     </dependencies>

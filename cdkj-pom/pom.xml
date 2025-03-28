@@ -33,6 +33,10 @@
     <spring.cloud.version>2023.0.3</spring.cloud.version>
     <spring.platform.version>Cairo-SR8</spring.platform.version>
     <spring.version>6.1.13</spring.version>
+    <spring-security-core.version>6.3.5</spring-security-core.version>
+    <spring-security-crypto.version>6.3.8</spring-security-crypto.version>
+    <xmlunit-core.version>2.10.0</xmlunit-core.version>
+    <json-core.version>2.5.2</json-core.version>
     <spring-plugin-core.version>3.0.0</spring-plugin-core.version>
     <knife4j.version>4.5.0</knife4j.version>
     <knife4j-starter.version>3.0.3</knife4j-starter.version>
@@ -64,6 +68,7 @@
     <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
     <mq-http.version>1.0.4.2</mq-http.version>
     <ons.client.version>1.8.4.Final</ons.client.version>
+    <tea-util.version>0.2.23</tea-util.version>
     <sms.alicloud.version>2.0.24</sms.alicloud.version>
     <call.alicloud.version>4.6.4</call.alicloud.version>
     <dyvmsapi.alicloud.version>1.0.2</dyvmsapi.alicloud.version>
@@ -290,6 +295,26 @@
         <artifactId>spring-webmvc</artifactId>
         <version>${spring.version}</version>
       </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-core</artifactId>
+        <version>${spring-security-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework.security</groupId>
+        <artifactId>spring-security-crypto</artifactId>
+        <version>${spring-security-crypto.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.xmlunit</groupId>
+        <artifactId>xmlunit-core</artifactId>
+        <version>${xmlunit-core.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>net.minidev</groupId>
+        <artifactId>json-smart</artifactId>
+        <version>${json-core.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.apache.commons</groupId>
@@ -505,6 +530,11 @@
         <groupId>com.aliyun.openservices</groupId>
         <artifactId>ons-client</artifactId>
         <version>${ons.client.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.aliyun</groupId>
+        <artifactId>tea-util</artifactId>
+        <version>${tea-util.version}</version>
       </dependency>
 
       <!-- 极光推送 -->

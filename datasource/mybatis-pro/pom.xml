@@ -14,7 +14,7 @@
 
     <modules>
         <module>cdkj-datasource-mybatis-pro</module>
-        <module>mybatis-pro-core</module>
+        <module>cdkj-datasource-mybatis-pro-core</module>
     </modules>
 
     <properties>

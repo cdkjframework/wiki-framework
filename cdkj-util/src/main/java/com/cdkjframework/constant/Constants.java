@@ -44,7 +44,6 @@ public interface Constants extends StringConstant, Serializable {
 	/**
 	 * 填充实体
 	 *
-	 * @since 3.5.8
 	 */
 	String MP_FILL_ET = "mpFillEt";
 
@@ -131,13 +130,11 @@ public interface Constants extends StringConstant, Serializable {
 	String COLLECTION = "coll";
 
 	/**
-	 * @since 3.5.2
 	 */
 	String COLL = "coll";
 	/**
 	 * list
 	 *
-	 * @since 3.5.0
 	 */
 	String LIST = "list";
 	/**
@@ -150,7 +147,6 @@ public interface Constants extends StringConstant, Serializable {
 	String LIMIT = "LIMIT";
 
 	/**
-	 * @since 3.5.2
 	 */
 	String ARRAY = "array";
 	/**

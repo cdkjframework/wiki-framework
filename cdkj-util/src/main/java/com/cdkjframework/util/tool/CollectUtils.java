@@ -99,7 +99,6 @@ public class CollectUtils extends CollectionUtils {
    * @param <V>          V
    * @return HashMap
    * @see com.google.common.collect.Maps#newHashMapWithExpectedSize
-   * @since 3.4.0
    */
   public static <K, V> HashMap<K, V> newHashMapWithExpectedSize(int expectedSize) {
     return new HashMap<>(capacity(expectedSize));

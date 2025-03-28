@@ -76,7 +76,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * Set the default timeout for operations. A zero timeout value indicates to not time out.
      *
      * @param timeout the timeout value.
-     * @since 5.0
      */
     @Override
     @Deprecated
@@ -842,7 +841,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      * <p>
      * Basically the function consider the right of the string as padded with zeros if you look for clear bits and
      * specify no range or the <em>start</em> argument <strong>only</strong>.
-     * @since 5.0.1
      */
     @Override
     public Mono<Long> bitpos(String key, boolean state, long start) {
@@ -1212,7 +1210,6 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
      *
      * @param strAlgoArgs command arguments.
      * @return StringMatchResult.
-     * @since 5.3.2
      */
     @Override
     public Mono<StringMatchResult> stralgoLcs(StrAlgoArgs strAlgoArgs) {
