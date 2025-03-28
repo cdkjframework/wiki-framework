@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.cdkjframework</groupId>
         <artifactId>datasource</artifactId>
-        <version>1.0.9</version>
+        <version>1.0.10</version>
     </parent>
 
     <artifactId>mybatis-pro</artifactId>

@@ -7,7 +7,7 @@
   <groupId>com.cdkjframework</groupId>
   <artifactId>cdkj-pom</artifactId>
   <description>cdkj-framework 框架依赖包</description>
-  <version>1.0.9</version>
+  <version>1.0.10</version>
   <packaging>pom</packaging>
 
   <parent>
@@ -18,7 +18,7 @@
   </parent>
 
   <properties>
-    <cdkj.version>1.0.9</cdkj.version>
+    <cdkj.version>1.0.10</cdkj.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>
@@ -32,7 +32,7 @@
     <spring.consul.version>4.1.2</spring.consul.version>
     <spring.cloud.version>2023.0.3</spring.cloud.version>
     <spring.platform.version>Cairo-SR8</spring.platform.version>
-    <spring.version>6.1.13</spring.version>
+    <spring.version>6.1.14</spring.version>
     <spring-security-core.version>6.3.5</spring-security-core.version>
     <spring-security-crypto.version>6.3.8</spring-security-crypto.version>
     <xmlunit-core.version>2.10.0</xmlunit-core.version>
