@@ -6,7 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
 /**
  * @ProjectName: cdkj-framework
@@ -21,12 +21,12 @@ public class BodyHandler {
     /**
      * 请求特殊参数
      */
-    protected String X_REQUESTED_TOKEN = "X-Requested-token";
+    protected final String X_REQUESTED_TOKEN = "X-Requested-token";
 
     /**
      * 请求特殊参数值
      */
-    protected String X_REQUESTED_TOKEN_VALUE = "token";
+    protected final String X_REQUESTED_TOKEN_VALUE = "token";
 
     /**
      * 自定义配置
@@ -46,8 +46,8 @@ public class BodyHandler {
             return true;
         }
         List<String> list = filter.stream()
-                .filter(f -> name.contains(f))
-                .collect(Collectors.toList());
+                .filter(name::contains)
+                .toList();
         return CollectionUtils.isEmpty(list);
     }
 
@@ -61,6 +61,6 @@ public class BodyHandler {
         if (!httpHeaders.containsKey(X_REQUESTED_TOKEN)) {
             return false;
         }
-        return httpHeaders.get(X_REQUESTED_TOKEN).contains(X_REQUESTED_TOKEN_VALUE);
+        return Objects.requireNonNull(httpHeaders.get(X_REQUESTED_TOKEN)).contains(X_REQUESTED_TOKEN_VALUE);
     }
 }

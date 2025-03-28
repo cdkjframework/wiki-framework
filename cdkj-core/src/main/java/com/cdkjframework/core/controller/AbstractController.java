@@ -25,10 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 import static com.cdkjframework.constant.EncodingConsts.CHARSET_UTF8;
 import static org.springframework.http.MediaType.TEXT_HTML_VALUE;
@@ -47,7 +45,7 @@ public abstract class AbstractController implements IController {
   /**
    * 日志
    */
-  private LogUtils logUtil = LogUtils.getLogger(AbstractController.class);
+  private final LogUtils logUtil = LogUtils.getLogger(AbstractController.class);
 
   /**
    * 读取基础数据
@@ -98,13 +96,12 @@ public abstract class AbstractController implements IController {
    */
   @Override
   public void version(HttpServletRequest request) {
-    StringBuilder builder = new StringBuilder();
-    builder.append(versionConfig.getSpringApplicationName());
-    builder.append(StringUtils.COLON);
-    builder.append(versionConfig.getServerPort());
+    String builder = versionConfig.getSpringApplicationName() +
+        StringUtils.COLON +
+        versionConfig.getServerPort();
 
     //输出信息
-    write(builder.toString());
+    write(builder);
   }
 
   /**
@@ -219,8 +216,6 @@ public abstract class AbstractController implements IController {
       toClient.close();
     } catch (IOException ex) {
       logUtil.error(ex.getMessage());
-    } finally {
-//            file.delete();
     }
   }
 
@@ -246,7 +241,7 @@ public abstract class AbstractController implements IController {
    */
   @Override
   public String saveFile(MultipartFile file, String directoryPath) throws IOException, GlobalException {
-    if (file == null && file.isEmpty()) {
+    if (file == null || file.isEmpty()) {
       throw new GlobalException("没有上传的文件");
     }
 
@@ -256,6 +251,7 @@ public abstract class AbstractController implements IController {
     //文件名称
     String fileName = file.getOriginalFilename();
     //获取后缀
+    assert fileName != null;
     String suffix = fileName.substring(fileName.lastIndexOf('.') - 1);
     //重新定义文件名称
     fileName = GeneratedValueUtils.getUuidNotTransverseLine() + suffix;
@@ -283,7 +279,7 @@ public abstract class AbstractController implements IController {
    */
   @Override
   public <T> List<T> importExcelToList(InputStream inputStream, Class<T> clazz) {
-    List list = new ArrayList();
+    List<T> list = new ArrayList<>();
 
     try {
       return EasyExcelUtils.readExcelToList(inputStream, StringUtils.Empty, clazz);
@@ -304,6 +300,7 @@ public abstract class AbstractController implements IController {
   public void write(String content) {
     try {
       HttpServletResponse response = HttpServletUtils.getResponse();
+      assert response != null;
       response.setCharacterEncoding(EncodingConsts.UTF8);
       response.setContentType(TEXT_HTML_VALUE);
       PrintWriter writer = response.getWriter();
@@ -336,9 +333,10 @@ public abstract class AbstractController implements IController {
   @Override
   public void outputStream(InputStream inputStream, String fileName) throws IOException {
     if (StringUtils.isNotNullAndEmpty(fileName)) {
-      fileName = URLDecoder.decode(fileName, EncodingConsts.UTF8);
+      fileName = URLDecoder.decode(fileName, StandardCharsets.UTF_8);
     }
     HttpServletResponse response = HttpServletUtils.getResponse();
+    assert response != null;
     response.reset();
     response.setCharacterEncoding(EncodingConsts.UTF8);
     response.addHeader(HttpHeaderConsts.CONTENT_LENGTH, ConvertUtils.convertString(inputStream.available()));
@@ -362,7 +360,7 @@ public abstract class AbstractController implements IController {
    */
   @Override
   public InputStream getRequestStream() throws IOException {
-    return HttpServletUtils.getRequest().getInputStream();
+    return Objects.requireNonNull(HttpServletUtils.getRequest()).getInputStream();
   }
 
   /**

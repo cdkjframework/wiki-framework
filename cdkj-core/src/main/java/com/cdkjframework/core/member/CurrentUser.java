@@ -198,11 +198,7 @@ public class CurrentUser {
         .filter(f -> f.getConfigKey().equals(typeEnum.getValue()))
         .findFirst();
 
-    if (optional.isPresent()) {
-      return optional.get();
-    } else {
-      return null;
-    }
+    return optional.orElse(null);
   }
 
   /**

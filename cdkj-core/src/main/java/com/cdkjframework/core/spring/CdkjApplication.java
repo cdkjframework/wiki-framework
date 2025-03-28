@@ -22,7 +22,7 @@ public class CdkjApplication {
   /**
    * 日志
    */
-  private static LogUtils logUtils = LogUtils.getLogger(CdkjApplication.class);
+  private static final LogUtils LOG_UTILS = LogUtils.getLogger(CdkjApplication.class);
   /**
    * 端口
    */
@@ -51,18 +51,18 @@ public class CdkjApplication {
 
     Environment env = context.getEnvironment();
     String contextPath = ConvertUtils.convertString(env.getProperty(CONTEXT_PATH));
-    if (env != null) {
-      logUtils.info("\n---------------------------------------------------------------------------\n\t" +
-                      "Application '{}' is running! Access URLs:\n\t" +
-                      "Local: \t\t\t\thttp://localhost:{}{}\n\t" +
-                      "External: \t\t\thttp://{}:{}{}\n\t" +
-                      "External-IPv6: http://[{}]:{}{}\n" +
-                      "---------------------------------------------------------------------------",
-              env.getProperty(SPRING_APPLICATION_NAME),
-              env.getProperty(SERVER_PORT), contextPath,
-              HostUtils.getLocalHost(), env.getProperty(SERVER_PORT), contextPath,
-              HostUtils.getLocalIpv6(), env.getProperty(SERVER_PORT), contextPath);
-    }
+    LOG_UTILS.info("""
+
+            ---------------------------------------------------------------------------
+            \tApplication '{}' is running! Access URLs:
+            \tLocal: \t\t\t\thttp://localhost:{}{}
+            \tExternal: \t\t\thttp://{}:{}{}
+            \tExternal-IPv6: http://[{}]:{}{}
+            ---------------------------------------------------------------------------""",
+        env.getProperty(SPRING_APPLICATION_NAME),
+        env.getProperty(SERVER_PORT), contextPath,
+        HostUtils.getLocalHost(), env.getProperty(SERVER_PORT), contextPath,
+        HostUtils.getLocalIpv6(), env.getProperty(SERVER_PORT), contextPath);
 
     return context;
   }

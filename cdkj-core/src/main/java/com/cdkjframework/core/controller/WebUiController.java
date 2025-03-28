@@ -41,19 +41,15 @@ public class WebUiController extends AbstractController {
     try {
       Claims claims = JwtUtils.parseJwt(id, customConfig.getJwtKey());
       if (claims != null) {
-        /**
-         * 受权常量
-         */
-        String TOKEN = "token";
-        String tokenKey = ConvertUtils.convertString(claims.get(TOKEN));
+        // 受权常量
+        String token = "token";
+        String tokenKey = ConvertUtils.convertString(claims.get(token));
         final String userKey = CacheConsts.USER_LOGIN + tokenKey;
         final String resourceKey = CacheConsts.USER_RESOURCE + CurrentUser.getUserId();
         RedisUtils.syncDel(resourceKey);
         RedisUtils.syncDel(userKey);
       }
     } catch (Exception ex) {
-      ex.printStackTrace();
-
       builder.setCode(ResponseBuilderEnums.Error.getValue());
       builder.setMessage(ResponseBuilderEnums.Error.getName());
     }
@@ -86,18 +82,17 @@ public class WebUiController extends AbstractController {
    */
   @Override
   public <T> T getCurrentUser(Class<T> clazz) {
-    T userEntity = null;
     try {
       String key = getRequestHeader(BusinessConsts.HEADER_TOKEN);
       Claims claims = JwtUtils.parseJwt(key, customConfig.getJwtKey());
+      assert claims != null;
       String token = claims.get(BusinessConsts.HEADER_TOKEN).toString();
       return getCurrentUser(token, clazz);
-    } catch (Exception ex) {
-      ex.printStackTrace();
+    } catch (Exception ignored) {
     }
 
     //返回结果
-    return userEntity;
+    return null;
   }
 
   /**
@@ -112,8 +107,7 @@ public class WebUiController extends AbstractController {
     T userEntity = null;
     try {
       userEntity = RedisUtils.syncGetEntity(CacheConsts.USER_LOGIN + id, clazz);
-    } catch (Exception ex) {
-      ex.printStackTrace();
+    } catch (Exception ignored) {
     }
 
     //返回结果

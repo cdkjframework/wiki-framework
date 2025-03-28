@@ -9,6 +9,7 @@ import com.cdkjframework.util.network.ResponseUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.lang.NonNull;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,7 +28,7 @@ public class FilterHandlerInterceptor implements HandlerInterceptor {
   /**
    * 日志
    */
-  private LogUtils logUtils = LogUtils.getLogger(FilterHandlerInterceptor.class);
+  private final LogUtils logUtils = LogUtils.getLogger(FilterHandlerInterceptor.class);
 
   /**
    * redis锁
@@ -76,7 +77,7 @@ public class FilterHandlerInterceptor implements HandlerInterceptor {
    * @throws Exception 异常信息
    */
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
+  public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object o) throws Exception {
     String ip = request.getHeader(HEADER_IP);
     if (StringUtils.isNullAndSpaceOrEmpty(ip)) {
       ip = request.getRemoteAddr();
@@ -97,12 +98,12 @@ public class FilterHandlerInterceptor implements HandlerInterceptor {
   }
 
   @Override
-  public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+  public void postHandle(@NonNull HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull Object o, ModelAndView modelAndView) {
 
   }
 
   @Override
-  public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+  public void afterCompletion(@NonNull HttpServletRequest httpServletRequest, @NonNull HttpServletResponse httpServletResponse, @NonNull Object o, Exception e) {
 
   }
 
@@ -113,10 +114,7 @@ public class FilterHandlerInterceptor implements HandlerInterceptor {
    * @return 返回是否成功
    */
   private Boolean ipIsLock(String ip) {
-    if (redisLettuceLock.lock(LOCK_IP_URL_KEY + ip)) {
-      return true;
-    }
-    return false;
+    return redisLettuceLock.lock(LOCK_IP_URL_KEY + ip);
   }
 
   /**

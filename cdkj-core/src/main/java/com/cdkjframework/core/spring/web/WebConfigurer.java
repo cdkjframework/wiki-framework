@@ -4,6 +4,7 @@ import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.util.tool.CollectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -23,42 +24,42 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WebConfigurer implements WebMvcConfigurer {
 
-	/**
-	 * 配置
-	 */
-	private final CustomConfig customConfig;
+  /**
+   * 配置
+   */
+  private final CustomConfig customConfig;
 
-	/**
-	 * 添加资源处理程序
-	 *
-	 * @param registry 注册
-	 */
-	@Override
-	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		CustomConfig.Resource resource = customConfig.getResource();
-		if (resource == null) {
-			return;
-		}
-		// swagger 配置
-		ResourceHandlerRegistration registration = null;
-		if (CollectUtils.isNotEmpty(resource.getPathPatterns())) {
-			registration = registry.addResourceHandler(resource.getPathPatterns());
-			if (CollectUtils.isNotEmpty(resource.getLocations())) {
-				registration.addResourceLocations(resource.getLocations());
-			}
-		}
-		if (registration != null) {
-			registration.resourceChain(resource.isCache());
-		}
-	}
+  /**
+   * 添加资源处理程序
+   *
+   * @param registry 注册
+   */
+  @Override
+  public void addResourceHandlers(@NonNull ResourceHandlerRegistry registry) {
+    CustomConfig.Resource resource = customConfig.getResource();
+    if (resource == null) {
+      return;
+    }
+    // swagger 配置
+    ResourceHandlerRegistration registration = null;
+    if (CollectUtils.isNotEmpty(resource.getPathPatterns())) {
+      registration = registry.addResourceHandler(resource.getPathPatterns());
+      if (CollectUtils.isNotEmpty(resource.getLocations())) {
+        registration.addResourceLocations(resource.getLocations());
+      }
+    }
+    if (registration != null) {
+      registration.resourceChain(resource.isCache());
+    }
+  }
 
-	/**
-	 * 扩展消息转换器
-	 *
-	 * @param converters 转换器
-	 */
-	@Override
-	public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
+  /**
+   * 扩展消息转换器
+   *
+   * @param converters 转换器
+   */
+  @Override
+  public void extendMessageConverters(@NonNull List<HttpMessageConverter<?>> converters) {
 //    MappingJackson2HttpMessageConverter converter = new MappingJackson2HttpMessageConverter();
 //    // 全局配置序列化返回 JSON 处理
 //    JavaTimeModule javaTimeModule = new JavaTimeModule();
