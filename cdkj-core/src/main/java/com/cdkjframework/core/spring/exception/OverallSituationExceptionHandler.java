@@ -11,6 +11,8 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.ConstraintViolationException;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.apache.ibatis.exceptions.TooManyResultsException;
 import org.mybatis.spring.MyBatisSystemException;
@@ -24,8 +26,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
@@ -69,7 +69,6 @@ public class OverallSituationExceptionHandler {
                 message = messageList[IntegerConsts.ONE];
             }
         }
-        response(code);
         ResponseBuilder builder = ResponseBuilder.failBuilder(message);
         builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
@@ -123,7 +122,6 @@ public class OverallSituationExceptionHandler {
                 message = messageList[IntegerConsts.ONE];
             }
         }
-        response(code);
         ResponseBuilder builder = ResponseBuilder.failBuilder(message);
         builder.setCode(code);
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
@@ -147,7 +145,6 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
         builder.setData(params);
-        response(builder.getCode());
 
         return builder;
     }
@@ -165,8 +162,6 @@ public class OverallSituationExceptionHandler {
         params.put("error", e.getMessage());
         builder.setData(params);
 
-        response(builder.getCode());
-
         return builder;
     }
 
@@ -179,7 +174,6 @@ public class OverallSituationExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseBuilder MethodArgumentNotValidException(MethodArgumentNotValidException e) {
         ResponseBuilder builder = ResponseBuilder.failBuilder();
-
         BindingResult bindingResult = e.getBindingResult();
         List<String> errorList = new ArrayList<>();
         if (bindingResult.hasErrors()) {
@@ -192,7 +186,6 @@ public class OverallSituationExceptionHandler {
                 }
             }
         }
-        response(builder.getCode());
         builder.setData(errorList);
         return builder;
     }
@@ -211,7 +204,6 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -230,7 +222,6 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -249,7 +240,6 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -287,7 +277,6 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -306,7 +295,6 @@ public class OverallSituationExceptionHandler {
         Map<String, Object> params = new HashMap<>(IntegerConsts.ONE);
         params.put("error", e.getMessage());
 
-        response(builder.getCode());
         builder.setData(params);
         return builder;
     }
@@ -328,7 +316,6 @@ public class OverallSituationExceptionHandler {
             message = message.substring(begin);
         }
         ResponseBuilder builder = ResponseBuilder.failBuilder(message);
-        response(builder.getCode());
         return builder;
     }
 

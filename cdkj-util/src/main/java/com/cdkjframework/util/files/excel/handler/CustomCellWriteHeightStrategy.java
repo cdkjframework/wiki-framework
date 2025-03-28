@@ -34,12 +34,11 @@ public class CustomCellWriteHeightStrategy extends AbstractRowHeightStyleStrateg
             return;
         }
 
-
         // 默认为 1行高度
         Integer maxHeight = IntegerConsts.ONE;
         while (cellIterator.hasNext()) {
             Cell cell = cellIterator.next();
-            switch (cell.getCellTypeEnum()) {
+            switch (cell.getCellType()) {
                 case STRING:
                     if (cell.getStringCellValue().indexOf("\n") != -1) {
                         int length = cell.getStringCellValue().split("\n").length;

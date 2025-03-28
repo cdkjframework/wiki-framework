@@ -1,13 +1,11 @@
 package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: cdkj-framework
@@ -17,10 +15,9 @@ import javax.persistence.Table;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "bms_workflow", catalog = "")
 public class WorkflowEntity extends BaseEntity {
 

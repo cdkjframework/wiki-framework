@@ -44,8 +44,8 @@ public enum WeChatEnums implements InterfaceEnum {
 
     NOT_UTF8("not_utf8", "编码格式错误");
 
-    private String value;
-    private String text;
+    private final String value;
+    private final String text;
 
     /**
      * 构造

@@ -1,6 +1,9 @@
 package com.cdkjframework.redis.realize;
 
 import io.lettuce.core.ClientOptions;
+import io.lettuce.core.RedisConnectionStateListener;
+import io.lettuce.core.api.push.PushListener;
+import io.lettuce.core.cluster.api.push.RedisClusterPushListener;
 import io.lettuce.core.cluster.models.partitions.Partitions;
 import io.lettuce.core.cluster.pubsub.RedisClusterPubSubListener;
 import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
@@ -101,16 +104,6 @@ public class RedisClusterPubSubConnection implements StatefulRedisClusterPubSubC
 
     }
 
-    /**
-     * @param l
-     * @param timeUnit
-     * @deprecated
-     */
-    @Override
-    public void setTimeout(long l, TimeUnit timeUnit) {
-
-    }
-
     @Override
     public Duration getTimeout() {
         return null;
@@ -155,6 +148,7 @@ public class RedisClusterPubSubConnection implements StatefulRedisClusterPubSubC
      * @deprecated
      */
     @Override
+    @Deprecated
     public void reset() {
 
     }
@@ -166,6 +160,36 @@ public class RedisClusterPubSubConnection implements StatefulRedisClusterPubSubC
 
     @Override
     public void flushCommands() {
+
+    }
+
+    @Override
+    public void addListener(RedisClusterPushListener redisClusterPushListener) {
+
+    }
+
+    @Override
+    public void removeListener(RedisClusterPushListener redisClusterPushListener) {
+
+    }
+
+    @Override
+    public void addListener(PushListener pushListener) {
+
+    }
+
+    @Override
+    public void removeListener(PushListener pushListener) {
+
+    }
+
+    @Override
+    public void addListener(RedisConnectionStateListener redisConnectionStateListener) {
+
+    }
+
+    @Override
+    public void removeListener(RedisConnectionStateListener redisConnectionStateListener) {
 
     }
 }

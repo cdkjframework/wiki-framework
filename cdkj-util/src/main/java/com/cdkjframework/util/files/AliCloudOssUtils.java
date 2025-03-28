@@ -1,15 +1,14 @@
 package com.cdkjframework.util.files;
 
 import com.aliyun.oss.OSS;
-import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
 import com.cdkjframework.config.AliCloudOssConfig;
 import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.io.File;
 import java.io.InputStream;
 

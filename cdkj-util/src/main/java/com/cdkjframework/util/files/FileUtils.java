@@ -1,18 +1,17 @@
 package com.cdkjframework.util.files;
 
+import com.cdkjframework.constant.FileTypeConsts;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.enums.FileTypeEnums;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.util.date.LocalDateUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.HostUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
@@ -23,12 +22,15 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributeView;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -87,82 +89,113 @@ public class FileUtils {
     }
 
     /**
-     * 保存文件
-     *
-     * @param inputStream 文件流
-     * @param fileName    文件路径
-     * @param catalog     自定义文件路径
-     * @param fileName    文件名称
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    public static boolean saveFile(InputStream inputStream, String catalog, String fileName) throws GlobalException {
-        return saveFile(inputStream, StringUtils.Empty, catalog, fileName);
-    }
+		 * 保存文件
+		 *
+		 * @param inputStream 文件流
+		 * @param fileName    文件路径
+		 * @param catalog     自定义文件路径
+		 * @param fileName    文件名称
+		 * @return 返回结果
+		 * @throws GlobalException 异常信息
+		 */
+		public static boolean saveFile(InputStream inputStream, String catalog, String fileName) throws GlobalException {
+			return saveFile(inputStream, StringUtils.Empty, catalog, fileName);
+		}
 
-    /**
-     * 保存文件
-     *
-     * @param character     文件内容
-     * @param directoryPath 文件路径
-     * @param catalog       自定义文件路径
-     * @param fileName      文件名称
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    public static boolean saveFile(String character, String directoryPath, String catalog, String fileName) throws GlobalException {
-        InputStream inputStream = new ByteArrayInputStream(character.getBytes());
-        return saveFile(inputStream, directoryPath, catalog, fileName);
-    }
+	/**
+	 * 保存文件
+	 *
+	 * @param character     文件内容
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(String character, String directoryPath, String catalog, String fileName) throws GlobalException {
+		InputStream inputStream = new ByteArrayInputStream(character.getBytes());
+		return saveFile(inputStream, directoryPath, catalog, fileName);
+	}
 
-    /**
-     * 保存文件
-     *
-     * @param inputStream   文件流
-     * @param directoryPath 文件路径
-     * @param catalog       自定义文件路径
-     * @param fileName      文件名称
-     * @return 返回结果
-     * @throws GlobalException 异常信息
-     */
-    public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName) throws GlobalException {
-        OutputStream outputStream = null;
-        try {
-            directoryPath = splicingPath(directoryPath, catalog);
+	/**
+	 * 保存文件
+	 *
+	 * @param character     文件内容
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @param append        是否追加
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(String character, String directoryPath, String catalog, String fileName, boolean append) throws GlobalException {
+		InputStream inputStream = new ByteArrayInputStream(character.getBytes());
+		return saveFile(inputStream, directoryPath, catalog, fileName, append);
+	}
 
-            //读取文件路径
-            File file = new File(directoryPath);
-            if (!file.exists()) {
-                file.mkdirs();
-                fileUnModified(file);
-            }
+	/**
+	 * 保存文件
+	 *
+	 * @param inputStream   文件流
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName) throws GlobalException {
+		return saveFile(inputStream, directoryPath, catalog, fileName, Boolean.TRUE);
+	}
 
-            // 1K的数据缓冲
-            byte[] bytes = new byte[IntegerConsts.BYTE_LENGTH];
-            // 读取到的数据长度
-            int len;
+	/**
+	 * 保存文件
+	 *
+	 * @param inputStream   文件流
+	 * @param directoryPath 文件路径
+	 * @param catalog       自定义文件路径
+	 * @param fileName      文件名称
+	 * @param append        是否追加
+	 * @return 返回结果
+	 * @throws GlobalException 异常信息
+	 */
+	public static boolean saveFile(InputStream inputStream, String directoryPath, String catalog, String fileName, boolean append) throws GlobalException {
+		OutputStream outputStream = null;
+		try {
+			directoryPath = splicingPath(directoryPath, catalog);
 
-            String name = file.getPath() + File.separator + fileName;
-            outputStream = new FileOutputStream(name, true);
-            // 开始读取
-            while ((len = inputStream.read(bytes)) != IntegerConsts.MINUS_ONE) {
-                outputStream.write(bytes, IntegerConsts.ZERO, len);
-            }
-            return true;
-        } catch (Exception ex) {
-            logUtil.error(ex);
-            throw new GlobalException(ex.getMessage());
-        } finally {
-            // 完毕，关闭所有链接
-            try {
-                outputStream.close();
-                inputStream.close();
-            } catch (IOException e) {
-                logUtil.error(e);
-                throw new GlobalException(e.getMessage());
-            }
-        }
-    }
+			//读取文件路径
+			File file = new File(directoryPath);
+			if (!file.exists()) {
+				file.mkdirs();
+				fileUnModified(file);
+			}
+
+			// 1K的数据缓冲
+			byte[] bytes = new byte[IntegerConsts.BYTE_LENGTH];
+			// 读取到的数据长度
+			int len;
+
+			String name = file.getPath() + File.separator + fileName;
+			outputStream = new FileOutputStream(name, append);
+			// 开始读取
+			while ((len = inputStream.read(bytes)) != IntegerConsts.MINUS_ONE) {
+				outputStream.write(bytes, IntegerConsts.ZERO, len);
+			}
+			return true;
+		} catch (Exception ex) {
+			logUtil.error(ex);
+			throw new GlobalException(ex.getMessage());
+		} finally {
+			// 完毕，关闭所有链接
+			try {
+				outputStream.close();
+				inputStream.close();
+			} catch (IOException e) {
+				logUtil.error(e);
+				throw new GlobalException(e.getMessage());
+			}
+		}
+	}
 
     /**
      * 读取文件
@@ -405,18 +438,18 @@ public class FileUtils {
         StringBuffer byteStr = new StringBuffer();
         BigDecimal fullSize = new BigDecimal(fileBytes);
         //mb
-        BigDecimal mbSize = new BigDecimal(MB_SIZE);
-        float gbSize = fullSize.divide(new BigDecimal(GB_SIZE), IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue();
+      BigDecimal mbSize = new BigDecimal(MB_SIZE);
+      float gbSize = fullSize.divide(new BigDecimal(GB_SIZE), IntegerConsts.TWO, RoundingMode.HALF_UP).floatValue();
         if (gbSize > IntegerConsts.ONE) {
             byteStr.append(gbSize).append("GB");
         } else {
-            float dvSize = fullSize.divide(mbSize, IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue();
+          float dvSize = fullSize.divide(mbSize, IntegerConsts.TWO, RoundingMode.HALF_UP).floatValue();
             if (dvSize > IntegerConsts.ONE) {
                 byteStr.append(dvSize).append("MB");
             } else {
                 //kb显示
                 BigDecimal kbSize = new BigDecimal(KB_SIZE);
-                byteStr.append(fullSize.divide(kbSize, IntegerConsts.TWO, BigDecimal.ROUND_HALF_UP).floatValue()).append("KB");
+              byteStr.append(fullSize.divide(kbSize, IntegerConsts.TWO, RoundingMode.HALF_UP).floatValue()).append("KB");
             }
         }
         return byteStr.toString();
@@ -494,19 +527,17 @@ public class FileUtils {
         outputStream.close();
     }
 
-    /**
-     * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
-     *
-     * @param inputStream 文件流
-     * @param fileName    文件名
-     * @return 返回多部分文件
-     */
-    public static MultipartFile buildMultipartFile(InputStream inputStream, String fileName) {
-        FileItem fileItem = createFileItem(inputStream, fileName);
-        //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
-        MultipartFile mfile = new CommonsMultipartFile(fileItem);
-        return mfile;
-    }
+  /**
+   * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
+   *
+   * @param inputStream 文件流
+   * @param fileName    文件名
+   * @return 返回多部分文件
+   */
+  public static MultipartFile buildMultipartFile(InputStream inputStream, String fileName) throws IOException {
+    //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
+    return new MockMultipartFile(fileName, inputStream);
+  }
 
     /**
      * 获取传输的 multipartFile，将输入流+文件名转成multipartFile文件，去调用feignClient
@@ -517,38 +548,7 @@ public class FileUtils {
      */
     public static MultipartFile buildMultipartFile(OutputStream outputStream, String fileName) {
         ByteArrayOutputStream byteArrayOutputStream = (ByteArrayOutputStream) outputStream;
-        final ByteArrayInputStream inputStream = new ByteArrayInputStream(byteArrayOutputStream.toByteArray());
-        FileItem fileItem = createFileItem(inputStream, fileName);
-        //CommonsMultipartFile是feign对multipartFile的封装，但是要FileItem类对象
-        return new CommonsMultipartFile(fileItem);
-    }
-
-    /**
-     * FileItem类对象创建
-     *
-     * @param inputStream 文件流
-     * @param fileName    文件名称
-     * @return
-     */
-    private static FileItem createFileItem(InputStream inputStream, String fileName) {
-        FileItemFactory factory = new DiskFileItemFactory(IntegerConsts.SIX, null);
-        String textFieldName = "file";
-        FileItem item = factory.createItem(textFieldName, "multipart/form-data", true, fileName);
-        int bytesRead;
-        final int bufferLength = 8192;
-        byte[] buffer = new byte[bufferLength];
-        //使用输出流输出输入流的字节
-        try {
-            OutputStream os = item.getOutputStream();
-            while ((bytesRead = inputStream.read(buffer, IntegerConsts.ZERO, bufferLength)) != IntegerConsts.MINUS_ONE) {
-                os.write(buffer, IntegerConsts.ZERO, bytesRead);
-            }
-            os.close();
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return item;
+      return new MockMultipartFile(fileName, byteArrayOutputStream.toByteArray());
     }
 
     /**
@@ -725,44 +725,111 @@ public class FileUtils {
     public static byte[] compressPictures(InputStream byteInput, float quality) {
         byte[] imgBytes = null;
         try {
-            BufferedImage image = ImageIO.read(byteInput);
+          BufferedImage image = ImageIO.read(byteInput);
 
-            // 如果图片空，返回空
-            if (image == null) {
-                return null;
-            }
-            // 得到指定Format图片的writer（迭代器）
-            Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
-            // 得到writer
-            ImageWriter writer = (ImageWriter) iter.next();
-            // 得到指定writer的输出参数设置(ImageWriteParam )
-            ImageWriteParam iwp = writer.getDefaultWriteParam();
-            // 设置可否压缩
-            iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-            // 设置压缩质量参数
-            iwp.setCompressionQuality(quality);
+          // 如果图片空，返回空
+          if (image == null) {
+            return null;
+          }
+          // 得到指定Format图片的writer（迭代器）
+          Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
+          // 得到writer
+          ImageWriter writer = (ImageWriter) iter.next();
+          // 得到指定writer的输出参数设置(ImageWriteParam )
+          ImageWriteParam iwp = writer.getDefaultWriteParam();
+          // 设置可否压缩
+          iwp.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
+          // 设置压缩质量参数
+          iwp.setCompressionQuality(quality);
 
-            iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
+          iwp.setProgressiveMode(ImageWriteParam.MODE_DISABLED);
 
-            ColorModel colorModel = ColorModel.getRGBdefault();
-            // 指定压缩时使用的色彩模式
-            iwp.setDestinationType(
-                    new javax.imageio.ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(16, 16)));
+          ColorModel colorModel = ColorModel.getRGBdefault();
+          // 指定压缩时使用的色彩模式
+          iwp.setDestinationType(
+                  new javax.imageio.ImageTypeSpecifier(colorModel, colorModel.createCompatibleSampleModel(16, 16)));
 
-            // 开始打包图片，写入byte[]
-            // 取得内存输出流
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            IIOImage iioImage = new IIOImage(image, null, null);
+          // 开始打包图片，写入byte[]
+          // 取得内存输出流
+          ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+          IIOImage iioImage = new IIOImage(image, null, null);
 
-            // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput
-            // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput
-            writer.setOutput(ImageIO.createImageOutputStream(byteArrayOutputStream));
-            writer.write(null, iioImage, iwp);
-            imgBytes = byteArrayOutputStream.toByteArray();
+          // 此处因为ImageWriter中用来接收write信息的output要求必须是ImageOutput
+          // 通过ImageIo中的静态方法，得到byteArrayOutputStream的ImageOutput
+          writer.setOutput(ImageIO.createImageOutputStream(byteArrayOutputStream));
+          writer.write(null, iioImage, iwp);
+          imgBytes = byteArrayOutputStream.toByteArray();
         } catch (IOException e) {
-            logUtil.error(e);
+          logUtil.error(e);
         } finally {
-            return imgBytes;
+          return imgBytes;
         }
     }
+
+  /**
+   * 验证文件的魔术数字
+   *
+   * @param inputStream 文件流
+   * @param typeEnums   文件类型
+   * @return 返回结果
+   */
+  public static boolean validFileTypeByMagicNumber(InputStream inputStream, List<FileTypeEnums> typeEnums) {
+		for (FileTypeEnums fileType :
+				typeEnums) {
+			byte[] magicNumbers = null;
+			switch (fileType) {
+				case PNG:
+					magicNumbers = FileTypeConsts.PNG;
+					break;
+				case GIF:
+					magicNumbers = FileTypeConsts.GIF;
+					break;
+				case JPG:
+					magicNumbers = FileTypeConsts.JPG;
+					break;
+				case BMP:
+					magicNumbers = FileTypeConsts.BMP;
+					break;
+				case TAR:
+					magicNumbers = FileTypeConsts.TAR;
+					break;
+				case ZIP:
+					magicNumbers = FileTypeConsts.ZIP;
+					break;
+			}
+			if (magicNumbers == null) {
+				continue;
+			}
+			byte[] header = new byte[magicNumbers.length];
+			try {
+				inputStream.read(header);
+				for (int i = 0; i < magicNumbers.length; i++) {
+					if (magicNumbers[i] != header[i]) {
+						return false;
+					}
+				}
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * 计算文件的 MD5 哈希值
+	 *
+	 * @param fileBytes 文件字节数组
+	 * @return MD5 哈希值
+	 * @throws NoSuchAlgorithmException 如果找不到指定的加密算法，则抛出此异常
+	 */
+	public static String calculateHash(byte[] fileBytes) throws NoSuchAlgorithmException {
+		String algorithm = "MD5";
+		MessageDigest md = MessageDigest.getInstance(algorithm);
+		byte[] digest = md.digest(fileBytes);
+		StringBuilder sb = new StringBuilder();
+		for (byte b : digest) {
+			sb.append(String.format("%02x", b));
+		}
+		return sb.toString();
+	}
 }

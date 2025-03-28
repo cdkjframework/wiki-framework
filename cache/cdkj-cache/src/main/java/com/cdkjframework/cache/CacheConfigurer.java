@@ -3,10 +3,8 @@ package com.cdkjframework.cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.cache.interceptor.*;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
 
 /**
  * @ProjectName: cdkj-framework
@@ -28,16 +26,6 @@ public class CacheConfigurer implements CachingConfigurer {
      */
     @Override
     public CacheManager cacheManager() {
-//        try {
-//            RedisCacheManagerBuilder
-//            net.sf.ehcache.CacheManager ehcacheCacheManager
-//                    = new net.sf.ehcache.CacheManager(new ClassPathResource("ehcache.xml").getInputStream());
-//
-//            EhCacheCacheManager cacheCacheManager = new EhCacheCacheManager(ehcacheCacheManager);
-//            return cacheCacheManager;
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
         return null;
     }
 

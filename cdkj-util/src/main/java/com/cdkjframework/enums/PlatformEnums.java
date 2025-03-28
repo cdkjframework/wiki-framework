@@ -64,5 +64,5 @@ public enum PlatformEnums {
     /**
      * 描述
      */
-    private String description;
+    private final String description;
 }

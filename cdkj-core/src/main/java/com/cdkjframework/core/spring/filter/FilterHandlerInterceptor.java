@@ -7,11 +7,11 @@ import com.cdkjframework.redis.lock.impl.RedisLettuceLock;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.ResponseUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @ProjectName: cdkj-framework

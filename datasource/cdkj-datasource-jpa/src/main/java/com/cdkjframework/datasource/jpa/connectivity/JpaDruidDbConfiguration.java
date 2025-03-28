@@ -9,6 +9,7 @@ import com.cdkjframework.util.log.LogUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ import java.sql.SQLException;
 
 @Component
 @RequiredArgsConstructor
+@ImportAutoConfiguration(value = {JpaConfiguration.class})
 public class JpaDruidDbConfiguration {
 
     /**
@@ -62,9 +64,9 @@ public class JpaDruidDbConfiguration {
         //设置数据库连接
         if (dataSourceConfig.isEncryption()) {
             AesUtils aes = new AesUtils(customConfig);
-            datasource.setUrl(aes.base64Decrypt(jpaReadConfig.getUrl()));
-            datasource.setUsername(aes.base64Decrypt(jpaReadConfig.getUsername()));
-            datasource.setPassword(aes.base64Decrypt(jpaReadConfig.getPassword()));
+            datasource.setUrl(AesUtils.base64Decrypt(jpaReadConfig.getUrl()));
+            datasource.setUsername(AesUtils.base64Decrypt(jpaReadConfig.getUsername()));
+            datasource.setPassword(AesUtils.base64Decrypt(jpaReadConfig.getPassword()));
         } else {
             datasource.setUrl(jpaReadConfig.getUrl());
             datasource.setUsername(jpaReadConfig.getUsername());

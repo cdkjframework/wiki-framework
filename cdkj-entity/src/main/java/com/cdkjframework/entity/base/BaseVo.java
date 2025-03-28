@@ -1,14 +1,9 @@
 package com.cdkjframework.entity.base;
 
-import com.cdkjframework.entity.BaseEntity;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import lombok.Data;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * @ProjectName: cdkj.cloud
@@ -18,128 +13,132 @@ import java.util.Date;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@ToString
-@Getter
-@Setter
+@Data
 public class BaseVo {
 
-    /**
-     * 计算后的页码大小
-     */
-    @ApiModelProperty("类目编码")
-    private int pageSize = 15;
+  /**
+   * 计算后的页码大小
+   */
+  @SchemaProperty(name = "类目编码")
+  private int pageSize = 15;
 
-    /**
-     * 当前页索引
-     */
-    @ApiModelProperty("当前页索引")
-    private int pageIndex = 1;
+  /**
+   * 当前页索引
+   */
+  @SchemaProperty(name = "当前页索引")
+  private int pageIndex = 1;
 
-    /**
-     * 排序字段
-     */
-    @ApiModelProperty("排序字段")
-    private String sortField;
+  /**
+   * 排序字段
+   */
+  @SchemaProperty(name = "排序字段")
+  private String sortField;
 
-    /**
-     * 排序类型
-     */
-    @ApiModelProperty("排序类型")
-    private String sortType;
+  /**
+   * 排序类型
+   */
+  @SchemaProperty(name = "排序类型")
+  private String sortType;
 
-    /**
-     * 主键
-     */
-    @ApiModelProperty("主键")
-    protected String id;
+  /**
+   * 主键
+   */
+  @SchemaProperty(name = "主键")
+  protected String id;
 
-    /**
-     * 日志ID
-     */
-    @ApiModelProperty("日志ID")
-    protected String logId;
+  /**
+   * 日志ID
+   */
+  @SchemaProperty(name = "日志ID")
+  protected String logId;
 
-    /**
-     * 状态
-     */
-    @ApiModelProperty("状态")
-    private Integer status;
+  /**
+   * 备注
+   */
+  @SchemaProperty(name = "状态")
+  private String remark;
 
-    /**
-     * 是否删除
-     */
-    @ApiModelProperty("是否删除")
-    protected Integer deleted;
+  /**
+   * 状态
+   */
+  @SchemaProperty(name = "状态")
+  private Integer status;
 
-    /**
-     * 添加时间
-     */
-    @ApiModelProperty("添加时间")
-    protected LocalDateTime addTime;
+  /**
+   * 是否删除
+   */
+  @SchemaProperty(name = "是否删除")
+  protected Integer deleted;
 
-    /**
-     * 添加用户ID
-     */
-    @ApiModelProperty("主键")
-    protected String addUserId;
+  /**
+   * 添加时间
+   */
+  @SchemaProperty(name = "添加时间")
+  protected LocalDateTime addTime;
 
-    /**
-     * 添加用户名称
-     */
-    @ApiModelProperty("添加用户名称")
-    protected String addUserName;
+  /**
+   * 添加用户ID
+   */
+  @SchemaProperty(name = "主键")
+  protected String addUserId;
 
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty("修改时间")
-    protected LocalDateTime editTime;
+  /**
+   * 添加用户名称
+   */
+  @SchemaProperty(name = "添加用户名称")
+  protected String addUserName;
 
-    /**
-     * 修改用户ID
-     */
-    @ApiModelProperty("修改用户ID")
-    protected String editUserId;
+  /**
+   * 修改时间
+   */
+  @SchemaProperty(name = "修改时间")
+  protected LocalDateTime editTime;
 
-    /**
-     * 修改用户名称
-     */
-    @ApiModelProperty("修改用户名称")
-    protected String editUserName;
+  /**
+   * 修改用户ID
+   */
+  @SchemaProperty(name = "修改用户ID")
+  protected String editUserId;
 
-    /**
-     * 所在机构ID
-     */
-    @ApiModelProperty("所在机构ID")
-    protected String organizationId;
+  /**
+   * 修改用户名称
+   */
+  @SchemaProperty(name = "修改用户名称")
+  protected String editUserName;
 
-    /**
-     * 所在机构编码
-     */
-    @ApiModelProperty("所在机构编码")
-    protected String organizationCode;
+  /**
+   * 所在机构ID
+   */
+  @SchemaProperty(name = "所在机构ID")
+  protected String organizationId;
 
-    /**
-     * 所在机构名称
-     */
-    @ApiModelProperty("所在机构名称")
-    protected String organizationName;
+  /**
+   * 所在机构编码
+   */
+  @SchemaProperty(name = "所在机构编码")
+  protected String organizationCode;
 
-    /**
-     * 所在机构上级ID
-     */
-    @ApiModelProperty("所在机构上级ID")
-    protected String topOrganizationId;
+  /**
+   * 所在机构名称
+   */
+  @SchemaProperty(name = "所在机构名称")
+  protected String organizationName;
 
-    /**
-     * 所在机构上级编码
-     */
-    @ApiModelProperty("所在机构上级编码")
-    protected String topOrganizationCode;
+  /**
+   * 所在机构上级ID
+   */
+  @SchemaProperty(name = "所在机构上级ID")
+  protected String topOrganizationId;
 
-    /**
-     * 所在机构上级名称
-     */
-    @ApiModelProperty("所在机构上级名称")
-    protected String topOrganizationName;
+  /**
+   * 所在机构上级编码
+   */
+  @SchemaProperty(name = "所在机构上级编码")
+  protected String topOrganizationCode;
+
+  /**
+   * 所在机构上级名称
+   */
+  @SchemaProperty(name = "所在机构上级名称")
+  protected String topOrganizationName;
 }

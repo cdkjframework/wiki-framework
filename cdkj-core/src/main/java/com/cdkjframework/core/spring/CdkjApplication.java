@@ -1,15 +1,12 @@
 package com.cdkjframework.core.spring;
 
 import com.cdkjframework.constant.Application;
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.HostUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.Environment;
-
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * @ProjectName: cdkj.cloud
@@ -37,6 +34,11 @@ public class CdkjApplication {
   static String SPRING_APPLICATION_NAME = "spring.application.name";
 
   /**
+   * 应用名称
+   */
+  static String CONTEXT_PATH = "server.servlet.context-path";
+
+  /**
    * 程序启动
    *
    * @param args 参数
@@ -48,19 +50,18 @@ public class CdkjApplication {
     Application.applicationContext = context;
 
     Environment env = context.getEnvironment();
-    try {
-      if (env != null) {
-        logUtils.info("\n----------------------------------------------------------\n\t" +
-                "Application '{}' is running! Access URLs:\n\t" +
-                "Local: \t\thttp://localhost:{}\n\t" +
-                "External: \thttp://{}:{}\n----------------------------------------------------------",
-            env.getProperty(SPRING_APPLICATION_NAME),
-            env.getProperty(SERVER_PORT),
-            InetAddress.getLocalHost().getHostAddress(),
-            env.getProperty(SERVER_PORT));
-      }
-    } catch (UnknownHostException e) {
-      logUtils.error(e);
+    String contextPath = ConvertUtils.convertString(env.getProperty(CONTEXT_PATH));
+    if (env != null) {
+      logUtils.info("\n---------------------------------------------------------------------------\n\t" +
+                      "Application '{}' is running! Access URLs:\n\t" +
+                      "Local: \t\t\t\thttp://localhost:{}{}\n\t" +
+                      "External: \t\t\thttp://{}:{}{}\n\t" +
+                      "External-IPv6: http://[{}]:{}{}\n" +
+                      "---------------------------------------------------------------------------",
+              env.getProperty(SPRING_APPLICATION_NAME),
+              env.getProperty(SERVER_PORT), contextPath,
+              HostUtils.getLocalHost(), env.getProperty(SERVER_PORT), contextPath,
+              HostUtils.getLocalIpv6(), env.getProperty(SERVER_PORT), contextPath);
     }
 
     return context;

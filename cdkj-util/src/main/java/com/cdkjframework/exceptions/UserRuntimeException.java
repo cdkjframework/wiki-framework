@@ -3,8 +3,7 @@ package com.cdkjframework.exceptions;
 import com.cdkjframework.constant.BusinessConsts;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.annotation.Generated;
+import jakarta.annotation.Generated;
 
 /**
  * @ProjectName: cdkj-framework

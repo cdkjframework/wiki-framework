@@ -17,6 +17,12 @@ public class EncodingConsts {
     public final static String UTF8 = "utf-8";
 
     /**
+     * utf-8
+     */
+    public final static String CHARSET_UTF8 = "charset=utf-8";
+
+
+    /**
      * iso8859-1
      */
     public final static String ISO88591 = "iso8859-1";

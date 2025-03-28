@@ -4,7 +4,6 @@ import com.cdkjframework.constant.IntegerConsts;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
@@ -221,8 +220,47 @@ public class CustomConfig {
    */
   private String classTemplate = "/com/cdkjframework/templates/";
 
-  /**
-   * 目录模板
-   */
-  private String templatePath;
+	/**
+	 * 目录模板
+	 */
+	private String templatePath;
+
+	/**
+	 * 文件大小（KB为单位）
+	 */
+	private Long maxFileSize;
+
+	/**
+	 * 数据加密
+	 */
+	private boolean data;
+
+	/**
+	 * 数据字段
+	 */
+	private List<String> fields;
+
+	/**
+	 * 静态资源
+	 */
+	private Resource resource;
+
+	@Data
+	public static class Resource {
+
+		/**
+		 * 静态资源路径
+		 */
+		private String[] locations;
+
+		/**
+		 * 路径模式
+		 */
+		private String[] pathPatterns;
+
+		/**
+		 * 缓存 默认为 false
+		 */
+		private boolean cache = false;
+	}
 }

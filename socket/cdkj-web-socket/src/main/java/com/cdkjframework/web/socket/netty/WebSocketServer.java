@@ -87,7 +87,7 @@ public class WebSocketServer {
                 @Override
                 public void operationComplete(ChannelFuture future) throws Exception {
                     String message;
-                    if (cf.isSuccess()) {
+                    if (future.isSuccess()) {
                         message = "成功!";
                     } else {
                         message = "失败!";
@@ -96,14 +96,9 @@ public class WebSocketServer {
                 }
             });
             //对关闭通道进行监听
-            cf.channel().closeFuture().sync();
+//            cf.channel().closeFuture().sync();
         } catch (Exception e) {
             logUtils.error(" netty服务启动异常 " + e.getMessage());
-        } finally {
-            if (bossGroup != null) {
-                bossGroup.shutdownGracefully();
-                workerGroup.shutdownGracefully();
-            }
         }
     }
 }

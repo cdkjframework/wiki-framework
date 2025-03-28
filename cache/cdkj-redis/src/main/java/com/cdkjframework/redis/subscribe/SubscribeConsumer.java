@@ -1,6 +1,5 @@
 package com.cdkjframework.redis.subscribe;
 
-import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
@@ -8,10 +7,12 @@ import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
 import io.lettuce.core.pubsub.api.async.RedisPubSubAsyncCommands;
+import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,41 +27,72 @@ import java.util.List;
 @Component
 public class SubscribeConsumer implements RedisPubSubListener<String, String> {
 
-  /**
-   * 日志
-   */
-  private static LogUtils logUtils = LogUtils.getLogger(SubscribeConsumer.class);
+	/**
+	 * 日志
+	 */
+	private static LogUtils logUtils = LogUtils.getLogger(SubscribeConsumer.class);
 
-  /**
-   * 配置信息
-   */
-  private final CustomConfig customConfig;
+	/**
+	 * 配置
+	 */
+	private final RedisConfig redisConfig;
 
-  /**
-   * 配置
-   */
-  private final RedisConfig redisConfig;
+	/**
+	 * 订阅接口
+	 */
+	@Autowired
+	private ISubscribe subscribe;
 
-  /**
-   * 订阅
-   */
-  @Resource(name = "redisSubscribeConnection")
-  private StatefulRedisPubSubConnection<String, String> redisSubscribeConnection;
+	/**
+	 * 订阅
+	 */
+	@Resource(name = "redisSubscribeConnection")
+	private StatefulRedisPubSubConnection<String, String> redisSubscribeConnection;
 
-  /**
-   * 集群订阅
-   */
-  @Resource(name = "clusterSubscribeConnection")
-  private StatefulRedisClusterPubSubConnection<String, String> redisClusterSubscribeConnection;
+	/**
+	 * 集群订阅
+	 */
+	@Resource(name = "clusterSubscribeConnection")
+	private StatefulRedisClusterPubSubConnection<String, String> redisClusterSubscribeConnection;
 
-  /**
-   * 构建函数
-   */
-  public SubscribeConsumer(CustomConfig customConfig, RedisConfig redisConfig) {
-    this.customConfig = customConfig;
-    this.redisConfig = redisConfig;
-    // 订阅数据
-    consumerMessage();
+	/**
+	 * 构建函数
+	 */
+	public SubscribeConsumer(RedisConfig redisConfig) {
+		this.redisConfig = redisConfig;
+	}
+
+	/**
+	 * 订阅数据 启动服务
+	 */
+	@Bean(name = "start")
+	public void start() {
+		if (!redisConfig.isSubscribe()) {
+			return;
+		}
+		// 渠道
+    if (!CollectionUtils.isEmpty(redisConfig.getChannel())) {
+      List<String> channelList = new ArrayList<>();
+      for (String key :
+					redisConfig.getChannel()) {
+        key = String.format(key, redisConfig.getDatabase());
+        channelList.add(getNamespaces(key));
+      }
+      subscribe(channelList
+          .toArray(new String[channelList.size()]));
+    }
+
+    // 模式
+    if (!CollectionUtils.isEmpty(redisConfig.getPattern())) {
+      List<String> patternList = new ArrayList<>();
+      for (String key :
+					redisConfig.getPattern()) {
+        key = String.format(key, redisConfig.getDatabase());
+        patternList.add(getNamespaces(key));
+      }
+      psubscribe(patternList
+          .toArray(new String[patternList.size()]));
+    }
   }
 
   /**
@@ -70,7 +102,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
    * @param message 消息.
    */
   public void subscribe(String channel, String message) {
-    logUtils.info(message);
+		subscribe.subscribe(channel, message);
   }
 
   /**
@@ -81,7 +113,7 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
    * @param message 消息.
    */
   public void subscribe(String pattern, String channel, String message) {
-    logUtils.info(message);
+		subscribe.subscribe(pattern, channel, message);
   }
 
   /**
@@ -153,35 +185,6 @@ public class SubscribeConsumer implements RedisPubSubListener<String, String> {
     logUtils.info("从模式中取消订阅，模式:" + pattern + ",取消订阅数量:" + count);
     logUtils.info("重新订阅，模式:" + pattern);
     psubscribe(pattern);
-  }
-
-  /**
-   * 消息读取
-   */
-  private final void consumerMessage() {
-    // 渠道
-    if (!CollectionUtils.isEmpty(customConfig.getChannel())) {
-      List<String> channelList = new ArrayList<>();
-      for (String key :
-              customConfig.getChannel()) {
-        key = String.format(key, redisConfig.getDatabase());
-        channelList.add(getNamespaces(key));
-      }
-      subscribe(channelList
-              .toArray(new String[channelList.size()]));
-    }
-
-    // 模式
-    if (!CollectionUtils.isEmpty(customConfig.getPattern())) {
-      List<String> patternList = new ArrayList<>();
-      for (String key :
-              customConfig.getPattern()) {
-        key = String.format(key, redisConfig.getDatabase());
-        patternList.add(getNamespaces(key));
-      }
-      psubscribe(patternList
-              .toArray(new String[patternList.size()]));
-    }
   }
 
   /**

@@ -1,8 +1,6 @@
 package com.cdkjframework.entity.swagger;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
 /**
  * @ProjectName: cdkj-framework
@@ -13,9 +11,7 @@ import lombok.ToString;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class SwaggerHeaderEntity {
 
     /**

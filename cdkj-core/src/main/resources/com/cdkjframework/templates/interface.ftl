@@ -6,7 +6,7 @@ import com.cdkjframework.entity.PageEntity;
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import java.util.List;
 /**

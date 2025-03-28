@@ -30,6 +30,16 @@ public class CacheConsts {
   /**
    * 用户资源
    */
+  public static final String USER_RESOURCE_ALL = USER_PREFIX + "resource-all-";
+
+  /**
+   * 工作流
+   */
+  public static final String WORK_FLOW = USER_PREFIX + "workFlow-";
+
+  /**
+   * 用户资源
+   */
   public static final String USER_WECHAT_MP = USER_PREFIX + "mp-%s";
 
   /**

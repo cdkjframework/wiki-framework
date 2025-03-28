@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  * @ClassName: NettyChannelInitializer
  * @Author: frank
  * @Version: 1.0
- * @Description:
+ * @Description: Netty通道初始化器
  */
 @Component
 @ChannelHandler.Sharable
@@ -56,6 +56,6 @@ public class NettyChannelInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast(new LoggingHandler(LogLevel.INFO));
 
         // 自定义 handler
-        pipeline.addLast(new NettyHeartbeatHandler());
+        pipeline.addLast(new NettyHeartbeatHandler(socketListener));
     }
 }

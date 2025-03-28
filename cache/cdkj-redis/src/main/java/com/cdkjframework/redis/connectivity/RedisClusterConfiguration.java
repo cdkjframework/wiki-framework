@@ -1,6 +1,5 @@
 package com.cdkjframework.redis.connectivity;
 
-import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalException;
 import com.cdkjframework.redis.config.RedisConfig;
 import com.cdkjframework.redis.realize.ClusterReactiveCommands;
@@ -13,14 +12,13 @@ import io.lettuce.core.cluster.api.StatefulRedisClusterConnection;
 import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
 import io.lettuce.core.cluster.api.reactive.RedisAdvancedClusterReactiveCommands;
 import io.lettuce.core.support.ConnectionPoolSupport;
+import jakarta.annotation.Resource;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.Resource;
 
 /**
  * @ProjectName: cdkj-framework
@@ -120,7 +118,7 @@ public class RedisClusterConfiguration extends BaseRedisConfiguration {
 
         // 创建连接
         pool = ConnectionPoolSupport.createGenericObjectPool(() -> {
-            logUtils.info("Requesting new StatefulRedisClusterConnection " + System.currentTimeMillis());
+            logUtils.info("Requesting new StatefulRedisClusterConnection " + LocalDateUtils.dateTimeCurrentFormatter());
             return connection;
         }, poolConfig);
 

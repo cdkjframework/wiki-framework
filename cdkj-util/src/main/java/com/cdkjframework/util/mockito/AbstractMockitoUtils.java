@@ -31,7 +31,7 @@ public abstract class AbstractMockitoUtils {
 
     @Before
     public void init() {
-        MockitoAnnotations.initMocks(this.getClass().getTypeName());
+        MockitoAnnotations.openMocks(this.getClass().getTypeName());
     }
 
 }

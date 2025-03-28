@@ -52,6 +52,11 @@ public class HttpRequestEntity {
   private Object data = null;
 
   /**
+   * 参数 POST 或者 GET 用
+   */
+  private Object params = null;
+
+  /**
    * 名称（上传文件名称）
    */
   private String name;

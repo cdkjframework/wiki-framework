@@ -1,6 +1,8 @@
 package com.cdkjframework.redis.realize;
 
 import io.lettuce.core.ClientOptions;
+import io.lettuce.core.RedisConnectionStateListener;
+import io.lettuce.core.api.push.PushListener;
 import io.lettuce.core.protocol.RedisCommand;
 import io.lettuce.core.pubsub.RedisPubSubListener;
 import io.lettuce.core.pubsub.StatefulRedisPubSubConnection;
@@ -58,16 +60,6 @@ public class RedisPubSubConnection implements StatefulRedisPubSubConnection<Stri
 
     }
 
-    /**
-     * @param l
-     * @param timeUnit
-     * @deprecated
-     */
-    @Override
-    public void setTimeout(long l, TimeUnit timeUnit) {
-
-    }
-
     @Override
     public Duration getTimeout() {
         return null;
@@ -112,6 +104,7 @@ public class RedisPubSubConnection implements StatefulRedisPubSubConnection<Stri
      * @deprecated
      */
     @Override
+    @Deprecated
     public void reset() {
 
     }
@@ -123,6 +116,26 @@ public class RedisPubSubConnection implements StatefulRedisPubSubConnection<Stri
 
     @Override
     public void flushCommands() {
+
+    }
+
+    @Override
+    public void addListener(PushListener pushListener) {
+
+    }
+
+    @Override
+    public void removeListener(PushListener pushListener) {
+
+    }
+
+    @Override
+    public void addListener(RedisConnectionStateListener redisConnectionStateListener) {
+
+    }
+
+    @Override
+    public void removeListener(RedisConnectionStateListener redisConnectionStateListener) {
 
     }
 }

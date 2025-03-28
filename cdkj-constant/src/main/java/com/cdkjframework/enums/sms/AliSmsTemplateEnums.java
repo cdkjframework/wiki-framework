@@ -29,8 +29,8 @@ public enum AliSmsTemplateEnums implements BasicsEnum {
      */
     INTERNATIONAL("3", "国际/港澳台消息");
 
-    private String code;
-    private String value;
+    private final String code;
+    private final String value;
 
     /**
      * 构造函数

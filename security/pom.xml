@@ -5,7 +5,7 @@
     <parent>
         <artifactId>cdkj-framework</artifactId>
         <groupId>com.cdkjframework</groupId>
-        <version>1.0.5</version>
+        <version>1.0.10</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -16,7 +16,6 @@
 
     <modules>
         <module>cdkj-security</module>
-        <module>cdkj-security-client</module>
     </modules>
 
     <repositories>

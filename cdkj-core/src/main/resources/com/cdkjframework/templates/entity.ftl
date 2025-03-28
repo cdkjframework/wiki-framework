@@ -5,11 +5,10 @@ import com.cdkjframework.entity.BaseEntity;
 import ${item};
 </#list>
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 /**
  * @ProjectName: ${projectName}
@@ -21,9 +20,11 @@ import javax.persistence.*;
  * @Entity
  */
 
-@Getter
-@Setter
-@ToString
+@Data
+<#if jpa>
+@Entity
+</#if>
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "${table}", catalog = "${dataBase}")
 public class ${className}Entity extends BaseEntity {
 
@@ -37,6 +38,9 @@ public class ${className}Entity extends BaseEntity {
     /**
      * ${item.columnDescription}
      */
+      <#if jpa>
+      @Column(name = "${item.tableColumnName}")
+      </#if>
     private ${item.dataType} ${item.columnName};
     </#if>
 </#list>

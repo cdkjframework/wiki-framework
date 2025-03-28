@@ -36,7 +36,7 @@ public class CrcCalculatorUtils {
   public CrcCalculatorUtils(AlgoParams params) {
     parameters = params;
     hashSize = (byte) params.hashSize;
-    if (hashSize < 64) {
+    if (hashSize < IntegerConsts.SIXTY_FOUR) {
       _mask = (1L << hashSize) - IntegerConsts.ONE;
     }
 
@@ -105,13 +105,13 @@ public class CrcCalculatorUtils {
 
     if (parameters.refIn) {
       r = reverseBits(r, hashSize);
-    } else if (hashSize > 8) {
+    } else if (hashSize > IntegerConsts.EIGHT) {
       r <<= (hashSize - 8);
     }
 
     long lastBit = (1L << (hashSize - 1));
 
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < IntegerConsts.EIGHT; i++) {
       if ((r & lastBit) != 0) {
         r = ((r << 1) ^ parameters.poly);
       } else {

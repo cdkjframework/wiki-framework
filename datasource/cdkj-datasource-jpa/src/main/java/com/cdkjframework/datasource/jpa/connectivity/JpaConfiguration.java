@@ -3,7 +3,7 @@ package com.cdkjframework.datasource.jpa.connectivity;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.datasource.jpa.config.JpaConfig;
 import com.cdkjframework.util.tool.StringUtils;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.annotation.Resource;
-import javax.persistence.EntityManagerFactory;
+import jakarta.annotation.Resource;
+
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -74,7 +74,12 @@ public class JpaConfiguration {
     Map<String, Object> jpaProperties = new HashMap<>(IntegerConsts.SEVEN);
     jpaProperties.put("hibernate.show_sql", jpaReadConfig.isShowSql());
     jpaProperties.put("hibernate.format_sql", jpaReadConfig.isFormatSql());
-    jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
+    if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getDialect())) {
+      jpaProperties.put("hibernate.dialect", jpaReadConfig.getDialect());
+    }
+    if (StringUtils.isNotNullAndEmpty(jpaReadConfig.getPlatform())) {
+      jpaProperties.put("hibernate.transaction.jta.platform", jpaReadConfig.getPlatform());
+    }
     jpaProperties.put("spring.jpa.open-in-view", jpaReadConfig.isOpenInView());
     jpaProperties.put("hibernate.ejb.naming_strategy", jpaReadConfig.getNamingStrategy());
     jpaProperties.put("hibernate.jdbc.batch_size", jpaReadConfig.getBatchSize());
@@ -96,6 +101,7 @@ public class JpaConfiguration {
    * @return 返回事务接口
    */
   @Bean(name = "transactionManager")
+  @Qualifier(value = "transactionManagers")
   public PlatformTransactionManager transactionManager() {
     JpaTransactionManager txManager = new JpaTransactionManager();
     txManager.setEntityManagerFactory(entityManagerFactory());

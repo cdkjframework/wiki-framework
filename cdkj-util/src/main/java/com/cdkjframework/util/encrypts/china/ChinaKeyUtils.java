@@ -22,7 +22,7 @@ import java.util.Base64;
  * @ProjectName: common-core
  * @Package: com.cdkjframework.util.encrypts.china
  * @ClassName: ChinaKeyUtils
- * @Description: Sm 加密
+ * @Description: SM2 加密
  * @Author: xiaLin
  * @Date: 2022/12/10 13:02
  * @Version: 1.0
@@ -65,8 +65,8 @@ public class ChinaKeyUtils {
    * @param data 加密数据
    * @return 返回加密数据
    */
-  public static String sm2Encrypt(String data) {
-    byte[] encrypt = sm2Encrypt(data.getBytes(), publicKey);
+  public static String encrypt(String data) {
+    byte[] encrypt = encrypt(data.getBytes(), publicKey);
     return Base64.getEncoder().encodeToString(encrypt);
   }
 
@@ -77,7 +77,7 @@ public class ChinaKeyUtils {
    * @param publicKey 公钥匙
    * @return 返回加密数据
    */
-  public static byte[] sm2Encrypt(byte[] data, PublicKey publicKey) {
+  public static byte[] encrypt(byte[] data, PublicKey publicKey) {
     ECPublicKeyParameters localECPublicKeyParameters = null;
     if (publicKey instanceof BCECPublicKey) {
       BCECPublicKey localECPublicKey = (BCECPublicKey) publicKey;
@@ -102,9 +102,9 @@ public class ChinaKeyUtils {
    * @param encodeData 加密数据
    * @return 返回结果
    */
-  public static String sm2Decrypt(String encodeData) {
+  public static String decrypt(String encodeData) {
     byte[] decode = Base64.getDecoder().decode(encodeData);
-    byte[] decrypt = sm2Decrypt(decode, privateKey);
+    byte[] decrypt = decrypt(decode, privateKey);
 
     // 返回结果
     return new String(decrypt);
@@ -117,7 +117,7 @@ public class ChinaKeyUtils {
    * @param privateKey 私钥
    * @return
    */
-  public static byte[] sm2Decrypt(byte[] encodeData, PrivateKey privateKey) {
+  public static byte[] decrypt(byte[] encodeData, PrivateKey privateKey) {
     SM2Engine localSM2Engine = new SM2Engine();
     BCECPrivateKey sm2PriK = (BCECPrivateKey) privateKey;
     ECParameterSpec localECParameterSpec = sm2PriK.getParameters();

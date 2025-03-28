@@ -2,8 +2,8 @@ package com.cdkjframework.exceptions;
 
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.util.log.LogUtils;
+import jakarta.annotation.Generated;
 
-import javax.annotation.Generated;
 import java.security.GeneralSecurityException;
 
 /**

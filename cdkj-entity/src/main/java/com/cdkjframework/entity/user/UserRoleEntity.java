@@ -1,13 +1,12 @@
 package com.cdkjframework.entity.user;
 
 import com.cdkjframework.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
@@ -18,10 +17,9 @@ import java.io.Serializable;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 @Entity
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "rms_user_role", catalog = "")
 public class UserRoleEntity extends BaseEntity implements Serializable {
 

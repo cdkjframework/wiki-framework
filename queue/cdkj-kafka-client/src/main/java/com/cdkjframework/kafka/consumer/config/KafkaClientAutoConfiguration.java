@@ -33,6 +33,11 @@ import org.springframework.context.annotation.Lazy;
 public class KafkaClientAutoConfiguration {
 
   /**
+   * 配置文件
+   */
+  private final KafkaClientConfig kafkaClientConfig;
+
+  /**
    * 消费者服务接口
    */
   private final ConsumerService consumerService;
@@ -45,6 +50,6 @@ public class KafkaClientAutoConfiguration {
   @Bean
   @ConditionalOnMissingBean
   public ConsumerListener kafkaConsumer() {
-    return new ConsumerListener(consumerService);
+    return new ConsumerListener(consumerService, kafkaClientConfig);
   }
 }

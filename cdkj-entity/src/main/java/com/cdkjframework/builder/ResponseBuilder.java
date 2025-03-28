@@ -1,11 +1,9 @@
 package com.cdkjframework.builder;
 
-
 import com.cdkjframework.enums.ResponseBuilderEnums;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -17,14 +15,13 @@ import java.io.Serializable;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 public class ResponseBuilder implements Serializable {
 
     /**
      * 用来表明类的不同版本间的兼容性
      */
+    @Serial
     private static final long serialVersionUID = 2200635915391111373L;
 
     /**
@@ -80,15 +77,9 @@ public class ResponseBuilder implements Serializable {
         this.code = code;
         ResponseBuilderEnums builderEnum = ResponseBuilderEnums.valueOf(String.valueOf(code));
         switch (builderEnum) {
-            default:
-                this.message = ResponseBuilderEnums.Error.getName();
-                break;
-            case Success:
-                this.message = ResponseBuilderEnums.Success.getName();
-                break;
-            case Abnormal:
-                this.message = ResponseBuilderEnums.Abnormal.getName();
-                break;
+          default -> this.message = ResponseBuilderEnums.Error.getName();
+          case Success -> this.message = ResponseBuilderEnums.Success.getName();
+          case Abnormal -> this.message = ResponseBuilderEnums.Abnormal.getName();
         }
     }
 

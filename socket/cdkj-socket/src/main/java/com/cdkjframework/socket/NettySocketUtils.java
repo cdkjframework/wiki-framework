@@ -21,10 +21,10 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @ProjectName: socket-algorithm
  * @Package: com.lesmarthome.socket.netty
- * @ClassName: SocketUtils
+ * @ClassName: NettySocketUtils
  * @Author: frank
  * @Version: 1.0
- * @Description:
+ * @Description: 工具类
  */
 public class NettySocketUtils {
 

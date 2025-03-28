@@ -548,7 +548,7 @@ public class IntegerConsts {
     /**
      * 一万
      */
-    public static final Integer TEN_THOUSAND = 100000;
+    public static final Integer TEN_THOUSAND = 10000;
 
     /**
      * 999

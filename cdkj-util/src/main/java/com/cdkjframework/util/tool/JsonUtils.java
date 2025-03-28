@@ -43,7 +43,7 @@ public class JsonUtils {
      */
     public static boolean isValidArray(String json) {
         if (StringUtils.isNotNullAndEmpty(json)) {
-            return JSON.isValidArray(json);
+            return JSONValidator.from(json).validate();
         } else {
             return false;
         }
@@ -374,7 +374,7 @@ public class JsonUtils {
             for (Field field :
                     fieldList) {
                 Object jsonArray = ReflectionUtils.getFieldValue(field, s);
-                if (jsonArray == null || !JSON.isValidArray(jsonArray.toString())) {
+                if (jsonArray == null || !JSONValidator.from(jsonArray.toString()).validate()) {
                     continue;
                 }
 

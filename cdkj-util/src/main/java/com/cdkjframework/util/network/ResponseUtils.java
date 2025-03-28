@@ -1,12 +1,13 @@
 package com.cdkjframework.util.network;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.constant.EncodingConsts;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -62,7 +63,7 @@ public class ResponseUtils {
    */
   public static void getResponse(HttpServletResponse httpServletResponse, String message, Integer status) {
     PrintWriter writer = null;
-    httpServletResponse.setCharacterEncoding("UTF-8");
+    httpServletResponse.setCharacterEncoding(EncodingConsts.UTF8);
     httpServletResponse.setContentType("application/json; charset=utf-8");
     try {
       writer = httpServletResponse.getWriter();

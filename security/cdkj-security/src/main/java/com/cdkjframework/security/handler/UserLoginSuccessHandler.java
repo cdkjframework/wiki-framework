@@ -13,7 +13,6 @@ import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.ConfigureService;
 import com.cdkjframework.security.service.ResourceService;
-import com.cdkjframework.security.service.UserRoleService;
 import com.cdkjframework.security.service.WorkflowService;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.encrypts.JwtUtils;
@@ -26,9 +25,9 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -52,6 +51,11 @@ import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
 
   /**
+   * 有效时间
+   */
+  private final long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
+
+  /**
    * 自定义配置
    */
   private final CustomConfig customConfig;
@@ -67,19 +71,9 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
   private final ResourceService resourceServiceImpl;
 
   /**
-   * 用户角色
-   */
-  private final UserRoleService userRoleServiceImpl;
-
-  /**
    * 工作流服务
    */
   private final WorkflowService workflowServiceImpl;
-
-  /**
-   * 有效时间
-   */
-  private final long EFFECTIVE = IntegerConsts.TWENTY_FOUR * IntegerConsts.SIXTY * IntegerConsts.SIXTY;
 
   /**
    * 权限认证成功
@@ -106,7 +100,7 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     user.setConfigureList(configureList);
 
     // 用户角色
-    List<RoleEntity> roleList = userRoleServiceImpl.listRoleByUserId(user.getUserId());
+    List<RoleEntity> roleList = user.getRoleList();
     if (!CollectionUtils.isEmpty(roleList)) {
       // 用户资源
       List<ResourceEntity> resourceList = resourceServiceImpl.listResource(roleList, user.getUserId());
@@ -141,11 +135,14 @@ public class UserLoginSuccessHandler implements AuthenticationSuccessHandler {
     map.put(BusinessConsts.USER_NAME, user.getUsername());
     map.put(BusinessConsts.USER_TYPE, user.getUserType());
     map.put(BusinessConsts.DISPLAY_NAME, user.getDisplayName());
-    map.put(BusinessConsts.TIME, time);
     // 暂不需要该参数
     String userAgent = StringUtils.Empty;
     StringBuilder builder = new StringBuilder();
-    builder.append(String.format("loginName=%s&effective=%s&time=%s&userAgent=%s",
+    /**
+     * 加密 token 参数
+     */
+    String TOKEN_ENCRYPTION = "loginName=%s&effective=%s&time=%s&userAgent=%s";
+    builder.append(String.format(TOKEN_ENCRYPTION,
         user.getUsername(), EFFECTIVE, time, userAgent));
     String token = Md5Utils.getMd5(builder.toString());
     map.put(BusinessConsts.HEADER_TOKEN, token);

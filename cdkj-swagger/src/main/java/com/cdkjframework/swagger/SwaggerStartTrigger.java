@@ -1,40 +1,25 @@
 package com.cdkjframework.swagger;
 
 import com.cdkjframework.constant.Application;
-import com.cdkjframework.constant.IntegerConsts;
-import com.cdkjframework.entity.swagger.SwaggerApiInfoEntity;
-import com.cdkjframework.entity.swagger.SwaggerHeaderEntity;
 import com.cdkjframework.swagger.config.SwaggerConfig;
-import com.cdkjframework.util.tool.JsonUtils;
-import com.cdkjframework.util.tool.StringUtils;
-import com.fasterxml.classmate.TypeResolver;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionBuilder;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CollectUtils;
+import com.cdkjframework.util.tool.HostUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Contact;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.parameters.Parameter;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.core.Ordered;
-import springfox.documentation.builders.ApiInfoBuilder;
-import springfox.documentation.builders.ParameterBuilder;
-import springfox.documentation.builders.PathSelectors;
-import springfox.documentation.builders.RequestHandlerSelectors;
-import springfox.documentation.schema.AlternateTypeRule;
-import springfox.documentation.schema.AlternateTypeRules;
-import springfox.documentation.schema.ModelRef;
-import springfox.documentation.schema.WildcardType;
-import springfox.documentation.service.ApiInfo;
-import springfox.documentation.service.Contact;
-import springfox.documentation.service.Parameter;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spring.web.plugins.ApiSelectorBuilder;
-import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import org.springframework.core.env.Environment;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @ProjectName: hongtu.slps.bms
@@ -47,122 +32,114 @@ import java.util.Map;
 public class SwaggerStartTrigger {
 
   /**
+   * 日志
+   */
+  private final LogUtils LOG_UTILS = LogUtils.getLogger(SwaggerStartTrigger.class);
+
+  /**
+   * 应用名称
+   */
+  static String CONTEXT_PATH = "server.servlet.context-path";
+
+  /**
+   * 端口
+   */
+  static String SERVER_PORT = "server.port";
+
+  /**
    * 读取配置
    */
   private final SwaggerConfig swaggerConfig;
 
   /**
-   * 类型解析程序
-   */
-  private final TypeResolver typeResolver;
-
-  /**
    * 构建函数
    */
-  public SwaggerStartTrigger(SwaggerConfig swaggerConfig, TypeResolver typeResolver) {
+  public SwaggerStartTrigger(SwaggerConfig swaggerConfig) {
     this.swaggerConfig = swaggerConfig;
-    this.typeResolver = typeResolver;
-  }
-
-  /**
-   * 创建API应用
-   * apiInfo() 增加API相关信息
-   * 通过select()函数返回一个ApiSelectorBuilder实例,用来控制哪些接口暴露给Swagger来展现，
-   * 本例采用指定扫描的包路径来定义指定要建立API的目录。
-   *
-   * @return
-   */
-  @Bean(name = "start")
-  public void start() {
-    if (StringUtils.isNullAndSpaceOrEmpty(swaggerConfig.getBasePackage())) {
-      return;
-    }
-    //接口信息
-    List<SwaggerApiInfoEntity> apiInfoEntityList = JsonUtils
-            .jsonStringToList(swaggerConfig.getBasePackage(), SwaggerApiInfoEntity.class);
-    List<SwaggerHeaderEntity> headerEntityList;
-    if (StringUtils.isNotNullAndEmpty(swaggerConfig.getHeaders())) {
-      headerEntityList = JsonUtils
-              .jsonStringToList(swaggerConfig.getHeaders(), SwaggerHeaderEntity.class);
-    } else {
-      headerEntityList = new ArrayList<>();
-    }
-    List<String> resolve = swaggerConfig.getResolve();
-    AlternateTypeRule[] alternateTypeRules = null;
-    if (resolve != null && resolve.size() > IntegerConsts.ZERO) {
-      alternateTypeRules = new AlternateTypeRule[resolve.size()];
-      for (String key :
-              resolve) {
-        try {
-          Type type = Class.forName(key);
-          alternateTypeRules[resolve.indexOf(key)] = AlternateTypeRules.newRule(
-                  typeResolver.resolve(Map.class, String.class, typeResolver.resolve(List.class, type)),
-                  typeResolver.resolve(Map.class, String.class, WildcardType.class), Ordered.HIGHEST_PRECEDENCE);
-        } catch (ClassNotFoundException e) {
-
-        }
-      }
-    }
-    final boolean hidden = swaggerConfig.getHidden();
-    for (SwaggerApiInfoEntity entity :
-            apiInfoEntityList) {
-      AlternateTypeRule[] finalAlternateTypeRules = alternateTypeRules;
-      BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(Docket.class,
-              () -> {
-                //设置 header
-                List<Parameter> pars = new ArrayList<>();
-                for (SwaggerHeaderEntity header :
-                        headerEntityList) {
-                  ParameterBuilder builderPar = new ParameterBuilder();
-                  builderPar.name(header.getHeaderName())
-                          .description(header.getDescription())
-                          .modelRef(new ModelRef(header.getHeaderType())).parameterType("header")
-                          .required(false).build();
-                  pars.add(builderPar.build());
-                }
-                Docket result;
-                ApiSelectorBuilder builder;
-                Docket docket = new Docket(DocumentationType.SWAGGER_2)
-                        .groupName(entity.getGroupName());
-                if (finalAlternateTypeRules != null) {
-                  docket = docket.alternateTypeRules(finalAlternateTypeRules);
-                }
-                builder = docket.select().apis(RequestHandlerSelectors
-                        .basePackage(entity.getBasePackage()));
-                if (hidden) {
-                  result = builder.paths(PathSelectors.none()).build().apiInfo(apiInfo());
-                } else {
-                  result = builder.build().globalOperationParameters(pars).apiInfo(apiInfo());
-                }
-                return result;
-
-              });
-
-      BeanDefinition beanDefinition = beanDefinitionBuilder.getRawBeanDefinition();
-      BeanDefinitionRegistry beanFactory = (BeanDefinitionRegistry) Application
-              .applicationContext.getBeanFactory();
-      beanFactory.registerBeanDefinition(entity.getBeanName(), beanDefinition);
-    }
   }
 
   /**
    * 创建该API的基本信息（这些基本信息会展现在文档页面中）
    * 访问地址：http://项目实际地址/swagger-ui.html
    *
-   * @return
+   * @return 返回接口信息
    */
-  private ApiInfo apiInfo() {
+  @Bean(name = "openApi")
+  public OpenAPI openApi() {
+    return new OpenAPI()
+        //必须
+        .info(apiInfo())
+        .servers(buildServers())
+        .externalDocs(new ExternalDocumentation())
+//        .tags(buildTags())
+        .components(languageHeader());
+  }
+
+  /**
+   * 构建header
+   *
+   * @return 返回header
+   */
+  private Components languageHeader() {
+    Components components = new Components();
+
+    List<SwaggerConfig.SwaggerHeaderEntity> headers = swaggerConfig.getHeaders();
+    if (CollectUtils.isEmpty(headers)) {
+      return components;
+    }
+    for (SwaggerConfig.SwaggerHeaderEntity header : headers) {
+      // 定义全局 Header 参数
+      Parameter languageHeader = new Parameter()
+          .in(ParameterIn.HEADER.toString())
+          .name(header.getHeaderName())
+          .description(header.getDescription());
+      components.addParameters(header.getHeaderName(), languageHeader);
+    }
+    //添加header
+    return components;
+  }
+
+  /**
+   * 构建服务器列表
+   *
+   * @return 返回服务器列表
+   */
+  private List<Server> buildServers() {
+    List<Server> servers = new ArrayList<>();
+    ConfigurableApplicationContext context = Application.applicationContext;
+    Environment env = context.getEnvironment();
+    String contextPath = ConvertUtils.convertString(env.getProperty(CONTEXT_PATH));
+    String serverPort = env.getProperty(SERVER_PORT);
+
+    String localHost = HostUtils.getLocalHost();
+    Server server = new Server();
+    server.setUrl(String.format("http://%s:%s%s", localHost, serverPort, contextPath));
+    server.setDescription("Production server");
+
+    servers.add(server);
+    // 添加更多服务器配置
+    return servers;
+  }
+
+  /**
+   * 创建该API的基本信息（这些基本信息会展现在文档页面中）
+   * 访问地址：http://项目实际地址/swagger-ui.html
+   *
+   * @return 返回接口信息
+   */
+  private Info apiInfo() {
     //联系人信息
-    Contact contact = new Contact(swaggerConfig.getContact(),
-            swaggerConfig.getTermsOfServiceUrl(), swaggerConfig.getEmail());
+    Contact contact = new Contact()
+        .name(swaggerConfig.getContact())
+        .url(swaggerConfig.getTermsOfServiceUrl())
+        .email(swaggerConfig.getEmail());
 
     // 构建结果
-    return new ApiInfoBuilder()
-            .title(swaggerConfig.getTitle())
-            .description(swaggerConfig.getDescription())
-            .termsOfServiceUrl(swaggerConfig.getTermsOfServiceUrl())
-            .contact(contact)
-            .version(swaggerConfig.getVersion())
-            .build();
+    return new Info()
+        .title(swaggerConfig.getTitle())
+        .description(swaggerConfig.getDescription())
+        .termsOfService(swaggerConfig.getTermsOfServiceUrl())
+        .contact(contact)
+        .version(swaggerConfig.getVersion());
   }
 }

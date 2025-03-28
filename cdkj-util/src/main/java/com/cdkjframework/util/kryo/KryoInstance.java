@@ -28,73 +28,73 @@ public enum KryoInstance {
     INSTANCE;
 
     private static final Set<Class<?>> REGISTERS = new LinkedHashSet<Class<?>>();
-    private KryoPool pool;
-    private KryoFactory factory = new KryoFactory() {
-        @Override
-        public Kryo create() {
-            ExpKryo kryo = new ExpKryo();
-            kryo.setRegistrationRequired(false);
-            kryo.register(Arrays.asList("").getClass(),
-                    new ArraysAsListSerializer());
-            kryo.register(GregorianCalendar.class,
-                    new GregorianCalendarSerializer());
-            kryo.register(InvocationHandler.class, new JdkProxySerializer());
+    private final KryoPool pool;
 
-
-            kryo.register(BigDecimal.class,
-                    new DefaultSerializers.BigDecimalSerializer());
-            kryo.register(BigInteger.class,
-                    new DefaultSerializers.BigIntegerSerializer());
-            kryo.register(Pattern.class, new RegexSerializer());
-            kryo.register(BitSet.class, new BitSetSerializer());
-            kryo.register(URI.class, new URISerializer());
-            kryo.register(UUID.class, new UUIDSerializer());
-            UnmodifiableCollectionsSerializer.registerSerializers(kryo);
-            SynchronizedCollectionsSerializer.registerSerializers(kryo);
-
-            kryo.register(HashMap.class);
-            kryo.register(ArrayList.class);
-            kryo.register(LinkedList.class);
-            kryo.register(HashSet.class);
-            kryo.register(TreeSet.class);
-            kryo.register(Hashtable.class);
-            kryo.register(Date.class);
-            kryo.register(Calendar.class);
-            kryo.register(ConcurrentHashMap.class);
-            kryo.register(SimpleDateFormat.class);
-            kryo.register(GregorianCalendar.class);
-            kryo.register(Vector.class);
-            kryo.register(BitSet.class);
-            kryo.register(StringBuffer.class);
-            kryo.register(StringBuilder.class);
-            kryo.register(Object.class);
-            kryo.register(Object[].class);
-            kryo.register(String[].class);
-            kryo.register(byte[].class);
-            kryo.register(char[].class);
-            kryo.register(int[].class);
-            kryo.register(float[].class);
-            kryo.register(double[].class);
-
-            for (Class<?> clazz : REGISTERS) {
-                kryo.register(clazz);
-            }
-            return kryo;
-        }
-    };
-
-    public void registerClass(Class<?> clazz) {
+  public void registerClass(Class<?> clazz) {
         REGISTERS.add(clazz);
     }
 
     private KryoInstance() {
-        pool = new KryoPool.Builder(factory).build();
+      KryoFactory factory = new KryoFactory() {
+        @Override
+        public Kryo create() {
+          ExpKryo kryo = new ExpKryo();
+          kryo.setRegistrationRequired(false);
+          kryo.register(Arrays.asList("").getClass(),
+                  new ArraysAsListSerializer());
+          kryo.register(GregorianCalendar.class,
+                  new GregorianCalendarSerializer());
+          kryo.register(InvocationHandler.class, new JdkProxySerializer());
+
+
+          kryo.register(BigDecimal.class,
+                  new DefaultSerializers.BigDecimalSerializer());
+          kryo.register(BigInteger.class,
+                  new DefaultSerializers.BigIntegerSerializer());
+          kryo.register(Pattern.class, new RegexSerializer());
+          kryo.register(BitSet.class, new BitSetSerializer());
+          kryo.register(URI.class, new URISerializer());
+          kryo.register(UUID.class, new UUIDSerializer());
+          UnmodifiableCollectionsSerializer.registerSerializers(kryo);
+          SynchronizedCollectionsSerializer.registerSerializers(kryo);
+
+          kryo.register(HashMap.class);
+          kryo.register(ArrayList.class);
+          kryo.register(LinkedList.class);
+          kryo.register(HashSet.class);
+          kryo.register(TreeSet.class);
+          kryo.register(Hashtable.class);
+          kryo.register(Date.class);
+          kryo.register(Calendar.class);
+          kryo.register(ConcurrentHashMap.class);
+          kryo.register(SimpleDateFormat.class);
+          kryo.register(GregorianCalendar.class);
+          kryo.register(Vector.class);
+          kryo.register(BitSet.class);
+          kryo.register(StringBuffer.class);
+          kryo.register(StringBuilder.class);
+          kryo.register(Object.class);
+          kryo.register(Object[].class);
+          kryo.register(String[].class);
+          kryo.register(byte[].class);
+          kryo.register(char[].class);
+          kryo.register(int[].class);
+          kryo.register(float[].class);
+          kryo.register(double[].class);
+
+          for (Class<?> clazz : REGISTERS) {
+            kryo.register(clazz);
+          }
+          return kryo;
+        }
+      };
+      pool = new KryoPool.Builder(factory).build();
     }
 
     public KryoPool getPool() {
         return pool;
     }
- 
- 
-	 
+
+
+
 }

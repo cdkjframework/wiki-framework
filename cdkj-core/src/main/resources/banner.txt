@@ -1,17 +1,13 @@
-${AnsiColor.BRIGHT_GREEN}
+${AnsiColor.BRIGHT_YELLOW}             _   _        _   ______
+${AnsiColor.BRIGHT_YELLOW}            | | | |      (_) |  ____|
+${AnsiColor.BRIGHT_YELLOW}   ___    __| | | | __    _  | |__    __      __
+${AnsiColor.BRIGHT_YELLOW}  / __|  / _` | | |/ /   | | |  __|   \ \ /\ / /
+${AnsiColor.BRIGHT_YELLOW} | (__  | (_| | |   <    | | | |       \ V  V /
+${AnsiColor.BRIGHT_YELLOW}  \___|  \__,_| |_|\_\   | | |_|        \_/\_/
+${AnsiColor.BRIGHT_YELLOW}                        _/ |
+${AnsiColor.BRIGHT_YELLOW}                       |__/
 
-                                                   _ _ _ _ _
-                                                  |  _ _ _ _|
-    _ _ _ _    _ _ _ _       _    _        _ _    | |            _           _ _           _
-   /  _ _ _|  |  _ _   \    | |  / /      |_  |   | | _ _ _     \ \         / _ \         / /
- /  /         | |    \  \   | | / /         | |   | | _ _ _|     \ \       / / \ \       / /
-|  |          | |     \  \  | |/ /          | |   | |             \ \     / /   \ \     / /
-|  |          | |     /  /  | |\ \   _      | |   | |              \ \   / /     \ \   / /
- \  \_ _ _    | | _ _/  /   | | \ \  \ \_ _ / /   | |               \ \_/ /       \ \_/ /
-  \_ _ _ _|   |_ _ _ _ /    |_|  \_\  \_ _ _ /    |_|                \ _ /         \ _ /
-
-${AnsiColor.BRIGHT_BLUE}
-Application Name: ${spring.application.name}
-Application Profile: ${spring.profiles.active}
-Server Port: ${server.port}
-Spring Boot Version: ${spring-boot.version}
+${AnsiColor.BLUE}   Application Name: ${spring.application.name}
+${AnsiColor.BLUE}Application Profile: ${spring.profiles.active}
+${AnsiColor.BLUE}        Server Port: ${server.port}
+${AnsiColor.BLUE}Spring Boot Version: ${spring-boot.version}

@@ -39,7 +39,8 @@ public enum MaterialEnum implements InterfaceEnum {
   /**
    * 值、内容
    */
-  private String value, text;
+  private final String value;
+  private final String text;
 
   /**
    * 构建函数

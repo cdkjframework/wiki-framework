@@ -23,10 +23,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.util.Optional;
 </#if>
 import ${packageName}.service.${className}Service;
@@ -161,7 +161,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${className}Entity entity = ${classLowName}Mapper.findEntityById(id);
         </#if>
         <#if jpa>
-        ${className}Entity entity = ${classLowName}Repository.getOne(id);
+        ${className}Entity entity = ${classLowName}Repository.getReferenceById(id);
         </#if>
         return CopyUtils.copyProperties(entity, ${className}Dto.class);
     }
@@ -173,7 +173,7 @@ public class ${className}ServiceImpl implements ${className}Service {
      * @return 返回分页数据实体
      */
     @Override
-    public PageEntity list${className}Page(${className}Dto ${classLowName}Dto) {
+    public PageEntity<${className}Dto> list${className}Page(${className}Dto ${classLowName}Dto) {
         //分页查询角色信息
         <#if myBatis && !jpa>
         Page page = PageHelper.startPage(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize());
@@ -186,10 +186,16 @@ public class ${className}ServiceImpl implements ${className}Service {
         </#if>
         <#if jpa>
         Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
-        Sort sort = Sort.by(Sort.Direction.DESC, "addTime");
-        Pageable pageable = PageRequest.of(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize(), sort);
+        Sort sort = Sort.by(Sort.Direction.DESC, ${className}Dto.ADD_TIME);
+        int pageIndex = ${classLowName}Dto.getPageIndex() - IntegerConsts.ONE;
+        Pageable pageable = PageRequest.of(pageIndex, ${classLowName}Dto.getPageSize(), sort);
         Page<${className}Entity> page = ${classLowName}Repository.findAll(specification, pageable);
-        return PageEntity.build(${classLowName}Dto.getPageIndex(), page.getTotalElements(), page.getContent());
+
+        // 将 Entity 转换为 Dto
+        List<${className}Dto> ${classLowName}List = CopyUtils.copyProperties(page.getContent(), ${className}Dto.class);
+
+        // 返回分页数据
+        return PageEntity.build(${classLowName}Dto.getPageIndex(), page.getTotalElements(), ${classLowName}List);
         </#if>
     }
 

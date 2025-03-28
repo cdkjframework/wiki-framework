@@ -189,26 +189,26 @@ public class HttpRequestUtils {
   /**
    * POST 请求方法
    *
-   * @param httpRequestEntity 请求实体
+   * @param entity 请求实体
    * @return 返回结果
    */
-  private static StringBuilder post(HttpRequestEntity httpRequestEntity) {
+  private static StringBuilder post(HttpRequestEntity entity) {
     OutputStream printWriter = null;
     BufferedReader bufferedReader = null;
     StringBuilder result = new StringBuilder();
     try {
-      URL realUrl = new URL(httpRequestEntity.getRequestAddress());
+      URL realUrl = new URL(entity.getRequestAddress());
       // 打开和URL之间的连接
       HttpURLConnection connection;
-      if (httpRequestEntity.getProxy() != null) {
-        connection = (HttpURLConnection) realUrl.openConnection(httpRequestEntity.getProxy());
+      if (entity.getProxy() != null) {
+        connection = (HttpURLConnection) realUrl.openConnection(entity.getProxy());
       } else {
         connection = (HttpURLConnection) realUrl.openConnection();
       }
-      connection.setRequestProperty(HttpHeaderConsts.CONTENT_TYPE, httpRequestEntity.getContentType());
+      connection.setRequestProperty(HttpHeaderConsts.CONTENT_TYPE, entity.getContentType());
       // 设置通用的请求属性
       //设置 http 请求头
-      setHeader(connection, httpRequestEntity);
+      setHeader(connection, entity);
       connection.setRequestMethod(HttpMethodEnums.POST.getValue());
       // 发送POST请求必须设置如下两行
       connection.setDoOutput(true);
@@ -219,14 +219,16 @@ public class HttpRequestUtils {
 
       //将参数转换为 json 对象
       StringBuffer param = new StringBuffer();
-      if (!CollectionUtils.isEmpty(httpRequestEntity.getObjectList())) {
-        param.append(JSON.toJSONString(httpRequestEntity.getObjectList()));
-      } else if (httpRequestEntity.getData() != null) {
-        param.append(JSON.toJSONString(httpRequestEntity.getData()));
+      if (!CollectionUtils.isEmpty(entity.getObjectList())) {
+        param.append(JSON.toJSONString(entity.getObjectList()));
+      } else if (entity.getData() != null) {
+        param.append(JSON.toJSONString(entity.getData()));
+      } else if (entity.getParams() != null) {
+        param.append(entity.getParams());
       }
-      if (!CollectionUtils.isEmpty(httpRequestEntity.getParamsMap())) {
-        Map<String, Object> params = httpRequestEntity.getParamsMap();
-        if (httpRequestEntity.isJson()) {
+      if (!CollectionUtils.isEmpty(entity.getParamsMap())) {
+        Map<String, Object> params = entity.getParamsMap();
+        if (entity.isJson()) {
           param.append(JSON.toJSONString(params));
         } else {
           Set<Map.Entry<String, Object>> entrySet = params.entrySet();
@@ -241,8 +243,8 @@ public class HttpRequestUtils {
       }
 
       //是否 gzip 加密
-      if (httpRequestEntity.isCompress()) {
-        String gzipParams = GzipUtils.gZip(param.toString(), httpRequestEntity.getCharset());
+      if (entity.isCompress()) {
+        String gzipParams = GzipUtils.gZip(param.toString(), entity.getCharset());
         printWriter.write(gzipParams.getBytes());
       } else {
         // 发送请求参数

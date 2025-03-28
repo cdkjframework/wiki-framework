@@ -1,13 +1,12 @@
 package com.cdkjframework.entity.center;
 
 import com.cdkjframework.entity.BaseEntity;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Table;
 import java.math.BigDecimal;
 
 /**
@@ -19,10 +18,9 @@ import java.math.BigDecimal;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @Component
+@EqualsAndHashCode(callSuper = false)
 @Table(name = "center_table_layout", schema = "")
 public class CenterTableLayoutEntity extends BaseEntity {
 

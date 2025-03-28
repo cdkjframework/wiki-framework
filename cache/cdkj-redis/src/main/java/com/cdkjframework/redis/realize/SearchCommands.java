@@ -2,12 +2,17 @@ package com.cdkjframework.redis.realize;
 
 import com.redislabs.lettusearch.*;
 import io.lettuce.core.*;
+import io.lettuce.core.models.stream.ClaimedMessages;
+import io.lettuce.core.models.stream.PendingMessage;
+import io.lettuce.core.models.stream.PendingMessages;
 import io.lettuce.core.output.*;
 import io.lettuce.core.protocol.CommandArgs;
 import io.lettuce.core.protocol.CommandType;
 import io.lettuce.core.protocol.ProtocolKeyword;
+import io.lettuce.core.protocol.RedisCommand;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,21 +32,6 @@ public class SearchCommands implements RediSearchCommands {
     @Override
     public void setTimeout(Duration duration) {
 
-    }
-
-    /**
-     * @param l
-     * @param timeUnit
-     * @deprecated
-     */
-    @Override
-    public void setTimeout(long l, TimeUnit timeUnit) {
-
-    }
-
-    @Override
-    public String auth(String s) {
-        return null;
     }
 
     @Override
@@ -70,12 +60,22 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public String clusterDelSlotsRange(Range[] ranges) {
+        return null;
+    }
+
+    @Override
     public String clusterSetSlotNode(int i, String s) {
         return null;
     }
 
     @Override
     public String clusterSetSlotStable(int i) {
+        return null;
+    }
+
+    @Override
+    public List<Object> clusterShards() {
         return null;
     }
 
@@ -120,6 +120,11 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public String clusterAddSlotsRange(Range[] ranges) {
+        return null;
+    }
+
+    @Override
     public Long clusterCountFailureReports(String s) {
         return null;
     }
@@ -155,7 +160,17 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public List<String> clusterReplicas(String s) {
+        return null;
+    }
+
+    @Override
     public String clusterFailover(boolean b) {
+        return null;
+    }
+
+    @Override
+    public String clusterFailover(boolean b, boolean b1) {
         return null;
     }
 
@@ -166,6 +181,16 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public String clusterFlushslots() {
+        return null;
+    }
+
+    @Override
+    public String auth(CharSequence charSequence) {
+        return null;
+    }
+
+    @Override
+    public String auth(String s, CharSequence charSequence) {
         return null;
     }
 
@@ -395,7 +420,27 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Long geoadd(Object o, double v, double v1, Object v2, GeoAddArgs geoAddArgs) {
+        return null;
+    }
+
+    @Override
     public Long geoadd(Object o, Object... objects) {
+        return null;
+    }
+
+    @Override
+    public Long geoadd(Object o, GeoValue[] geoValues) {
+        return null;
+    }
+
+    @Override
+    public Long geoadd(Object o, GeoAddArgs geoAddArgs, Object... objects) {
+        return null;
+    }
+
+    @Override
+    public Long geoadd(Object o, GeoAddArgs geoAddArgs, GeoValue[] geoValues) {
         return null;
     }
 
@@ -431,6 +476,21 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public Long georadiusbymember(Object o, Object o2, double v1, GeoArgs.Unit unit, GeoRadiusStoreArgs geoRadiusStoreArgs) {
+        return null;
+    }
+
+    @Override
+    public Set geosearch(Object o, GeoSearch.GeoRef geoRef, GeoSearch.GeoPredicate geoPredicate) {
+        return null;
+    }
+
+    @Override
+    public List<GeoWithin> geosearch(Object o, GeoSearch.GeoRef geoRef, GeoSearch.GeoPredicate geoPredicate, GeoArgs geoArgs) {
+        return null;
+    }
+
+    @Override
+    public Long geosearchstore(Object o, Object k1, GeoSearch.GeoRef geoRef, GeoSearch.GeoPredicate geoPredicate, GeoArgs geoArgs, boolean b) {
         return null;
     }
 
@@ -525,6 +585,26 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Object hrandfield(Object o) {
+        return null;
+    }
+
+    @Override
+    public List hrandfield(Object o, long l) {
+        return null;
+    }
+
+    @Override
+    public KeyValue hrandfieldWithvalues(Object o) {
+        return null;
+    }
+
+    @Override
+    public List<KeyValue> hrandfieldWithvalues(Object o, long l) {
+        return null;
+    }
+
+    @Override
     public MapScanCursor hscan(Object o) {
         return null;
     }
@@ -595,6 +675,16 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Boolean copy(Object o, Object k1) {
+        return null;
+    }
+
+    @Override
+    public Boolean copy(Object o, Object k1, CopyArgs copyArgs) {
+        return null;
+    }
+
+    @Override
     public Long del(Object[] objects) {
         return null;
     }
@@ -620,12 +710,52 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Boolean expire(Object o, long l, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Boolean expire(Object o, Duration duration) {
+        return null;
+    }
+
+    @Override
+    public Boolean expire(Object o, Duration duration, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
     public Boolean expireat(Object o, Date date) {
         return null;
     }
 
     @Override
+    public Boolean expireat(Object o, Date date, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Boolean expireat(Object o, Instant instant) {
+        return null;
+    }
+
+    @Override
+    public Boolean expireat(Object o, Instant instant, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Long expiretime(Object o) {
+        return null;
+    }
+
+    @Override
     public Boolean expireat(Object o, long l) {
+        return null;
+    }
+
+    @Override
+    public Boolean expireat(Object o, long l, ExpireArgs expireArgs) {
         return null;
     }
 
@@ -660,6 +790,11 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Long objectFreq(Object o) {
+        return null;
+    }
+
+    @Override
     public Long objectIdletime(Object o) {
         return null;
     }
@@ -680,12 +815,52 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Boolean pexpire(Object o, long l, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Boolean pexpire(Object o, Duration duration) {
+        return null;
+    }
+
+    @Override
+    public Boolean pexpire(Object o, Duration duration, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
     public Boolean pexpireat(Object o, Date date) {
         return null;
     }
 
     @Override
+    public Boolean pexpireat(Object o, Date date, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Boolean pexpireat(Object o, Instant instant) {
+        return null;
+    }
+
+    @Override
+    public Boolean pexpireat(Object o, Instant instant, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public Long pexpiretime(Object o) {
+        return null;
+    }
+
+    @Override
     public Boolean pexpireat(Object o, long l) {
+        return null;
+    }
+
+    @Override
+    public Boolean pexpireat(Object o, long l, ExpireArgs expireArgs) {
         return null;
     }
 
@@ -736,6 +911,26 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public Long sort(ValueStreamingChannel valueStreamingChannel, Object o, SortArgs sortArgs) {
+        return null;
+    }
+
+    @Override
+    public List sortReadOnly(Object o) {
+        return null;
+    }
+
+    @Override
+    public Long sortReadOnly(ValueStreamingChannel valueStreamingChannel, Object o) {
+        return null;
+    }
+
+    @Override
+    public List sortReadOnly(Object o, SortArgs sortArgs) {
+        return null;
+    }
+
+    @Override
+    public Long sortReadOnly(ValueStreamingChannel valueStreamingChannel, Object o, SortArgs sortArgs) {
         return null;
     }
 
@@ -800,7 +995,32 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Object blmove(Object o, Object k1, LMoveArgs lMoveArgs, long l) {
+        return null;
+    }
+
+    @Override
+    public Object blmove(Object o, Object k1, LMoveArgs lMoveArgs, double v) {
+        return null;
+    }
+
+    @Override
+    public KeyValue blmpop(long l, LMPopArgs lmPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue blmpop(double v, LMPopArgs lmPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
     public KeyValue blpop(long l, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue blpop(double v, Object[] objects) {
         return null;
     }
 
@@ -810,7 +1030,17 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public KeyValue brpop(double v, Object[] objects) {
+        return null;
+    }
+
+    @Override
     public Object brpoplpush(long l, Object o, Object k1) {
+        return null;
+    }
+
+    @Override
+    public Object brpoplpush(double v, Object o, Object k1) {
         return null;
     }
 
@@ -830,7 +1060,22 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Object lmove(Object o, Object k1, LMoveArgs lMoveArgs) {
+        return null;
+    }
+
+    @Override
+    public KeyValue lmpop(LMPopArgs lmPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
     public Object lpop(Object o) {
+        return null;
+    }
+
+    @Override
+    public List lpop(Object o, long l) {
         return null;
     }
 
@@ -895,6 +1140,11 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public List rpop(Object o, long l) {
+        return null;
+    }
+
+    @Override
     public Object rpoplpush(Object o, Object k1) {
         return null;
     }
@@ -930,6 +1180,26 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Object eval(byte[] bytes, ScriptOutputType scriptOutputType, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Object eval(byte[] bytes, ScriptOutputType scriptOutputType, Object[] objects, Object[] objects2) {
+        return null;
+    }
+
+    @Override
+    public Object evalReadOnly(byte[] bytes, ScriptOutputType scriptOutputType, Object[] objects, Object[] objects2) {
+        return null;
+    }
+
+    @Override
+    public Object evalshaReadOnly(String s, ScriptOutputType scriptOutputType, Object[] objects, Object[] objects2) {
+        return null;
+    }
+
+    @Override
     public List<Boolean> scriptExists(String... strings) {
         return null;
     }
@@ -940,17 +1210,32 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public String scriptFlush(FlushMode flushMode) {
+        return null;
+    }
+
+    @Override
     public String scriptKill() {
         return null;
     }
 
     @Override
-    public String scriptLoad(Object o) {
+    public String scriptLoad(String s) {
         return null;
     }
 
     @Override
-    public String digest(Object o) {
+    public String scriptLoad(byte[] bytes) {
+        return null;
+    }
+
+    @Override
+    public String digest(String s) {
+        return null;
+    }
+
+    @Override
+    public String digest(byte[] bytes) {
         return null;
     }
 
@@ -965,12 +1250,32 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public String clientCaching(boolean b) {
+        return null;
+    }
+
+    @Override
     public Object clientGetname() {
         return null;
     }
 
     @Override
+    public Long clientGetredir() {
+        return null;
+    }
+
+    @Override
     public String clientSetname(Object o) {
+        return null;
+    }
+
+    @Override
+    public String clientSetinfo(String s, String s1) {
+        return null;
+    }
+
+    @Override
+    public String clientTracking(TrackingArgs trackingArgs) {
         return null;
     }
 
@@ -996,6 +1301,21 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public String clientList() {
+        return null;
+    }
+
+    @Override
+    public String clientList(ClientListArgs clientListArgs) {
+        return null;
+    }
+
+    @Override
+    public String clientInfo() {
+        return null;
+    }
+
+    @Override
+    public String clientNoEvict(boolean b) {
         return null;
     }
 
@@ -1030,6 +1350,11 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Map<String, String> configGet(String... strings) {
+        return null;
+    }
+
+    @Override
     public String configResetstat() {
         return null;
     }
@@ -1041,6 +1366,11 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public String configSet(String s, String s1) {
+        return null;
+    }
+
+    @Override
+    public String configSet(Map map) {
         return null;
     }
 
@@ -1095,12 +1425,22 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public String flushall(FlushMode flushMode) {
+        return null;
+    }
+
+    @Override
     public String flushallAsync() {
         return null;
     }
 
     @Override
     public String flushdb() {
+        return null;
+    }
+
+    @Override
+    public String flushdb(FlushMode flushMode) {
         return null;
     }
 
@@ -1130,12 +1470,27 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public String replicaof(String s, int i) {
+        return null;
+    }
+
+    @Override
+    public String replicaofNoOne() {
+        return null;
+    }
+
+    @Override
     public String save() {
         return null;
     }
 
     @Override
     public void shutdown(boolean b) {
+
+    }
+
+    @Override
+    public void shutdown(ShutdownArgs shutdownArgs) {
 
     }
 
@@ -1210,6 +1565,16 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Long sintercard(Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Long sintercard(long l, Object[] objects) {
+        return null;
+    }
+
+    @Override
     public Long sinterstore(Object o, Object[] objects) {
         return null;
     }
@@ -1231,6 +1596,11 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public Long smembers(ValueStreamingChannel valueStreamingChannel, Object o) {
+        return null;
+    }
+
+    @Override
+    public List<Boolean> smismember(Object o, Object[] objects) {
         return null;
     }
 
@@ -1320,12 +1690,42 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public KeyValue bzmpop(long l, ZPopArgs zPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue bzmpop(long l, long l1, ZPopArgs zPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue bzmpop(double v, ZPopArgs zPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue bzmpop(double v, int i, ZPopArgs zPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
     public KeyValue bzpopmin(long l, Object[] objects) {
         return null;
     }
 
     @Override
+    public KeyValue bzpopmin(double v, Object[] objects) {
+        return null;
+    }
+
+    @Override
     public KeyValue bzpopmax(long l, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue bzpopmax(double v, Object[] objects) {
         return null;
     }
 
@@ -1381,6 +1781,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zcount(Object o, double v, double v1) {
         return null;
     }
@@ -1392,12 +1793,58 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zcount(Object o, String s, String s1) {
         return null;
     }
 
     @Override
+    public List zdiff(Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Long zdiffstore(Object o, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List<ScoredValue> zdiffWithScores(Object[] objects) {
+        return null;
+    }
+
+    @Override
     public Double zincrby(Object o, double v, Object v1) {
+        return null;
+    }
+
+    @Override
+    public List zinter(Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List zinter(ZAggregateArgs zAggregateArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Long zintercard(Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Long zintercard(long l, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List<ScoredValue> zinterWithScores(ZAggregateArgs zAggregateArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List<ScoredValue> zinterWithScores(Object[] objects) {
         return null;
     }
 
@@ -1418,12 +1865,28 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zlexcount(Object o, String s, String s1) {
         return null;
     }
 
     @Override
     public Long zlexcount(Object o, Range range) {
+        return null;
+    }
+
+    @Override
+    public List<Double> zmscore(Object o, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue zmpop(ZPopArgs zPopArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public KeyValue zmpop(int i, ZPopArgs zPopArgs, Object[] objects) {
         return null;
     }
 
@@ -1444,6 +1907,26 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public List<ScoredValue> zpopmax(Object o, long l) {
+        return null;
+    }
+
+    @Override
+    public Object zrandmember(Object o) {
+        return null;
+    }
+
+    @Override
+    public List zrandmember(Object o, long l) {
+        return null;
+    }
+
+    @Override
+    public ScoredValue zrandmemberWithScores(Object o) {
+        return null;
+    }
+
+    @Override
+    public List<ScoredValue> zrandmemberWithScores(Object o, long l) {
         return null;
     }
 
@@ -1474,6 +1957,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrangebylex(Object o, String s, String s1) {
         return null;
     }
@@ -1492,6 +1976,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrangebylex(Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1508,6 +1993,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrangebyscore(Object o, double v, double v1) {
         return null;
     }
@@ -1519,6 +2005,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrangebyscore(Object o, String s, String s1) {
         return null;
     }
@@ -1532,6 +2019,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrangebyscore(Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1545,6 +2033,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrangebyscore(Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1557,6 +2046,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, double v, double v1) {
         return null;
     }
@@ -1569,6 +2059,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, String s, String s1) {
         return null;
     }
@@ -1583,6 +2074,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1597,6 +2089,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1608,6 +2101,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrangebyscoreWithScores(Object o, double v, double v1) {
         return null;
     }
@@ -1619,6 +2113,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrangebyscoreWithScores(Object o, String s, String s1) {
         return null;
     }
@@ -1632,6 +2127,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrangebyscoreWithScores(Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1645,6 +2141,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrangebyscoreWithScores(Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1657,6 +2154,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, double v, double v1) {
         return null;
     }
@@ -1669,6 +2167,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, String s, String s1) {
         return null;
     }
@@ -1683,6 +2182,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1697,12 +2197,33 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, String s, String s1, long l, long l1) {
         return null;
     }
 
     @Override
+    public Long zrangestorebylex(Object o, Object k1, Range range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Long zrangestorebyscore(Object o, Object k1, Range range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Long zrangestore(Object o, Object k1, Range range) {
+        return null;
+    }
+
+    @Override
     public Long zrank(Object o, Object o2) {
+        return null;
+    }
+
+    @Override
+    public ScoredValue<Long> zrankWithScore(Object o, Object o2) {
         return null;
     }
 
@@ -1718,6 +2239,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zremrangebylex(Object o, String s, String s1) {
         return null;
     }
@@ -1739,6 +2261,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zremrangebyscore(Object o, double v, double v1) {
         return null;
     }
@@ -1750,6 +2273,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zremrangebyscore(Object o, String s, String s1) {
         return null;
     }
@@ -1791,6 +2315,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrevrangebyscore(Object o, double v, double v1) {
         return null;
     }
@@ -1802,6 +2327,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrevrangebyscore(Object o, String s, String s1) {
         return null;
     }
@@ -1815,6 +2341,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrevrangebyscore(Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1828,6 +2355,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List zrevrangebyscore(Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1840,6 +2368,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, double v, double v1) {
         return null;
     }
@@ -1852,6 +2381,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, String s, String s1) {
         return null;
     }
@@ -1866,6 +2396,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1880,6 +2411,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscore(ValueStreamingChannel valueStreamingChannel, Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1891,6 +2423,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrevrangebyscoreWithScores(Object o, double v, double v1) {
         return null;
     }
@@ -1902,6 +2435,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrevrangebyscoreWithScores(Object o, String s, String s1) {
         return null;
     }
@@ -1915,6 +2449,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrevrangebyscoreWithScores(Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1928,6 +2463,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public List<ScoredValue> zrevrangebyscoreWithScores(Object o, String s, String s1, long l, long l1) {
         return null;
     }
@@ -1940,6 +2476,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, double v, double v1) {
         return null;
     }
@@ -1952,6 +2489,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, String s, String s1) {
         return null;
     }
@@ -1966,6 +2504,7 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1980,12 +2519,33 @@ public class SearchCommands implements RediSearchCommands {
      * @deprecated
      */
     @Override
+    @Deprecated
     public Long zrevrangebyscoreWithScores(ScoredValueStreamingChannel scoredValueStreamingChannel, Object o, String s, String s1, long l, long l1) {
         return null;
     }
 
     @Override
+    public Long zrevrangestorebylex(Object o, Object k1, Range range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Long zrevrangestorebyscore(Object o, Object k1, Range range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public Long zrevrangestore(Object o, Object k1, Range range) {
+        return null;
+    }
+
+    @Override
     public Long zrevrank(Object o, Object o2) {
+        return null;
+    }
+
+    @Override
+    public ScoredValue<Long> zrevrankWithScore(Object o, Object o2) {
         return null;
     }
 
@@ -2031,6 +2591,26 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public Double zscore(Object o, Object o2) {
+        return null;
+    }
+
+    @Override
+    public List zunion(Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List zunion(ZAggregateArgs zAggregateArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List<ScoredValue> zunionWithScores(ZAggregateArgs zAggregateArgs, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public List<ScoredValue> zunionWithScores(Object[] objects) {
         return null;
     }
 
@@ -2160,6 +2740,11 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public ClaimedMessages xautoclaim(Object o, XAutoClaimArgs xAutoClaimArgs) {
+        return null;
+    }
+
+    @Override
     public List<StreamMessage> xclaim(Object o, Consumer consumer, long l, String... strings) {
         return null;
     }
@@ -2185,9 +2770,15 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
-    public Boolean xgroupDelconsumer(Object o, Consumer consumer) {
+    public Boolean xgroupCreateconsumer(Object o, Consumer consumer) {
         return null;
     }
+
+    @Override
+    public Long xgroupDelconsumer(Object o, Consumer consumer) {
+        return null;
+    }
+
 
     @Override
     public Boolean xgroupDestroy(Object o, Object k1) {
@@ -2220,7 +2811,12 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
-    public List<Object> xpending(Object o, Object k1) {
+    public PendingMessages xpending(Object o, Object k1) {
+        return null;
+    }
+
+    @Override
+    public List<PendingMessage> xpending(Object o, XPendingArgs xPendingArgs) {
         return null;
     }
 
@@ -2251,6 +2847,11 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public Long xtrim(Object o, boolean b, long l) {
+        return null;
+    }
+
+    @Override
+    public Long xtrim(Object o, XTrimArgs xTrimArgs) {
         return null;
     }
 
@@ -2360,6 +2961,16 @@ public class SearchCommands implements RediSearchCommands {
     }
 
     @Override
+    public Object getdel(Object o) {
+        return null;
+    }
+
+    @Override
+    public Object getex(Object o, GetExArgs getExArgs) {
+        return null;
+    }
+
+    @Override
     public Object getrange(Object o, long l, long l1) {
         return null;
     }
@@ -2411,6 +3022,16 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public String set(Object o, Object o2, SetArgs setArgs) {
+        return null;
+    }
+
+    @Override
+    public Object setGet(Object o, Object o2) {
+        return null;
+    }
+
+    @Override
+    public Object setGet(Object o, Object o2, SetArgs setArgs) {
         return null;
     }
 
@@ -2471,6 +3092,156 @@ public class SearchCommands implements RediSearchCommands {
 
     @Override
     public String unwatch() {
+        return null;
+    }
+
+    @Override
+    public Set<AclCategory> aclCat() {
+        return null;
+    }
+
+    @Override
+    public Set<CommandType> aclCat(AclCategory aclCategory) {
+        return null;
+    }
+
+    @Override
+    public Long aclDeluser(String... strings) {
+        return null;
+    }
+
+    @Override
+    public String aclDryRun(String s, String s1, String... strings) {
+        return null;
+    }
+
+    @Override
+    public String aclGenpass() {
+        return null;
+    }
+
+    @Override
+    public String aclGenpass(int i) {
+        return null;
+    }
+
+    @Override
+    public List<Object> aclGetuser(String s) {
+        return null;
+    }
+
+    @Override
+    public List<String> aclList() {
+        return null;
+    }
+
+    @Override
+    public String aclLoad() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> aclLog() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> aclLog(int i) {
+        return null;
+    }
+
+    @Override
+    public String aclLogReset() {
+        return null;
+    }
+
+    @Override
+    public String aclSave() {
+        return null;
+    }
+
+    @Override
+    public String aclSetuser(String s, AclSetuserArgs aclSetuserArgs) {
+        return null;
+    }
+
+    @Override
+    public List<String> aclUsers() {
+        return null;
+    }
+
+    @Override
+    public String aclWhoami() {
+        return null;
+    }
+
+    @Override
+    public String aclDryRun(String s, RedisCommand redisCommand) {
+        return null;
+    }
+
+    @Override
+    public Object fcall(String s, ScriptOutputType scriptOutputType, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Object fcall(String s, ScriptOutputType scriptOutputType, Object[] objects, Object[] objects2) {
+        return null;
+    }
+
+    @Override
+    public Object fcallReadOnly(String s, ScriptOutputType scriptOutputType, Object[] objects) {
+        return null;
+    }
+
+    @Override
+    public Object fcallReadOnly(String s, ScriptOutputType scriptOutputType, Object[] objects, Object[] objects2) {
+        return null;
+    }
+
+    @Override
+    public String functionLoad(String s) {
+        return null;
+    }
+
+    @Override
+    public String functionLoad(String s, boolean b) {
+        return null;
+    }
+
+    @Override
+    public byte[] functionDump() {
+        return new byte[0];
+    }
+
+    @Override
+    public String functionRestore(byte[] bytes) {
+        return null;
+    }
+
+    @Override
+    public String functionRestore(byte[] bytes, FunctionRestoreMode functionRestoreMode) {
+        return null;
+    }
+
+    @Override
+    public String functionFlush(FlushMode flushMode) {
+        return null;
+    }
+
+    @Override
+    public String functionKill() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> functionList() {
+        return null;
+    }
+
+    @Override
+    public List<Map<String, Object>> functionList(String s) {
         return null;
     }
 }

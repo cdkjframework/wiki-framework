@@ -7,6 +7,7 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.interceptor.LoggingInInterceptor;
+import org.apache.cxf.interceptor.LoggingOutInterceptor;
 import org.apache.cxf.jaxws.endpoint.dynamic.JaxWsDynamicClientFactory;
 import org.springframework.stereotype.Component;
 
@@ -65,7 +66,7 @@ public class WebServiceUtils<T> {
      */
     public static String postWebService(WebServiceEntity entity) {
         StringBuilder builder = new StringBuilder();
-        builder.append(String.valueOf(postWebServiceObject(entity)));
+        builder.append(postWebServiceObject(entity));
         //返回结果
         return builder.toString();
     }
@@ -85,7 +86,7 @@ public class WebServiceUtils<T> {
 
         // 需要密码的情况需要加上用户名和密码
         if (StringUtils.isNotNullAndEmpty(entity.getUserName()) && StringUtils.isNotNullAndEmpty(entity.getPassword())) {
-            client.getOutInterceptors().add(new LoggingInInterceptor(entity.getUserName(), entity.getPassword()));
+            client.getOutInterceptors().add(new ClientLoginInterceptor(entity.getUserName(), entity.getPassword()));
         }
         Object[] result;
         try {

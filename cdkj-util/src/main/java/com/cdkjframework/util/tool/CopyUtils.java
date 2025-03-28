@@ -9,6 +9,7 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,35 +27,34 @@ import java.util.*;
 
 public class CopyUtils {
 
-    /**
-     * 日志
-     */
-    private static LogUtils logUtil = LogUtils.getLogger(CopyUtils.class);
+	/**
+	 * 数据类型
+	 */
+	private static final List<String> DATA_TYPE = List.of("java.util.ArrayList", "java.util.List");
 
-    /**
-     * 数据类型
-     */
-    private static final String DATA_TYPE = "java.util.ArrayList";
+	/**
+	 * 类的类型
+	 */
+	private static final String CLASS_TYPE = "java";
+	/**
+	 * 日志
+	 */
+	private static LogUtils logUtil = LogUtils.getLogger(CopyUtils.class);
 
-    /**
-     * 类的类型
-     */
-    private static final String CLASS_TYPE = "java";
-
-    /**
-     * 获取到空值列
-     *
-     * @param source 原数据源
-     * @return 返回结果
-     */
-    public static <S> String[] getNullPropertyNames(S source) {
-        if (source == null) {
-            return new String[]{};
-        }
-        //包装 bean
-        final BeanWrapper wrapper = new BeanWrapperImpl(source);
-        //获取属性描述符
-        PropertyDescriptor[] propertyList = wrapper.getPropertyDescriptors();
+	/**
+	 * 获取到空值列
+	 *
+	 * @param source 原数据源
+	 * @return 返回结果
+	 */
+	public static <S> String[] getNullPropertyNames(S source) {
+		if (source == null) {
+			return new String[]{};
+		}
+		//包装 bean
+		final BeanWrapper wrapper = new BeanWrapperImpl(source);
+		//获取属性描述符
+		PropertyDescriptor[] propertyList = wrapper.getPropertyDescriptors();
 
         //记录信息
         Set<String> emptyNames = new HashSet<String>();
@@ -152,8 +152,7 @@ public class CopyUtils {
         if (sourceList != null) {
             for (S o : sourceList) {
                 try {
-
-                    T d = targetList.newInstance();
+                  T d = targetList.getDeclaredConstructor().newInstance();
                     copyProperties(o, d, true);
                     result.add(d);
                 } catch (Exception e) {
@@ -173,12 +172,12 @@ public class CopyUtils {
     public static <S, T> T copyProperties(S source, Class<T> target) {
         T t;
         try {
-            if (source == null) {
-                return null;
-            }
-            t = target.newInstance();
-            copyProperties(source, t, false);
-            return t;
+          if (source == null) {
+            return null;
+          }
+          t = target.getDeclaredConstructor().newInstance();
+          copyProperties(source, t, false);
+          return t;
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
             return null;
@@ -199,7 +198,7 @@ public class CopyUtils {
         for (S o : sourceList) {
             try {
 
-                T d = targetList.newInstance();
+              T d = targetList.getDeclaredConstructor().newInstance();
                 copyProperties(o, d, true);
                 result.add(d);
             } catch (Exception e) {
@@ -218,12 +217,12 @@ public class CopyUtils {
     public static <S, T> T copyNoNullProperties(S source, Class<T> target) {
         T t;
         try {
-            if (source == null) {
-                return null;
-            }
-            t = target.newInstance();
-            copyProperties(source, t, true);
-            return t;
+          if (source == null) {
+            return null;
+          }
+          t = target.getDeclaredConstructor().newInstance();
+          copyProperties(source, t, true);
+          return t;
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
             return null;
@@ -255,47 +254,51 @@ public class CopyUtils {
             List<Field> fields = ReflectionUtils.getDeclaredFields(source.getClass());
             for (Field targetField :
                     targetFields) {
-                targetField.setAccessible(true);
-                // 读取值
-                Object value = ReflectionUtils.getFieldValue(targetField, target);
-                String typeName = value.getClass().getTypeName();
-                if (typeName.contains(DATA_TYPE)) {
-                    buildArrayList((ArrayList) value, target, targetField);
-                }
-                if (StringUtils.isNotNullAndEmpty(value)) {
-                    continue;
-                }
-                // 验证是否有相同字段
-                Optional<Field> optionalField = fields.stream()
-                        .filter(f -> f.getName().equals(targetField.getName()))
-                        .findFirst();
-                if (!optionalField.isPresent()) {
-                    continue;
-                }
-                Field field = optionalField.get();
-                field.setAccessible(true);
-                // 读取值
-                value = ReflectionUtils.getFieldValue(field, source);
-                if (StringUtils.isNullAndSpaceOrEmpty(value)) {
-                    continue;
-                }
-                Object clazz;
-                if (targetField.getType().equals(Integer.class)) {
-                    clazz = targetField.getType().getConstructor(int.class).newInstance(IntegerConsts.ZERO);
-                } else if ((targetField.getType().equals(LocalDateTime.class))) {
-                    clazz = LocalDateTime.parse(String.valueOf(value));
-                } else if ((targetField.getType().equals(LocalDate.class))) {
-                    clazz = LocalDate.parse(String.valueOf(value));
-                } else if (targetField.getType().equals(BigDecimal.class)) {
-                    clazz = BigDecimal.valueOf(Double.valueOf(String.valueOf(value) ));
-                } else {
-                    clazz = targetField.getType().newInstance();
-                }
-                if (!clazz.getClass().getName().contains("java.")) {
-                    copyProperties(value, clazz);
-                }
-                ReflectionUtils.setFieldValue(target, targetField, clazz);
-            }
+							targetField.setAccessible(true);
+							// 读取值
+							Object value = ReflectionUtils.getFieldValue(targetField, target);
+							String typeName = value.getClass().getTypeName();
+							if (DATA_TYPE.contains(typeName)) {
+								buildArrayList((ArrayList) value, target, targetField);
+							}
+							if (StringUtils.isNotNullAndEmpty(value)) {
+								continue;
+							}
+							// 验证是否有相同字段
+							Optional<Field> optionalField = fields.stream()
+									.filter(f -> f.getName().equals(targetField.getName()))
+									.findFirst();
+							if (!optionalField.isPresent()) {
+								continue;
+							}
+							Field field = optionalField.get();
+							field.setAccessible(true);
+							// 读取值
+							value = ReflectionUtils.getFieldValue(field, source);
+							if (StringUtils.isNullAndSpaceOrEmpty(value)) {
+								continue;
+							}
+							typeName = value.getClass().getTypeName();
+							Object clazz;
+							if (targetField.getType().equals(Integer.class)) {
+								clazz = targetField.getType().getConstructor(int.class).newInstance(IntegerConsts.ZERO);
+							} else if ((targetField.getType().equals(LocalDateTime.class))) {
+								clazz = LocalDateTime.parse(String.valueOf(value));
+							} else if ((targetField.getType().equals(LocalDate.class))) {
+								clazz = LocalDate.parse(String.valueOf(value));
+							} else if (targetField.getType().equals(BigDecimal.class)) {
+								clazz = BigDecimal.valueOf(Double.valueOf(String.valueOf(value)));
+							} else if (DATA_TYPE.contains(typeName)) {
+								buildArrayList((ArrayList) value, target, targetField);
+								continue;
+							} else {
+								clazz = targetField.getType().getDeclaredConstructor().newInstance();
+							}
+							if (!clazz.getClass().getName().startsWith(CLASS_TYPE)) {
+								copyProperties(value, clazz);
+							}
+							ReflectionUtils.setFieldValue(target, targetField, clazz);
+						}
         } catch (Exception ex) {
             logUtil.error(ex.getCause(), ex.getMessage());
         }
@@ -315,9 +318,16 @@ public class CopyUtils {
         List list = new ArrayList();
         for (Object obj :
                 arrayList) {
-            Object objClazz = clazz.newInstance();
-            copyProperties(obj, objClazz);
-            list.add(objClazz);
+          Object objClazz = null;
+          try {
+            objClazz = clazz.getDeclaredConstructor().newInstance();
+          } catch (InvocationTargetException ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+          } catch (NoSuchMethodException ex) {
+            logUtil.error(ex.getCause(), ex.getMessage());
+          }
+          copyProperties(obj, objClazz);
+          list.add(objClazz);
         }
         ReflectionUtils.setFieldValue(target, targetField, list);
     }

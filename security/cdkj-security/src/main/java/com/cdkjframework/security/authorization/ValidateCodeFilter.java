@@ -12,11 +12,11 @@ import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,11 +31,6 @@ import java.io.InputStream;
  */
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter {
-
-  /**
-   * 日志
-   */
-  private LogUtils logUtils = LogUtils.getLogger(ValidateCodeFilter.class);
 
   /**
    * 过虑权限验证
@@ -82,7 +77,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter {
     if (values == null || values.length == IntegerConsts.ZERO) {
       ResponseUtils.out(response, ResponseBuilder.failBuilder("验证码错误！"));
     }
-    String verifyCode = values[IntegerConsts.ZERO];
+    String verifyCode = ConvertUtils.convertString(values[IntegerConsts.ZERO]).toLowerCase();
 
     if (StringUtils.isNullAndSpaceOrEmpty(verifyCode) ||
         !validateValue.equals(verifyCode)) {

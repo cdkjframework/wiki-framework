@@ -2,6 +2,7 @@ package com.cdkjframework.kafka.consumer.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
+@RefreshScope
 @Configuration
 @ConfigurationProperties(prefix = "spring.custom.kafka")
 public class KafkaClientConfig {
@@ -57,7 +59,7 @@ public class KafkaClientConfig {
   /**
    * 人锁
    */
-  private Integer maxBlock = 6000;
+  private Integer maxBlock = 60000;
 
   /**
    * acks

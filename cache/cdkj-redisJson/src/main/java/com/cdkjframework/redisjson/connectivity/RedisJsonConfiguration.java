@@ -24,16 +24,13 @@ public class RedisJsonConfiguration implements ApplicationRunner {
      */
     private LogUtils logUtils = LogUtils.getLogger(RedisJsonConfiguration.class);
 
-    /**
-     * 配置
-     */
-    private final RedisJsonConfig redisJsonConfig;
-
-    /**
+  /**
      * 构造函数
      */
     public RedisJsonConfiguration(RedisJsonConfig redisJsonConfig) {
-        this.redisJsonConfig = redisJsonConfig;
+      /**
+       * 配置
+       */
     }
 
     /**

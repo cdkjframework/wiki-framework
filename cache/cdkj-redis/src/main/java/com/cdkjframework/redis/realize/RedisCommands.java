@@ -3,12 +3,17 @@ package com.cdkjframework.redis.realize;
 import io.lettuce.core.*;
 import io.lettuce.core.api.StatefulRedisConnection;
 import io.lettuce.core.api.async.RedisAsyncCommands;
+import io.lettuce.core.models.stream.ClaimedMessages;
+import io.lettuce.core.models.stream.PendingMessage;
+import io.lettuce.core.models.stream.PendingMessages;
 import io.lettuce.core.output.*;
 import io.lettuce.core.protocol.CommandArgs;
 import io.lettuce.core.protocol.CommandType;
 import io.lettuce.core.protocol.ProtocolKeyword;
+import io.lettuce.core.protocol.RedisCommand;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +32,16 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<String> set(String s, String s2, SetArgs setArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> setGet(String s, String s2) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> setGet(String s, String s2, SetArgs setArgs) {
         return null;
     }
 
@@ -141,6 +156,16 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> getdel(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> getex(String s, GetExArgs getExArgs) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> getrange(String s, long l, long l1) {
         return null;
     }
@@ -191,17 +216,22 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
-    public RedisFuture<List<Object>> xpending(String s, String k1) {
+    public RedisFuture<PendingMessages> xpending(String s, String k1) {
         return null;
     }
 
     @Override
-    public RedisFuture<List<Object>> xpending(String s, String k1, Range<String> range, Limit limit) {
+    public RedisFuture<List<PendingMessage>> xpending(String s, String k1, Range<String> range, Limit limit) {
         return null;
     }
 
     @Override
-    public RedisFuture<List<Object>> xpending(String s, Consumer<String> consumer, Range<String> range, Limit limit) {
+    public RedisFuture<List<PendingMessage>> xpending(String s, Consumer<String> consumer, Range<String> range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<PendingMessage>> xpending(String s, XPendingArgs<String> xPendingArgs) {
         return null;
     }
 
@@ -256,6 +286,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Long> xtrim(String s, XTrimArgs xTrimArgs) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> xack(String s, String k1, String... strings) {
         return null;
     }
@@ -277,6 +312,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<String> xadd(String s, XAddArgs xAddArgs, Object... objects) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<ClaimedMessages<String, String>> xautoclaim(String s, XAutoClaimArgs<String> xAutoClaimArgs) {
         return null;
     }
 
@@ -306,7 +346,12 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
-    public RedisFuture<Boolean> xgroupDelconsumer(String s, Consumer<String> consumer) {
+    public RedisFuture<Boolean> xgroupCreateconsumer(String s, Consumer<String> consumer) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> xgroupDelconsumer(String s, Consumer<String> consumer) {
         return null;
     }
 
@@ -364,6 +409,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrevrangebyscoreWithScores(String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -377,6 +423,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrevrangebyscoreWithScores(String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -394,6 +441,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, double v, double v1) {
         return null;
     }
@@ -406,6 +454,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, String s2, String s1) {
         return null;
     }
@@ -425,6 +474,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -439,6 +489,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -449,7 +500,27 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Long> zrevrangestore(String s, String k1, Range<Long> range) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zrevrangestorebylex(String s, String k1, Range<? extends String> range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zrevrangestorebyscore(String s, String k1, Range<? extends Number> range, Limit limit) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> zrevrank(String s, String s2) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<ScoredValue<Long>> zrevrankWithScore(String s, String s2) {
         return null;
     }
 
@@ -499,6 +570,26 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<List<String>> zunion(String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> zunion(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<ScoredValue<String>>> zunionWithScores(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<ScoredValue<String>>> zunionWithScores(String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> zunionstore(String s, String... strings) {
         return null;
     }
@@ -523,6 +614,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -537,6 +629,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -547,7 +640,27 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Long> zrangestore(String s, String k1, Range<Long> range) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zrangestorebylex(String s, String k1, Range<? extends String> range, Limit limit) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zrangestorebyscore(String s, String k1, Range<? extends Number> range, Limit limit) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> zrank(String s, String s2) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<ScoredValue<Long>> zrankWithScore(String s, String s2) {
         return null;
     }
 
@@ -563,6 +676,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zremrangebylex(String s, String s2, String s1) {
         return null;
     }
@@ -584,6 +698,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zremrangebyscore(String s, double v, double v1) {
         return null;
     }
@@ -595,6 +710,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zremrangebyscore(String s, String s2, String s1) {
         return null;
     }
@@ -641,6 +757,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrevrangebyscore(String s, double v, double v1) {
         return null;
     }
@@ -652,6 +769,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrevrangebyscore(String s, String s2, String s1) {
         return null;
     }
@@ -670,6 +788,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrevrangebyscore(String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -683,6 +802,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrevrangebyscore(String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -700,6 +820,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, double v, double v1) {
         return null;
     }
@@ -712,6 +833,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, String s2, String s1) {
         return null;
     }
@@ -731,6 +853,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -745,6 +868,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrevrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -761,6 +885,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrevrangebyscoreWithScores(String s, double v, double v1) {
         return null;
     }
@@ -772,7 +897,28 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrevrangebyscoreWithScores(String s, String s2, String s1) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, ScoredValue<String>>> bzmpop(long l, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, List<ScoredValue<String>>>> bzmpop(long l, long l1, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, ScoredValue<String>>> bzmpop(double v, ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, List<ScoredValue<String>>>> bzmpop(double v, int i, ZPopArgs zPopArgs, String... strings) {
         return null;
     }
 
@@ -782,7 +928,17 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<KeyValue<String, ScoredValue<String>>> bzpopmin(double v, String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<KeyValue<String, ScoredValue<String>>> bzpopmax(long l, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, ScoredValue<String>>> bzpopmax(double v, String... strings) {
         return null;
     }
 
@@ -838,6 +994,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zcount(String s, double v, double v1) {
         return null;
     }
@@ -849,6 +1006,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zcount(String s, String s2, String s1) {
         return null;
     }
@@ -859,7 +1017,52 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<List<String>> zdiff(String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zdiffstore(String s, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<ScoredValue<String>>> zdiffWithScores(String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Double> zincrby(String s, double v, String v1) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> zinter(String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> zinter(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zintercard(String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> zintercard(long l, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<ScoredValue<String>>> zinterWithScores(ZAggregateArgs zAggregateArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<ScoredValue<String>>> zinterWithScores(String... strings) {
         return null;
     }
 
@@ -880,12 +1083,28 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zlexcount(String s, String s2, String s1) {
         return null;
     }
 
     @Override
     public RedisFuture<Long> zlexcount(String s, Range<? extends String> range) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Double>> zmscore(String s, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, ScoredValue<String>>> zmpop(ZPopArgs zPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, List<ScoredValue<String>>>> zmpop(int i, ZPopArgs zPopArgs, String... strings) {
         return null;
     }
 
@@ -906,6 +1125,26 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<List<ScoredValue<String>>> zpopmax(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> zrandmember(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> zrandmember(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<ScoredValue<String>> zrandmemberWithScores(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<ScoredValue<String>>> zrandmemberWithScores(String s, long l) {
         return null;
     }
 
@@ -936,6 +1175,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrangebylex(String s, String s2, String s1) {
         return null;
     }
@@ -954,6 +1194,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrangebylex(String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -970,6 +1211,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrangebyscore(String s, double v, double v1) {
         return null;
     }
@@ -981,6 +1223,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrangebyscore(String s, String s2, String s1) {
         return null;
     }
@@ -999,6 +1242,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrangebyscore(String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1012,6 +1256,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<String>> zrangebyscore(String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -1029,6 +1274,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, double v, double v1) {
         return null;
     }
@@ -1041,6 +1287,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, String s2, String s1) {
         return null;
     }
@@ -1060,6 +1307,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1074,6 +1322,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscore(ValueStreamingChannel<String> valueStreamingChannel, String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -1090,6 +1339,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrangebyscoreWithScores(String s, double v, double v1) {
         return null;
     }
@@ -1101,6 +1351,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrangebyscoreWithScores(String s, String s2, String s1) {
         return null;
     }
@@ -1119,6 +1370,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrangebyscoreWithScores(String s, double v, double v1, long l, long l1) {
         return null;
     }
@@ -1132,6 +1384,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<List<ScoredValue<String>>> zrangebyscoreWithScores(String s, String s2, String s1, long l, long l1) {
         return null;
     }
@@ -1149,6 +1402,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, double v, double v1) {
         return null;
     }
@@ -1161,6 +1415,7 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
      * @deprecated
      */
     @Override
+    @Deprecated
     public RedisFuture<Long> zrangebyscoreWithScores(ScoredValueStreamingChannel<String> scoredValueStreamingChannel, String s, String s2, String s1) {
         return null;
     }
@@ -1201,6 +1456,16 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Long> sintercard(String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> sintercard(long l, String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> sinterstore(String s, String... strings) {
         return null;
     }
@@ -1222,6 +1487,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<Long> smembers(ValueStreamingChannel<String> valueStreamingChannel, String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Boolean>> smismember(String s, String... strings) {
         return null;
     }
 
@@ -1321,12 +1591,32 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> clientCaching(boolean b) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> clientGetname() {
         return null;
     }
 
     @Override
+    public RedisFuture<Long> clientGetredir() {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> clientSetname(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> clientSetinfo(String s, String s1) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> clientTracking(TrackingArgs trackingArgs) {
         return null;
     }
 
@@ -1352,6 +1642,21 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<String> clientList() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> clientList(ClientListArgs clientListArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> clientInfo() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> clientNoEvict(boolean b) {
         return null;
     }
 
@@ -1386,6 +1691,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Map<String, String>> configGet(String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> configResetstat() {
         return null;
     }
@@ -1397,6 +1707,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<String> configSet(String s, String s1) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> configSet(Map<String, String> map) {
         return null;
     }
 
@@ -1451,12 +1766,22 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> flushall(FlushMode flushMode) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> flushallAsync() {
         return null;
     }
 
     @Override
     public RedisFuture<String> flushdb() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> flushdb(FlushMode flushMode) {
         return null;
     }
 
@@ -1486,12 +1811,27 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> replicaof(String s, int i) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> replicaofNoOne() {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> save() {
         return null;
     }
 
     @Override
     public void shutdown(boolean b) {
+
+    }
+
+    @Override
+    public void shutdown(ShutdownArgs shutdownArgs) {
 
     }
 
@@ -1536,7 +1876,22 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public <T> RedisFuture<T> eval(byte[] bytes, ScriptOutputType scriptOutputType, String... strings) {
+        return null;
+    }
+
+    @Override
     public <T> RedisFuture<T> eval(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public <T> RedisFuture<T> eval(byte[] bytes, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public <T> RedisFuture<T> evalReadOnly(byte[] bytes, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
         return null;
     }
 
@@ -1551,12 +1906,22 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public <T> RedisFuture<T> evalshaReadOnly(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<List<Boolean>> scriptExists(String... strings) {
         return null;
     }
 
     @Override
     public RedisFuture<String> scriptFlush() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> scriptFlush(FlushMode flushMode) {
         return null;
     }
 
@@ -1571,7 +1936,37 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> scriptLoad(byte[] bytes) {
+        return null;
+    }
+
+    @Override
     public String digest(String s) {
+        return null;
+    }
+
+    @Override
+    public String digest(byte[] bytes) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> blmove(String s, String k1, LMoveArgs lMoveArgs, long l) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> blmove(String s, String k1, LMoveArgs lMoveArgs, double v) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, List<String>>> blmpop(long l, LMPopArgs lmPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, List<String>>> blmpop(double v, LMPopArgs lmPopArgs, String... strings) {
         return null;
     }
 
@@ -1581,12 +1976,27 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<KeyValue<String, String>> blpop(double v, String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<KeyValue<String, String>> brpop(long l, String... strings) {
         return null;
     }
 
     @Override
+    public RedisFuture<KeyValue<String, String>> brpop(double v, String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> brpoplpush(long l, String s, String k1) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> brpoplpush(double v, String s, String k1) {
         return null;
     }
 
@@ -1606,7 +2016,22 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> lmove(String s, String k1, LMoveArgs lMoveArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, List<String>>> lmpop(LMPopArgs lmPopArgs, String... strings) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> lpop(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> lpop(String s, long l) {
         return null;
     }
 
@@ -1667,6 +2092,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<String> rpop(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> rpop(String s, long l) {
         return null;
     }
 
@@ -1736,12 +2166,52 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Boolean> expire(String s, long l, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> expire(String s, Duration duration) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> expire(String s, Duration duration, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Boolean> expireat(String s, Date date) {
         return null;
     }
 
     @Override
+    public RedisFuture<Boolean> expireat(String s, Date date, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> expireat(String s, Instant instant) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> expireat(String s, Instant instant, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> expiretime(String s) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Boolean> expireat(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> expireat(String s, long l, ExpireArgs expireArgs) {
         return null;
     }
 
@@ -1776,6 +2246,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Long> objectFreq(String s) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> objectIdletime(String s) {
         return null;
     }
@@ -1796,12 +2271,52 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Boolean> pexpire(String s, long l, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> pexpire(String s, Duration duration) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> pexpire(String s, Duration duration, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Boolean> pexpireat(String s, Date date) {
         return null;
     }
 
     @Override
+    public RedisFuture<Boolean> pexpireat(String s, Date date, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> pexpireat(String s, Instant instant) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> pexpireat(String s, Instant instant, ExpireArgs expireArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> pexpiretime(String s) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Boolean> pexpireat(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> pexpireat(String s, long l, ExpireArgs expireArgs) {
         return null;
     }
 
@@ -1852,6 +2367,26 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<Long> sort(ValueStreamingChannel<String> valueStreamingChannel, String s, SortArgs sortArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> sortReadOnly(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> sortReadOnly(ValueStreamingChannel<String> valueStreamingChannel, String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> sortReadOnly(String s, SortArgs sortArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> sortReadOnly(ValueStreamingChannel<String> valueStreamingChannel, String s, SortArgs sortArgs) {
         return null;
     }
 
@@ -1951,6 +2486,26 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> hrandfield(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> hrandfield(String s, long l) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<KeyValue<String, String>> hrandfieldWithvalues(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<KeyValue<String, String>>> hrandfieldWithvalues(String s, long l) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<MapScanCursor<String, String>> hscan(String s) {
         return null;
     }
@@ -2041,7 +2596,27 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<Long> geoadd(String s, double v, double v1, String v2, GeoAddArgs geoAddArgs) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> geoadd(String s, Object... objects) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> geoadd(String s, GeoValue<String>... geoValues) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> geoadd(String s, GeoAddArgs geoAddArgs, Object... objects) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> geoadd(String s, GeoAddArgs geoAddArgs, GeoValue<String>... geoValues) {
         return null;
     }
 
@@ -2077,6 +2652,21 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<Long> georadiusbymember(String s, String s2, double v1, GeoArgs.Unit unit, GeoRadiusStoreArgs<String> geoRadiusStoreArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Set<String>> geosearch(String s, GeoSearch.GeoRef<String> geoRef, GeoSearch.GeoPredicate geoPredicate) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<GeoWithin<String>>> geosearch(String s, GeoSearch.GeoRef<String> geoRef, GeoSearch.GeoPredicate geoPredicate, GeoArgs geoArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> geosearchstore(String s, String k1, GeoSearch.GeoRef<String> geoRef, GeoSearch.GeoPredicate geoPredicate, GeoArgs geoArgs, boolean b) {
         return null;
     }
 
@@ -2181,12 +2771,17 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
-    public String auth(String s) {
+    public RedisFuture<String> auth(CharSequence charSequence) {
         return null;
     }
 
     @Override
-    public String select(int i) {
+    public RedisFuture<String> auth(String s, CharSequence charSequence) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> select(int i) {
         return null;
     }
 
@@ -2202,16 +2797,6 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public void setTimeout(Duration duration) {
-
-    }
-
-    /**
-     * @param l
-     * @param timeUnit
-     * @deprecated
-     */
-    @Override
-    public void setTimeout(long l, TimeUnit timeUnit) {
 
     }
 
@@ -2241,12 +2826,22 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> clusterDelSlotsRange(Range<Integer>... ranges) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> clusterSetSlotNode(int i, String s) {
         return null;
     }
 
     @Override
     public RedisFuture<String> clusterSetSlotStable(int i) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Object>> clusterShards() {
         return null;
     }
 
@@ -2291,6 +2886,11 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<String> clusterAddSlotsRange(Range<Integer>... ranges) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<Long> clusterCountFailureReports(String s) {
         return null;
     }
@@ -2326,7 +2926,17 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
     }
 
     @Override
+    public RedisFuture<List<String>> clusterReplicas(String s) {
+        return null;
+    }
+
+    @Override
     public RedisFuture<String> clusterFailover(boolean b) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> clusterFailover(boolean b, boolean b1) {
         return null;
     }
 
@@ -2337,6 +2947,16 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<String> clusterFlushslots() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> copy(String s, String k1) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Boolean> copy(String s, String k1, CopyArgs copyArgs) {
         return null;
     }
 
@@ -2357,6 +2977,156 @@ public class RedisCommands implements RedisAsyncCommands<String, String> {
 
     @Override
     public RedisFuture<Boolean> msetnx(Map<String, String> map) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Set<AclCategory>> aclCat() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Set<CommandType>> aclCat(AclCategory aclCategory) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<Long> aclDeluser(String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclDryRun(String s, String s1, String... strings) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclDryRun(String s, RedisCommand<String, String, ?> redisCommand) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclGenpass() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclGenpass(int i) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Object>> aclGetuser(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> aclList() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclLoad() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Map<String, Object>>> aclLog() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Map<String, Object>>> aclLog(int i) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclLogReset() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclSave() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclSetuser(String s, AclSetuserArgs aclSetuserArgs) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<String>> aclUsers() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> aclWhoami() {
+        return null;
+    }
+
+    @Override
+    public <T> RedisFuture<T> fcall(String s, ScriptOutputType scriptOutputType, String... strings) {
+        return null;
+    }
+
+    @Override
+    public <T> RedisFuture<T> fcall(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public <T> RedisFuture<T> fcallReadOnly(String s, ScriptOutputType scriptOutputType, String... strings) {
+        return null;
+    }
+
+    @Override
+    public <T> RedisFuture<T> fcallReadOnly(String s, ScriptOutputType scriptOutputType, String[] strings, String... strings2) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> functionLoad(String s) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> functionLoad(String s, boolean b) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<byte[]> functionDump() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> functionRestore(byte[] bytes) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> functionRestore(byte[] bytes, FunctionRestoreMode functionRestoreMode) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> functionFlush(FlushMode flushMode) {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<String> functionKill() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Map<String, Object>>> functionList() {
+        return null;
+    }
+
+    @Override
+    public RedisFuture<List<Map<String, Object>>> functionList(String s) {
         return null;
     }
 }

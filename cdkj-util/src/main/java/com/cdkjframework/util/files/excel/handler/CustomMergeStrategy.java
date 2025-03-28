@@ -1,12 +1,12 @@
 package com.cdkjframework.util.files.excel.handler;
 
 import com.alibaba.excel.metadata.Head;
-import com.alibaba.excel.util.CollectionUtils;
 import com.alibaba.excel.write.merge.AbstractMergeStrategy;
 import com.cdkjframework.constant.IntegerConsts;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,7 +80,7 @@ public class CustomMergeStrategy extends AbstractMergeStrategy {
     private void mergeGroupColumn(Sheet sheet) {
         int rowCount = rowIndex;
         for (Integer count : exportFieldGroupCountList) {
-            if (count == IntegerConsts.ONE) {
+            if (count.equals(IntegerConsts.ONE)) {
                 rowCount += count;
                 continue;
             }

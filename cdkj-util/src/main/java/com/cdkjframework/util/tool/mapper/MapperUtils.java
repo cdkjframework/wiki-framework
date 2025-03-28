@@ -8,7 +8,10 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 /**
@@ -50,7 +53,7 @@ public class MapperUtils {
             throw new Exception("Can't be a list!");
         }
 
-        S s = clazz.newInstance();
+      S s = clazz.getDeclaredConstructor().newInstance();
         // 获取目标参数所有字段
         List<Field> lists = ReflectionUtils.getDeclaredFields(clazz);
 
@@ -60,7 +63,6 @@ public class MapperUtils {
         dataType.add("java.util.List");
 
         for (Field temp : fields) {
-
             //验证修饰符
             if (validateModification(temp)) {
                 continue;

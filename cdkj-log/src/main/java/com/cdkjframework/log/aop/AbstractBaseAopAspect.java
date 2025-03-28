@@ -24,16 +24,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 public abstract class AbstractBaseAopAspect implements IBaseAopAspect, ApplicationRunner {
 
     /**
-     * 日志队列
-     */
-    protected Queue<LogRecordDto> logRecordDtoQueue = new LinkedBlockingDeque<>();
-
-    /**
-     * 服务执行切入点值
-     */
-    protected final String executionServicePoint = "execution(* service.impl.*.*(..))";
-
-    /**
      * 控制器执行切入点值
      */
     protected final String executionControllerPoint = "execution(public * com.*.*.*.controller.*.*(..))";
@@ -66,7 +56,7 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect, Applicati
      * @throws Throwable 异常信息
      */
     @Override
-    public abstract Object JoinPoint(JoinPoint joinPoint) throws Throwable;
+    public abstract Object joinPoint(JoinPoint joinPoint) throws Throwable;
 
     /**
      * 获取参数

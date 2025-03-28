@@ -5,9 +5,9 @@ import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Configuration;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 

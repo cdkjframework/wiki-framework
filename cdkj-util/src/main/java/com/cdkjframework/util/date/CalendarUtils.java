@@ -53,7 +53,7 @@ public class CalendarUtils {
      * @param y
      * @return
      */
-    final private static int yearDays(int y) {
+    private static int yearDays(int y) {
         int i, sum = 348;
         for (i = 0x8000; i > 0x8; i >>= 1) {
             if ((lunarInfo[y - 1900] & i) != 0) {
@@ -69,7 +69,7 @@ public class CalendarUtils {
      * @param y
      * @return
      */
-    final private static int leapDays(int y) {
+    private static int leapDays(int y) {
         if (leapMonth(y) != 0) {
             if ((lunarInfo[y - 1900] & 0x10000) != 0) {
                 return 30;
@@ -87,7 +87,7 @@ public class CalendarUtils {
      * @param y
      * @return
      */
-    final private static int leapMonth(int y) {
+    private static int leapMonth(int y) {
         return (int) (lunarInfo[y - 1900] & 0xf);
     }
 
@@ -98,7 +98,7 @@ public class CalendarUtils {
      * @param m
      * @return
      */
-    final private static int monthDays(int y, int m) {
+    private static int monthDays(int y, int m) {
         if ((lunarInfo[y - 1900] & (0x10000 >> m)) == 0) {
             return 29;
         } else {
@@ -123,7 +123,7 @@ public class CalendarUtils {
      * @param num
      * @return
      */
-    final private static String cyclicalm(int num) {
+    private static String cyclicalm(int num) {
         final String[] Gan = new String[]{"甲", "乙", "丙", "丁", "戊", "己", "庚",
                 "辛", "壬", "癸"};
         final String[] Zhi = new String[]{"子", "丑", "寅", "卯", "辰", "巳", "午",

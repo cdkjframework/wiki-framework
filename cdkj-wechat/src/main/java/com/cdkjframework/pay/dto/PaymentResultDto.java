@@ -1,11 +1,6 @@
 package com.cdkjframework.pay.dto;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
+import lombok.Data;
 /**
  * @ProjectName: common-core
  * @Package: com.cdkjframework.pay.vo
@@ -14,9 +9,7 @@ import lombok.ToString;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Getter
-@Setter
-@ToString
+@Data
 public class PaymentResultDto {
 
     /**

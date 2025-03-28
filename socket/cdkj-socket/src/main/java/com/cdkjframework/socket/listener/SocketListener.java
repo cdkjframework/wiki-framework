@@ -10,18 +10,25 @@ package com.cdkjframework.socket.listener;
  */
 public interface SocketListener {
 
-    /**
-     * 消息
-     *
-     * @param channelId 通话ID
-     * @param bytes   消息内容字节数据
-     */
-    void onMessage(String channelId, byte[] bytes);
+	/**
+	 * 消息
+	 *
+	 * @param channelId 通话ID
+	 * @param bytes     消息内容字节数据
+	 */
+	void onMessage(String channelId, byte[] bytes);
 
-    /**
-     * 断开连接
-     *
-     * @param channelId 通道ID
-     */
-    void onDisconnect(String channelId);
+	/**
+	 * 心跳
+	 *
+	 * @param channelId 通话ID
+	 */
+	void heartbeat(String channelId);
+
+	/**
+	 * 断开连接
+	 *
+	 * @param channelId 通道ID
+	 */
+	void onDisconnect(String channelId);
 }

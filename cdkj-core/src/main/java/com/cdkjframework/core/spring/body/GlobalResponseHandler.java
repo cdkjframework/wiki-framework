@@ -6,7 +6,6 @@ import com.cdkjframework.enums.ResponseBuilderEnums;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.JsonUtils;
-import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.core.MethodParameter;
@@ -35,11 +34,6 @@ import java.util.stream.Collectors;
 public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAdvice {
 
   /**
-   * 日志
-   */
-  private LogUtils logUtils = LogUtils.getLogger(GlobalRequestHandler.class);
-
-  /**
    * 参数列表
    */
   private static List<String> parameterList;
@@ -47,21 +41,6 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
    * 参数列表
    */
   private static List<String> parameterCdkjList;
-
-  /**
-   * 字段值
-   */
-  private final String FIELD_VALUE = "code";
-
-  /**
-   * 结束进程常量
-   */
-  private final String SHUTDOWN = "shutdown";
-
-  /**
-   * 数据类型
-   */
-  private static String dataType = "java.util.ArrayList";
 
   static {
     parameterList = new ArrayList<>();
@@ -82,6 +61,10 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
   @Override
   public boolean supports(MethodParameter methodParameter, Class aClass) {
     // 验证是否为
+    /**
+     * 结束进程常量
+     */
+    String SHUTDOWN = "shutdown";
     if (SHUTDOWN.equals(methodParameter.getMember().getName())) {
       return false;
     }
@@ -125,6 +108,10 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
         .filter(f -> returnTypeName.contains(f))
         .collect(Collectors.toList());
     if (!list.isEmpty()) {
+      /**
+       * 字段值
+       */
+      String FIELD_VALUE = "code";
       Field field = ReflectionUtils.getDeclaredField(clazz, FIELD_VALUE);
       Object value = ReflectionUtils.getFieldValue(field, o);
       ResponseBuilderEnums enums = ResponseBuilderEnums.Error;
@@ -167,7 +154,9 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
     }
 
     if (!encryption && customConfig.isJson()) {
-      if (dataType.equals(o.getClass().getName())) {
+      // 数据类型
+      String DATA_TYPE = "java.util.ArrayList";
+      if (DATA_TYPE.equals(o.getClass().getName())) {
         return JsonUtils.parseArray(json);
       }
       return JsonUtils.parseObject(json);

@@ -19,7 +19,7 @@ import com.cdkjframework.util.make.GeneratedValueUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 

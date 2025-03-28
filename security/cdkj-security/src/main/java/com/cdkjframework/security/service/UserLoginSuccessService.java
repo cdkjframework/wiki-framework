@@ -2,7 +2,7 @@ package com.cdkjframework.security.service;
 
 import org.springframework.security.core.Authentication;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 import java.io.IOException;
 
 /**

@@ -4,6 +4,7 @@ import com.cdkjframework.constant.IntegerConsts;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 /**
  * @ProjectName: cdkjframework.core
@@ -180,7 +181,7 @@ public class CompareUtils {
             scale = IntegerConsts.TWO;
         }
         //返回数据
-        return BigDecimal.valueOf(sourceDigital).setScale(scale, BigDecimal.ROUND_HALF_UP);
+        return BigDecimal.valueOf(sourceDigital).setScale(scale, RoundingMode.HALF_UP);
     }
 
     /**

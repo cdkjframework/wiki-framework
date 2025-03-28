@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -28,12 +28,7 @@ import java.io.OutputStream;
 @RequestMapping(value = "/security")
 public class LoginController {
 
-    /**
-     * 编码字符
-     */
-    private final String CODE = "code";
-
-    /**
+  /**
      * 获取验证码
      */
     @ResponseBody
@@ -42,7 +37,11 @@ public class LoginController {
         // 验证码
         String code = GeneratedValueUtils.getRandomCharacter(IntegerConsts.FOUR);
         HttpSession session = request.getSession();
-        session.setAttribute(CODE, code);
+      /**
+       * 编码字符
+       */
+      String CODE = "code";
+      session.setAttribute(CODE, code);
 
         // 响应数据
         try {

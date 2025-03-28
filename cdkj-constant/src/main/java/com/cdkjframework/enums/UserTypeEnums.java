@@ -101,8 +101,8 @@ public enum UserTypeEnums implements InterfaceEnum {
    */
   NET_SERVICE("net_service", "网点服务");
 
-  private String value;
-  private String text;
+  private final String value;
+  private final String text;
 
   /**
    * 构建函数

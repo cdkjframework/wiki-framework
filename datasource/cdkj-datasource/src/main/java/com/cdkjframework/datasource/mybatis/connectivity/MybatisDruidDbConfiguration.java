@@ -9,6 +9,7 @@ import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ import java.sql.SQLException;
  * @Version: 1.0
  */
 @RequiredArgsConstructor
+@ImportAutoConfiguration(value = {MybatisConfiguration.class})
 public class MybatisDruidDbConfiguration {
 
   /**
@@ -59,9 +61,9 @@ public class MybatisDruidDbConfiguration {
     //设置数据库连接
     if (dataSourceConfig.isEncryption()) {
       AesUtils aes = new AesUtils(customConfig);
-      datasource.setUrl(aes.base64Decrypt(mybatisSqlConfig.getUrl()));
-      datasource.setUsername(aes.base64Decrypt(mybatisSqlConfig.getUsername()));
-      datasource.setPassword(aes.base64Decrypt(mybatisSqlConfig.getPassword()));
+      datasource.setUrl(AesUtils.base64Decrypt(mybatisSqlConfig.getUrl()));
+      datasource.setUsername(AesUtils.base64Decrypt(mybatisSqlConfig.getUsername()));
+      datasource.setPassword(AesUtils.base64Decrypt(mybatisSqlConfig.getPassword()));
     } else {
       datasource.setUrl(mybatisSqlConfig.getUrl());
       datasource.setUsername(mybatisSqlConfig.getUsername());

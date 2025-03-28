@@ -1,9 +1,6 @@
 package com.cdkjframework.entity.generate.template;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
 /**
  * @ProjectName: cdkjframework
@@ -26,25 +23,25 @@ public class TableColumnEntity {
      */
     private String columnComment;
 
-    /**
-     * 是否为主键
-     */
-    private String columnKey;
+	/**
+	 * 是否为主键
+	 */
+	private String columnKey;
 
-    /**
-     * 字段数据类型
-     */
-    private String dataType;
+	/**
+	 * 字段数据类型
+	 */
+	private String dataType;
 
-    /**
-     * 字段最大长度
-     */
-    private String characterMaximumLength;
+	/**
+	 * 字段最大长度
+	 */
+	private String characterMaximumLength;
 
-    /**
-     * 字段默认值
-     */
-    private String columnDefault;
+	/**
+	 * 字段默认值
+	 */
+	private String columnDefault;
 
     /**
      * 是否为空

@@ -60,7 +60,9 @@ public enum AlgorithmTypeEnums implements InterfaceEnum {
      */
     SHA512("SHA-512", "SHA512 加密", "");
 
-    private String value, text, node;
+    private final String value;
+  private final String text;
+  private final String node;
 
     /**
      * 构造函数

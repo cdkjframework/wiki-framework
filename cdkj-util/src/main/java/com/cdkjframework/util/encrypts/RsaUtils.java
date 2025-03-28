@@ -49,7 +49,7 @@ public class RsaUtils {
      * @param key  密钥
      * @return byte[] 加密数据
      */
-    public static byte[] encrypPrivateKey(byte[] data, byte[] key) throws Exception {
+    public static byte[] encryptPrivateKey(byte[] data, byte[] key) throws Exception {
 
         //取得私钥
         PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(key);

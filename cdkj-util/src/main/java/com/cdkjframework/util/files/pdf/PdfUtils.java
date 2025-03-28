@@ -1,8 +1,8 @@
 package com.cdkjframework.util.files.pdf;
 
 import com.cdkjframework.util.tool.StringUtils;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.pdf.BaseFont;
+//import com.itextpdf.text.DocumentException;
+//import com.itextpdf.text.pdf.BaseFont;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -24,12 +24,12 @@ public class PdfUtils {
      * @param fontPath 字体路径
      * @return 返回字体
      */
-    public static BaseFont getBaseFont(String fontPath) throws IOException, DocumentException {
-        if (StringUtils.isNullAndSpaceOrEmpty(fontPath)) {
-            return BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-        } else {
-            return BaseFont.createFont();
-        }
-    }
+//    public static BaseFont getBaseFont(String fontPath) throws IOException, DocumentException {
+//        if (StringUtils.isNullAndSpaceOrEmpty(fontPath)) {
+//            return BaseFont.createFont(fontPath, BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+//        } else {
+//            return BaseFont.createFont();
+//        }
+//    }
 
 }

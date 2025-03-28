@@ -1,15 +1,12 @@
 package com.cdkjframework.entity;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.SchemaProperty;
+import jakarta.persistence.Column;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.Transient;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -108,15 +105,21 @@ public class BaseEntity implements Serializable {
   private String id;
 
   /**
+   * 备注
+   */
+  @Column(name = "remark", length = 500)
+  private String remark;
+
+  /**
    * 是否删除
    */
-  @Column(name = "deleted", nullable = false)
+  @Column(name = "deleted", nullable = false,columnDefinition="int default 0")
   private Integer deleted;
 
   /**
    * 机构状态 (0-启用,1-禁用)
    */
-  @Column(name = "status", nullable = false)
+  @Column(name = "status", nullable = false,columnDefinition="int default 1")
   private Integer status;
 
   /**
@@ -134,7 +137,7 @@ public class BaseEntity implements Serializable {
   /**
    * 添加用户名称
    */
-  @Column(name = "add_user_name", length = 500, nullable = false)
+  @Column(name = "add_user_name", length = 200, nullable = false)
   private String addUserName;
 
   /**
@@ -146,15 +149,15 @@ public class BaseEntity implements Serializable {
   /**
    * 修改用户ID
    */
-  @ApiModelProperty("修改用户ID")
+  @SchemaProperty(name = "修改用户ID")
   @Column(name = "edit_user_id", length = 36)
   private String editUserId;
 
   /**
    * 修改用户名称
    */
-  @ApiModelProperty("修改用户名称")
-  @Column(name = "edit_user_name", length = 500)
+  @SchemaProperty(name = "修改用户名称")
+  @Column(name = "edit_user_name", length = 200)
   private String editUserName;
 
   /**

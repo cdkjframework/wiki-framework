@@ -28,12 +28,7 @@ public class DesUtils {
      */
     private static Cipher cipher;
 
-    /**
-     * 长度
-     */
-    private static int KEY_GENERATOR_LENGTH = 56;
-
-    /**
+  /**
      * DES 加密
      */
     public static byte[] encrypt(byte[] data) throws Exception {
@@ -62,7 +57,11 @@ public class DesUtils {
             synchronized (DesUtils.class) {
                 if (cipher == null) {
                     KeyGenerator keyGenerator = KeyGenerator.getInstance(PASSWORD_TYPE);
-                    keyGenerator.init(KEY_GENERATOR_LENGTH);
+                  /**
+                   * 长度
+                   */
+                  int KEY_GENERATOR_LENGTH = 56;
+                  keyGenerator.init(KEY_GENERATOR_LENGTH);
                     SecretKey secretKey = keyGenerator.generateKey();
                     byte[] bytes = secretKey.getEncoded();
                     SecretKey key = new SecretKeySpec(bytes, PASSWORD_TYPE);

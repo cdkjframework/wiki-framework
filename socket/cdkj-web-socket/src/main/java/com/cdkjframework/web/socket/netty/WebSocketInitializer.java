@@ -17,6 +17,7 @@ import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.handler.timeout.IdleStateHandler;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
@@ -33,6 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 @Component
 @ChannelHandler.Sharable
+@RequiredArgsConstructor
 public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
 
   /**
@@ -45,13 +47,6 @@ public class WebSocketInitializer extends ChannelInitializer<SocketChannel> {
    */
   private final WebSocket webSocket;
 
-  /**
-   * 构造函数
-   */
-  public WebSocketInitializer(WebSocketConfig webSocketConfig, WebSocket webSocket) {
-    this.webSocketConfig = webSocketConfig;
-    this.webSocket = webSocket;
-  }
 
   /**
    * 初始化通道

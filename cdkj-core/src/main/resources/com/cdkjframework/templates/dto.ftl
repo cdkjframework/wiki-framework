@@ -5,11 +5,8 @@ import com.cdkjframework.entity.base.BaseDto;
 import ${item};
 </#list>
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-import javax.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @ProjectName: ${projectName}
@@ -20,15 +17,22 @@ import javax.persistence.*;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
+@EqualsAndHashCode(callSuper = false)
 public class ${className}Dto extends BaseDto {
 
     /**
     * 序列版本UID
     */
     private static final long serialVersionUID = ${serialVersionUID};
+<#list children as item>
+    <#if item.columnShow && item.isExtension==0>
+      /**
+      * ${item.columnDescription}
+      */
+      public static final String ${item.tableColumnNameUpperCase} = "${item.columnName}";
+    </#if>
+</#list>
 
 <#list children as item>
     <#if item.columnShow && item.isExtension==0>

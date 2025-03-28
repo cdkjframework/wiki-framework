@@ -1,9 +1,9 @@
 package com.cdkjframework.entity.user.security;
 
-import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.user.ResourceEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -20,6 +20,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
+@EqualsAndHashCode(callSuper=false)
 public class SecurityUserEntity extends UserEntity implements Serializable, UserDetails {
 
     private static final long serialVersionUID = 1L;
@@ -67,26 +68,39 @@ public class SecurityUserEntity extends UserEntity implements Serializable, User
     /**
      * 账户是否被锁定
      */
-    private boolean isAccountNonLocked = false;
+		private boolean isAccountNonLocked = false;
 
-    /**
-     * 证书是否过期
-     */
-    private boolean isCredentialsNonExpired = false;
-    /**
-     * 账户是否有效
-     */
-    private boolean isEnabled = true;
+	/**
+	 * 证书是否过期
+	 */
+	private boolean isCredentialsNonExpired = false;
+	/**
+	 * 账户是否有效
+	 */
+	private boolean isEnabled = true;
 
-    public String getUserId() {
-        return userId;
-    }
+	/**
+	 * 省_id
+	 */
+	private String provinceId;
+	/**
+	 * 市_id
+	 */
+	private String cityId;
+	/**
+	 * 区（县）id
+	 */
+	private String countyId;
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+	public String getUserId() {
+		return userId;
+	}
 
-    @Override
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	@Override
     public String getUsername() {
         return username;
     }
