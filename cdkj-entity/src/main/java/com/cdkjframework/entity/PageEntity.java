@@ -45,7 +45,7 @@ public class PageEntity<T> implements Serializable {
    * @param total 总条数
    * @param data  数据集 list
    */
-  public static <T> PageEntity build(long index, long total, List<T> data) {
+  public static <T> PageEntity<T> build(long index, long total, List<T> data) {
     return new PageEntity<>(index, total, data);
   }
 
