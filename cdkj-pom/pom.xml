@@ -97,6 +97,7 @@
     <xjar.version>2.0.9</xjar.version>
     <loadkit.version>v1.0.2</loadkit.version>
     <collections4.version>4.4</collections4.version>
+    <httpclient.version>4.5.14</httpclient.version>
     <objenesis.version>3.4</objenesis.version>
 
     <itextpdf.version>5.5.13.3</itextpdf.version>
@@ -325,6 +326,11 @@
         <groupId>org.apache.commons</groupId>
         <artifactId>commons-collections4</artifactId>
         <version>${collections4.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.httpcomponents</groupId>
+        <artifactId>httpclient</artifactId>
+        <version>${httpclient.version}</version>
       </dependency>
       <dependency>
         <groupId>org.objenesis</groupId>
