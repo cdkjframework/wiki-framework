@@ -189,7 +189,6 @@ public interface BaseMapper<T> extends Mapper<T> {
    *
    * @param idList 主键ID列表(不能为 null 以及 empty)
    * @return 数据列表
-   * @deprecated 3.5.8
    */
   default List<T> listEntityBatchIds(@Param(Constants.COLL) Collection<? extends Serializable> idList) {
     return listEntityByIds(idList);
