@@ -61,7 +61,7 @@
     <mybatis-spring.version>3.0.3</mybatis-spring.version>
     <mybatis.dynamic.version>1.1.4</mybatis.dynamic.version>
     <mybatis.jsr310.version>1.0.2</mybatis.jsr310.version>
-    <pagehelper.version>2.1.0</pagehelper.version>
+    <pagehelper.version>6.1.0</pagehelper.version>
     <elasticsearch.version>8.13.4</elasticsearch.version>
     <!--alibaba -->
     <druid.version>1.2.23</druid.version>
@@ -134,7 +134,7 @@
     <jjwt.version>0.9.1</jjwt.version>
     <validation-api.version>2.0.1.Final</validation-api.version>
     <io.netty.version>4.2.0.RC3</io.netty.version>
-    <java-websocket.version>1.5.7</java-websocket.version>
+    <java-websocket.version>1.6.0</java-websocket.version>
     <ulid-creator.version>5.1.0</ulid-creator.version>
   </properties>
 
