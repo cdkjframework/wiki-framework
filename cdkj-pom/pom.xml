@@ -61,7 +61,7 @@
     <mybatis.dynamic.version>1.1.4</mybatis.dynamic.version>
     <mybatis.jsr310.version>1.0.2</mybatis.jsr310.version>
     <pagehelper.version>2.1.0</pagehelper.version>
-    <elasticsearch.version>8.13.4</elasticsearch.version>
+    <elasticsearch.version>8.17.4</elasticsearch.version>
     <!--alibaba -->
     <druid.version>1.2.23</druid.version>
     <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
