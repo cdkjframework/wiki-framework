@@ -2,6 +2,7 @@ package com.cdkjframework.datasource.jpa.config;
 
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
+import com.cdkjframework.datasource.jpa.builder.JapCriteriaBuilder;
 import com.cdkjframework.datasource.jpa.connectivity.JpaConfiguration;
 import com.cdkjframework.datasource.jpa.connectivity.JpaDruidDbConfiguration;
 import lombok.RequiredArgsConstructor;
@@ -28,9 +29,9 @@ import org.springframework.context.annotation.Lazy;
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({
-        CustomConfig.class,
-        JpaConfig.class,
-        DataSourceConfig.class
+    CustomConfig.class,
+    JpaConfig.class,
+    DataSourceConfig.class
 })
 @ImportAutoConfiguration(value = {JpaDruidDbConfiguration.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})

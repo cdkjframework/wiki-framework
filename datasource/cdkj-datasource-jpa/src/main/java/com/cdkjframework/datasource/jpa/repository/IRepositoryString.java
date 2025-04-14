@@ -52,12 +52,4 @@ public interface IRepositoryString<T> extends JpaRepository<T, String>, JpaSpeci
    */
   @Override
   void deleteAll(Iterable<? extends T> iterable);
-
-  /**
-   * 查询分页数据
-   *
-   * @param cb 条件
-   * @return 返回结果
-   */
-  PageEntity<T> listPaginated(JapCriteriaBuilder<T> cb);
 }
