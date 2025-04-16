@@ -4,6 +4,7 @@ import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CollectUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import jakarta.persistence.criteria.*;
@@ -119,10 +120,7 @@ public class JpaCriteriaBuilder<T> {
    * @return Specification
    */
   public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String> ignoreFields) {
-    var groupFields = new List[1];
-    {
-      CollectUtils.toList();
-    }
+    var groupFields = new List[0];
     return autoBuilder(builder, entity, ignoreFields, groupFields);
   }
 
@@ -149,31 +147,61 @@ public class JpaCriteriaBuilder<T> {
    * @param <V>          实体类型
    * @return Specification
    */
-  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String> ignoreFields, List<String>... groupFields) {
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder<T> builder, @NotNull V entity, List<String> ignoreFields, List<String>... groupFields) {
     if (Objects.isNull(entity)) {
       throw new GlobalRuntimeException("实体不能为空");
     }
-    String pageSize = "pageSize", pageIndex = "pageIndex";
-    Field[] fields = entity.getClass().getDeclaredFields();
-    for (Field field : fields) {
-      field.setAccessible(Boolean.TRUE);
-      try {
-        Object value = field.get(entity);
-        if (StringUtils.isNullAndSpaceOrEmpty(value)) {
-          if (pageIndex.equals(field.getName())) {
-            builder = builder.page(ConvertUtils.convertInt(value));
-          } else if (pageSize.equals(field.getName())) {
-            builder = builder.size(ConvertUtils.convertInt(value));
-          } else {
-            builder = builder.equal(field.getName(), value);
-          }
-        }
-      } catch (IllegalAccessException e) {
-        log.error(e);
-      }
+    if (ignoreFields == null) {
+      ignoreFields = CollectUtils.toList();
     }
+    if (groupFields == null) {
+      groupFields = new List[IntegerConsts.ZERO];
+    }
+    if (CollectUtils.isEmpty(groupFields) || CollectUtils.isEmpty(groupFields)) {
+      return autoBuilder(builder, entity);
+    }
+    String pageSize = "pageSize", pageIndex = "pageIndex";
+    Integer size = null, index = null;
+    Field[] fields = entity.getClass().getDeclaredFields();
+
+    List<JpaCriteriaBuilder<T>> groupFieldsList = new ArrayList<>();
+    for (int i = IntegerConsts.ZERO; i < groupFields.length; i++) {
+      List<String> groupField = groupFields[i];
+      List<Field> fieldList = Arrays.stream(fields)
+          .filter(groupField::equals)
+          .collect(Collectors.toList());
+      if (CollectUtils.isEmpty(fieldList)) {
+        continue;
+      }
+      JpaCriteriaBuilder criteria = CopyUtils.copyProperties(builder, JpaCriteriaBuilder.class);
+      for (Field field : fieldList) {
+        field.setAccessible(Boolean.TRUE);
+        String fieldName = field.getName();
+        if (ignoreFields.contains(fieldName)) {
+          continue;
+        }
+        try {
+          Object value = field.get(entity);
+          if (StringUtils.isNullAndSpaceOrEmpty(value)) {
+            if (pageIndex.equals(field.getName())) {
+              index = ConvertUtils.convertInt(value);
+            } else if (pageSize.equals(field.getName())) {
+              size = ConvertUtils.convertInt(value);
+            } else {
+              criteria = criteria.equal(field.getName(), value);
+            }
+          }
+        } catch (IllegalAccessException e) {
+          log.error(e);
+        }
+      }
+      groupFieldsList.add(criteria);
+    }
+    // 构建最终数据
+    JpaCriteriaBuilder<T> result = builder.or(groupFieldsList.toArray(new JpaCriteriaBuilder[IntegerConsts.ZERO]));
+    result.page(index).size(size);
     // 返回结果
-    return builder;
+    return result;
   }
 
 
