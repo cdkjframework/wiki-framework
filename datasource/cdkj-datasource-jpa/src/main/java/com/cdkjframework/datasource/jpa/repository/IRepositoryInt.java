@@ -1,6 +1,6 @@
 package com.cdkjframework.datasource.jpa.repository;
 
-import com.cdkjframework.datasource.jpa.builder.JapCriteriaBuilder;
+import com.cdkjframework.datasource.jpa.builder.JpaCriteriaBuilder;
 import com.cdkjframework.entity.PageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,5 +60,5 @@ public interface IRepositoryInt <T> extends JpaRepository<T, Integer>, JpaSpecif
      * @param cb 条件
      * @return 返回结果
      */
-    PageEntity<T> listPaginated(JapCriteriaBuilder<T> cb);
+    PageEntity<T> listPaginated(JpaCriteriaBuilder<T> cb);
 }

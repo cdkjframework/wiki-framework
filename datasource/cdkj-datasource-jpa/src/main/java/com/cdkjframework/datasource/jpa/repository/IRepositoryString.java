@@ -1,7 +1,5 @@
 package com.cdkjframework.datasource.jpa.repository;
 
-import com.cdkjframework.datasource.jpa.builder.JapCriteriaBuilder;
-import com.cdkjframework.entity.PageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

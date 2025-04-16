@@ -2,7 +2,6 @@ package com.cdkjframework.datasource.jpa.config;
 
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
-import com.cdkjframework.datasource.jpa.builder.JapCriteriaBuilder;
 import com.cdkjframework.datasource.jpa.connectivity.JpaConfiguration;
 import com.cdkjframework.datasource.jpa.connectivity.JpaDruidDbConfiguration;
 import lombok.RequiredArgsConstructor;

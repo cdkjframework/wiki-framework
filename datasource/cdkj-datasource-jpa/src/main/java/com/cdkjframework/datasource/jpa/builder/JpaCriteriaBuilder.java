@@ -2,8 +2,10 @@ package com.cdkjframework.datasource.jpa.builder;
 
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
+import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CollectUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import jakarta.persistence.criteria.*;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.data.domain.PageRequest;
@@ -12,9 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.lang.reflect.Field;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -28,7 +29,12 @@ import java.util.stream.Collectors;
  * @Version: 1.0
  */
 @Component
-public class JapCriteriaBuilder<T> {
+public class JpaCriteriaBuilder<T> {
+
+  /**
+   * 日志
+   */
+  private final static LogUtils log = LogUtils.getLogger(JpaCriteriaBuilder.class);
 
   /**
    * 页码
@@ -52,16 +58,10 @@ public class JapCriteriaBuilder<T> {
   private Specification<T> specification;
 
   /**
-   * 存储查询条件
-   */
-  private final List<Predicate> predicates;
-
-  /**
    * 构造函数
    */
-  private JapCriteriaBuilder() {
+  private JpaCriteriaBuilder() {
     rawSortList = new ArrayList<>();
-    predicates = new ArrayList<>();
     specification = Specification.where(null);
   }
 
@@ -70,9 +70,112 @@ public class JapCriteriaBuilder<T> {
    *
    * @return JapCriteriaBuilder
    */
-  public static <T> JapCriteriaBuilder<T> Builder() {
-    return new JapCriteriaBuilder<>();
+  public static <T> JpaCriteriaBuilder<T> Builder() {
+    return new JpaCriteriaBuilder<>();
   }
+
+  /**
+   * 自动构建规范
+   *
+   * @param builder JapCriteriaBuilder
+   * @param entity  实体
+   * @param <V>     实体类型
+   * @return Specification
+   */
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity) {
+    if (Objects.isNull(entity)) {
+      throw new GlobalRuntimeException("实体不能为空");
+    }
+    String pageSize = "pageSize", pageIndex = "pageIndex";
+    Field[] fields = entity.getClass().getDeclaredFields();
+    for (Field field : fields) {
+      field.setAccessible(Boolean.TRUE);
+      try {
+        Object value = field.get(entity);
+        if (StringUtils.isNullAndSpaceOrEmpty(value)) {
+          if (pageIndex.equals(field.getName())) {
+            builder = builder.page(ConvertUtils.convertInt(value));
+          } else if (pageSize.equals(field.getName())) {
+            builder = builder.size(ConvertUtils.convertInt(value));
+          } else {
+            builder = builder.equal(field.getName(), value);
+          }
+        }
+      } catch (IllegalAccessException e) {
+        log.error(e);
+      }
+    }
+    // 返回结果
+    return builder;
+  }
+
+  /**
+   * 自动构建规范
+   *
+   * @param builder      JapCriteriaBuilder
+   * @param entity       实体
+   * @param ignoreFields 对应字段
+   * @param <V>          实体类型
+   * @return Specification
+   */
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String> ignoreFields) {
+    var groupFields = new List[1];
+    {
+      CollectUtils.toList();
+    }
+    return autoBuilder(builder, entity, ignoreFields, groupFields);
+  }
+
+  /**
+   * 自动构建规范
+   *
+   * @param builder     JapCriteriaBuilder
+   * @param entity      实体
+   * @param groupFields 分组字段
+   * @param <V>         实体类型
+   * @return Specification
+   */
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String>... groupFields) {
+    return autoBuilder(builder, entity, CollectUtils.toList(), groupFields);
+  }
+
+  /**
+   * 自动构建规范
+   *
+   * @param builder      JapCriteriaBuilder
+   * @param entity       实体
+   * @param ignoreFields 对应字段
+   * @param groupFields  分组字段
+   * @param <V>          实体类型
+   * @return Specification
+   */
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String> ignoreFields, List<String>... groupFields) {
+    if (Objects.isNull(entity)) {
+      throw new GlobalRuntimeException("实体不能为空");
+    }
+    String pageSize = "pageSize", pageIndex = "pageIndex";
+    Field[] fields = entity.getClass().getDeclaredFields();
+    for (Field field : fields) {
+      field.setAccessible(Boolean.TRUE);
+      try {
+        Object value = field.get(entity);
+        if (StringUtils.isNullAndSpaceOrEmpty(value)) {
+          if (pageIndex.equals(field.getName())) {
+            builder = builder.page(ConvertUtils.convertInt(value));
+          } else if (pageSize.equals(field.getName())) {
+            builder = builder.size(ConvertUtils.convertInt(value));
+          } else {
+            builder = builder.equal(field.getName(), value);
+          }
+        }
+      } catch (IllegalAccessException e) {
+        log.error(e);
+      }
+    }
+    // 返回结果
+    return builder;
+  }
+
 
   /**
    * 添加等值查询条件
@@ -82,7 +185,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>   泛型
    * @return JapCriteriaBuilder
    */
-  public <V> JapCriteriaBuilder<T> equal(@NotNull String field, @NotNull V value) {
+  public <V> JpaCriteriaBuilder<T> equal(@NotNull String field, @NotNull V value) {
     if (isValidValue(value)) {
       specification = specification.and((root, query, criteriaBuilder) ->
           criteriaBuilder.equal(root.get(field), value)
@@ -99,7 +202,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>   泛型
    * @return JapCriteriaBuilder
    */
-  public <V> JapCriteriaBuilder<T> like(@NotNull String field, @NotNull V value) {
+  public <V> JpaCriteriaBuilder<T> like(@NotNull String field, @NotNull V value) {
     if (isValidValue(value)) {
       specification = specification.and((root, query, criteriaBuilder) -> {
         String pattern = StringUtils.PERCENT + value + StringUtils.PERCENT;
@@ -117,7 +220,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>    泛型
    * @return JapCriteriaBuilder
    */
-  public <V> JapCriteriaBuilder<T> in(@NotNull String field, @NotNull List<V> values) {
+  public <V> JpaCriteriaBuilder<T> in(@NotNull String field, @NotNull List<V> values) {
     if (CollectUtils.isNotEmpty(values)) {
       specification = specification.and((root, query, criteriaBuilder) ->
           root.get(field).in(values)
@@ -134,7 +237,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>   泛型
    * @return JapCriteriaBuilder
    */
-  public <V extends Comparable<? super V>> JapCriteriaBuilder<T> greaterThan(@NotNull String field, @NotNull V value) {
+  public <V extends Comparable<? super V>> JpaCriteriaBuilder<T> greaterThan(@NotNull String field, @NotNull V value) {
     if (isValidValue(value)) {
       specification = specification.and((root, query, criteriaBuilder) ->
           criteriaBuilder.greaterThan(root.get(field), value)
@@ -151,7 +254,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>   泛型
    * @return JapCriteriaBuilder
    */
-  public <V extends Comparable<? super V>> JapCriteriaBuilder<T> greaterThanOrEqualTo(@NotNull String field, @NotNull V value) {
+  public <V extends Comparable<? super V>> JpaCriteriaBuilder<T> greaterThanOrEqualTo(@NotNull String field, @NotNull V value) {
     if (isValidValue(value)) {
       specification = specification.and((root, query, criteriaBuilder) ->
           criteriaBuilder.greaterThanOrEqualTo(root.get(field), value)
@@ -168,7 +271,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>   泛型
    * @return JapCriteriaBuilder
    */
-  public <V extends Comparable<? super V>> JapCriteriaBuilder<T> lessThan(@NotNull String field, @NotNull V value) {
+  public <V extends Comparable<? super V>> JpaCriteriaBuilder<T> lessThan(@NotNull String field, @NotNull V value) {
     if (isValidValue(value)) {
       specification = specification.and((root, query, criteriaBuilder) ->
           criteriaBuilder.lessThan(root.get(field), value)
@@ -186,7 +289,7 @@ public class JapCriteriaBuilder<T> {
    * @param <V>   泛型
    * @return JapCriteriaBuilder
    */
-  public <V extends Comparable<? super V>> JapCriteriaBuilder<T> between(@NotNull String field, @NotNull V from, V to) {
+  public <V extends Comparable<? super V>> JpaCriteriaBuilder<T> between(@NotNull String field, @NotNull V from, V to) {
     if (from != null && to != null) {
       specification = specification.and((root, query, criteriaBuilder) ->
           criteriaBuilder.between(root.get(field), from, to)
@@ -201,7 +304,7 @@ public class JapCriteriaBuilder<T> {
    * @param field 字段
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> isNull(String field) {
+  public JpaCriteriaBuilder<T> isNull(String field) {
     specification = specification.and((root, query, criteriaBuilder) ->
         criteriaBuilder.isNull(root.get(field))
     );
@@ -214,7 +317,7 @@ public class JapCriteriaBuilder<T> {
    * @param field 字段
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> isNotNull(String field) {
+  public JpaCriteriaBuilder<T> isNotNull(String field) {
     specification = specification.and((root, query, criteriaBuilder) ->
         criteriaBuilder.isNotNull(root.get(field))
     );
@@ -231,7 +334,7 @@ public class JapCriteriaBuilder<T> {
    * @param <X>       关联实体类型
    * @return JapCriteriaBuilder
    */
-  public <X> JapCriteriaBuilder<T> joinEqual(String joinField, @NotNull String field, @NotNull Object value, JoinType joinType) {
+  public <X> JpaCriteriaBuilder<T> joinEqual(String joinField, @NotNull String field, @NotNull Object value, JoinType joinType) {
     if (isValidValue(value)) {
       specification = specification.and((root, query, criteriaBuilder) -> {
         Join<T, X> join = root.join(joinField, joinType);
@@ -247,7 +350,7 @@ public class JapCriteriaBuilder<T> {
    * @param condition 自定义查询条件
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> add(Function<Root<T>, Predicate> condition) {
+  public JpaCriteriaBuilder<T> add(Function<Root<T>, Predicate> condition) {
     specification = specification.and((root, query, criteriaBuilder) -> {
       Predicate predicate = condition.apply(root);
       return criteriaBuilder.and(predicate);
@@ -261,12 +364,12 @@ public class JapCriteriaBuilder<T> {
    * @param otherBuilder 其他查询条件
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> or(JapCriteriaBuilder<T>... otherBuilder) {
+  public JpaCriteriaBuilder<T> or(JpaCriteriaBuilder<T>... otherBuilder) {
     // 创建一个新的 Specification 来存储合并后的查询条件
     Specification<T> combinedSpecification = Specification.where(specification);
 
     // 遍历所有传入的 JapCriteriaBuilder
-    for (JapCriteriaBuilder<T> builder : otherBuilder) {
+    for (JpaCriteriaBuilder<T> builder : otherBuilder) {
       combinedSpecification = combinedSpecification.or(builder.build());
     }
 
@@ -281,7 +384,7 @@ public class JapCriteriaBuilder<T> {
    * @param page 页码
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> page(int page) {
+  public JpaCriteriaBuilder<T> page(int page) {
     this.pageNumber = page;
     return this;
   }
@@ -292,7 +395,7 @@ public class JapCriteriaBuilder<T> {
    * @param size 每页大小
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> size(int size) {
+  public JpaCriteriaBuilder<T> size(int size) {
     this.pageSize = size;
     return this;
   }
@@ -304,7 +407,7 @@ public class JapCriteriaBuilder<T> {
    * @param direction 排序方向
    * @return JapCriteriaBuilder
    */
-  public JapCriteriaBuilder<T> orderBy(@NotNull String field, @NotNull Sort.Direction direction) {
+  public JpaCriteriaBuilder<T> orderBy(@NotNull String field, @NotNull Sort.Direction direction) {
     if (direction != null) {
       rawSortList.add(Sort.Order.by(field).with(direction));
     }
