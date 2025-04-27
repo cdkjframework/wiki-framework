@@ -23,86 +23,86 @@ import java.util.List;
 @ToString
 public class GenerateEntity {
 
-    /**
-     * 返回结果
-     */
-    private List<String> leading = new ArrayList<>();
+  /**
+   * 返回结果
+   */
+  private List<String> leading = new ArrayList<>();
 
-    /**
-     * 包名
-     */
-    private String packageName;
+  /**
+   * 包名
+   */
+  private String packageName;
 
-    /**
-     * 项目名称
-     */
-    private String projectName;
+  /**
+   * 项目名称
+   */
+  private String projectName;
 
-    /**
-     * 根目录
-     */
-    private String basePath;
+  /**
+   * 根目录
+   */
+  private String basePath;
 
-    /**
-     * 路径
-     */
-    private List<String> path;
+  /**
+   * 路径
+   */
+  private List<String> path;
 
-    /**
-     * 是否生成 myBatis 模板
-     */
-    private Boolean jpa;
+  /**
+   * 是否生成 myBatis 模板
+   */
+  private Boolean jpa;
 
-    /**
-     * 是否生成JAP模板
-     */
-    private Boolean myBatis;
-    /**
-     * 是否整形模板
-     */
-    private boolean intTemplate;
+  /**
+   * 是否生成JAP模板
+   */
+  private Boolean myBatis;
+  /**
+   * 是否整形模板
+   */
+  private boolean intTemplate;
 
-    /**
-     * 类名称
-     */
-    private String className;
+  /**
+   * 类名称
+   */
+  private String className;
 
-    /**
-     * 类名称 2
-     */
-    private String classLowName;
-    /**
-     * 路径
-     */
-    private String uri;
+  /**
+   * 类名称 2
+   */
+  private String classLowName;
+  /**
+   * 路径
+   */
+  private String uri;
 
-    /**
-     * 表描述
-     */
-    private String description;
+  /**
+   * 表描述
+   */
+  private String description;
 
-    /**
-     * 作者
-     */
-    private String author;
+  /**
+   * 作者
+   */
+  private String author;
 
-    /**
-     * 表
-     */
-    private String table;
+  /**
+   * 表
+   */
+  private String table;
 
-    /**
-     * 数据库
-     */
-    private String dataBase;
+  /**
+   * 数据库
+   */
+  private String dataBase;
 
-    /**
-     * serialVersionUID
-     */
-    private String serialVersionUID = "-1";
+  /**
+   * serialVersionUID
+   */
+  private String serialVersionUID = "-1";
 
-    /**
-     * 字段
-     */
-    private List<ChildrenEntity> children;
+  /**
+   * 字段
+   */
+  private List<ChildrenEntity> children;
 }

@@ -11,7 +11,7 @@ export interface ${className} extends BaseModel<${className}> {
         /**
         * ${item.columnDescription}
         */
-        ${item.columnName}?: ${item.htmlDataType};
+        ${item.columnName}?: ${item.htmlDataType},
     </#if>
 </#list>
 }

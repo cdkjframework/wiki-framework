@@ -4,7 +4,7 @@ package com.cdkjframework.enums;
  * @ProjectName: com.cdkjframework
  * @Package: com.cdkjframework.enums
  * @ClassName: ERegexType
- * @Description: java类作用描述
+ * @Description: 正则表达式类型枚举
  * @Author: xiaLin
  * @Version: 1.0
  */

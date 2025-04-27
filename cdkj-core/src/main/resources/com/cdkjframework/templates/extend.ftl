@@ -1,6 +1,8 @@
 package ${packageName}.entity.extend;
 
 import ${packageName}.entity.${className}Entity;
+
+import java.io.Serializable;
 <#list leading as item>
     import ${item};
 </#list>
@@ -16,12 +18,11 @@ import jakarta.persistence.*;
 * @Description: ${description}
 * @Author: ${author}
 * @Version: 1.0
-* @Entity
 */
 
 @Data
 @Table(name = "${table}", catalog = "${dataBase}")
-public class ${className}ExtendEntity extends ${className}Entity {
+public class ${className}ExtendEntity extends ${className}Entity implements Serializable {
 
     /**
     * 序列版本UID

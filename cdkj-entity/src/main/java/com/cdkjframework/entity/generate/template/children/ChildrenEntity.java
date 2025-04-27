@@ -13,73 +13,78 @@ import lombok.Data;
 @Data
 public class ChildrenEntity {
 
-    /**
-     * 字段描述
-     */
-    private String columnDescription;
+  /**
+   * 字段描述
+   */
+  private String columnDescription;
 
-    /**
-     * 是否为主键
-     */
-    private Boolean columnKey;
+  /**
+   * 是否为主键
+   */
+  private Boolean columnKey;
 
-    /**
-     * 字段名称
-     */
-    private String columnName;
+  /**
+   * 字段名称
+   */
+  private String columnName;
 
-    /**
-     * 是否显示列
-     */
-    private boolean columnShow = true;
+  /**
+   * 是否显示列
+   */
+  private boolean columnShow = true;
 
-	/**
-	 * 是否为扩展字段
-	 */
-	private int isExtension = 0;
+  /**
+   * 是否为扩展字段
+   */
+  private int isExtension = 0;
 
-	/**
-	 * 字段类型
-	 */
-	private String dataType;
+  /**
+   * 字段类型
+   */
+  private String dataType;
 
-	/**
-	 * 字段数据类型
-	 */
-	private String htmlDataType;
+  /**
+   * 字段数据类型
+   */
+  private String htmlDataType;
 
-	/**
-	 * 字段数据库类型
-	 */
-	private String columnType;
+  /**
+   * 字段数据库类型
+   */
+  private String columnType;
 
-	/**
-	 * 字段 GET/SET 方法名称
-	 */
-	private String funColumnName;
+  /**
+   * 字段 GET/SET 方法名称
+   */
+  private String funColumnName;
 
-    /**
-     * 数据库字段名称
-     */
-    private String tableColumnName;
+  /**
+   * 数据库字段名称
+   */
+  private String tableColumnName;
 
-    /**
-     * 数据库字段名称（大写）
-     */
-    private String tableColumnNameUpperCase;
+  /**
+   * 前缀
+   */
+  private String prefix;
 
-    /**
-     * 是否可为空
-     */
-    private String nullable;
+  /**
+   * 数据库字段名称（大写）
+   */
+  private String tableColumnNameUpperCase;
 
-    /**
-     * 长度
-     */
-    private String length;
+  /**
+   * 是否可为空
+   */
+  private String nullable;
 
-    /**
-     * 导入
-     */
-    private String imports;
+  /**
+   * 长度
+   */
+  private String length;
+
+  /**
+   * 导入
+   */
+  private String imports;
 }

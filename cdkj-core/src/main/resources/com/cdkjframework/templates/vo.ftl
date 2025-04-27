@@ -1,6 +1,8 @@
 package ${packageName}.vo;
 
 import com.cdkjframework.entity.base.BaseVo;
+
+import java.io.Serializable;
 <#list leading as item>
 import ${item};
 </#list>
@@ -21,7 +23,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Schema(name = "${description}")
 @EqualsAndHashCode(callSuper = false)
-public class ${className}Vo extends BaseVo {
+public class ${className}Vo extends BaseVo implements Serializable {
 
     /**
     * 序列版本UID
