@@ -1,6 +1,8 @@
 package ${packageName}.dto;
 
 import com.cdkjframework.entity.base.BaseDto;
+
+import java.io.Serializable;
 <#list leading as item>
 import ${item};
 </#list>
@@ -19,7 +21,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class ${className}Dto extends BaseDto {
+public class ${className}Dto extends BaseDto implements Serializable {
 
     /**
     * 序列版本UID

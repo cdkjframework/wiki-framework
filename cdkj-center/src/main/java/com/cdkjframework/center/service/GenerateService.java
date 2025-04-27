@@ -41,9 +41,9 @@ public interface GenerateService {
 		List<TemplateEntity> TEMPLATE_LIST = new ArrayList<>() {
 			{
 				add(new TemplateEntity("vo", DIVISION + "vo" + DIVISION, "Vo.java"));
-				add(new TemplateEntity("ui/vo", DIVISION + "ui" + DIVISION + "form" + DIVISION, ".tsx"));
-				add(new TemplateEntity("ui/form/form", DIVISION + "ui" + DIVISION + "form" + DIVISION, ".tsx"));
-				add(new TemplateEntity("ui/table/table", DIVISION + "ui" + DIVISION + "table" + DIVISION, ".tsx"));
+				add(new TemplateEntity("ui/vo", DIVISION + "ui" + DIVISION + "vo" + DIVISION, ".tsx"));
+				add(new TemplateEntity("ui/form/form", DIVISION + "ui" + DIVISION + "form" + DIVISION + "form.tsx" + DIVISION, ".tsx"));
+				add(new TemplateEntity("ui/table/table", DIVISION + "ui" + DIVISION + "table" + DIVISION + "table.tsx" + DIVISION, ".tsx"));
 				add(new TemplateEntity("dto", DIVISION + "dto" + DIVISION, "Dto.java"));
 				add(new TemplateEntity("entity", DIVISION + "entity" + DIVISION, "Entity.java"));
 				add(new TemplateEntity("extend", DIVISION + "entity" + DIVISION + "extend" + DIVISION, "ExtendEntity.java"));

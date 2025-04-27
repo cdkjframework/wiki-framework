@@ -28,9 +28,9 @@ import org.springframework.context.annotation.Lazy;
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({
-        CustomConfig.class,
-        JpaConfig.class,
-        DataSourceConfig.class
+    CustomConfig.class,
+    JpaConfig.class,
+    DataSourceConfig.class
 })
 @ImportAutoConfiguration(value = {JpaDruidDbConfiguration.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})

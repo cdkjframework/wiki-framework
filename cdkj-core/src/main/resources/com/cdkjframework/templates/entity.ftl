@@ -1,6 +1,8 @@
 package ${packageName}.entity;
 
 import com.cdkjframework.entity.BaseEntity;
+
+import java.io.Serializable;
 <#list leading as item>
 import ${item};
 </#list>
@@ -17,7 +19,6 @@ import jakarta.persistence.*;
  * @Description: ${description}
  * @Author: ${author}
  * @Version: 1.0
- * @Entity
  */
 
 @Data
@@ -26,7 +27,7 @@ import jakarta.persistence.*;
 </#if>
 @EqualsAndHashCode(callSuper = false)
 @Table(name = "${table}", catalog = "${dataBase}")
-public class ${className}Entity extends BaseEntity {
+public class ${className}Entity extends BaseEntity implements Serializable {
 
     /**
     * 序列版本UID
@@ -39,7 +40,7 @@ public class ${className}Entity extends BaseEntity {
      * ${item.columnDescription}
      */
       <#if jpa>
-      @Column(name = "${item.tableColumnName}")
+      @Column(name = "${item.tableColumnName}", columnDefinition = "${item.columnType}(${item.length})")
       </#if>
     private ${item.dataType} ${item.columnName};
     </#if>

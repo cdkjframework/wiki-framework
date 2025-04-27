@@ -113,13 +113,13 @@ public class BaseEntity implements Serializable {
   /**
    * 是否删除
    */
-  @Column(name = "deleted", nullable = false,columnDefinition="int default 0")
+  @Column(name = "deleted", nullable = false, columnDefinition = "int default 0")
   private Integer deleted;
 
   /**
    * 机构状态 (0-启用,1-禁用)
    */
-  @Column(name = "status", nullable = false,columnDefinition="int default 1")
+  @Column(name = "status", nullable = false, columnDefinition = "int default 1")
   private Integer status;
 
   /**
@@ -131,13 +131,13 @@ public class BaseEntity implements Serializable {
   /**
    * 添加用户ID
    */
-  @Column(name = "add_user_id", length = 36, nullable = false)
+  @Column(name = "add_user_id", length = 36)
   private String addUserId;
 
   /**
    * 添加用户名称
    */
-  @Column(name = "add_user_name", length = 200, nullable = false)
+  @Column(name = "add_user_name", length = 200)
   private String addUserName;
 
   /**
