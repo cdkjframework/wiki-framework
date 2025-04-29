@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -88,19 +89,22 @@ public class JpaCriteriaBuilder<T> {
       throw new GlobalRuntimeException("实体不能为空");
     }
     String pageSize = "pageSize", pageIndex = "pageIndex";
+    List<String> ignoreFields = List.of("serialVersionUID");
     Field[] fields = entity.getClass().getDeclaredFields();
     for (Field field : fields) {
       field.setAccessible(Boolean.TRUE);
       try {
         Object value = field.get(entity);
-        if (StringUtils.isNullAndSpaceOrEmpty(value)) {
-          if (pageIndex.equals(field.getName())) {
-            builder = builder.page(ConvertUtils.convertInt(value));
-          } else if (pageSize.equals(field.getName())) {
-            builder = builder.size(ConvertUtils.convertInt(value));
-          } else {
-            builder = builder.equal(field.getName(), value);
-          }
+        if (StringUtils.isNullAndSpaceOrEmpty(value) || ignoreFields.contains(field.getName()) ||
+            Modifier.isStatic(field.getModifiers())) {
+          continue;
+        }
+        if (pageIndex.equals(field.getName())) {
+          builder = builder.page(ConvertUtils.convertInt(value));
+        } else if (pageSize.equals(field.getName())) {
+          builder = builder.size(ConvertUtils.convertInt(value));
+        } else {
+          builder = builder.equal(field.getName(), value);
         }
       } catch (IllegalAccessException e) {
         log.error(e);
