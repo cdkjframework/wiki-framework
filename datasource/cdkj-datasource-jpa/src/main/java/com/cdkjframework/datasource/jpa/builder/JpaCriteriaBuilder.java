@@ -1,11 +1,13 @@
 package com.cdkjframework.datasource.jpa.builder;
 
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CollectUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.mapper.ReflectionUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import jakarta.persistence.criteria.*;
 import jakarta.validation.constraints.NotNull;
@@ -36,7 +38,7 @@ public class JpaCriteriaBuilder<T> {
   /**
    * 日志
    */
-  private final static LogUtils log = LogUtils.getLogger(JpaCriteriaBuilder.class);
+  private final static LogUtils LOG = LogUtils.getLogger(JpaCriteriaBuilder.class);
 
   /**
    * 页码
@@ -84,32 +86,40 @@ public class JpaCriteriaBuilder<T> {
    * @param <V>     实体类型
    * @return Specification
    */
-  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity) {
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder<T> builder, @NotNull V entity, @NotNull Class<T> clazz) {
     if (Objects.isNull(entity)) {
       throw new GlobalRuntimeException("实体不能为空");
     }
-    String pageSize = "pageSize", pageIndex = "pageIndex";
     List<String> ignoreFields = List.of("serialVersionUID");
-    Field[] fields = entity.getClass().getDeclaredFields();
+    List<Field> fields = getDeclaredFields(clazz);
     for (Field field : fields) {
-      field.setAccessible(Boolean.TRUE);
+      if (field == null || Modifier.isStatic(field.getModifiers())) {
+        continue;
+      }
       try {
-        Object value = field.get(entity);
-        if (StringUtils.isNullAndSpaceOrEmpty(value) || ignoreFields.contains(field.getName()) ||
-            Modifier.isStatic(field.getModifiers())) {
+        field.setAccessible(Boolean.TRUE);
+        Object value = ReflectionUtils.getFieldValue(entity, field.getName());
+        if (StringUtils.isNullAndSpaceOrEmpty(value) || ignoreFields.contains(field.getName())) {
           continue;
         }
-        if (pageIndex.equals(field.getName())) {
-          builder = builder.page(ConvertUtils.convertInt(value));
-        } else if (pageSize.equals(field.getName())) {
-          builder = builder.size(ConvertUtils.convertInt(value));
-        } else {
-          builder = builder.equal(field.getName(), value);
-        }
-      } catch (IllegalAccessException e) {
-        log.error(e);
+        builder = builder.equal(field.getName(), value);
+      } catch (Exception e) {
+        LOG.error(e, "自动构建规范异常");
       }
     }
+
+    // 分页数据
+    String pageSize = "pageSize", pageIndex = "pageIndex";
+    Object value = ReflectionUtils.getFieldValue(entity, pageIndex);
+    if (StringUtils.isNotNullAndEmpty(value)) {
+      builder = builder.page(ConvertUtils.convertInt(value));
+    }
+    // 页码大小
+    value = ReflectionUtils.getFieldValue(entity, pageSize);
+    if (StringUtils.isNotNullAndEmpty(value)) {
+      builder = builder.size(ConvertUtils.convertInt(value));
+    }
+
     // 返回结果
     return builder;
   }
@@ -123,9 +133,9 @@ public class JpaCriteriaBuilder<T> {
    * @param <V>          实体类型
    * @return Specification
    */
-  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String> ignoreFields) {
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder<T> builder, @NotNull V entity, @NotNull Class<T> clazz, List<String> ignoreFields) {
     var groupFields = new List[0];
-    return autoBuilder(builder, entity, ignoreFields, groupFields);
+    return autoBuilder(builder, entity, clazz, ignoreFields, groupFields);
   }
 
   /**
@@ -137,8 +147,9 @@ public class JpaCriteriaBuilder<T> {
    * @param <V>         实体类型
    * @return Specification
    */
-  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, List<String>... groupFields) {
-    return autoBuilder(builder, entity, CollectUtils.toList(), groupFields);
+  @SafeVarargs
+  public final <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder builder, @NotNull V entity, @NotNull Class<T> clazz, List<String>... groupFields) {
+    return autoBuilder(builder, entity, clazz, CollectUtils.toList(), groupFields);
   }
 
   /**
@@ -151,7 +162,7 @@ public class JpaCriteriaBuilder<T> {
    * @param <V>          实体类型
    * @return Specification
    */
-  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder<T> builder, @NotNull V entity, List<String> ignoreFields, List<String>... groupFields) {
+  public <V> JpaCriteriaBuilder<T> autoBuilder(JpaCriteriaBuilder<T> builder, @NotNull V entity, @NotNull Class<T> clazz, List<String> ignoreFields, List<String>... groupFields) {
     if (Objects.isNull(entity)) {
       throw new GlobalRuntimeException("实体不能为空");
     }
@@ -161,49 +172,62 @@ public class JpaCriteriaBuilder<T> {
     if (groupFields == null) {
       groupFields = new List[IntegerConsts.ZERO];
     }
-    if (CollectUtils.isEmpty(groupFields) || CollectUtils.isEmpty(groupFields)) {
-      return autoBuilder(builder, entity);
+    if (CollectUtils.isEmpty(ignoreFields) || CollectUtils.isEmpty(groupFields)) {
+      return autoBuilder(builder, entity, clazz);
     }
+
+    // 分页数据
     String pageSize = "pageSize", pageIndex = "pageIndex";
     Integer size = null, index = null;
-    Field[] fields = entity.getClass().getDeclaredFields();
+    Object intValue = ReflectionUtils.getFieldValue(entity, pageIndex);
+    if (StringUtils.isNotNullAndEmpty(intValue)) {
+      index = ConvertUtils.convertInt(intValue);
+    }
+    // 页码大小
+    intValue = ReflectionUtils.getFieldValue(entity, pageSize);
+    if (StringUtils.isNotNullAndEmpty(intValue)) {
+      size = ConvertUtils.convertInt(intValue);
+    }
 
+    List<Field> fields = getDeclaredFields(clazz);
     List<JpaCriteriaBuilder<T>> groupFieldsList = new ArrayList<>();
     for (int i = IntegerConsts.ZERO; i < groupFields.length; i++) {
       List<String> groupField = groupFields[i];
-      List<Field> fieldList = Arrays.stream(fields)
-          .filter(groupField::equals)
-          .collect(Collectors.toList());
+      List<Field> fieldList = fields.stream()
+          .filter(field -> groupField.contains(field.getName()))
+          .toList();
       if (CollectUtils.isEmpty(fieldList)) {
         continue;
       }
-      JpaCriteriaBuilder criteria = CopyUtils.copyProperties(builder, JpaCriteriaBuilder.class);
+      JpaCriteriaBuilder<T> criteria = CopyUtils.copyProperties(builder, JpaCriteriaBuilder.class);
+      assert criteria != null;
       for (Field field : fieldList) {
+        if (field == null || Modifier.isStatic(field.getModifiers())) {
+          continue;
+        }
         field.setAccessible(Boolean.TRUE);
         String fieldName = field.getName();
         if (ignoreFields.contains(fieldName)) {
           continue;
         }
-        try {
-          Object value = field.get(entity);
-          if (StringUtils.isNullAndSpaceOrEmpty(value)) {
-            if (pageIndex.equals(field.getName())) {
-              index = ConvertUtils.convertInt(value);
-            } else if (pageSize.equals(field.getName())) {
-              size = ConvertUtils.convertInt(value);
-            } else {
-              criteria = criteria.equal(field.getName(), value);
-            }
+        Object value = ReflectionUtils.getFieldValue(entity, pageIndex);
+        if (StringUtils.isNullAndSpaceOrEmpty(value)) {
+          if (pageIndex.equals(field.getName())) {
+            index = ConvertUtils.convertInt(value);
+          } else if (pageSize.equals(field.getName())) {
+            size = ConvertUtils.convertInt(value);
+          } else {
+            criteria = criteria.equal(field.getName(), value);
           }
-        } catch (IllegalAccessException e) {
-          log.error(e);
         }
       }
       groupFieldsList.add(criteria);
     }
     // 构建最终数据
     JpaCriteriaBuilder<T> result = builder.or(groupFieldsList.toArray(new JpaCriteriaBuilder[IntegerConsts.ZERO]));
-    result.page(index).size(size);
+    if (index != null && size != null) {
+      result.page(index).size(size);
+    }
     // 返回结果
     return result;
   }
@@ -496,5 +520,21 @@ public class JpaCriteriaBuilder<T> {
       return Objects.nonNull(value) && !((String) value).trim().isEmpty();
     }
     return Objects.nonNull(value);
+  }
+
+  /**
+   * 获取类的所有字段
+   *
+   * @param t 实体类
+   * @return List<Field>
+   */
+  private List<Field> getDeclaredFields(Class<T> t) {
+    List<Field> fields = new ArrayList<>();
+    Class<?> clazz = t;
+    while (clazz != null) {
+      fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
+      clazz = clazz.getSuperclass();
+    }
+    return fields;
   }
 }
