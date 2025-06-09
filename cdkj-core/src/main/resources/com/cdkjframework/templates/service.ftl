@@ -17,16 +17,10 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 </#if>
 <#if jpa>
+import com.cdkjframework.datasource.jpa.builder.JpaCriteriaBuilder;
 import ${packageName}.repository.${className}Repository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import java.util.Optional;
 </#if>
 import ${packageName}.service.${className}Service;
@@ -90,7 +84,7 @@ public class ${className}ServiceImpl implements ${className}Service {
     }
 
     /**
-     *
+     * 添加数据
      *
      * @param ${classLowName}Dto ${description} - 实体
      */
@@ -101,6 +95,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         ${classLowName}Dto.setAddUserId(CurrentUser.getUserId());
         ${classLowName}Dto.setAddUserName(CurrentUser.getUserName());
         ${classLowName}Dto.setDeleted(IntegerConsts.ZERO);
+        ${classLowName}Dto.setStatus(IntegerConsts.ONE);
         ${className}Entity entity = CopyUtils.copyProperties(${classLowName}Dto, ${className}Entity.class);
         <#if myBatis && !jpa>
             ${classLowName}Mapper.insert(entity);
@@ -139,13 +134,10 @@ public class ${className}ServiceImpl implements ${className}Service {
         return CopyUtils.copyProperties(entity, ${className}Dto.class);
         </#if>
         <#if jpa>
-        Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
-        Optional<${className}Entity> optional = ${classLowName}Repository.findOne(specification);
-        if (optional.isPresent()) {
-            return CopyUtils.copyProperties(optional.get(), ${className}Dto.class);
-        } else {
-            return null;
-        }
+        JpaCriteriaBuilder<${className}Entity> builder = JpaCriteriaBuilder.Builder();
+        builder = builder.autoBuilder(builder, ${classLowName}Dto, ${className}Entity.class);
+        Optional<${className}Entity> optional = ${classLowName}Repository.findOne(builder.build());
+        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${classLowName}Dto.class)).orElse(null);
         </#if>
     }
 
@@ -159,11 +151,12 @@ public class ${className}ServiceImpl implements ${className}Service {
     public ${className}Dto find${className}ById(String id){
         <#if myBatis && !jpa>
         ${className}Entity entity = ${classLowName}Mapper.findEntityById(id);
+        return CopyUtils.copyProperties(entity, ${className}Dto.class);
         </#if>
         <#if jpa>
-        ${className}Entity entity = ${classLowName}Repository.getReferenceById(id);
+        Optional<${className}Entity> optional = ${classLowName}Repository.findById(id);
+        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${classLowName}Dto.class)).orElse(null);
         </#if>
-        return CopyUtils.copyProperties(entity, ${className}Dto.class);
     }
 
     /**
@@ -174,7 +167,7 @@ public class ${className}ServiceImpl implements ${className}Service {
      */
     @Override
     public PageEntity<${className}Dto> list${className}Page(${className}Dto ${classLowName}Dto) {
-        //分页查询角色信息
+        //分页查询${description}信息
         <#if myBatis && !jpa>
         Page page = PageHelper.startPage(${classLowName}Dto.getPageIndex(), ${classLowName}Dto.getPageSize());
         //对象转换 dto -> entity
@@ -185,11 +178,19 @@ public class ${className}ServiceImpl implements ${className}Service {
         return PageEntity.build(${classLowName}Dto.getPageIndex(), page.getTotal(), page.getResult());
         </#if>
         <#if jpa>
-        Specification<${className}Entity> specification = buildSpecification(${classLowName}Dto);
-        Sort sort = Sort.by(Sort.Direction.DESC, ${className}Dto.ADD_TIME);
+        JpaCriteriaBuilder<${className}Entity> builder = JpaCriteriaBuilder.Builder();
+        builder = builder.autoBuilder(builder, ${classLowName}Dto, ${className}Entity.class);
+
+        // 增加排序
+        builder = builder.orderBy(${className}Dto.ADD_TIME, Sort.Direction.DESC);
+
+        // 增加分页
         int pageIndex = ${classLowName}Dto.getPageIndex() - IntegerConsts.ONE;
-        Pageable pageable = PageRequest.of(pageIndex, ${classLowName}Dto.getPageSize(), sort);
-        Page<${className}Entity> page = ${classLowName}Repository.findAll(specification, pageable);
+        builder = builder.page(pageIndex)
+        .size(${classLowName}Dto.getPageSize());
+
+        // 查询数据
+        Page<${className}Entity> page = ${classLowName}Repository.findAll(builder.build(), builder.toPageable());
 
         // 将 Entity 转换为 Dto
         List<${className}Dto> ${classLowName}List = CopyUtils.copyProperties(page.getContent(), ${className}Dto.class);
