@@ -26,12 +26,12 @@ public abstract class AbstractBaseAopAspect implements IBaseAopAspect, Applicati
     /**
      * 控制器执行切入点值
      */
-    protected final String executionControllerPoint = "execution(public * com.*.*.*.controller.*.*(..))";
+    protected final String executionControllerPoint = "execution(public * com.*.*.*.controller.*.*(..))||execution(public * com.*.*.*.*.controller.*.*(..))";
 
     /**
      * 映射器执行切入点值
      */
-    protected final String executionMapperPoint = "execution(public * com.*.*.mapper.*.*(..)) || execution(public * com.*.*.jpa.repository.*.*(..))";
+    protected final String executionMapperPoint = "execution(public * com.*.*.mapper.*.*(..)) ||execution(public * com.*.*.*.mapper.*.*(..)) || execution(public * com.*.*.jpa.repository.*.*(..))|| execution(public * com.*.*.*.jpa.repository.*.*(..))";
 
     /**
      * 接口服务
