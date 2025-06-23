@@ -1,7 +1,7 @@
 package com.cdkjframework.enums.push;
 
 /**
- * @ProjectName: com.framewiki
+ * @ProjectName: com.cdkjframework
  * @Package: com.lesmarthome.bms.client
  * @ClassName: PushRangeEnums
  * @Author: xiaLin

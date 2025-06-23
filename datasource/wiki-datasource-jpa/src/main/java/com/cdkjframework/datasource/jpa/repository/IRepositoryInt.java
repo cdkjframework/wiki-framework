@@ -1,15 +1,15 @@
 package com.cdkjframework.datasource.jpa.repository;
 
-import com.framewiki.datasource.jpa.builder.JpaCriteriaBuilder;
-import com.framewiki.entity.PageEntity;
+import com.cdkjframework.datasource.jpa.builder.JpaCriteriaBuilder;
+import com.cdkjframework.entity.PageEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 /**
- * @ProjectName: com.framewiki.QRcode
- * @Package: com.framewiki.core.database.relational.jpa.repository
+ * @ProjectName: com.cdkjframework
+ * @Package: com.cdkjframework.datasource.jpa.repository
  * @ClassName: IRepositoryInt
  * @Description: Repository 接口类
  * @Author: xiaLin

@@ -78,12 +78,12 @@ public @interface EnableAutoGenerate {
      *
      * @return 返回结果集
      */
-    String basePackage() default "com.framewiki";
+    String basePackage() default "com.cdkjframework";
 
     /**
      * 项目名称
      *
      * @return 返回结果
      */
-    String projectName() default "com.framewiki";
+    String projectName() default "com.cdkjframework";
 }

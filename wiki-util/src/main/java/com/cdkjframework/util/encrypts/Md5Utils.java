@@ -10,7 +10,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * @ProjectName: com.framewiki
+ * @ProjectName: com.cdkjframework
  * @Package: com.cdkjframework.util.encrypts
  * @ClassName: Md5Utils
  * @Description: 实现 md5 加密

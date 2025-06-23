@@ -1,7 +1,7 @@
 package com.cdkjframework.enums;
 
 /**
- * @ProjectName: com.framewiki
+ * @ProjectName: com.cdkjframework
  * @Package: com.cdkjframework.enums
  * @ClassName: ERegexType
  * @Description: 正则表达式类型枚举

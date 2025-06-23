@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @ProjectName: com.framewiki
+ * @ProjectName: com.cdkjframework
  * @Package: com.lesmarthome.bms.client
  * @ClassName: VerifyLicense
  * @Author: xiaLin
