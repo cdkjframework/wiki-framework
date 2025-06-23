@@ -6,7 +6,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 ├─README.md                      # 项目的说明文档
 ├─socket                         # socket 项目
 |   ├─pom.xml
-|   ├─cdkj-web-socket-client
+|   ├─wiki-web-socket-client
 |   |           ├─pom.xml
 |   |           ├─src
 |   |           |  ├─main
@@ -18,7 +18,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |           |  |  |  |  |       |  |   ├─client
 |   |           |  |  |  |  |       |  |   |   ├─WebSocketClient.java
 |   |           |  |  |  |  |       |  |   |   └WebSocketService.java
-|   ├─cdkj-web-socket
+|   ├─wiki-web-socket
 |   |        ├─pom.xml
 |   |        ├─src
 |   |        |  ├─main
@@ -46,9 +46,9 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |        |  |  |  |  |       |  |   |   └WebSocketMarkerConfiguration.java
 |   |        |  |  |  |  |       |  |   ├─annotation
 |   |        |  |  |  |  |       |  |   |     └EnableAutoWebSocket.java
-|   ├─cdkj-sse
+|   ├─wiki-sse
 |   |    └pom.xml
-|   ├─cdkj-socket-client
+|   ├─wiki-socket-client
 |   |         ├─pom.xml
 |   |         ├─src
 |   |         |  ├─main
@@ -63,7 +63,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |         |  |  |  |  |       |   |   ├─NettySocketClient.java
 |   |         |  |  |  |  |       |   |   ├─config
 |   |         |  |  |  |  |       |   |   |   └SocketClientConfig.java
-|   ├─cdkj-socket
+|   ├─wiki-socket
 |   |      ├─pom.xml
 |   |      ├─src
 |   |      |  ├─main
@@ -91,7 +91,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |      |  |  |  |  |       |   |     └EnableAutoSocket.java
 ├─security
 |    ├─pom.xml
-|    ├─cdkj-security
+|    ├─wiki-security
 |    |       ├─pom.xml
 |    |       ├─src
 |    |       |  ├─main
@@ -143,7 +143,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |    |       |  |  |  |  |       |    |       └ValidateCodeFilter.java
 ├─queue
 |   ├─pom.xml
-|   ├─cdkj-rocket-client
+|   ├─wiki-rocket-client
 |   |         ├─pom.xml
 |   |         ├─src
 |   |         |  ├─main
@@ -159,7 +159,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |         |  |  |  |  |       |   |    ├─AbstractMessageListener.java
 |   |         |  |  |  |  |       |   |    ├─RocketConsumer.java
 |   |         |  |  |  |  |       |   |    └RocketMessageListener.java
-|   ├─cdkj-rocket
+|   ├─wiki-rocket
 |   |      ├─pom.xml
 |   |      ├─src
 |   |      |  ├─main
@@ -174,7 +174,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |      |  |  |  |  |       |   ├─producer
 |   |      |  |  |  |  |       |   |    ├─ProducerUtils.java
 |   |      |  |  |  |  |       |   |    └RocketProducer.java
-|   ├─cdkj-mqtt-client
+|   ├─wiki-mqtt-client
 |   |        ├─pom.xml
 |   |        ├─src
 |   |        |  ├─main
@@ -190,7 +190,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |        |  |  |  |  |       |  |    ├─CallbackService.java
 |   |        |  |  |  |  |       |  |    ├─CdkjMqttCallback.java
 |   |        |  |  |  |  |       |  |    └MqttConsumer.java
-|   ├─cdkj-mqtt
+|   ├─wiki-mqtt
 |   |     ├─pom.xml
 |   |     ├─src
 |   |     |  ├─main
@@ -205,7 +205,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |     |  |  |  |  |       |  ├─producer
 |   |     |  |  |  |  |       |  |    ├─MqttGateway.java
 |   |     |  |  |  |  |       |  |    └MqttProducer.java
-|   ├─cdkj-kafka-client
+|   ├─wiki-kafka-client
 |   |         ├─pom.xml
 |   |         ├─src
 |   |         |  ├─main
@@ -229,7 +229,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |         |  |  |  |  |       |   |    |   └KafkaClientMarkerConfiguration.java
 |   |         |  |  |  |  |       |   |    ├─annotation
 |   |         |  |  |  |  |       |   |    |     └EnableAutoKafkaClient.java
-|   ├─cdkj-kafka
+|   ├─wiki-kafka
 |   |     ├─pom.xml
 |   |     ├─src
 |   |     |  ├─main
@@ -254,7 +254,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |     |  |  |  |  |       |   |    |     └EnableAutoKafka.java
 ├─licenses
 |    ├─pom.xml
-|    ├─cdkj-license-verify
+|    ├─wiki-license-verify
 |    |          ├─pom.xml
 |    |          ├─src
 |    |          |  ├─main
@@ -275,7 +275,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |    |          |  |  |  |  |       |    |   |   └LicenseVerifyConfig.java
 |    |          |  |  |  |  |       |    |   ├─annotion
 |    |          |  |  |  |  |       |    |   |    └VerifyLicense.java
-|    ├─cdkj-license-core
+|    ├─wiki-license-core
 |    |         ├─pom.xml
 |    |         ├─src
 |    |         |  ├─main
@@ -287,7 +287,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |    |         |  |  |  |  |       |    |  └LicenseCreatorUtils.java
 |    |         |  |  |  |  |       |    ├─manger
 |    |         |  |  |  |  |       |    |   └LicenseCreatorManager.java
-|    ├─cdkj-license
+|    ├─wiki-license
 |    |      ├─pom.xml
 |    |      ├─src
 |    |      |  ├─main
@@ -317,7 +317,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |  └lib.zip
 ├─datasource
 |     ├─pom.xml
-|     ├─cdkj-datasource-rw
+|     ├─wiki-datasource-rw
 |     |         ├─pom.xml
 |     |         ├─src
 |     |         |  ├─main
@@ -339,7 +339,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |         |  |  |  |  |       |     | ├─config
 |     |         |  |  |  |  |       |     | |   ├─MybatisConfig.java
 |     |         |  |  |  |  |       |     | |   └MybatisReadConfig.java
-|     ├─cdkj-datasource-mybatis-plus
+|     ├─wiki-datasource-mybatis-plus
 |     |              ├─pom.xml
 |     |              ├─src
 |     |              |  ├─main
@@ -353,7 +353,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |              |  |  |  |  |       |     |    |  |      └MybatisPlusConfiguration.java
 |     |              |  |  |  |  |       |     |    |  ├─config
 |     |              |  |  |  |  |       |     |    |  |   └MybatisPlusConfig.java
-|     ├─cdkj-datasource-mongodb
+|     ├─wiki-datasource-mongodb
 |     |            ├─pom.xml
 |     |            ├─src
 |     |            |  ├─main
@@ -380,7 +380,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |            |  |  |  |  |       |     |    |   └MongoMarkerConfiguration.java
 |     |            |  |  |  |  |       |     |    ├─annotation
 |     |            |  |  |  |  |       |     |    |     └EnableAutoMongo.java
-|     ├─cdkj-datasource-jpa
+|     ├─wiki-datasource-jpa
 |     |          ├─pom.xml
 |     |          ├─src
 |     |          |  ├─main
@@ -405,7 +405,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |          |  |  |  |  |       |     |  |   └JpaMarkerConfiguration.java
 |     |          |  |  |  |  |       |     |  ├─annotation
 |     |          |  |  |  |  |       |     |  |     └EnableAutoJpa.java
-|     ├─cdkj-datasource-elasticsearch
+|     ├─wiki-datasource-elasticsearch
 |     |               ├─pom.xml
 |     |               ├─src
 |     |               |  ├─main
@@ -418,7 +418,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |               |  |  |  |  |       |     |       |      └ElasticsearchConfiguration.java
 |     |               |  |  |  |  |       |     |       ├─config
 |     |               |  |  |  |  |       |     |       |   └ElasticSearchConfig.java
-|     ├─cdkj-datasource
+|     ├─wiki-datasource
 |     |        ├─pom.xml
 |     |        ├─src
 |     |        |  ├─main
@@ -441,7 +441,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |        |  |  |  |  |       |     |    |   └MybatisMarkerConfiguration.java
 |     |        |  |  |  |  |       |     |    ├─annotation
 |     |        |  |  |  |  |       |     |    |     └EnableAutoMybatis.java
-├─cdkj-wechat
+├─wiki-wechat
 |      ├─pom.xml
 |      ├─src
 |      |  ├─main
@@ -489,7 +489,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |      |  |  |  |  |       | ├─config
 |      |  |  |  |  |       | |   ├─MpAddressConfig.java
 |      |  |  |  |  |       | |   └MpConfig.java
-├─cdkj-web
+├─wiki-web
 |    ├─pom.xml
 |    ├─src
 |    |  ├─main
@@ -507,7 +507,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |    |  |  |  |  |       |  |   └PageVo.java
 |    |  |  |  |  |       |  ├─controller
 |    |  |  |  |  |       |  |     └TestController.java
-├─cdkj-util
+├─wiki-util
 |     ├─pom.xml
 |     ├─src
 |     |  ├─main
@@ -685,7 +685,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |  |  |  |  |       |   ├─UploadConfig.java
 |     |  |  |  |  |       |   ├─VersionConfig.java
 |     |  |  |  |  |       |   └WeChatConfig.java
-├─cdkj-swagger
+├─wiki-swagger
 |      ├─pom.xml
 |      ├─src
 |      |  ├─main
@@ -706,9 +706,9 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |      |  |  |  |  |       |    |   └SwaggerMarkerConfiguration.java
 |      |  |  |  |  |       |    ├─annotation
 |      |  |  |  |  |       |    |     └EnableAutoSwagger.java
-├─cdkj-pom
+├─wiki-pom
 |    └pom.xml
-├─cdkj-minio
+├─wiki-minio
 |     ├─pom.xml
 |     ├─src
 |     |  ├─main
@@ -731,7 +731,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |  |  |  |  |       |   |   └MinioProperties.java
 |     |  |  |  |  |       |   ├─annotation
 |     |  |  |  |  |       |   |     └EnableAutoMinio.java
-├─cdkj-message
+├─wiki-message
 |      ├─pom.xml
 |      ├─src
 |      |  ├─main
@@ -744,7 +744,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |      |  |  |  |  |       |    |  |   └AliCloudSmsUtils.java
 |      |  |  |  |  |       |    ├─call
 |      |  |  |  |  |       |    |  └AliCloudCallUtils.java
-├─cdkj-login
+├─wiki-login
 |     ├─pom.xml
 |     ├─src
 |     |  ├─main
@@ -757,7 +757,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |  |  |  |  |       |   ├─config
 |     |  |  |  |  |       |   |   ├─LoginConfig.java
 |     |  |  |  |  |       |   |   └Test.java
-├─cdkj-log
+├─wiki-log
 |    ├─pom.xml
 |    ├─src
 |    |  ├─main
@@ -775,7 +775,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |    |  |  |  |  |       |  |  |   └MethodEnums.java
 |    |  |  |  |  |       |  |  ├─controller
 |    |  |  |  |  |       |  |  |     └ControllerDebugAspect.java
-├─cdkj-entity
+├─wiki-entity
 |      ├─pom.xml
 |      ├─src
 |      |  ├─main
@@ -923,7 +923,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |      |  |  |  |  |       ├─builder
 |      |  |  |  |  |       |    ├─Builder.java
 |      |  |  |  |  |       |    └ResponseBuilder.java
-├─cdkj-core
+├─wiki-core
 |     ├─pom.xml
 |     ├─src
 |     |  ├─main
@@ -1034,7 +1034,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |  |  |  |  |       |  |     ├─EnableMockito.java
 |     |  |  |  |  |       |  |     ├─EntityValidate.java
 |     |  |  |  |  |       |  |     └Validate.java
-├─cdkj-constant
+├─wiki-constant
 |       ├─pom.xml
 |       ├─src
 |       |  ├─main
@@ -1097,7 +1097,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |       |  |  |  |  |       |    ├─datasource
 |       |  |  |  |  |       |    |     ├─ApolloBasicsConsts.java
 |       |  |  |  |  |       |    |     └ApolloDataSourceConsts.java
-├─cdkj-config
+├─wiki-config
 |      ├─pom.xml
 |      ├─src
 |      |  ├─main
@@ -1108,7 +1108,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |      |  |  |  |  |       |     ├─ConfigureRefreshController.java
 |      |  |  |  |  |       |     ├─GenericPostableMvcEndpoint.java
 |      |  |  |  |  |       |     └LifecycleMvcEndpointAutoConfiguration.java
-├─cdkj-cloud
+├─wiki-cloud
 |     ├─pom.xml
 |     ├─src
 |     |  ├─main
@@ -1131,7 +1131,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |     |  |  |  |  |       |   ├─client
 |     |  |  |  |  |       |   |   ├─BufferingFeignClientResponse.java
 |     |  |  |  |  |       |   |   └FeignClient.java
-├─cdkj-center
+├─wiki-center
 |      ├─pom.xml
 |      ├─src
 |      |  ├─main
@@ -1166,7 +1166,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |      |  |  |  |  |       |   |     └EnableAutoGenerate.java
 ├─cache
 |   ├─pom.xml
-|   ├─cdkj-redisJson
+|   ├─wiki-redisJson
 |   |       ├─pom.xml
 |   |       ├─src
 |   |       |  ├─main
@@ -1179,7 +1179,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |       |  |  |  |  |       |     |      └RedisJsonConfiguration.java
 |   |       |  |  |  |  |       |     ├─config
 |   |       |  |  |  |  |       |     |   └RedisJsonConfig.java
-|   ├─cdkj-redis
+|   ├─wiki-redis
 |   |     ├─pom.xml
 |   |     ├─src
 |   |     |  ├─main
@@ -1223,7 +1223,7 @@ README.tree.md                   # 项目的说明文档 - 树结构
 |   |     |  |  |  |  |       |   |   └RedisMarkerConfiguration.java
 |   |     |  |  |  |  |       |   ├─annotation
 |   |     |  |  |  |  |       |   |     └EnableAutoRedis.java
-|   ├─cdkj-cache
+|   ├─wiki-cache
 |   |     ├─pom.xml
 |   |     ├─src
 |   |     |  ├─main

@@ -21,8 +21,8 @@ cdkjFw 开发框架基础公共包，方便快捷分模块引用。三方包统�
 在项目最外层POM文件引入：
 
     <parent>
-        <groupId>com.cdkjframework</groupId>
-        <artifactId>cdkj-pom</artifactId>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-pom</artifactId>
         <version>1.0.6</version>
     </parent>
 

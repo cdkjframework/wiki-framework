@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这里的namespace必须和是对应的mapper.java的地址-->
+<mapper namespace="com.framewiki.core.business.mapper.PayRecordMapper">
+    <resultMap id="ResultMapPayRecord" type="com.framewiki.entity.pay.PayRecordEntity">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="business_id" property="businessId" jdbcType="VARCHAR"/>
+        <result column="pay_method" property="payMethod" jdbcType="INTEGER"/>
+        <result column="order_no" property="orderNo" jdbcType="VARCHAR"/>
+        <result column="price" property="price" jdbcType="DECIMAL"/>
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL"/>
+        <result column="nonce_str" property="nonceStr" jdbcType="VARCHAR"/>
+        <result column="pay_status" property="payStatus" jdbcType="INTEGER"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        <result column="qr_code" property="qrCode" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insert" parameterType="com.framewiki.entity.pay.PayRecordEntity">
+        INSERT gms_pay_record
+        (
+           id,
+           business_id,
+           pay_method,
+           order_no,
+           price,
+           pay_amount,
+           nonce_str,
+           pay_status,
+           add_time,
+           remarks
+        )
+        VALUES
+        (
+          #{id,jdbcType=VARCHAR},
+          #{businessId,jdbcType=VARCHAR},
+          #{payMethod,jdbcType=INTEGER},
+          #{orderNo,jdbcType=VARCHAR},
+          #{price,jdbcType=DECIMAL},
+          #{payAmount,jdbcType=DECIMAL},
+          #{nonceStr,jdbcType=VARCHAR},
+          #{payStatus,jdbcType=INTEGER},
+          #{addTime,jdbcType=TIMESTAMP},
+          #{remarks,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <select id="findEntity" resultMap="ResultMapPayRecord"
+            parameterType="com.framewiki.entity.pay.PayRecordEntity">
+        SELECT
+        id,
+        business_id,
+        pay_method,
+        order_no,
+        price,
+        pay_amount,
+        nonce_str,
+        pay_status,
+        pay_time,
+        add_time,
+        remarks,
+        qr_code
+        FROM
+        gms_pay_record
+        <where>
+            <if test="businessId != null and businessId!=''">
+                AND business_id = #{businessId}
+            </if>
+            <if test="payStatus != null and payStatus!=''">
+                AND pay_status = #{payStatus}
+            </if>
+            <if test="payMethod != null and payMethod!=''">
+                AND pay_method = #{payMethod}
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                AND order_no = #{orderNo}
+            </if>
+            <if test="nonceStr != null and nonceStr!=''">
+                AND nonce_str = #{nonceStr}
+            </if>
+            <if test="remarks != null and remarks!=''">
+                AND remarks = #{remarks}
+            </if>
+            <if test="addTime != null and addTime!=''">
+                AND add_time > #{addTime}
+            </if>
+        </where>
+        ORDER BY add_time DESC
+    </select>
+
+    <select id="listFindByEntity" resultMap="ResultMapPayRecord" parameterType="com.framewiki.entity.pay.PayRecordEntity">
+        SELECT
+        id,
+        business_id,
+        pay_method,
+        order_no,
+        price,
+        pay_amount,
+        nonce_str,
+        pay_status,
+        pay_time,
+        add_time,
+        remarks,
+        qr_code
+        FROM
+        gms_pay_record
+        <where>
+            <if test="businessId != null and businessId!=''">
+                AND business_id = #{businessId}
+            </if>
+            <if test="payStatus != null and payStatus!=''">
+                AND pay_status = #{payStatus}
+            </if>
+            <if test="payMethod != null and payMethod!=''">
+                AND pay_method = #{payMethod}
+            </if>
+            <if test="orderNo != null and orderNo!=''">
+                AND order_no = #{orderNo}
+            </if>
+            <if test="nonceStr != null and nonceStr!=''">
+                AND nonce_str = #{nonceStr}
+            </if>
+            <if test="remarks != null and remarks!=''">
+                AND remarks = #{remarks}
+            </if>
+            <if test="addTime != null and addTime!=''">
+                AND add_time > #{addTime}
+            </if>
+        </where>
+        ORDER BY add_time DESC
+    </select>
+
+    <insert id="insertBatch"></insert>
+    <delete id="deleteBatchIds"></delete>
+    <delete id="deleteById"></delete>
+    <delete id="delete"></delete>
+    <update id="modify">
+        UPDATE gms_pay_record
+        <set>
+            <if test="payMethod!=null">
+                pay_method = #{payMethod},
+            </if>
+            <if test="orderNo!='' and orderNo!=null">
+                order_no = #{orderNo},
+            </if>
+            <if test="price!=null">
+                price = #{price},
+            </if>
+            <if test="and payAmount!=null">
+                pay_amount = #{payAmount},
+            </if>
+            <if test="nonceStr!='' and nonceStr!=null">
+                nonce_str = #{nonceStr},
+            </if>
+            <if test="payStatus!=null">
+                pay_status = #{payStatus},
+            </if>
+            <if test="addTime!=null">
+                add_time = #{addTime},
+            </if>
+            <if test="remarks!='' and remarks!=null">
+                remarks = #{remarks}
+            </if>
+        </set>
+        <where>
+            <if test="businessId!='' and businessId!=null">
+                business_id = #{businessId}
+            </if>
+            <if test="orderNo!='' and orderNo!=null">
+                AND order_no = #{orderNo}
+            </if>
+        </where>
+
+    </update>
+    <update id="modifyBatch"></update>
+    <select id="findEntityById"></select>
+    <select id="listFindByIds"></select>
+</mapper>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这里的namespace必须和是对应的mapper.java的地址-->
+<mapper namespace="com.framewiki.core.business.mapper.PayConfigMapper">
+    <resultMap id="ResultMapPayConfig" type="com.framewiki.entity.pay.PayConfigEntity">
+        <id column="id" property="id" jdbcType="VARCHAR"></id>
+        <result column="app_id" property="appId" jdbcType="VARCHAR"/>
+        <result column="pay_type" property="payType" jdbcType="VARCHAR"/>
+        <result column="secret_key" property="secretKey" jdbcType="VARCHAR"/>
+        <result column="public_key" property="publicKey" jdbcType="VARCHAR"/>
+        <result column="private_key" property="privateKey" jdbcType="VARCHAR"/>
+        <result column="add_time" property="addTime" jdbcType="TIMESTAMP"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="notify_url" property="notifyUrl" jdbcType="VARCHAR"/>
+        <result column="failure_time" property="failureTime" jdbcType="INTEGER"/>
+        <result column="api_address" property="apiAddress" jdbcType="VARCHAR"/>
+        <result column="mch_id" property="mchId" jdbcType="VARCHAR"/>
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL"/>
+        <result column="pay_amount" property="payAmount" jdbcType="DECIMAL"/>
+        <result column="unit_price" property="unitPrice" jdbcType="VARCHAR"/>
+        <result column="query_address" property="queryAddress" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="listFindByEntity" resultMap="ResultMapPayConfig">
+        SELECT
+            id,
+            app_id,
+            mch_id,
+            pay_type,
+            secret_key,
+            public_key,
+            private_key,
+            add_time,
+            remarks,
+            notify_url,
+            failure_time,
+            api_address,
+            pay_amount,
+            query_address,
+            unit_price
+        FROM
+            gms_pay_config
+    </select>
+
+    <insert id="insert" parameterType="com.framewiki.entity.pay.PayConfigEntity">
+        INSERT gms_pay_config
+            (id,
+            app_id,
+            mch_id,
+            pay_type,
+            secret_key,
+            public_key,
+            private_key,
+            add_time,
+            remarks,
+            notify_url,
+            failure_time,
+            api_address,
+            pay_amount,
+            query_address,
+            unit_price)
+        VALUES
+            (id,
+            appId,
+            mchId,
+            payType,
+            secretKey,
+            publicKey,
+            privateKey,
+            addTime,
+            remarks,
+            notifyUrl,
+            failureTime,
+            apiAddress,
+            payAmount,
+            queryAddress,
+            unitPrice)
+    </insert>
+    <insert id="insertBatch"></insert>
+    <delete id="deleteBatchIds"></delete>
+    <delete id="deleteById"></delete>
+    <delete id="delete"></delete>
+    <update id="modify"></update>
+    <update id="modifyBatch"></update>
+    <select id="findEntityById"></select>
+    <select id="listFindByIds"></select>
+    <select id="findEntity"></select>
+</mapper>

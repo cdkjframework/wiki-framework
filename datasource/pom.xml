@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cdkj-framework</artifactId>
-        <groupId>com.cdkjframework</groupId>
-        <version>1.0.10</version>
+        <artifactId>wiki-framework</artifactId>
+        <groupId>com.framewiki</groupId>
+        <version>1.0.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,11 +15,11 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cdkj-datasource</module>
-        <module>cdkj-datasource-rw</module>
-        <module>cdkj-datasource-jpa</module>
-        <module>cdkj-datasource-mongodb</module>
-        <module>cdkj-datasource-elasticsearch</module>
+        <module>wiki-datasource</module>
+        <module>wiki-datasource-rw</module>
+        <module>wiki-datasource-jpa</module>
+        <module>wiki-datasource-mongodb</module>
+        <module>wiki-datasource-elasticsearch</module>
         <module>mybatis-pro</module>
     </modules>
 
