@@ -1,2 +1,2 @@
-com.framewiki.config.MqttConfig
-com.framewiki.mqtt.producer.MqttProducer
+com.cdkjframework.config.MqttConfig
+com.cdkjframework.mqtt.producer.MqttProducer

@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * @ProjectName: cdkjframework
@@ -34,7 +33,12 @@ public class ReflectionUtils {
   /**
    * 日志
    */
-  private static LogUtils logUtil = LogUtils.getLogger(ReflectionUtils.class);
+  private static final LogUtils LOG = LogUtils.getLogger(ReflectionUtils.class);
+
+  /**
+   * 数据类型
+   */
+  private static final List<String> DATA_TYPE = List.of("java.util.ArrayList", "java.util.List");
 
   /**
    * 获取字段值
@@ -45,16 +49,24 @@ public class ReflectionUtils {
    * @return 返回结果值
    */
   public static <T> Object getFieldValue(Field field, T t) {
-    Object value = "";
+    Object value;
     try {
       //抑制Java对其的检查
       field.setAccessible(true);
       value = field.get(t);
+
+      String typeName = field.getType().getTypeName();
+
       if (StringUtils.isNullAndSpaceOrEmpty(value)) {
-        value = "";
+        if (DATA_TYPE.contains(typeName)) {
+          value = null;
+        } else {
+          value = StringUtils.EMPTY;
+        }
       }
     } catch (IllegalAccessException e) {
-      logUtil.error(e.getMessage());
+      LOG.error(e.getMessage());
+      value = StringUtils.EMPTY;
     }
 
     //返回结果
@@ -75,7 +87,7 @@ public class ReflectionUtils {
       try {
         method = clazz.getDeclaredMethod(methodName, parameterTypes);
       } catch (Exception e) {
-        logUtil.error(e.getCause(), e.getMessage());
+        LOG.error(e.getCause(), e.getMessage());
       }
     }
     return method;
@@ -98,25 +110,21 @@ public class ReflectionUtils {
     //抑制Java对方法进行检查,主要是针对私有方法而言
     method.setAccessible(true);
     try {
-      if (null != method) {
-        //调用object 的 method 所代表的方法，其方法的参数是 parameters
-        final List<String> dataTypeList = new ArrayList<>();
-        dataTypeList.add("java.util.ArrayList");
-        dataTypeList.add("java.util.List");
-        if (dataTypeList.contains(dataType)) {
-          return method.invoke(object, parameters);
-        } else {
-          Object value = convertDataTypes(parameters, dataType);
-          return method.invoke(object, new Object[]{value});
-        }
+      //调用object 的 method 所代表的方法，其方法的参数是 parameters
+      final List<String> dataTypeList = new ArrayList<>();
+      dataTypeList.add("java.util.ArrayList");
+      dataTypeList.add("java.util.List");
+      if (dataTypeList.contains(dataType)) {
+        return method.invoke(object, parameters);
+      } else {
+        Object value = convertDataTypes(parameters, dataType);
+        return method.invoke(object, new Object[]{value});
       }
     } catch (IllegalArgumentException e) {
-      logUtil.info(dataType);
-      logUtil.error(e.getCause(), e.getMessage());
-    } catch (IllegalAccessException e) {
-      logUtil.error(e.getCause(), e.getMessage());
-    } catch (InvocationTargetException e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.info(dataType);
+      LOG.error(e.getCause(), e.getMessage());
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      LOG.error(e.getCause(), e.getMessage());
     }
     return null;
   }
@@ -140,7 +148,7 @@ public class ReflectionUtils {
         field = optional.get();
       }
     } catch (Exception e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     }
     return field;
   }
@@ -165,7 +173,7 @@ public class ReflectionUtils {
         field = optional.get();
       }
     } catch (Exception e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     }
     return field;
   }
@@ -216,9 +224,9 @@ public class ReflectionUtils {
       //将 object 中 field 所代表的值 设置为 value
       field.set(object, value);
     } catch (IllegalArgumentException e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     } catch (IllegalAccessException e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     }
 
   }
@@ -237,9 +245,9 @@ public class ReflectionUtils {
       //将 target 中 field 所代表的值 设置为 value
       field.set(target, value);
     } catch (IllegalArgumentException e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     } catch (IllegalAccessException e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     }
 
   }
@@ -263,7 +271,7 @@ public class ReflectionUtils {
       //获的属性值
       return field.get(object);
     } catch (Exception e) {
-      logUtil.error(e.getCause(), e.getMessage());
+      LOG.error(e.getCause(), e.getMessage());
     }
     return null;
   }
@@ -301,8 +309,8 @@ public class ReflectionUtils {
           try {
             obj = dateFormat.parse(value);
           } catch (ParseException e) {
-            logUtil.error(DataTypeConsts.DATE_NAME + "：" + value);
-            logUtil.error(e.getCause(), e.getMessage());
+            LOG.error(DataTypeConsts.DATE_NAME + "：" + value);
+            LOG.error(e.getCause(), e.getMessage());
           }
         }
         break;
@@ -318,7 +326,7 @@ public class ReflectionUtils {
           try {
             obj = new Timestamp(format.parse(value).getTime());
           } catch (ParseException e) {
-            logUtil.error(e.getCause(), e.getMessage());
+            LOG.error(e.getCause(), e.getMessage());
           }
         }
         break;

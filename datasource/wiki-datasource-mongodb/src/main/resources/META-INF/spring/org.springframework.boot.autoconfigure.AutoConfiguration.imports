@@ -1,1 +1,1 @@
-com.framewiki.datasource.mongodb.config.MongodbAutoConfiguration
+com.cdkjframework.datasource.mongodb.config.MongodbAutoConfiguration

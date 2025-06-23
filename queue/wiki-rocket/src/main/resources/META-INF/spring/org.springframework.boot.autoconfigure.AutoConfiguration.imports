@@ -1,2 +1,2 @@
-com.framewiki.config.AliCloudRocketMqConfig
-com.framewiki.rocket.producer.RocketProducer
+com.cdkjframework.config.AliCloudRocketMqConfig
+com.cdkjframework.rocket.producer.RocketProducer

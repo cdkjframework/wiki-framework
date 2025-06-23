@@ -1,2 +1,2 @@
-com.framewiki.config.MqttConfig
-com.framewiki.mqtt.consumer.MqttConsumer
+com.cdkjframework.config.MqttConfig
+com.cdkjframework.mqtt.consumer.MqttConsumer

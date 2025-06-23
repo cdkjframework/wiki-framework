@@ -1,1 +1,1 @@
-com.framewiki.kafka.consumer.config.KafkaClientAutoConfiguration
+com.cdkjframework.kafka.consumer.config.KafkaClientAutoConfiguration

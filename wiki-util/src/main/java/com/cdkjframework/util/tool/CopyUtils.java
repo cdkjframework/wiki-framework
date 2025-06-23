@@ -257,7 +257,7 @@ public class CopyUtils {
 							targetField.setAccessible(true);
 							// 读取值
 							Object value = ReflectionUtils.getFieldValue(targetField, target);
-							String typeName = value.getClass().getTypeName();
+							String typeName = targetField.getType().getTypeName();
 							if (DATA_TYPE.contains(typeName)) {
 								buildArrayList((ArrayList) value, target, targetField);
 							}
