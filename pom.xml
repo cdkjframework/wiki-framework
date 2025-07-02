@@ -19,7 +19,7 @@
         <module>wiki-entity</module>
         <module>wiki-constant</module>
         <module>wiki-message</module>
-        <!--        <module>wiki-web</module>-->
+        <!--<module>wiki-web</module>-->
         <module>wiki-center</module>
         <module>wiki-log</module>
         <module>wiki-config</module>
