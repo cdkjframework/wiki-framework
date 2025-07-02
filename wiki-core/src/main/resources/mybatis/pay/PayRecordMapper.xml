@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--这里的namespace必须和是对应的mapper.java的地址-->
 <mapper namespace="com.framewiki.core.business.mapper.PayRecordMapper">
-    <resultMap id="ResultMapPayRecord" type="com.framewiki.entity.pay.PayRecordEntity">
+    <resultMap id="ResultMapPayRecord" type="com.cdkjframework.entity.pay.PayRecordEntity">
         <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="business_id" property="businessId" jdbcType="VARCHAR"/>
         <result column="pay_method" property="payMethod" jdbcType="INTEGER"/>
@@ -17,7 +17,7 @@
         <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.framewiki.entity.pay.PayRecordEntity">
+    <insert id="insert" parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
         INSERT gms_pay_record
         (
            id,
@@ -47,7 +47,7 @@
     </insert>
 
     <select id="findEntity" resultMap="ResultMapPayRecord"
-            parameterType="com.framewiki.entity.pay.PayRecordEntity">
+            parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
         SELECT
         id,
         business_id,
@@ -89,7 +89,7 @@
         ORDER BY add_time DESC
     </select>
 
-    <select id="listFindByEntity" resultMap="ResultMapPayRecord" parameterType="com.framewiki.entity.pay.PayRecordEntity">
+    <select id="listFindByEntity" resultMap="ResultMapPayRecord" parameterType="com.cdkjframework.entity.pay.PayRecordEntity">
         SELECT
         id,
         business_id,

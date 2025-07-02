@@ -1,6 +1,6 @@
 package ${packageName}.web.controller;
 
-import com.framewiki.entity.PageEntity;
+import com.cdkjframework.entity.PageEntity;
 import com.framewiki.util.log.LogUtils;
 import com.framewiki.util.tool.CopyUtils;
 
