@@ -284,7 +284,16 @@
         <artifactId>wiki-kafka-client</artifactId>
         <version>${wiki.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-mqtt</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-mqtt-client</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
