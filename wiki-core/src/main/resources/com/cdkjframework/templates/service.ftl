@@ -2,8 +2,8 @@ package ${packageName}.service.impl;
 
 import com.framewiki.constant.IntegerConsts;
 import com.framewiki.core.member.CurrentUser;
-import com.framewiki.entity.BaseEntity;
-import com.framewiki.entity.PageEntity;
+import com.cdkjframework.entity.BaseEntity;
+import com.cdkjframework.entity.PageEntity;
 import com.framewiki.util.log.LogUtils;
 import com.framewiki.util.make.GeneratedValueUtils;
 import com.framewiki.util.tool.CopyUtils;

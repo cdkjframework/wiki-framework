@@ -1,6 +1,6 @@
 package ${packageName}.vo;
 
-import com.framewiki.entity.base.BaseVo;
+import com.cdkjframework.entity.base.BaseVo;
 
 import java.io.Serializable;
 <#list leading as item>

@@ -1,6 +1,6 @@
 package ${packageName}.dto;
 
-import com.framewiki.entity.base.BaseDto;
+import com.cdkjframework.entity.base.BaseDto;
 
 import java.io.Serializable;
 <#list leading as item>

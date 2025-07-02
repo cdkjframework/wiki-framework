@@ -1,6 +1,6 @@
 package ${packageName}.entity;
 
-import com.framewiki.entity.BaseEntity;
+import com.cdkjframework.entity.BaseEntity;
 
 import java.io.Serializable;
 <#list leading as item>
