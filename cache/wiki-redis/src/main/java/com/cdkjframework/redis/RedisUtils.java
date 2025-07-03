@@ -9,6 +9,7 @@ import com.cdkjframework.util.tool.JsonUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import io.lettuce.core.KeyValue;
 import io.lettuce.core.RedisFuture;
+import io.lettuce.core.SetArgs;
 import io.lettuce.core.api.async.RedisAsyncCommands;
 import io.lettuce.core.cluster.api.async.RedisAdvancedClusterAsyncCommands;
 import io.lettuce.core.cluster.pubsub.StatefulRedisClusterPubSubConnection;
@@ -465,6 +466,31 @@ public class RedisUtils {
     } catch (Exception e) {
       logUtils.error(e.getStackTrace(), e.getMessage());
       return false;
+    }
+  }
+
+  /**
+   * 普通缓存放入
+   *
+   * @param key     键
+   * @param value   值
+   * @param setArgs 设置参数
+   * @return true成功 false失败
+   */
+  public static String syncSet(String key, String value, SetArgs setArgs) {
+    key = getNamespaces(key);
+    try {
+      RedisFuture<String> future;
+      if (redisAsyncCommands == null) {
+        future = commands.set(key, value, setArgs);
+      } else {
+        future = redisAsyncCommands.set(key, value, setArgs);
+      }
+      // 返回结果
+      return future.get();
+    } catch (Exception e) {
+      logUtils.error(e.getStackTrace(), e.getMessage());
+      return StringUtils.EMPTY;
     }
   }
 
