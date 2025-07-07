@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>security</artifactId>
+        <groupId>com.framewiki</groupId>
+        <version>1.0.11</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>wiki-security</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-logging</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.framewiki</groupId>
+            <artifactId>wiki-entity</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.framewiki</groupId>
+            <artifactId>wiki-util</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.framewiki</groupId>
+            <artifactId>wiki-redis</artifactId>
+        </dependency>
+    </dependencies>
+
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <build>
+        <plugins>
+            <!--打包-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>*.properties</exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <!--<goals>-->
+                        <!--<goal>test-jar</goal>-->
+                        <!--</goals>-->
+                    </execution>
+                </executions>
+            </plugin>
+            <!--源码打包-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                            <!--<goal>test-jar</goal>-->
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <repositories>
+        <repository>
+            <id>cdkj Maven Repository</id>
+            <name>cdkj Maven Repository</name>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+        </repository>
+
+        <repository>
+            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
+            就会覆盖中央仓库的配置 -->
+            <id>mvnRepository</id>
+            <name>mvnRepository</name>
+            <url>https://maven.aliyun.com/repository/central</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <repository>
+            <id>cdkj Maven Repository</id>
+            <layout>default</layout>
+            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        </repository>
+    </distributionManagement>
+</project>

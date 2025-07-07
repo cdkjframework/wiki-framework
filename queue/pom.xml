@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cdkj-framework</artifactId>
-        <groupId>com.cdkjframework</groupId>
-        <version>1.0.10</version>
+        <artifactId>wiki-framework</artifactId>
+        <groupId>com.framewiki</groupId>
+        <version>1.0.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,12 +13,12 @@
     <description>消息组件</description>
     <packaging>pom</packaging>
     <modules>
-        <module>cdkj-kafka</module>
-        <module>cdkj-kafka-client</module>
-        <module>cdkj-mqtt</module>
-        <module>cdkj-mqtt-client</module>
-        <module>cdkj-rocket</module>
-        <module>cdkj-rocket-client</module>
+        <module>wiki-kafka</module>
+        <module>wiki-kafka-client</module>
+        <module>wiki-mqtt</module>
+        <module>wiki-mqtt-client</module>
+        <module>wiki-rocket</module>
+        <module>wiki-rocket-client</module>
     </modules>
 
     <repositories>
