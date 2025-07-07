@@ -3,9 +3,9 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>cdkj-framework</artifactId>
-        <groupId>com.cdkjframework</groupId>
-        <version>1.0.10</version>
+        <artifactId>wiki-framework</artifactId>
+        <groupId>com.framewiki</groupId>
+        <version>1.0.11</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -15,9 +15,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>cdkj-license</module>
-        <module>cdkj-license-verify</module>
-        <module>cdkj-license-core</module>
+        <module>wiki-license</module>
+        <module>wiki-license-verify</module>
+        <module>wiki-license-core</module>
     </modules>
 
     <repositories>

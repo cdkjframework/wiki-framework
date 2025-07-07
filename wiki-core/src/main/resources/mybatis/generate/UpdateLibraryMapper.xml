@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--这里的namespace必须和是对应的mapper.java的地址-->
+<mapper namespace="com.framewiki.core.business.mapper.UpdateLibraryMapper">
+
+    <update id="createTable">
+        CREATE TABLE ${name} (
+        <foreach collection="layoutEntities" item="column" index="index" separator=",">
+            ${column.name} ${column.dataType}
+            <if test="column.length>0">
+                <choose>
+                    <when test="column.scale!=null and column.scale > 0">
+                        (${column.length},${column.scale})
+                    </when>
+                    <otherwise>
+                        (${column.length})
+                    </otherwise>
+                </choose>
+            </if>
+            <choose>
+                <when test="!column.nullable">
+                    NOT NULL
+                </when>
+                <otherwise>
+                    NULL
+                </otherwise>
+            </choose>
+            COMMENT '${column.comment}'
+        </foreach>
+        ,PRIMARY KEY (id));
+    </update>
+
+    <update id="createTableColumn">
+        ALTER TABLE ${item.name} ADD COLUMN ${column.name} ${column.dataType} (${column.length}
+        <if test="column.scale!=null and column.scale > 0">,${column.scale}</if>)
+        <if test="!column.nullable">NOT</if>
+        NULL COMMENT '${column.comment}';
+    </update>
+
+    <update id="deleteTableField">
+        ALTER TABLE ${item.name} DROP COLUMN ${column.name};
+    </update>
+
+    <update id="deleteTable">
+        <foreach collection="list" item="item" index="index">
+            DROP TABLE ${item.name};
+        </foreach>
+    </update>
+
+    <update id="createTableUniqueIndex">
+        ALTER TABLE ${item.name} ADD UNIQUE INDEX ${column.name}_index(${column.name});
+    </update>
+
+</mapper>
