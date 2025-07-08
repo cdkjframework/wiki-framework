@@ -10,6 +10,10 @@ package com.cdkjframework.enums;
  */
 
 public enum InterfaceTypeEnums {
+
+    /**
+     * ERP
+     */
     ERP {
         /**
          * 获取枚举值
@@ -31,6 +35,9 @@ public enum InterfaceTypeEnums {
             return "ERP 接口返回";
         }
     },
+    /**
+     * LHB
+     */
     LHB {
         /**
          * 获取枚举值

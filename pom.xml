@@ -16,7 +16,7 @@
     <module>wiki-cloud</module>
     <module>wiki-util</module>
     <module>wiki-core</module>
-    <module>wiki-wechat</module>
+<!--    <module>wiki-wechat</module>-->
     <module>wiki-pom</module>
     <module>wiki-entity</module>
     <module>wiki-constant</module>

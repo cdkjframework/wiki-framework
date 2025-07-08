@@ -140,7 +140,9 @@
         </executions>
         <configuration>
           <source>17</source> <!-- 指定 JDK 版本 -->
-          <destDir>${project.build.directory}/apidocs</destDir>
+          <!-- 关闭严格检查 -->
+          <doclint>none</doclint>
+          <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
         </configuration>
       </plugin>
     </plugins>

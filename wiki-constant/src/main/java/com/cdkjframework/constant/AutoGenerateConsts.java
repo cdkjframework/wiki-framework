@@ -1,7 +1,7 @@
 package com.cdkjframework.constant;
 
 /**
- * @ProjectName: common-core
+ * @ProjectName: wiki-constant
  * @Package: com.cdkjframework.constant
  * @ClassName: AutoGenerateConsts
  * @Description: 自动生成常量

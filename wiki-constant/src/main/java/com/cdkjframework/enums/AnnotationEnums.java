@@ -10,64 +10,75 @@ package com.cdkjframework.enums;
  */
 
 public enum AnnotationEnums {
+  /**
+   * 字符串
+   */
+  String {
+    @Override
+    public int getValue() {
+      return 0;
+    }
 
-    String {
-        @Override
-        public int getValue() {
-            return 0;
-        }
+    @Override
+    public String getName() {
+      return "字符串";
+    }
+  },
+  /**
+   * 数字
+   */
+  Number {
+    @Override
+    public int getValue() {
+      return 1;
+    }
 
-        @Override
-        public String getName() {
-            return "字符串";
-        }
-    },
-    Number {
-        @Override
-        public int getValue() {
-            return 1;
-        }
+    @Override
+    public String getName() {
+      return "数据字";
+    }
+  },
+  /**
+   * 布尔
+   */
+  Boolean {
+    @Override
+    public int getValue() {
+      return 3;
+    }
 
-        @Override
-        public String getName() {
-            return "数据字";
-        }
-    },
-    Boolean {
-        @Override
-        public int getValue() {
-            return 3;
-        }
+    @Override
+    public String getName() {
+      return "布尔值";
+    }
+  },
+  /**
+   * 数组
+   */
+  ArrayList {
+    @Override
+    public int getValue() {
+      return 4;
+    }
 
-        @Override
-        public String getName() {
-            return "布尔值";
-        }
-    },
-    ArrayList {
-        @Override
-        public int getValue() {
-            return 4;
-        }
+    @Override
+    public String getName() {
+      return "布尔值";
+    }
+  };
 
-        @Override
-        public String getName() {
-            return "布尔值";
-        }
-    };
+  /**
+   * 获取枚举值
+   *
+   * @return 返回结果
+   */
+  public abstract int getValue();
 
-    /**
-     * 获取枚举值
-     *
-     * @return 返回结果
-     */
-    public abstract int getValue();
-
-    /**
-     * 获取枚举名称
-     *
-     * @return 返回结果
-     */
-    public abstract String getName();
+  /**
+   * 获取枚举名称
+   *
+   * @return 返回结果
+   */
+  public abstract String getName();
 
 }

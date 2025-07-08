@@ -38,24 +38,56 @@ public enum PushRangeEnums {
    */
   AUDIENCE_TAG(7, "tag", "tag推送。");
 
+  /**
+   * 推送范围
+   */
   private final Integer key;
+  /**
+   * 推送范围
+   */
   private final String value;
+
+  /**
+   * 推送范围描述
+   */
   private final String notes;
 
+  /**
+   * 构造函数
+   *
+   * @param key   推送范围
+   * @param value 推送范围
+   * @param notes 推送范围描述
+   */
   PushRangeEnums(Integer key, String value, String notes) {
     this.key = key;
     this.value = value;
     this.notes = notes;
   }
 
+  /**
+   * 获取推送范围
+   *
+   * @return 推送范围
+   */
   public Integer getKey() {
     return key;
   }
 
+  /**
+   * 获取推送范围
+   *
+   * @return 推送范围
+   */
   public String getValue() {
     return value;
   }
 
+  /**
+   * 获取推送范围描述
+   *
+   * @return 推送范围描述
+   */
   public String getNotes() {
     return notes;
   }
