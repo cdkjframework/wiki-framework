@@ -48,6 +48,7 @@
     </dependency>
   </dependencies>
 
+
   <build>
     <plugins>
       <!--打包-->
@@ -62,6 +63,9 @@
         <executions>
           <execution>
             <phase>compile</phase>
+            <!--<goals>-->
+            <!--<goal>test-jar</goal>-->
+            <!--</goals>-->
           </execution>
         </executions>
       </plugin>
@@ -74,6 +78,7 @@
             <phase>compile</phase>
             <goals>
               <goal>jar-no-fork</goal>
+              <!--<goal>test-jar</goal>-->
             </goals>
           </execution>
         </executions>
@@ -84,6 +89,23 @@
         <configuration>
           <source>17</source>
           <target>17</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase> <!-- 绑定到打包阶段 -->
+            <goals>
+              <goal>jar</goal> <!-- 生成 Javadoc JAR 文件 -->
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>17</source> <!-- 指定 JDK 版本 -->
+          <destDir>${project.build.directory}/apidocs</destDir>
         </configuration>
       </plugin>
     </plugins>
@@ -106,7 +128,6 @@
       <id>mvnRepository</id>
       <name>mvnRepository</name>
       <url>https://maven.aliyun.com/repository/central</url>
-      <layout>default</layout>
       <releases>
         <enabled>true</enabled>
         <updatePolicy>always</updatePolicy>
@@ -119,7 +140,6 @@
   <distributionManagement>
     <repository>
       <id>cdkj Maven Repository</id>
-      <layout>default</layout>
       <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
     </repository>
   </distributionManagement>

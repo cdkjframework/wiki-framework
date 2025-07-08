@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-login</artifactId>
+    <name>${project.artifactId}</name>
 
     <description>第三方登录集成</description>
 
@@ -37,9 +38,9 @@
 
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Repository</id>
-            <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        <id>wiki</id>
+        <layout>default</layout>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 </project>

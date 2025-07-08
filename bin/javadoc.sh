@@ -3,6 +3,7 @@
 #exec mvn javadoc:javadoc
 
 # 多模块聚合文档，生成在target/site/apidocs
+# shellcheck disable=SC2093
 exec mvn javadoc:aggregate
 
 bin_home="$(dirname ${BASH_SOURCE[0]})"

@@ -19,8 +19,8 @@
         <module>wiki-datasource-rw</module>
         <module>wiki-datasource-jpa</module>
         <module>wiki-datasource-mongodb</module>
-        <module>wiki-datasource-elasticsearch</module>
-        <module>mybatis-pro</module>
+<!--        <module>wiki-datasource-elasticsearch</module>-->
+<!--        <module>mybatis-pro</module>-->
     </modules>
 
     <repositories>
@@ -53,9 +53,9 @@
 
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Repository</id>
-            <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        <id>wiki</id>
+        <layout>default</layout>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 </project>

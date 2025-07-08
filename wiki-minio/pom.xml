@@ -10,8 +10,10 @@
     </parent>
 
     <artifactId>wiki-minio</artifactId>
+    <name>${project.artifactId}</name>
 
     <properties>
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -81,6 +83,22 @@
                     <target>17</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <phase>package</phase> <!-- 绑定到打包阶段 -->
+                        <goals>
+                            <goal>jar</goal> <!-- 生成 Javadoc JAR 文件 -->
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <source>17</source> <!-- 指定 JDK 版本 -->
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -113,9 +131,9 @@
     </repositories>
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Repository</id>
-            <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        <id>wiki</id>
+        <layout>default</layout>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 </project>

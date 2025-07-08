@@ -9,6 +9,7 @@
   <description>wiki-framework 框架依赖包</description>
   <version>1.0.11</version>
   <packaging>pom</packaging>
+  <name>${project.artifactId}</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -1094,14 +1095,65 @@
           <target>17</target>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase> <!-- 绑定到打包阶段 -->
+            <goals>
+              <goal>jar</goal> <!-- 生成 Javadoc JAR 文件 -->
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>17</source> <!-- 指定 JDK 版本 -->
+          <destDir>${project.build.directory}/apidocs</destDir>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 
+  <profiles>
+    <profile>
+      <id>wiki</id>
+      <build>
+        <plugins>
+          <!-- GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.8</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.8.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>wiki</publishingServerId>
+              <autoPublish>true</autoPublish> <!-- 自动发布 -->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+
   <distributionManagement>
     <repository>
-      <id>cdkj Maven Repository</id>
-      <layout>default</layout>
-      <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+      <id>wiki</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 </project>
