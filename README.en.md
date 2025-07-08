@@ -1,205 +1,212 @@
 <p align="center">
-	<a href="https://hutool.cn/"><img src="https://cdn.jsdelivr.net/gh/looly/hutool-site/images/logo.jpg" width="45%"></a>
-</p>
-<p align="center">
-	<strong>🍬A set of tools that keep Java sweet.</strong>
-</p>
-<p align="center">
-	👉 <a href="https://hutool.cn">https://hutool.cn/</a> 👈
+	<a href="https://framewiki.com"><img alt="keytool" src="assets/wiki.png"/></a>
 </p>
 
 <p align="center">
-	<a target="_blank" href="https://search.maven.org/artifact/cn.hutool/hutool-all">
-		<img src="https://img.shields.io/maven-central/v/cn.hutool/hutool-all.svg?label=Maven%20Central" />
+	<a href="https://framewiki.com">https://framewiki.com/</a>
+</p>
+
+<p align="center">
+	<a target="_blank" href="https://search.maven.org/artifact/com.framewiki/wiki-all">
+		<img src="https://img.shields.io/maven-central/v/com.framewiki/wiki-all.svg?label=Maven%20Central" />
 	</a>
 	<a target="_blank" href="https://license.coscl.org.cn/MulanPSL2">
 		<img src="https://img.shields.io/:license-MulanPSL2-blue.svg" />
 	</a>
-	<a target="_blank" href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html">
-		<img src="https://img.shields.io/badge/JDK-8+-green.svg" />
-	</a>
-	<a target="_blank" href="https://travis-ci.com/chinabugotech/hutool">
-		<img src="https://travis-ci.com/chinabugotech/hutool.svg?branch=v5-master" />
-	</a>
-	<a href="https://www.codacy.com/gh/chinabugotech/hutool/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=chinabugotech/hutool&amp;utm_campaign=Badge_Grade">
-		<img src="https://app.codacy.com/project/badge/Grade/8a6897d9de7440dd9de8804c28d2871d"/>
-	</a>
-	<a href="https://codecov.io/gh/chinabugotech/hutool">
-		<img src="https://codecov.io/gh/chinabugotech/hutool/branch/v5-master/graph/badge.svg" />
-	</a>
-	<a target="_blank" href='https://gitee.com/chinabugotech/hutool/stargazers'>
-		<img src='https://gitee.com/chinabugotech/hutool/badge/star.svg?theme=gvp' alt='star'/>
-	</a>
-	<a target="_blank" href='https://github.com/chinabugotech/hutool'>
-		<img src="https://img.shields.io/github/stars/chinabugotech/hutool.svg?style=social" alt="github star"/>
-	</a>
-	<a target="_blank" href='https://gitcode.com/chinabugotech/hutool'>
-		<img src="https://gitcode.com/chinabugotech/hutool/star/badge.svg" alt="gitcode star"/>
-	</a>
+  <a href='https://gitee.com/cdkjframework/wiki-framework/stargazers'><img src='https://gitee.com/cdkjframework/wiki-proxy/badge/star.svg?theme=dark' alt='star'></img></a>
+<a href='https://gitee.com/cdkjframework/wiki-framework/members'><img src='https://gitee.com/cdkjframework/wiki-proxy/badge/fork.svg?theme=dark' alt='fork'></img></a>
+<a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-0-13-later-archive-downloads.html">
+    <img src="https://img.shields.io/badge/JDK-17+-red.svg" />
+</a>
+<a href="./LICENSE">
+    <img src="https://img.shields.io/badge/license-MIT-red" alt="license MIT">
+</a>
 </p>
 
-<br/>
-<p align="center">
-	<a href="https://qm.qq.com/q/I7pPlTzCa4">
-	<img src="https://img.shields.io/badge/QQ%E7%BE%A4%E2%91%A6-715292493-orange"/></a>
-</p>
+## Introduction
 
--------------------------------------------------------------------------------
+Wiki-Framework is built for developers. It is a feature-rich and easy-to-use Java toolkit designed to help developers
+quickly build projects by providing convenient utilities. These encapsulated utilities cover operations such as string
+handling, numbers, collections, encoding, dates, files, I/O, encryption, database JDBC, JSON, HTTP, TCP clients (
+WebSocket, Socket), and more, meeting various development needs in different scenarios.
 
-=======
+### Wiki Philosophy
 
-[**🌎English Documentation**](README-EN.md)
+`Wiki-Framework` serves both as a toolkit and a knowledge base. We never claim all code to be original; most utility
+classes are **curated and adapted** from existing sources. Therefore:
 
--------------------------------------------------------------------------------
+- You can introduce it as a dependency, or directly **copy and modify** the code **without requiring any attribution**.
+- We strive to provide **detailed Chinese comments** in the source code to create good learning conditions, making it
+  accessible to everyone.
+- We welcome **open-source contributions**. If you find **Wiki-Framework** useful, please give us a **star**! Thank you!
 
-## 📚简介
+---
 
-`Hutool`是一个功能丰富且易用的**Java工具库**，通过诸多实用工具类的使用，旨在帮助开发者快速、便捷地完成各类开发任务。
-这些封装的工具涵盖了字符串、数字、集合、编码、日期、文件、IO、加密、数据库JDBC、JSON、HTTP客户端等一系列操作，
-可以满足各种不同的开发需求。
+## Software Architecture
 
-### 🎁Hutool名称的由来
+Based on Spring Boot 3.3.5 and Spring Cloud 4.1.4, with integrations including MyBatis, JPA, PageHelper (pagination
+plugin), and Alibaba database drivers.
 
-Hutool = Hu + tool，是原公司项目底层代码剥离后的开源库，“Hu”是公司名称的表示，tool表示工具。Hutool谐音“糊涂”，一方面简洁易懂，一方面寓意“难得糊涂”。
+Includes the following tools: JWT, Redis, easyPoi (Excel import/export), MongoDB (Spring Boot-based), WebSocket (
+Netty-based), Chinese-to-Pinyin conversion, Swagger2 (API management), Alibaba Cloud OSS, Alibaba Cloud SMS,
+fasterxml.jackson, ZXing, MQTTv3, Kryo, CXF Web Services, and encryption/decryption utilities, GZIP compression, HTTP
+clients, etc.
 
-### 🍺Hutool理念
+## Included Components
 
-`Hutool`既是一个工具集，也是一个知识库，我们从不自诩代码原创，大多数工具类都是**搬运**而来，因此：
+A foundational Java utility library that encapsulates file, stream, encryption/decryption, encoding conversion, regex,
+threading, XML, and other JDK methods into various Utils classes. Also provides the following components:
 
-- 你可以引入使用，也可以**拷贝**和修改使用，而**不必标注任何信息**，只是希望能把bug及时反馈回来。
-- 我们努力健全**中文**注释，为源码学习者提供良好地学习环境，争取做到人人都能看得懂。
+| Module                  | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+|-------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| wiki-pom                | Core packaging module controlling dependency versions across all project components.                                                                                                                                                                                                                                                                                                                                                                                      |
+| wiki-all                | Core Starter Module,The core starter module provides essential packages required for project startup. To integrate it:​Dependency Import: Include the wiki-all module in your project.​Annotation Activation: Add @EnableAutoWiki to your application's main startup class.|
+| wiki-core               | Core utilities module providing essential project startup configurations, common request/response interceptors (with AES encryption/decryption), global exception handling.                                                                                                                                                                                                                                                                                               |
+| wiki-util               | Utility library providing HTTP/HTTPS client (HttpUrlConnection-based), script execution (e.g., JavaScript), JSON implementation (Alibaba FastJSON), Excel utilities (EasyExcel), JWT implementation, exception utilities, file I/O, encryption (MD5, Base64, AES, DES, RSA, Unicode, SM), log output (Log4j-based), app push notifications (Uni, Tencent, JPush), email, common regex, hex conversion, object copying, time utilities, deserialization, string utilities. |
+| wiki-constant           | Constants module providing common enums and constants (e.g., caching, logging, error codes, cache keys, regex patterns).                                                                                                                                                                                                                                                                                                                                                  |
+| wiki-entity             | Entities module providing base classes (BaseVo, BaseDto, BaseEntity), pagination parameters/results, result wrappers, error codes.                                                                                                                                                                                                                                                                                                                                        |
+| wiki-datasource         | Database utilities (MyBatis) module: connection pooling, data sources, pagination plugin, DB operation utilities.                                                                                                                                                                                                                                                                                                                                                         |
+| wiki-datasource-jpa     | Database utilities (JPA) module: connection pooling, data sources, pagination plugin, DB operation utilities, Repository interfaces.                                                                                                                                                                                                                                                                                                                                      |
+| wiki-datasource-mongodb | Database utilities (MongoDB) module: connection pooling, data sources, pagination plugin, DB operation utilities, Repository interfaces.                                                                                                                                                                                                                                                                                                                                  |
+| wiki-datasource-rw      | Database utilities (MyBatis) module focused on **read-write separation**.                                                                                                                                                                                                                                                                                                                                                                                                 |
+| wiki-redis              | Redis utilities module: connection pooling, Redis operations (caching, distributed locks, pub/sub, key expiration subscriptions).                                                                                                                                                                                                                                                                                                                                         |
+| wiki-kafka              | Kafka producer module: connection pooling, message sending utilities.                                                                                                                                                                                                                                                                                                                                                                                                     |
+| wiki-kafka-client       | Kafka consumer module: connection pooling, message listening utilities.                                                                                                                                                                                                                                                                                                                                                                                                   |
+| wiki-mqtt               | MQTT producer module: connection pooling, message sending utilities.                                                                                                                                                                                                                                                                                                                                                                                                      |
+| wiki-mqtt-client        | MQTT consumer module: connection pooling, message listening utilities.                                                                                                                                                                                                                                                                                                                                                                                                    |
+| wiki-socket             | Socket server module: connection pooling, message handling utilities (send/receive).                                                                                                                                                                                                                                                                                                                                                                                      |
+| wiki-socket-client      | Socket client module: connection pooling, message handling utilities (send/receive).                                                                                                                                                                                                                                                                                                                                                                                      |
+| wiki-sse                | SSE server module: connection pooling, message handling utilities (send/receive).                                                                                                                                                                                                                                                                                                                                                                                         |
+| wiki-web-socket         | WebSocket server module: connection pooling, message handling utilities (send/receive).                                                                                                                                                                                                                                                                                                                                                                                   |
+| wiki-web-socket-client  | WebSocket client module: connection pooling, message handling utilities (send/receive).                                                                                                                                                                                                                                                                                                                                                                                   |
+| wiki-log                | Logging module: AOP-based logging for controllers, mappers, repositories with configurable parameter injection.                                                                                                                                                                                                                                                                                                                                                           |
+| wiki-minio              | MinIO utilities module: connection pooling, file operations (upload/download/delete/exists/list).                                                                                                                                                                                                                                                                                                                                                                         |
+| wiki-security           | Spring Security module: authentication, authorization, permissions, logout, captcha, token refresh, QR code login.                                                                                                                                                                                                                                                                                                                                                        |
+| wiki-config             | Spring Cloud Config client module: automatic configuration loading.                                                                                                                                                                                                                                                                                                                                                                                                       |
+| wiki-message            | SMS module: Alibaba Cloud SMS utilities (note: voice calls deprecated).                                                                                                                                                                                                                                                                                                                                                                                                   |
+| wiki-cloud              | Spring Cloud utilities module: service discovery, invocation, configuration, circuit breaking, rate limiting, fallback.                                                                                                                                                                                                                                                                                                                                                   |
+| wiki-center             | Project center module: code generation from databases (MySQL/PostgreSQL) for entities (Vo/Dto/Entity), controllers, services, repositories (JPA), mappers, XML.                                                                                                                                                                                                                                                                                                           |
+| wiki-license            | License management utilities: generation and validation.                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| wiki-license-core       | License core module.                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| wiki-license-verify     | License verification module.                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| wiki-swagger            | Swagger module: OpenAPI documentation generation.                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| wiki-web                | Functional testing module.                                                                                                                                                                                                                                                                                                                                                                                                                                                |
 
--------------------------------------------------------------------------------
+You can selectively include modules as needed (recommended to use `wiki-pom` for dependency version management).
+Alternatively, include all modules via `wiki-all`.
 
-## 🛠️包含组件
-一个Java基础工具类，对文件、流、加密解密、转码、正则、线程、XML等JDK方法进行封装，组成各种Util工具类，同时提供以下组件：
+## Installation Documentation
 
-| 模块                 |     介绍                                                                          |
-|--------------------|---------------------------------------------------------------------------------- |
-| hutool-aop         |     JDK动态代理封装，提供非IOC下的切面支持                                              |
-| hutool-bloomFilter |     布隆过滤，提供一些Hash算法的布隆过滤                                                |
-| hutool-cache       |     简单缓存实现                                                                     |
-| hutool-core        |     核心，包括Bean操作、日期、各种Util等                                               |
-| hutool-cron        |     定时任务模块，提供类Crontab表达式的定时任务                                          |
-| hutool-crypto      |     加密解密模块，提供对称、非对称和摘要算法封装                                          |
-| hutool-db          |     JDBC封装后的数据操作，基于ActiveRecord思想                                         |
-| hutool-dfa         |     基于DFA模型的多关键字查找                                                         |
-| hutool-extra       |     扩展模块，对第三方封装（模板引擎、邮件、Servlet、二维码、Emoji、FTP、分词等）            |
-| hutool-http        |     基于HttpUrlConnection的Http客户端封装                                            |
-| hutool-log         |     自动识别日志实现的日志门面                                                         |
-| hutool-script      |     脚本执行封装，例如Javascript                                                      |
-| hutool-setting     |     功能更强大的Setting配置文件和Properties封装                                        |
-| hutool-system      |     系统参数调用封装（JVM信息等）                                                      |
-| hutool-json        |     JSON实现                                                                       |
-| hutool-captcha     |     图片验证码实现                                                                   |
-| hutool-poi         |     针对POI中Excel和Word的封装                                                       |
-| hutool-socket      |     基于Java的NIO和AIO的Socket封装                                                   |
-| hutool-jwt         |     JSON Web Token (JWT)封装实现                                                    |
-| hutool-ai          |     AI大模型封装实现                                                    |
+[English Documentation](./README.en.md)  
+[中文文档](./README.md)  
+[备用中文文档](https://framewiki.com/wiki-framework)  
+[API Reference](https://framewiki.com/wiki-framework/apidocs/)
 
-可以根据需求对每个模块单独引入，也可以通过引入`hutool-all`方式引入所有模块。
+## Installation Guide
 
--------------------------------------------------------------------------------
+No installation required. Use directly via dependency management.
 
-## 📝文档
+#### Usage Instructions
 
-[📘中文文档](https://doc.hutool.cn/pages/index/)
+1. Deploy to a Maven repository
+2. Add dependency
 
-[📘中文备用文档](https://plus.hutool.cn/)
+###### Maven
 
-[📙参考API](https://plus.hutool.cn/apidocs/)
-
-[🎬视频介绍](https://www.bilibili.com/video/BV1bQ4y1M7d9?p=2)
-
--------------------------------------------------------------------------------
-
-
-
-## 📦安装
-
-### 🍊Maven
-在项目的pom.xml的dependencies中加入以下内容:
+Add to your top-level POM:
 
 ```xml
-<dependency>
-    <groupId>cn.hutool</groupId>
-    <artifactId>hutool-all</artifactId>
-    <version>5.8.39</version>
-</dependency>
+
+<parent>
+  <groupId>com.framewiki</groupId>
+  <artifactId>wiki-pom</artifactId>
+  <version>1.0.11</version>
+</parent>
 ```
 
-### 🍐Gradle
+###### Gradle
+
+```groovy
+implementation 'com.framewiki:wiki-pom:1.0.11'
 ```
-implementation 'cn.hutool:hutool-all:5.8.39'
-```
 
-### 📥下载jar
+#### Download JAR
 
-点击以下链接，下载`hutool-all-X.X.X.jar`即可：
+Download [wiki-all-X.X.X.jar](https://gitee.com/cdkjframework/wiki-framework/releases) directly:
 
-- [Maven中央库](https://repo1.maven.org/maven2/cn/hutool/hutool-all/5.8.39/)
+- [Maven Central](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.0.11/)
 
-> 🔔️注意
-> Hutool 5.x支持JDK8+，对Android平台没有测试，不能保证所有工具类或工具方法可用。
-> 如果你的项目使用JDK7，请使用Hutool 4.x版本（不再更新）
+> **Note**  
+> Since version 1.0.8, Wiki-Framework requires **JDK 17+**. Compatibility with Android is untested.  
+> For JDK 8 projects, use Wiki-Framework 1.0.7 or earlier (no longer updated).
 
-### 🚽编译安装
+#### Build from Source
 
-访问Hutool的Gitee主页：[https://gitee.com/chinabugotech/hutool](https://gitee.com/chinabugotech/hutool) 下载整个项目源码（v5-master或v5-dev分支都可）然后进入Hutool项目目录执行：
+Visit the Gitee
+homepage: [https://gitee.com/cdkjframework/wiki-framework](https://gitee.com/cdkjframework/wiki-framework).  
+Download the source (master or 1.0.11 branch), navigate to the project directory, and execute:
 
 ```sh
-./hutool.sh install
+./wiki.sh install
 ```
 
-然后就可以使用Maven引入了。
+You can then include it via Maven.
 
--------------------------------------------------------------------------------
+---
 
-## 🏗️添砖加瓦
+## Contribute
 
-### 🎋分支说明
+### Branch Structure
 
-Hutool的源码分为两个分支，功能如下：
+The source code of Wiki-Framework is divided into two branches, with the following functionalities:
 
-| 分支       | 作用                                                          |
-|-----------|---------------------------------------------------------------|
-| v5-master | 主分支，release版本使用的分支，与中央库提交的jar一致，不接收任何pr或修改 |
-| v5-dev    | 开发分支，默认为下个版本的SNAPSHOT版本，接受修改或pr                 |
+| Branch | Purpose                                                                        |
+|--------|--------------------------------------------------------------------------------|
+| master | Release branch (matches central repository). **No PRs accepted**.              |
+| dev    | Development branch (next SNAPSHOT version). **Accepts PRs and modifications**. |
 
-### 🐞提供bug反馈或建议
+### Reporting Bugs or Suggestions
 
-提交问题反馈请说明正在使用的JDK版本呢、Hutool版本和相关依赖库版本。
+Include JDK version, Wiki-Framework version, and relevant dependencies when reporting issues.
 
-- [Gitee issue](https://gitee.com/chinabugotech/hutool/issues)
-- [Github issue](https://github.com/chinabugotech/hutool/issues)
-- [Gitcode issue](https://gitcode.com/chinabugotech/hutool/issues)
+- [Gitee Issues](https://gitee.com/cdkjframework/wiki-framework/issues)
+- [GitHub Issues](https://github.com/cdkjframework/wiki-framework/issues)
 
+### Contribution Steps
 
-### 🧬贡献代码的步骤
+1. Fork the project on Gitee/GitHub.
+2. Clone your forked repository locally.
+3. Make changes on the **`dev` branch**.
+4. Commit and push to your fork.
+5. Submit a Pull Request to the original `dev` branch.
+6. Await review/merge.
 
-1. 在Gitee或者Github/Gitcode上fork项目到自己的repo
-2. 把fork过去的项目也就是你的项目clone到你的本地
-3. 修改代码（记得一定要修改v5-dev分支）
-4. commit后push到自己的库（v5-dev分支）
-5. 登录Gitee或Github/Gitcode在你首页可以看到一个 pull request 按钮，点击它，填写一些说明信息，然后提交即可。
-6. 等待维护者合并
+### PR Principles
 
-### 📐PR遵照的原则
+Wiki-Framework welcomes contributions from anyone who wishes to contribute code. However, the maintainer is particularly
+meticulous about details. To accommodate this preference, submitted pull requests (PRs) must adhere to the following
+specifications:
 
-Hutool欢迎任何人为Hutool添砖加瓦，贡献代码，不过维护者是一个强迫症患者，为了照顾病人，需要提交的pr（pull request）符合一些规范，规范如下：
+1. **Complete Documentation**: Javadoc for new methods (description, params, return).
+2. **Adhere to Indentation**: Follow IDEA default style.
+3. **Minimize Dependencies**: Avoid third-party libs in core/utils (except `extra` module).
+4. **Target `dev` Branch**: `master` is for releases only.
+5. **Reopen if Needed**: Closed issues/PRs can be revisited if discussion continues.
 
-1. 注释完备，尤其每个新增的方法应按照Java文档规范标明方法说明、参数说明、返回值说明等信息，必要时请添加单元测试，如果愿意，也可以加上你的大名。
-2. Hutool的缩进按照Eclipse（~~不要跟我说IDEA多好用，维护者非常懒，学不会~~，IDEA真香，改了Eclipse快捷键后舒服多了）默认（tab）缩进，所以请遵守（不要和我争执空格与tab的问题，这是一个病人的习惯）。
-3. 新加的方法不要使用第三方库的方法，Hutool遵循无依赖原则（除非在extra模块中加方法工具）。
-4. 请pull request到`v5-dev`分支。Hutool在5.x版本后使用了新的分支：`v5-master`是主分支，表示已经发布中央库的版本，这个分支不允许pr，也不允许修改。
-5. 我们如果关闭了你的issue或pr，请不要诧异，这是我们保持问题处理整洁的一种方式，你依旧可以继续讨论，当有讨论结果时我们会重新打开。
+#### Contributors
 
-### 📖文档源码地址
+卢布白菜 (Lubai Baicai)
 
-[文档源码地址](https://gitee.com/loolly_admin/hutool-doc-handy) 点击前往添砖加瓦
+#### Adopting Companies
 
--------------------------------------------------------------------------------
+*(Listed in registration order)*
 
-## ⭐Star Hutool
+1. Hongtu Logistics Co., Ltd.
+2. Chengdu Lexiang Zhijia Technology Co., Ltd.
+3. Chengdu Lingshu Cloud Technology Co., Ltd.
+4. Chengdu Qianjie Wanxiang Business Service Co., Ltd.
+5. Chengdu Lanmou Intelligent Technology Co., Ltd.
 
-[![Stargazers over time](https://starchart.cc/chinabugotech/hutool.svg)](https://starchart.cc/chinabugotech/hutool)
+## Star Wiki-Framework
+
+[](https://starchart.cc/cdkjframework/wiki-framework)
