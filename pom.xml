@@ -32,6 +32,7 @@
         <module>security</module>
         <module>queue</module>
         <module>wiki-minio</module>
+      <module>wiki-all</module>
     </modules>
 
     <parent>
