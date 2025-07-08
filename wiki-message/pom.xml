@@ -11,7 +11,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wiki-message</artifactId>
-  <name>${project.artifactId}</name>
+  <name>wiki-message</name>
 
   <dependencies>
     <dependency>

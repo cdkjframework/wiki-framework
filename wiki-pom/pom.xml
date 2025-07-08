@@ -9,7 +9,7 @@
   <description>wiki-framework 框架依赖包</description>
   <version>1.0.11</version>
   <packaging>pom</packaging>
-  <name>${project.artifactId}</name>
+  <name>wiki-pom</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>

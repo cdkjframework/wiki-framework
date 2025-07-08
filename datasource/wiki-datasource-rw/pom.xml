@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-datasource-rw</artifactId>
-    <name>${project.artifactId}</name>
+    <name>wiki-datasource-rw</name>
     <description>myBatis 读写分离</description>
 
     <dependencies>

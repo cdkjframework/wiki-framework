@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-license</artifactId>
-    <name>${project.artifactId}</name>
+    <name>wiki-license</name>
 
     <description>系统软件证书核心业务模块，提供lic相关模型类和通用api控制器</description>
 

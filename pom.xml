@@ -7,7 +7,7 @@
   <artifactId>wiki-framework</artifactId>
   <packaging>pom</packaging>
   <version>1.0.11</version>
-  <name>${project.artifactId}</name>
+  <name>wiki-framework</name>
 
 
   <description>维基框架 wiki-framework https://framewiki.com</description>
@@ -26,7 +26,7 @@
     <module>wiki-log</module>
     <module>wiki-config</module>
     <module>wiki-swagger</module>
-    <module>wiki-login</module>
+<!--    <module>wiki-login</module>-->
     <module>datasource</module>
     <module>licenses</module>
     <module>cache</module>

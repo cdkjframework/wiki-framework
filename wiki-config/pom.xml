@@ -10,7 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wiki-config</artifactId>
-  <name>${project.artifactId}</name>
+  <name>wiki-config</name>
 
   <description>配置中心基础包</description>
 

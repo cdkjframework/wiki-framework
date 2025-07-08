@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-login</artifactId>
-    <name>${project.artifactId}</name>
+    <name>wiki-login</name>
 
     <description>第三方登录集成</description>
 

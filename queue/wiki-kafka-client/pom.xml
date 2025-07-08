@@ -11,7 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-kafka-client</artifactId>
-    <name>${project.artifactId}</name>
+    <name>wiki-kafka-client</name>
 
     <dependencies>
         <dependency>

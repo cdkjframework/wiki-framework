@@ -10,7 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-log</artifactId>
-    <name>${project.artifactId}</name>
+    <name>wiki-log</name>
 
     <description>日志模块</description>
 
