@@ -12,6 +12,7 @@
   <artifactId>wiki-config</artifactId>
 
   <description>配置中心基础包</description>
+  <name>${project.artifactId}</name>
 
   <dependencies>
     <dependency>
@@ -36,18 +37,10 @@
     </dependency>
   </dependencies>
 
-    <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>cdkj Maven Repository</id>
-      <layout>default</layout>
-      <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
-    </repository>
-  </distributionManagement>
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 </project>

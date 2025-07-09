@@ -12,6 +12,7 @@
     <artifactId>wiki-login</artifactId>
 
     <description>第三方登录集成</description>
+    <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>
@@ -34,12 +35,4 @@
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>cdkj Maven Repository</id>
-            <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
-        </repository>
-    </distributionManagement>
 </project>
