@@ -194,7 +194,7 @@
             <version>3.2.8</version>
             <executions>
               <execution>
-                <id>sign-artifacts</id>
+                <id>wiki</id>
                 <phase>verify</phase>
                 <goals>
                   <goal>sign</goal>
