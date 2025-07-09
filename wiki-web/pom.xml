@@ -27,31 +27,4 @@
       <artifactId>wiki-swagger</artifactId>
     </dependency>
   </dependencies>
-
-  <build>
-    <defaultGoal>compile</defaultGoal>
-    <plugins>
-      <plugin>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-maven-plugin</artifactId>
-        <configuration>
-          <!--                    <fork>true</fork>&lt;!&ndash; 如果没有该项配置，可能devtools不会起作用 &ndash;&gt;-->
-        </configuration>
-        <executions>
-          <execution>
-            <goals>
-              <goal>repackage</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-    </plugins>
-  </build>
-
-  <distributionManagement>
-    <repository>
-      <id>wiki</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
 </project>
