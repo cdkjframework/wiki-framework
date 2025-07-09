@@ -11,6 +11,7 @@
 
     <artifactId>socket</artifactId>
     <description>长连接组件</description>
+    <name>${project.artifactId}</name>
 
     <packaging>pom</packaging>
 

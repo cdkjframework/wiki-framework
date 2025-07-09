@@ -11,7 +11,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-rocket-client</artifactId>
-    <name>wiki-rocket-client</name>
+    <description>rocket客户端</description>
+    <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>

@@ -10,6 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-wechat</artifactId>
+    <description>微信支付模块</description>
     <name>${project.artifactId}</name>
 
     <dependencies>

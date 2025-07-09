@@ -11,6 +11,7 @@
 
     <artifactId>security</artifactId>
     <description>安全认证组件</description>
+    <name>${project.artifactId}</name>
 
     <packaging>pom</packaging>
 

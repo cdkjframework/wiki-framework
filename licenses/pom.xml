@@ -10,7 +10,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>licenses</artifactId>
-    <description>许可证组件</description>
+    <description>系统软件证书核心模块</description>
+    <name>${project.artifactId}</name>
 
     <packaging>pom</packaging>
 

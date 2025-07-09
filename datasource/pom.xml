@@ -11,6 +11,7 @@
 
     <artifactId>datasource</artifactId>
     <description>数据库组件</description>
+    <name>${project.artifactId}</name>
 
     <packaging>pom</packaging>
 

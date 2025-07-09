@@ -10,6 +10,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wiki-web</artifactId>
+  <description>服务测试模块</description>
   <name>${project.artifactId}</name>
 
   <dependencies>

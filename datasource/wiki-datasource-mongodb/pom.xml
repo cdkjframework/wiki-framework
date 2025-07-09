@@ -11,7 +11,8 @@
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wiki-datasource-mongodb</artifactId>
-  <name>wiki-datasource-mongodb</name>
+  <description>数据库Mongodb组件</description>
+  <name>${project.artifactId}</name>
 
   <dependencies>
     <!-- 加载 mongodb jar 包-->

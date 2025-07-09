@@ -11,7 +11,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-web-socket</artifactId>
-    <name>wiki-web-socket</name>
+    <description>websocket服务端</description>
+    <name>${project.artifactId}</name>
 
     <dependencies>
         <!-- 加载 webSocket -->

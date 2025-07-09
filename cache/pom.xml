@@ -11,6 +11,7 @@
 
     <artifactId>cache</artifactId>
     <description>cache组件</description>
+    <name>${project.artifactId}</name>
 
     <packaging>pom</packaging>
 

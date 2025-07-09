@@ -16,7 +16,7 @@
     <module>wiki-cloud</module>
     <module>wiki-util</module>
     <module>wiki-core</module>
-<!--    <module>wiki-wechat</module>-->
+    <!--    <module>wiki-wechat</module>-->
     <module>wiki-pom</module>
     <module>wiki-entity</module>
     <module>wiki-constant</module>
@@ -26,7 +26,7 @@
     <module>wiki-log</module>
     <module>wiki-config</module>
     <module>wiki-swagger</module>
-<!--    <module>wiki-login</module>-->
+    <!--    <module>wiki-login</module>-->
     <module>datasource</module>
     <module>licenses</module>
     <module>cache</module>
@@ -55,12 +55,30 @@
     </dependencies>
   </dependencyManagement>
 
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/cdkjframework/wiki-framework/issues</url>
+  </issueManagement>
+
+  <licenses>
+    <license>
+      <name>Mulan Permissive Software License，Version 2</name>
+      <url>https://license.coscl.org.cn/MulanPSL2</url>
+    </license>
+  </licenses>
+
   <developers>
     <developer>
       <name>wiki</name>
       <email>wiki@framewiki.com</email>
     </developer>
   </developers>
+
+  <scm>
+    <connection>scm:git@github.com:cdkjframework/wiki-framework.git</connection>
+    <developerConnection>scm:git@github.com:cdkjframework/wiki-framework.git</developerConnection>
+    <url>git@github.com:cdkjframework/wiki-framework.git</url>
+  </scm>
 
   <properties>
     <java.version>17</java.version>
@@ -102,6 +120,7 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
+
 
   <profiles>
     <profile>

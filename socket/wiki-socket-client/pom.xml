@@ -11,7 +11,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-socket-client</artifactId>
-    <name>wiki-socket-client</name>
+    <description>socket客户端</description>
+    <name>${project.artifactId}</name>
 
     <dependencies>
         <dependency>

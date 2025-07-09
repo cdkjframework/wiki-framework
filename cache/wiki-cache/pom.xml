@@ -11,6 +11,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>wiki-cache</artifactId>
+    <description>Spring Cache</description>
     <name>${project.artifactId}</name>
     <dependencies>
         <dependency>
