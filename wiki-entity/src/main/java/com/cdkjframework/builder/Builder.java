@@ -20,18 +20,18 @@ public class Builder<T> {
    * 供应商
    * 实例化器
    */
-  private final Supplier<T> instantiator;
+  private final Supplier<T> instantiate;
 
   /**
    * 修饰符
    */
-  private List<Consumer<T>> modifiers = new ArrayList<>();
+  private final List<Consumer<T>> modifiers = new ArrayList<>();
 
   /**
    * 构建函数
    */
-  public Builder(Supplier<T> instantiator) {
-    this.instantiator = instantiator;
+  public Builder(Supplier<T> instantiate) {
+    this.instantiate = instantiate;
   }
 
   /**
@@ -40,8 +40,8 @@ public class Builder<T> {
    * @param <T> 实体类型
    * @return 返回结果
    */
-  public static <T> Builder<T> of(Supplier<T> instantiator) {
-    return new Builder<>(instantiator);
+  public static <T> Builder<T> of(Supplier<T> instantiate) {
+    return new Builder<>(instantiate);
   }
 
   /**
@@ -98,7 +98,7 @@ public class Builder<T> {
    * @return 返回构建结果
    */
   public T build() {
-    T value = instantiator.get();
+    T value = instantiate.get();
     modifiers.forEach(modifier -> modifier.accept(value));
     modifiers.clear();
     return value;

@@ -10,30 +10,75 @@ package com.cdkjframework.enums.push;
  **/
 public enum PushPlatformEnums {
 
-    PLATFORM_ALL(1, "all", "广播推送（全部设备）"),
-    PLATFORM_ANDROID(2, "android", "android"),
-    PLATFORM_IOS(3, "ios", "ios"),
-    PLATFORM_ANDROID_IOS(4, "android_ios", "android_ios");
+  /**
+   * 全部设备
+   */
+  PLATFORM_ALL(1, "all", "广播推送（全部设备）"),
 
-    private final Integer key;
-    private final String value;
-    private final String notes;
+  /**
+   * android
+   */
+  PLATFORM_ANDROID(2, "android", "android"),
 
-    PushPlatformEnums(Integer key, String value, String notes) {
-        this.key = key;
-        this.value = value;
-        this.notes = notes;
-    }
+  /**
+   * ios
+   */
+  PLATFORM_IOS(3, "ios", "ios"),
+  /**
+   * android_ios
+   */
+  PLATFORM_ANDROID_IOS(4, "android_ios", "android_ios");
 
-    public Integer getKey() {
-        return key;
-    }
+  /**
+   * key
+   */
+  private final Integer key;
+  /**
+   * 值
+   */
+  private final String value;
+  /**
+   * 描述
+   */
+  private final String notes;
 
-    public String getValue() {
-        return value;
-    }
+  /**
+   * 构造函数
+   *
+   * @param key   key
+   * @param value 值
+   * @param notes 描述
+   */
+  PushPlatformEnums(Integer key, String value, String notes) {
+    this.key = key;
+    this.value = value;
+    this.notes = notes;
+  }
 
-    public String getNotes() {
-        return notes;
-    }
+  /**
+   * 获取key
+   *
+   * @return key
+   */
+  public Integer getKey() {
+    return key;
+  }
+
+  /**
+   * 获取值
+   *
+   * @return 值
+   */
+  public String getValue() {
+    return value;
+  }
+
+  /**
+   * 获取描述
+   *
+   * @return 描述
+   */
+  public String getNotes() {
+    return notes;
+  }
 }
