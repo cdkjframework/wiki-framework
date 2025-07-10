@@ -141,6 +141,10 @@ OSS、AliYun 短信、fasterxml.jackson、zxing、mqttv3、kryo、cxf Web Servic
 
 然后就可以使用Maven引入了。
 
+## 示例项目
+
+[维基框架示例项目](https://gitee.com/cdkjframework/framewiki-example)
+
 -------------------------------------------------------------------------------
 
 ## 添砖加瓦
