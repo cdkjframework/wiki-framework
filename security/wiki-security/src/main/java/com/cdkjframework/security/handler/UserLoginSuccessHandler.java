@@ -28,6 +28,7 @@ import org.springframework.util.CollectionUtils;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -39,8 +40,10 @@ import java.util.Map;
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
 
 /**
- * @ProjectName: cdkjframework-cloud
- * @Package: com.cdkjframework.cloud.handler
+ * 用户登录成功
+ *
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.security.handler
  * @ClassName: UserLoginSuccessHandler
  * @Description: 用户登录成功
  * @Author: xiaLin

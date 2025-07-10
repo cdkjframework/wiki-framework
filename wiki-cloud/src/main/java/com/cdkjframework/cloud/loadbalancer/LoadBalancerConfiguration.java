@@ -16,7 +16,7 @@ import org.springframework.core.env.Environment;
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.cloud.loadbalancer
  * @ClassName: LoadBalancerConfiguration
- * @Description: java类作用描述
+ * @Description: 负载均衡配置
  * @Author: xiaLin
  * @Date: 2024/8/14 13:12
  * @Version: 1.0

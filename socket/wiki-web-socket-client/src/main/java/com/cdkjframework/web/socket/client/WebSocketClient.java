@@ -26,7 +26,7 @@ public class WebSocketClient {
   /**
      * 日志
      */
-    private static Logger logger = Logger.getLogger(WebSocketClient.class.getName());
+    private static final Logger logger = Logger.getLogger(WebSocketClient.class.getName());
 
     /**
      * 获取实例
@@ -61,12 +61,12 @@ public class WebSocketClient {
     /**
      * 连接服务
      */
-    private WebSocketService socketService;
+    private final WebSocketService socketService;
 
     /**
      * 请求地址
      */
-    private String wsUri;
+    private final String wsUri;
 
     /**
      * 心跳值

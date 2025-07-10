@@ -3,13 +3,16 @@ package com.cdkjframework.security.service;
 import org.springframework.security.core.Authentication;
 
 import jakarta.servlet.ServletException;
+
 import java.io.IOException;
 
 /**
+ * 用户登录成功服务
+ *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.service
  * @ClassName: UserLoginSuccessService
- * @Description: java类作用描述
+ * @Description: 用户登录成功服务
  * @Author: xiaLin
  * @Date: 2023/5/16 22:52
  * @Version: 1.0

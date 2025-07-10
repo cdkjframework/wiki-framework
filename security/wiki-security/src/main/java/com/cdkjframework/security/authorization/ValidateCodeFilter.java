@@ -17,15 +17,18 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
+ * 验证代码筛选器
+ *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.authorization
- * @ClassName: ValidateCodefilter
- * @Description: java类作用描述
+ * @ClassName: ValidateCodeFilter
+ * @Description: 验证代码筛选器
  * @Author: xiaLin
  * @Version: 1.0
  */

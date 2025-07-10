@@ -20,12 +20,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import jakarta.servlet.ServletException;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
+ * 用户登录成功服务
+ *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.service.impl
  * @ClassName: UserLoginSuccessServiceImpl

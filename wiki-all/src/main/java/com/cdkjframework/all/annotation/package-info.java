@@ -1,5 +1,5 @@
 /**
- * 启用 WIKI 自动配置
+ * 启用 WIKI 自动配置（Mybatis数据库连接）
  *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.all.annotation

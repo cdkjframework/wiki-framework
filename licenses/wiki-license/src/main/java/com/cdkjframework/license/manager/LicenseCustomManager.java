@@ -16,12 +16,12 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * <p>自定义LicenseManager，用于增加额外的服务器硬件信息校验</p>
- *
- * @author appleyk
- * @version V.0.2.1
- * @blob https://blog.csdn.net/appleyk
- * @date created on  10:42 下午 2020/8/21
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.helper
+ * @ClassName: ParamInitHelper
+ * @Description: 自定义LicenseManager，用于增加额外的服务器硬件信息校验
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 public class LicenseCustomManager extends LicenseManager {
 
