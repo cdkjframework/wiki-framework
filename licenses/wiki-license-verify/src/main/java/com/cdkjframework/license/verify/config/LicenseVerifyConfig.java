@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.license.verify.config
  * @ClassName: LicenseVerifyConfig
- * @Description: java类作用描述
+ * @Description: License校验配置类
  * @Author: xiaLin
  * @Date: 2023/3/15 15:43
  * @Version: 1.0

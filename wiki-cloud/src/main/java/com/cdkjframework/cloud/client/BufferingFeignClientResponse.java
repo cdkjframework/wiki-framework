@@ -2,6 +2,7 @@ package com.cdkjframework.cloud.client;
 
 import com.cdkjframework.constant.IntegerConsts;
 import feign.Response;
+import lombok.Getter;
 import org.springframework.util.StreamUtils;
 
 import java.io.*;
@@ -9,10 +10,12 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
+ * 缓存FeignClient响应
+ *
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.cloud.client
  * @ClassName: BufferingFeignClientResponse
- * @Description: java类作用描述
+ * @Description: 缓存FeignClient响应
  * @Author: xiaLin
  * @Date: 2024/5/16 10:55
  * @Version: 1.0
@@ -22,7 +25,8 @@ public class BufferingFeignClientResponse implements Closeable {
   /**
    * 响应
    */
-  private Response response;
+  @Getter
+  private final Response response;
 
   /**
    * 内容
@@ -36,15 +40,6 @@ public class BufferingFeignClientResponse implements Closeable {
    */
   public BufferingFeignClientResponse(Response response) {
     this.response = response;
-  }
-
-  /**
-   * 获取响应
-   *
-   * @return 返回 响应
-   */
-  public Response getResponse() {
-    return this.response;
   }
 
   /**
@@ -72,7 +67,7 @@ public class BufferingFeignClientResponse implements Closeable {
    * @throws IOException IO异常
    */
   public String body() throws IOException {
-    StringBuffer buffer = new StringBuffer();
+    StringBuilder buffer = new StringBuilder();
     try (InputStreamReader reader = new InputStreamReader(getBody())) {
       char[] tmp = new char[IntegerConsts.BYTE_LENGTH];
       int len;
@@ -96,6 +91,9 @@ public class BufferingFeignClientResponse implements Closeable {
     return new ByteArrayInputStream(this.body);
   }
 
+  /**
+   * 关闭
+   */
   @Override
   public void close() {
     this.response.close();

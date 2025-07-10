@@ -11,7 +11,7 @@ import java.util.List;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.config
  * @ClassName: ThumbnailConfig
- * @Description: java类作用描述
+ * @Description: 缩略图配置
  * @Author: xiaLin
  * @Date: 2024/1/5 13:30
  * @Version: 1.0

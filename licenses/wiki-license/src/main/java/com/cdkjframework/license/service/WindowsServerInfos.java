@@ -9,12 +9,12 @@ import java.io.FileWriter;
 import java.io.InputStreamReader;
 
 /**
- * <p>用于获取客户Windows服务器的基本信息</p>
- *
- * @author appleyk
- * @version V.0.2.1
- * @blob https://blog.csdn.net/appleyk
- * @date created on  10:42 下午 2020/8/21
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.service
+ * @ClassName: LinuxServerInfos
+ * @Description: 用于获取客户Windows服务器的基本信息
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 public class WindowsServerInfos extends AServerInfos {
 
@@ -31,7 +31,7 @@ public class WindowsServerInfos extends AServerInfos {
      */
     @Override
     protected String getCPUSerial() throws Exception {
-        String result = StringUtils.Empty;
+        StringBuilder result = new StringBuilder(StringUtils.Empty);
         try {
             File file = File.createTempFile("tmp", ".vbs");
             file.deleteOnExit();
@@ -47,14 +47,14 @@ public class WindowsServerInfos extends AServerInfos {
             BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
             String line;
             while ((line = input.readLine()) != null) {
-                result += line;
+                result.append(line);
             }
             input.close();
             file.delete();
         } catch (Exception e) {
             logUtils.error("获取cpu信息错误", e);
         }
-        return result.trim();
+        return result.toString().trim();
     }
 
     /**

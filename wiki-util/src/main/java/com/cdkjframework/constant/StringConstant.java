@@ -3,7 +3,7 @@ package com.cdkjframework.constant;
 /**
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.datasource.mybatispro.consts
- * @ClassName: StringUtils
+ * @ClassName: StringConstant
  * @Description: 字条串池
  * @Author: xiaLin
  * @Date: 2025/2/6 17:36

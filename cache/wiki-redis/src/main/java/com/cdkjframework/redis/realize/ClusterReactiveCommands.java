@@ -1553,7 +1553,7 @@ public class ClusterReactiveCommands implements RedisAdvancedClusterReactiveComm
     /**
      * Reports the number of bytes that a key and its value require to be stored in RAM.
      *
-     * @param key
+     * @param key the key.
      * @return memory usage in bytes.
      * @since 5.2
      */

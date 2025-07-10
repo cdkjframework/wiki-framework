@@ -41,7 +41,8 @@ public class CdkjApplication {
   /**
    * 程序启动
    *
-   * @param args 参数
+   * @param args          参数
+   * @param primarySource 启动类
    * @return 返回结果
    */
   public static ConfigurableApplicationContext run(Class<?> primarySource, String... args) {

@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 /**
+ * Netty套接字客户端
+ *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.socket.client
  * @ClassName: NettySocketClient
@@ -21,15 +23,15 @@ import org.springframework.stereotype.Component;
 @ConditionalOnClass(NettySocketClient.class)
 public class NettySocketBean {
 
-    /**
-     * 创建 bean
-     *
-     * @return 返回结果
-     */
-    @Bean(initMethod = "init")
-    @ConditionalOnMissingBean
-    public NettySocketClient nettySocketClient() {
-        return new NettySocketClient();
-    }
+  /**
+   * 创建 bean
+   *
+   * @return 返回结果
+   */
+  @Bean(initMethod = "init")
+  @ConditionalOnMissingBean
+  public NettySocketClient nettySocketClient() {
+    return new NettySocketClient();
+  }
 
 }

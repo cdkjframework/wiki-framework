@@ -29,6 +29,8 @@ public class Builder<T> {
 
   /**
    * 构建函数
+   *
+   * @param instantiate 实例化器
    */
   public Builder(Supplier<T> instantiate) {
     this.instantiate = instantiate;
@@ -37,7 +39,8 @@ public class Builder<T> {
   /**
    * 构建方法
    *
-   * @param <T> 实体类型
+   * @param <T>         实体类型
+   * @param instantiate 实例化器
    * @return 返回结果
    */
   public static <T> Builder<T> of(Supplier<T> instantiate) {
@@ -109,6 +112,12 @@ public class Builder<T> {
    */
   @FunctionalInterface
   public interface Consumer1<T, S> {
+    /**
+     * 执行
+     *
+     * @param t 值
+     * @param s 值
+     */
     void accept(T t, S s);
   }
 
@@ -117,6 +126,13 @@ public class Builder<T> {
    */
   @FunctionalInterface
   public interface Consumer2<T, S, R> {
+    /**
+     * 执行
+     *
+     * @param t 值
+     * @param s 值
+     * @param r 值
+     */
     void accept(T t, S s, R r);
   }
 
@@ -125,6 +141,14 @@ public class Builder<T> {
    */
   @FunctionalInterface
   public interface Consumer3<T, S, R, X> {
+    /**
+     * 执行
+     *
+     * @param t 值
+     * @param s 值
+     * @param r 值
+     * @param x 值
+     */
     void accept(T t, S s, R r, X x);
   }
 }

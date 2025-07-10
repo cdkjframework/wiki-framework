@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.encrypt
  * @ClassName: Md5PasswordEncoder
- * @Description: java类作用描述
+ * @Description: Md5密码编码器
  * @Author: xiaLin
  * @Version: 1.0
  */

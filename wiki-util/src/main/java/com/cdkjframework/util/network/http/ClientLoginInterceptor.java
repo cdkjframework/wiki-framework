@@ -1,6 +1,8 @@
 package com.cdkjframework.util.network.http;
 
 import com.cdkjframework.constant.IntegerConsts;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.cxf.binding.soap.SoapMessage;
 import org.apache.cxf.headers.Header;
 import org.apache.cxf.helpers.DOMUtils;
@@ -22,6 +24,8 @@ import java.util.List;
  * @Date: 2024/6/9 12:22
  * @Version: 1.0
  */
+@Setter
+@Getter
 public class ClientLoginInterceptor extends AbstractPhaseInterceptor<SoapMessage> {
 
   /**
@@ -37,6 +41,9 @@ public class ClientLoginInterceptor extends AbstractPhaseInterceptor<SoapMessage
 
   /**
    * 构建函数
+   *
+   * @param userName     用户名
+   * @param userPassword 密码
    */
   public ClientLoginInterceptor(String userName, String userPassword) {
     super(Phase.PREPARE_SEND);
@@ -45,43 +52,25 @@ public class ClientLoginInterceptor extends AbstractPhaseInterceptor<SoapMessage
   }
 
 
-  public String getUserName() {
-    return userName;
-  }
-
-
-  public void setUserName(String userName) {
-    this.userName = userName;
-  }
-
-
-  public String getUserPassword() {
-    return userPassword;
-  }
-
-
-  public void setUserPassword(String userPassword) {
-    this.userPassword = userPassword;
-  }
-
   /**
    * 处理消息
    *
    * @param soap 消息
    * @throws Fault 错误异常
    */
+  @Override
   public void handleMessage(SoapMessage soap) throws Fault {
     List<Header> headers = soap.getHeaders();
     Document doc = DOMUtils.createDocument();
     Element auth = doc.createElementNS("http://tempuri.org/", "SecurityHeader");
-    Element UserName = doc.createElement("UserName");
-    UserName.setTextContent(this.userName);
+    Element userName = doc.createElement("UserName");
+    userName.setTextContent(this.userName);
 
-    Element UserPass = doc.createElement("UserPass");
-    UserPass.setTextContent(this.userPassword);
+    Element userPass = doc.createElement("UserPass");
+    userPass.setTextContent(this.userPassword);
 
-    auth.appendChild(UserName);
-    auth.appendChild(UserPass);
+    auth.appendChild(userName);
+    auth.appendChild(userPass);
 
     headers.add(IntegerConsts.ZERO, new Header(new QName("SecurityHeader"), auth));
   }
