@@ -17,12 +17,12 @@ import java.io.InputStream;
 import java.text.MessageFormat;
 
 /**
- * <p>系统软件证书生成管理器</p>
- *
- * @author appleyk
- * @version V.0.2.1
- * @blob https://blog.csdn.net/appleyk
- * @date created on  10:42 下午 2020/8/21
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.manger
+ * @ClassName: package-info
+ * @Description: 系统软件证书生成管理器
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 public class LicenseCreatorManager {
 

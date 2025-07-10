@@ -49,6 +49,9 @@ public class ConsumerListener {
 
   /**
    * 构造函数
+   *
+   * @param consumerService   消费者服务接口
+   * @param kafkaClientConfig 配置文件
    */
   public ConsumerListener(ConsumerService consumerService, KafkaClientConfig kafkaClientConfig) {
     this.consumerService = consumerService;

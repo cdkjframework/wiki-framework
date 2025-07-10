@@ -29,6 +29,9 @@ public abstract class AbstractMockitoUtils {
      */
     protected MockMvc mockMvc;
 
+    /**
+     * 初始化
+     */
     @Before
     public void init() {
         MockitoAnnotations.openMocks(this.getClass().getTypeName());

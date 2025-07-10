@@ -19,52 +19,53 @@ import java.util.Objects;
 @Component
 public class BeanRegistrationUtils {
 
-    /**
-     * 不存在注册定义
-     *
-     * @param registry  Bean定义注册表
-     * @param beanName  bean名称
-     * @param beanClass bean类
-     * @return 返回结果
-     */
-    public static boolean registerBeanDefinitionIfNotExists(BeanDefinitionRegistry registry, String beanName,
-                                                            Class<?> beanClass) {
-        return registerBeanDefinitionIfNotExists(registry, beanName, beanClass, null);
+  /**
+   * 不存在注册定义
+   *
+   * @param registry  Bean定义注册表
+   * @param beanName  bean名称
+   * @param beanClass bean类
+   * @return 返回结果
+   */
+  public static boolean registerBeanDefinitionIfNotExists(BeanDefinitionRegistry registry, String beanName,
+                                                          Class<?> beanClass) {
+    return registerBeanDefinitionIfNotExists(registry, beanName, beanClass, null);
+  }
+
+  /**
+   * 不存在注册定义
+   *
+   * @param registry            Bean定义注册表
+   * @param beanName            bean名称
+   * @param beanClass           bean类
+   * @param extraPropertyValues 额外属性值
+   * @return 返回结果
+   */
+  public static boolean registerBeanDefinitionIfNotExists(BeanDefinitionRegistry registry, String beanName,
+                                                          Class<?> beanClass, Map<String, Object> extraPropertyValues) {
+    if (registry.containsBeanDefinition(beanName)) {
+      return false;
     }
 
-    /**
-     * 不存在注册定义
-     *
-     * @param registry  Bean定义注册表
-     * @param beanName  bean名称
-     * @param beanClass bean类
-     * @return 返回结果
-     */
-    public static boolean registerBeanDefinitionIfNotExists(BeanDefinitionRegistry registry, String beanName,
-                                                            Class<?> beanClass, Map<String, Object> extraPropertyValues) {
-        if (registry.containsBeanDefinition(beanName)) {
-            return false;
-        }
-
-        // 获取已注册服务
-        String[] candidates = registry.getBeanDefinitionNames();
-        for (String candidate : candidates) {
-            BeanDefinition beanDefinition = registry.getBeanDefinition(candidate);
-            if (Objects.equals(beanDefinition.getBeanClassName(), beanClass.getName())) {
-                return false;
-            }
-        }
-
-        BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(beanClass).getBeanDefinition();
-
-        if (extraPropertyValues != null) {
-            for (Map.Entry<String, Object> entry : extraPropertyValues.entrySet()) {
-                beanDefinition.getPropertyValues().add(entry.getKey(), entry.getValue());
-            }
-        }
-
-        registry.registerBeanDefinition(beanName, beanDefinition);
-
-        return true;
+    // 获取已注册服务
+    String[] candidates = registry.getBeanDefinitionNames();
+    for (String candidate : candidates) {
+      BeanDefinition beanDefinition = registry.getBeanDefinition(candidate);
+      if (Objects.equals(beanDefinition.getBeanClassName(), beanClass.getName())) {
+        return false;
+      }
     }
+
+    BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(beanClass).getBeanDefinition();
+
+    if (extraPropertyValues != null) {
+      for (Map.Entry<String, Object> entry : extraPropertyValues.entrySet()) {
+        beanDefinition.getPropertyValues().add(entry.getKey(), entry.getValue());
+      }
+    }
+
+    registry.registerBeanDefinition(beanName, beanDefinition);
+
+    return true;
+  }
 }

@@ -9,46 +9,48 @@ import org.springframework.cloud.loadbalancer.core.ServiceInstanceListSupplier;
 import reactor.core.publisher.Mono;
 
 /**
+ * 权重Robin负载平衡器
+ *
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.cloud.loadbalancer
  * @ClassName: WeightRobinLoadBalancer
- * @Description: java类作用描述
+ * @Description: 权重Robin负载平衡器
  * @Author: xiaLin
  * @Date: 2024/8/14 13:53
  * @Version: 1.0
  */
 public class WeightRobinLoadBalancer implements ReactorServiceInstanceLoadBalancer {
 
-	/**
-	 * 提供者
-	 */
-	private ObjectProvider<ServiceInstanceListSupplier> provider;
+  /**
+   * 提供者
+   */
+  private ObjectProvider<ServiceInstanceListSupplier> provider;
 
-	/**
-	 * 服务名称
-	 */
-	private String serviceId;
+  /**
+   * 服务名称
+   */
+  private String serviceId;
 
 
-	/**
-	 * 构建函数
-	 *
-	 * @param provider  提供者
-	 * @param serviceId 名称
-	 */
-	public WeightRobinLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> provider, String serviceId) {
-		this.provider = provider;
-		this.serviceId = serviceId;
-	}
+  /**
+   * 构建函数
+   *
+   * @param provider  提供者
+   * @param serviceId 名称
+   */
+  public WeightRobinLoadBalancer(ObjectProvider<ServiceInstanceListSupplier> provider, String serviceId) {
+    this.provider = provider;
+    this.serviceId = serviceId;
+  }
 
-	/**
-	 * Choose the next server based on the load balancing algorithm.
-	 *
-	 * @param request - an input request
-	 * @return - mono of response
-	 */
-	@Override
-	public Mono<Response<ServiceInstance>> choose(Request request) {
-		return null;
-	}
+  /**
+   * Choose the next server based on the load balancing algorithm.
+   *
+   * @param request - an input request
+   * @return - mono of response
+   */
+  @Override
+  public Mono<Response<ServiceInstance>> choose(Request request) {
+    return null;
+  }
 }

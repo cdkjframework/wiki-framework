@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  * @ClassName: VerifyLicense
  * @Author: xiaLin
  * @Version: 1.0
- * @Description: 推送范围
+ * @Description: 验证  Lic
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)

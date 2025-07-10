@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @ProjectName: HT-OMS-Project-WEB
  * @Package: com.cdkjframework.core.config
  * @ClassName: InterceptorConfig
- * @Description: java类作用描述
+ * @Description: 拦截器配置
  * @Author: xiaLin
  * @Version: 1.0
  */

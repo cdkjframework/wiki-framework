@@ -26,6 +26,9 @@ public class Base64Utils {
 
   /**
    * 对给定的字符串进行base64解码操作
+   *
+   * @param inputData 加密字符串
+   * @return 密文
    */
   public static String decodeData(String inputData) {
     try {
@@ -64,6 +67,9 @@ public class Base64Utils {
 
   /**
    * 对给定的字符串进行base64解码操作
+   *
+   * @param inputData 加密字符串
+   * @return 密文
    */
   public static String decodeData(byte[] inputData) {
     try {
@@ -84,6 +90,9 @@ public class Base64Utils {
 
   /**
    * 对给定的字符串进行base64解码操作
+   *
+   * @param inputData 加密字符串
+   * @return 密文
    */
   public static byte[] decodeDataToByte(byte[] inputData) {
     try {
@@ -100,6 +109,9 @@ public class Base64Utils {
 
   /**
    * 对给定的字符串进行base64加密操作
+   *
+   * @param inputData 加密字符串
+   * @return 密文
    */
   public static String encodeData(String inputData) {
     try {
@@ -116,6 +128,9 @@ public class Base64Utils {
 
   /**
    * 对给定的字符串进行base64加密操作
+   *
+   * @param inputData 加密字符串
+   * @return 密文
    */
   public static byte[] encodeDataToByte(String inputData) {
     byte[] bytes;
@@ -208,6 +223,7 @@ public class Base64Utils {
    * @param destPath 路径
    * @param base64   编码值
    * @param fileName 文件名称
+   * @return 返回文件
    */
   public static File base64ToFile(String destPath, String base64, String fileName) {
     File file = null;

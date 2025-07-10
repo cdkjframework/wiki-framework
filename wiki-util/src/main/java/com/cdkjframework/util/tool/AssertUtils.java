@@ -62,8 +62,9 @@ public class AssertUtils {
   /**
    * 对象断言
    *
-   * @param t   实体
-   * @param <T> 类型
+   * @param t       实体
+   * @param message 错误信息
+   * @param <T>     类型
    * @throws GlobalRuntimeException 异常信息
    */
   public static <T> void isEmptyMessage(T t, String message) throws GlobalRuntimeException {
@@ -84,8 +85,8 @@ public class AssertUtils {
    * @param value   字符串
    * @param message 消息
    */
-  public static void isNotEmptyMessage(String value, String message, Object... params) {
-    isTrue(StringUtils.isNotNullAndEmpty(value), message, params);
+  public static void isNotEmptyMessage(String value, String message) {
+    isTrue(StringUtils.isNotNullAndEmpty(value), message);
   }
 
 
@@ -95,8 +96,9 @@ public class AssertUtils {
    *
    * @param t       字符串
    * @param message 消息
+   * @param <T>     泛型
    */
-  public static <T> void isNotEmptyMessage(T t, String message, Object... params) {
+  public static <T> void isNotEmptyMessage(T t, String message) {
     if (StringUtils.isNullAndSpaceOrEmpty(message)) {
       message = IS_EMPTY_MESSAGE;
     }
@@ -119,7 +121,8 @@ public class AssertUtils {
   /**
    * 断言数据集是为空
    *
-   * @param list 数据集
+   * @param list    数据集
+   * @param message 错误信息
    * @throws GlobalRuntimeException 异常信息
    */
   public static void isListEmpty(List<?> list, String message) throws GlobalRuntimeException {
@@ -139,7 +142,7 @@ public class AssertUtils {
    * @param expression boolean 值
    * @param message    消息
    */
-  public static void isTrue(boolean expression, String message, Object... params) throws GlobalRuntimeException {
+  public static void isTrue(boolean expression, String message) throws GlobalRuntimeException {
     if (!expression) {
       throw new GlobalRuntimeException(message);
     }
@@ -152,7 +155,7 @@ public class AssertUtils {
    * @param expression boolean 值
    * @param message    消息
    */
-  public static void isFalse(boolean expression, String message, Object... params) {
-    isTrue(!expression, message, params);
+  public static void isFalse(boolean expression, String message) {
+    isTrue(!expression, message);
   }
 }

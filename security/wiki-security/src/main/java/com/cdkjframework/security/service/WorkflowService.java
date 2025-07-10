@@ -8,7 +8,7 @@ import java.util.List;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.service
  * @ClassName: WorkflowService
- * @Description: 工作服务
+ * @Description: 工作流服务
  * @Author: xiaLin
  * @Version: 1.0
  */

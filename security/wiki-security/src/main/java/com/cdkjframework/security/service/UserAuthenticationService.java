@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.service
  * @ClassName: UserAuthenticationService
- * @Description: java类作用描述
+ * @Description: 用户身份验证服务
  * @Author: xiaLin
  * @Date: 2023/5/16 22:41
  * @Version: 1.0

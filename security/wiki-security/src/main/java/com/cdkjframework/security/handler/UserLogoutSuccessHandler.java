@@ -20,8 +20,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
- * @ProjectName: cdkjframework-cloud
- * @Package: com.cdkjframework.cloud.handler
+ * 退出登录成功
+ *
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.security.handler
  * @ClassName: LogoutSuccessHandler
  * @Description: 退出登录成功
  * @Author: xiaLin

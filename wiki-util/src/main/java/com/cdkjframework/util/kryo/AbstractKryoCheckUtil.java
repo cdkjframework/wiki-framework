@@ -11,14 +11,20 @@ package com.cdkjframework.util.kryo;
  */
 public abstract class AbstractKryoCheckUtil {
 
-    public static boolean checkExistDefaultConstructor(Class<?> clazz) {
-        try {
-            clazz.getDeclaredConstructor();
-            return true;
-        } catch (NoSuchMethodException e) {
-            return false;
-        }
+  /**
+   * 检查类是否存在默认构造函数
+   *
+   * @param clazz 类
+   * @return boolean
+   */
+  public static boolean checkExistDefaultConstructor(Class<?> clazz) {
+    try {
+      clazz.getDeclaredConstructor();
+      return true;
+    } catch (NoSuchMethodException e) {
+      return false;
     }
+  }
 }
 
  

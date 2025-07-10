@@ -19,7 +19,7 @@ import java.util.Map;
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.cloud.client
  * @ClassName: FeignClient
- * @Description: java类作用描述
+ * @Description: Feign客户
  * @Author: xiaLin
  * @Date: 2024/5/16 10:53
  * @Version: 1.0
@@ -105,9 +105,9 @@ public class FeignClient extends Client.Default {
 
     // 构建结果
     Response build = response.getResponse()
-            .toBuilder()
-            .body(response.getBody(), response.getResponse().body().length())
-            .build();
+        .toBuilder()
+        .body(response.getBody(), response.getResponse().body().length())
+        .build();
 
     // 写出内容
     feignServiceImpl.feign(feignLog);
