@@ -30,7 +30,6 @@ import static java.util.stream.Collectors.joining;
 
 /**
  * 抽象的注入方法类
- *
  */
 public abstract class AbstractMethod implements Constants {
 
@@ -44,7 +43,6 @@ public abstract class AbstractMethod implements Constants {
 
   /**
    * 方法名称
-   *
    */
   protected final String methodName;
 
@@ -58,6 +56,11 @@ public abstract class AbstractMethod implements Constants {
 
   /**
    * 注入自定义方法
+   *
+   * @param builderAssistant 构建器辅助类
+   * @param mapperClass      接口
+   * @param modelClass       实体类
+   * @param tableInfo        表信息
    */
   public void inject(MapperBuilderAssistant builderAssistant, Class<?> mapperClass, Class<?> modelClass, TableInfo tableInfo) {
     this.configuration = builderAssistant.getConfiguration();
@@ -292,7 +295,6 @@ public abstract class AbstractMethod implements Constants {
 
   /**
    * 查询
-   *
    */
   protected MappedStatement addSelectMappedStatementForTable(Class<?> mapperClass, SqlSource sqlSource, TableInfo table) {
     return addSelectMappedStatementForTable(mapperClass, this.methodName, sqlSource, table);
@@ -309,7 +311,6 @@ public abstract class AbstractMethod implements Constants {
 
   /**
    * 查询
-   *
    */
   protected MappedStatement addSelectMappedStatementForOther(Class<?> mapperClass, SqlSource sqlSource, Class<?> resultType) {
     return addSelectMappedStatementForOther(mapperClass, this.methodName, sqlSource, resultType);

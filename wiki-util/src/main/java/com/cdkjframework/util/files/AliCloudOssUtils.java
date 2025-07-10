@@ -24,97 +24,99 @@ import java.io.InputStream;
 @Component
 public class AliCloudOssUtils {
 
-    /**
-     * 基础配置信息
-     */
-    private static AliCloudOssConfig config;
+  /**
+   * 基础配置信息
+   */
+  private static AliCloudOssConfig config;
 
-    /**
-     * redis 配置信息
-     */
-    @Autowired
-    private AliCloudOssConfig aliCloudOssConfig;
+  /**
+   * redis 配置信息
+   */
+  @Autowired
+  private AliCloudOssConfig aliCloudOssConfig;
 
-    /**
-     * 初始化数据
-     */
-    @PostConstruct
-    public void init() {
-        config = aliCloudOssConfig;
+  /**
+   * 初始化数据
+   */
+  @PostConstruct
+  public void init() {
+    config = aliCloudOssConfig;
+  }
+
+  /**
+   * 创建空间
+   */
+  public static void createBucket() {
+    // 创建OSSClient实例。
+    OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+
+    // 创建存储空间。
+    ossClient.createBucket(config.getBucketName());
+
+    // 关闭OSSClient。
+    ossClient.shutdown();
+  }
+
+  /**
+   * 上传文件
+   *
+   * @param inputStream 文件流
+   * @param fileName    文件名称
+   * @return 文件访问地址
+   */
+  public static String publishInputStream(InputStream inputStream, String fileName) {
+    // 创建OSSClient实例。
+    OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+    if (StringUtils.isNotNullAndEmpty(config.getBucketPath())) {
+      fileName = config.getBucketPath() + fileName;
     }
+    // 上传文件流。
+    ossClient.putObject(config.getBucketName(), fileName, inputStream);
 
-    /**
-     * 创建空间
-     */
-    public static void createBucket() {
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+    // 关闭OSSClient。
+    ossClient.shutdown();
 
-        // 创建存储空间。
-        ossClient.createBucket(config.getBucketName());
+    //返回访问地址
+    return config.getBucketDomain() + fileName;
+  }
 
-        // 关闭OSSClient。
-        ossClient.shutdown();
-    }
+  /**
+   * 上传文件
+   *
+   * @param file 文件
+   * @return 文件访问地址
+   */
+  public static String publishFile(File file) {
+    // 创建OSSClient实例。
+    OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
-    /**
-     * 上传文件
-     *
-     * @param inputStream 文件流
-     * @param fileName    文件名称
-     */
-    public static String publishInputStream(InputStream inputStream, String fileName) {
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-        if (StringUtils.isNotNullAndEmpty(config.getBucketPath())) {
-            fileName = config.getBucketPath() + fileName;
-        }
-        // 上传文件流。
-        ossClient.putObject(config.getBucketName(), fileName, inputStream);
+    //获取文件名
+    String fileName = file.getName();
+    fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtils.getFileSuffix(fileName);
 
-        // 关闭OSSClient。
-        ossClient.shutdown();
+    // 上传文件流。
+    ossClient.putObject(config.getBucketName(), fileName, file);
 
-        //返回访问地址
-        return config.getBucketDomain() + fileName;
-    }
+    // 关闭OSSClient。
+    ossClient.shutdown();
 
-    /**
-     * 上传文件
-     *
-     * @param file 文件
-     */
-    public static String publishFile(File file) {
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
+    //返回访问地址
+    return config.getBucketDomain() + fileName;
+  }
 
-        //获取文件名
-        String fileName = file.getName();
-        fileName = GeneratedValueUtils.getUuidNotTransverseLine() + FileUtils.getFileSuffix(fileName);
+  /**
+   * 删除的文件
+   *
+   * @param fileName 文件名名称
+   */
+  public static void deleteFiles(String fileName) {
+    // 创建OSSClient实例。
+    OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
 
-        // 上传文件流。
-        ossClient.putObject(config.getBucketName(), fileName, file);
+    // 创建存储空间。
+    ossClient.deleteObject(config.getBucketName(), fileName);
 
-        // 关闭OSSClient。
-        ossClient.shutdown();
-
-        //返回访问地址
-        return config.getBucketDomain() + fileName;
-    }
-
-    /**
-     * 删除的文件
-     *
-     * @param fileName 文件名名称
-     */
-    public static void deleteFiles(String fileName) {
-        // 创建OSSClient实例。
-        OSS ossClient = new OSSClientBuilder().build(config.getEndpoint(), config.getAccessKeyId(), config.getAccessKeySecret());
-
-        // 创建存储空间。
-        ossClient.deleteObject(config.getBucketName(), fileName);
-
-        // 关闭OSSClient。
-        ossClient.shutdown();
-    }
+    // 关闭OSSClient。
+    ossClient.shutdown();
+  }
 }

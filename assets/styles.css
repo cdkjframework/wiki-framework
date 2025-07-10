@@ -1,0 +1,19 @@
+/* styles.css */
+body {
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  background-color: #f8f9fa;
+}
+.header {
+  background: #1e88e5;
+  color: white;
+  padding: 15px;
+}
+.navBar {
+  background: #e3f2fd;
+  border-right: 1px solid #bbdefb;
+}
+.contentContainer {
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
