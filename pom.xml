@@ -8,7 +8,7 @@
   <packaging>pom</packaging>
   <version>1.0.11</version>
   <name>wiki-framework</name>
-
+  <url>https://framewiki.com</url>
 
   <description>维基框架 wiki-framework https://framewiki.com</description>
 
