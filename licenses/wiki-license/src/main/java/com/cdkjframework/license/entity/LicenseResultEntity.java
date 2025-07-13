@@ -13,6 +13,16 @@ import lombok.Data;
  * @blob https://blog.csdn.net/appleyk
  * @date created on  10:42 下午 2020/8/21
  */
+/**
+ * License证书验证结果对象
+ *
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.entity
+ * @ClassName: LicenseResultEntity
+ * @Description: License证书验证结果对象
+ * @Author: xiaLin
+ * @Version: 1.0
+ */
 @Data
 @Schema(name = "License证书验证结果对象")
 public class LicenseResultEntity {
