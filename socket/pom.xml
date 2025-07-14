@@ -20,7 +20,6 @@
         <module>wiki-socket-client</module>
         <module>wiki-web-socket</module>
         <module>wiki-web-socket-client</module>
-        <module>wiki-sse</module>
     </modules>
 
     <properties>
