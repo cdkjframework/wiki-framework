@@ -18,6 +18,16 @@ import java.util.Date;
  * @blob https://blog.csdn.net/appleyk
  * @date created on  10:32 下午 2020/8/21
  */
+/**
+ * 请求结果（封装）
+ *
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.entity
+ * @ClassName: ResponseResultEntity
+ * @Description: 请求结果（封装）
+ * @Author: xiaLin
+ * @Version: 1.0
+ */
 @Schema(name = "请求结果（封装）")
 public class ResponseResultEntity {
 

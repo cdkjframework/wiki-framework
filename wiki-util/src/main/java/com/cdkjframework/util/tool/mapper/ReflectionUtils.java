@@ -1,6 +1,7 @@
 package com.cdkjframework.util.tool.mapper;
 
 import com.cdkjframework.constant.DataTypeConsts;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -76,10 +78,10 @@ public class ReflectionUtils {
   /**
    * 获取方法
    *
-   * @param object
-   * @param methodName
-   * @param parameterTypes
-   * @return
+   * @param object         对象
+   * @param methodName     方法名
+   * @param parameterTypes 参数类型
+   * @return 返回结果
    */
   public static Method getDeclaredMethod(Object object, String methodName, Class<?>... parameterTypes) {
     Method method = null;
@@ -132,9 +134,9 @@ public class ReflectionUtils {
   /**
    * 获取字段
    *
-   * @param object
-   * @param fieldName
-   * @return
+   * @param object    对象
+   * @param fieldName 字段名
+   * @return 返回结果字段
    */
   public static Field getDeclaredField(Object object, String fieldName) {
     Field field = null;
@@ -244,9 +246,7 @@ public class ReflectionUtils {
     try {
       //将 target 中 field 所代表的值 设置为 value
       field.set(target, value);
-    } catch (IllegalArgumentException e) {
-      LOG.error(e.getCause(), e.getMessage());
-    } catch (IllegalAccessException e) {
+    } catch (IllegalArgumentException | IllegalAccessException e) {
       LOG.error(e.getCause(), e.getMessage());
     }
 
@@ -255,15 +255,43 @@ public class ReflectionUtils {
   /**
    * 获取字段值
    *
-   * @param object
-   * @param fieldName
-   * @return
+   * @param object    对象
+   * @param fieldName 字段名
+   * @return 值
    */
   public static Object getFieldValue(Object object, String fieldName) {
     //根据 对象和属性名通过取 Field对象
     Field field = getDeclaredField(object, fieldName);
     if (field == null) {
       return null;
+    }
+    return getFieldObjectValue(object, field);
+  }
+
+  /**
+   * 获取字段值
+   *
+   * @param field 字段
+   * @return 值
+   */
+  public static Object getStaticFieldValue(Field field) {
+    return getFieldObjectValue(null, field);
+  }
+
+  /**
+   * 获取字段值
+   *
+   * @param object 对象
+   * @param field  字段
+   * @return 值
+   */
+  public static Object getFieldObjectValue(Object object, Field field) {
+    if (field == null) {
+      return null;
+    }
+    if (object instanceof Class) {
+      // 静态字段获取时对象为null
+      object = null;
     }
     //抑制Java对其的检查
     field.setAccessible(true);
@@ -276,6 +304,29 @@ public class ReflectionUtils {
     return null;
   }
 
+  /**
+   * 移除final修饰符
+   *
+   * @param field 字段
+   */
+  public static void removeFinalModify(Field field) {
+    if (field == null || Modifier.isFinal(field.getModifiers())) {
+      return;
+    }
+    if (!field.isAccessible()) {
+      field.setAccessible(true);
+    }
+    try {
+      //去除final修饰符的影响，将字段设为可修改的
+      final Field modifiersField = Field.class.getDeclaredField("modifiers");
+      //Field 的 modifiers 是私有的
+      modifiersField.setAccessible(true);
+      modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+    } catch (final NoSuchFieldException | IllegalAccessException e) {
+      //内部，工具类，基本不抛出异常
+      throw new GlobalRuntimeException(e, String.format("IllegalAccess for %s.%s", field.getDeclaringClass(), field.getName()));
+    }
+  }
 
   /**
    * 数据类型转换

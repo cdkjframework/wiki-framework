@@ -33,64 +33,65 @@ import java.io.File;
 @Order(10)
 public class TlsPool extends HttpClientBuilder implements ApplicationRunner {
 
-    /**
-     * SSLContext 配置
-     */
-    @Autowired
-    private TlsConfig config;
+  /**
+   * SSLContext 配置
+   */
+  @Autowired
+  private TlsConfig config;
 
-    /**
-     * SSLContext 配置
-     */
-    private static TlsConfig tlsConfig;
+  /**
+   * SSLContext 配置
+   */
+  private static TlsConfig tlsConfig;
 
-    /**
-     * 日志
-     */
-    private static LogUtils logUtils = LogUtils.getLogger(TlsPool.class);
+  /**
+   * 日志
+   */
+  private static LogUtils logUtils = LogUtils.getLogger(TlsPool.class);
 
-    /**
-     * 初始化
-     *
-     * @param args
-     * @throws Exception
-     */
-    @Override
-    public void run(ApplicationArguments args) throws Exception {
-        tlsConfig = this.config;
+  /**
+   * 初始化
+   *
+   * @param args 运行参数
+   * @throws Exception 异常信息
+   */
+  @Override
+  public void run(ApplicationArguments args) throws Exception {
+    tlsConfig = this.config;
+  }
+
+  /**
+   * 构造函数
+   */
+  public static CloseableHttpClient createSslContext() {
+    SSLContext ctx = null;
+    try {
+      if (StringUtils.isNotNullAndEmpty(tlsConfig.getFile()) &&
+          StringUtils.isNotNullAndEmpty(tlsConfig.getPassword())) {
+        ctx = SSLContexts
+            .custom()
+            .loadTrustMaterial(
+                new File(tlsConfig.getFile()),
+                tlsConfig.getPassword().toCharArray(),
+                new TrustSelfSignedStrategy())
+            .build();
+      } else {
+        ctx = new SSLContextBuilder()
+            .loadTrustMaterial(null, new TrustSelfSignedStrategy())
+            .build();
+      }
+    } catch (Exception e) {
+      logUtils.error(e.getCause(), e.getMessage());
     }
+    assert ctx != null;
+    SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx);
+    HttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
+        .setSSLSocketFactory(socketFactory)
+        .build();
 
-    /**
-     * 构造函数
-     */
-    public static CloseableHttpClient createSslContext() {
-        SSLContext ctx = null;
-        try {
-            if (StringUtils.isNotNullAndEmpty(tlsConfig.getFile()) &&
-                    StringUtils.isNotNullAndEmpty(tlsConfig.getPassword())) {
-                ctx = SSLContexts
-                        .custom()
-                        .loadTrustMaterial(
-                                new File(tlsConfig.getFile()),
-                                tlsConfig.getPassword().toCharArray(),
-                                new TrustSelfSignedStrategy())
-                        .build();
-            } else {
-              ctx = new SSLContextBuilder()
-                      .loadTrustMaterial(null, new TrustSelfSignedStrategy())
-                      .build();
-            }
-        } catch (Exception e) {
-          logUtils.error(e.getCause(), e.getMessage());
-        }
-      SSLConnectionSocketFactory socketFactory = new SSLConnectionSocketFactory(ctx);
-      HttpClientConnectionManager connectionManager = PoolingHttpClientConnectionManagerBuilder.create()
-              .setSSLSocketFactory(socketFactory)
-              .build();
-
-      // 返回构建结果
-      return HttpClients.custom()
-              .setConnectionManager(connectionManager)
-              .build();
-    }
+    // 返回构建结果
+    return HttpClients.custom()
+        .setConnectionManager(connectionManager)
+        .build();
+  }
 }

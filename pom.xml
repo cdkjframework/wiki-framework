@@ -6,7 +6,7 @@
 
   <artifactId>wiki-framework</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
   <name>wiki-framework</name>
   <url>https://framewiki.com</url>
 
@@ -35,12 +35,14 @@
     <module>queue</module>
     <module>wiki-minio</module>
     <module>wiki-all</module>
+    <module>wiki-all-jpa</module>
+    <module>wiki-ai</module>
   </modules>
 
   <parent>
     <groupId>com.framewiki</groupId>
     <artifactId>wiki-pom</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
   </parent>
 
   <dependencyManagement>
@@ -48,7 +50,7 @@
       <dependency>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-pom</artifactId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
@@ -177,8 +179,6 @@
           <!-- 关闭严格检查 -->
           <doclint>none</doclint>
           <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
-          <stylesheet>java</stylesheet>
-          <addStylesheets>/assets/styles.css</addStylesheets>
         </configuration>
       </plugin>
     </plugins>

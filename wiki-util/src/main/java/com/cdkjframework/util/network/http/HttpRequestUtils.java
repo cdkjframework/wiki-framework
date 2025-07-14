@@ -19,6 +19,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.Set;
 
@@ -218,7 +219,7 @@ public class HttpRequestUtils {
       printWriter = connection.getOutputStream();
 
       //将参数转换为 json 对象
-      StringBuffer param = new StringBuffer();
+      StringBuilder param = new StringBuilder();
       if (!CollectionUtils.isEmpty(entity.getObjectList())) {
         param.append(JSON.toJSONString(entity.getObjectList()));
       } else if (entity.getData() != null) {
@@ -232,7 +233,7 @@ public class HttpRequestUtils {
           param.append(JSON.toJSONString(params));
         } else {
           Set<Map.Entry<String, Object>> entrySet = params.entrySet();
-          for (Map.Entry entry :
+          for (Map.Entry<String, Object> entry :
               entrySet) {
             if (!param.toString().isEmpty()) {
               param.append(StringUtils.CONNECTOR);
@@ -248,7 +249,7 @@ public class HttpRequestUtils {
         printWriter.write(gzipParams.getBytes());
       } else {
         // 发送请求参数
-        printWriter.write(param.toString().getBytes());
+        printWriter.write(param.toString().getBytes(StandardCharsets.UTF_8));
       }
       // flush输出流的缓冲
       printWriter.flush();

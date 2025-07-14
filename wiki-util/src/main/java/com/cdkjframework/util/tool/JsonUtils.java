@@ -370,7 +370,7 @@ public class JsonUtils {
             // 验证是否有 list 数据结构
             List<Field> fieldList = Arrays.stream(s.getClass().getDeclaredFields())
                     .filter(f -> f.getType().getName().equals(List.class.getName()))
-                    .collect(Collectors.toList());
+                    .toList();
             for (Field field :
                     fieldList) {
                 Object jsonArray = ReflectionUtils.getFieldValue(field, s);
