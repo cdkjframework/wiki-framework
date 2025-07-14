@@ -6,7 +6,7 @@
 
   <artifactId>wiki-framework</artifactId>
   <packaging>pom</packaging>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
   <name>wiki-framework</name>
   <url>https://framewiki.com</url>
 
@@ -42,7 +42,7 @@
   <parent>
     <groupId>com.framewiki</groupId>
     <artifactId>wiki-pom</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
   </parent>
 
   <dependencyManagement>
@@ -50,7 +50,7 @@
       <dependency>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-pom</artifactId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
