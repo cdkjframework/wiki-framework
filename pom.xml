@@ -35,6 +35,8 @@
     <module>queue</module>
     <module>wiki-minio</module>
     <module>wiki-all</module>
+    <module>wiki-all-jpa</module>
+    <module>wiki-ai</module>
   </modules>
 
   <parent>

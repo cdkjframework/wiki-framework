@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.framewiki</groupId>
+    <artifactId>wiki-pom</artifactId>
+    <version>1.0.11</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>com.framewiki.example</groupId>
+  <artifactId>wiki-all-jpa</artifactId>
+  <name>${project.artifactId}</name>
+  <description>
+    Wiki-Framework 为开发者而生；是一个功能丰富且易用的Java工具库，通过诸多实用工具类的使用，旨在帮助开发为快速搭建开发项目提供便利。
+  </description>
+  <url>https://framewiki.com</url>
+
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.framewiki</groupId>
+      <artifactId>wiki-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.framewiki</groupId>
+      <artifactId>wiki-constant</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.framewiki</groupId>
+      <artifactId>wiki-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.framewiki</groupId>
+      <artifactId>wiki-datasource-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.framewiki</groupId>
+      <artifactId>wiki-entity</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.framewiki</groupId>
+      <artifactId>wiki-redis</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>
