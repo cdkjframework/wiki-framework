@@ -2,7 +2,6 @@ package com.cdkjframework.ai.model.deepseek;
 
 import com.cdkjframework.ai.core.AiConfig;
 import com.cdkjframework.ai.core.AiProvider;
-import com.cdkjframework.ai.core.AiService;
 import com.cdkjframework.ai.enums.ModelsName;
 import com.cdkjframework.ai.model.deepseek.impl.DeepSeekServiceImpl;
 
@@ -14,7 +13,7 @@ import com.cdkjframework.ai.model.deepseek.impl.DeepSeekServiceImpl;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public class DeepSeekProvider implements AiProvider<DeepSeekServiceImpl> {
+public class DeepSeekProvider implements AiProvider {
 
   /**
    * 获取服务名称
@@ -33,7 +32,7 @@ public class DeepSeekProvider implements AiProvider<DeepSeekServiceImpl> {
    * @return 返回服务
    */
   @Override
-  public DeepSeekServiceImpl create(AiConfig config) {
+  public DeepSeekService create(AiConfig config) {
     return new DeepSeekServiceImpl(config);
   }
 }

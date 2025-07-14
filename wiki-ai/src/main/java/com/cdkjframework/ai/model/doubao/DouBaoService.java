@@ -2,6 +2,7 @@ package com.cdkjframework.ai.model.doubao;
 
 import com.cdkjframework.ai.constant.AiCommon;
 import com.cdkjframework.ai.constant.AiConstant;
+import com.cdkjframework.ai.core.AiService;
 import com.cdkjframework.ai.core.Message;
 import com.cdkjframework.builder.ResponseBuilder;
 
@@ -17,7 +18,7 @@ import java.util.function.Consumer;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public interface DouBaoService {
+public interface DouBaoService extends AiService {
 
   /**
    * 图像理解：模型会依据传入的图片信息以及问题，给出回复。

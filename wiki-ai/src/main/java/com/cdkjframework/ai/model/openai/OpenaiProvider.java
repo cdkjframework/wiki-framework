@@ -13,7 +13,7 @@ import com.cdkjframework.ai.model.openai.impl.OpenaiServiceImpl;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public class OpenaiProvider implements AiProvider<OpenaiServiceImpl> {
+public class OpenaiProvider implements AiProvider {
   /**
    * 获取服务名称
    *
@@ -31,7 +31,7 @@ public class OpenaiProvider implements AiProvider<OpenaiServiceImpl> {
    * @return 返回服务
    */
   @Override
-  public OpenaiServiceImpl create(AiConfig config) {
+  public OpenaiService create(AiConfig config) {
     return new OpenaiServiceImpl(config);
   }
 }

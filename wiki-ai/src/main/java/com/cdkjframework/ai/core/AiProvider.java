@@ -10,7 +10,7 @@ package com.cdkjframework.ai.core;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public interface AiProvider<T> {
+public interface AiProvider {
   /**
    * 获取服务名称
    *
@@ -22,7 +22,6 @@ public interface AiProvider<T> {
    * 创建服务
    *
    * @param config 配置信息
-   * @return 返回服务
    */
-  T create(final AiConfig config);
+  <T extends AiService> T create(final AiConfig config);
 }

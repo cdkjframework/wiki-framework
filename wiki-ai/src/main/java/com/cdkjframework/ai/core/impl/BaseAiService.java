@@ -31,7 +31,7 @@ import java.util.function.Consumer;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public abstract class BaseAiService implements AiService {
+public class BaseAiService {
 
   /**
    * AI 服务接口

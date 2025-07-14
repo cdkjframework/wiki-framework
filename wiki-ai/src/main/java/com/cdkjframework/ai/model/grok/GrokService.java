@@ -1,6 +1,7 @@
 package com.cdkjframework.ai.model.grok;
 
 import com.cdkjframework.ai.constant.AiCommon;
+import com.cdkjframework.ai.core.AiService;
 import com.cdkjframework.ai.core.Message;
 import com.cdkjframework.builder.ResponseBuilder;
 
@@ -19,7 +20,7 @@ import static com.cdkjframework.ai.constant.AiConstant.USER;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public interface GrokService {
+public interface GrokService extends AiService {
 
 
   /**

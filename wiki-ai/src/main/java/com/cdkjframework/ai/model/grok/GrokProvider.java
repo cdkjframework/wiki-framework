@@ -13,7 +13,7 @@ import com.cdkjframework.ai.model.grok.impl.GrokServiceImpl;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public class GrokProvider implements AiProvider<GrokService> {
+public class GrokProvider implements AiProvider {
   /**
    * 获取服务名称
    *

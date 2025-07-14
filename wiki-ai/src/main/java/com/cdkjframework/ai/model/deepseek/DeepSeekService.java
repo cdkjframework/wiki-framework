@@ -1,5 +1,6 @@
 package com.cdkjframework.ai.model.deepseek;
 
+import com.cdkjframework.ai.core.AiService;
 import com.cdkjframework.builder.ResponseBuilder;
 
 import java.util.function.Consumer;
@@ -12,7 +13,7 @@ import java.util.function.Consumer;
  * @Author: xiaLin
  * @Version: 1.0
  */
-public interface DeepSeekService {
+public interface DeepSeekService extends AiService {
 
   /**
    * 模型beta功能
