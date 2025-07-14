@@ -180,7 +180,6 @@
           <doclint>none</doclint>
           <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
           <stylesheet>java</stylesheet>
-          <addStylesheets>/assets/styles.css</addStylesheets>
         </configuration>
       </plugin>
     </plugins>
