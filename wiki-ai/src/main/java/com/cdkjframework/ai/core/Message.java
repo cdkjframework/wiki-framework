@@ -10,8 +10,6 @@ import java.util.List;
 /**
  * 消息类
  *
- * @param role    角色 注意：如果设置系统消息，必须放在消息列表的第一位
- * @param content 内容
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.ai.core
  * @ClassName: Message
@@ -20,8 +18,16 @@ import java.util.List;
  * @Version: 1.0
  */
 @Data
-@EqualsAndHashCode(callSuper = true)
-public record Message(String role, Object content) {
+public class Message {
+
+  /**
+   * 角色 注意：如果设置系统消息，必须放在消息列表的第一位
+   */
+  private String role;
+  /**
+   * 内容
+   */
+  private Object content;
 
   /**
    * 构建消息
@@ -29,8 +35,9 @@ public record Message(String role, Object content) {
    * @param role    角色
    * @param content 内容
    */
-  public Message(String role, String content) {
-    this(role, (Object) content);
+  public Message(String role, Object content) {
+    this.role = role;
+    this.content = content;
   }
 
   /**
