@@ -206,7 +206,3 @@ specifications:
 3. Chengdu Lingshu Cloud Technology Co., Ltd.
 4. Chengdu Qianjie Wanxiang Business Service Co., Ltd.
 5. Chengdu Lanmou Intelligent Technology Co., Ltd.
-
-## Star Wiki-Framework
-
-[](https://starchart.cc/cdkjframework/wiki-framework)

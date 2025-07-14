@@ -202,7 +202,3 @@ request）符合一些规范，规范如下：
 4、成都千街万巷商务服务有限公司
 
 5、成都蓝眸智能科技有限责任公司
-
-## Star Wiki-Framework
-
-[![Stargazers over time](https://starchart.cc/cdkjframework/wiki-framework.svg)](https://starchart.cc/cdkjframework/wiki-framework)
