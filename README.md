@@ -162,6 +162,8 @@ Wiki-Framework的源码分为两个分支，功能如下：
 
 提交问题反馈请说明正在使用的JDK版本呢、Wiki-Framework 版本和相关依赖库版本。
 
+- QQ ①群： 25056933
+- 公众号：维基框架 （framewiki-com）
 - [Gitee issue](https://gitee.com/cdkjframework/wiki-framework/issues)
 - [Github issue](https://github.com/cdkjframework/wiki-framework/issues)
 
