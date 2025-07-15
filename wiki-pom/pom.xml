@@ -7,7 +7,7 @@
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
   <description>wiki-framework 框架依赖包</description>
-  <version>1.0.12</version>
+  <version>1.1.0</version>
   <packaging>pom</packaging>
   <name>wiki-pom</name>
 
@@ -19,7 +19,7 @@
   </parent>
 
   <properties>
-    <wiki.version>1.0.12</wiki.version>
+    <wiki.version>1.1.0</wiki.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>

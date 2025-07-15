@@ -120,21 +120,21 @@ Add to your top-level POM:
 <parent>
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
-  <version>1.0.12</version>
+  <version>1.1.0</version>
 </parent>
 ```
 
 ###### Gradle
 
 ```groovy
-implementation 'com.framewiki:wiki-pom:1.0.12'
+implementation 'com.framewiki:wiki-pom:1.1.0'
 ```
 
 #### Download JAR
 
 Download [wiki-all-X.X.X.jar](https://gitee.com/cdkjframework/wiki-framework/releases) directly:
 
-- [Maven Central](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.0.12/)
+- [Maven Central](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.1.0/)
 
 > **Note**  
 > Since version 1.0.8, Wiki-Framework requires **JDK 17+**. Compatibility with Android is untested.  
@@ -144,7 +144,7 @@ Download [wiki-all-X.X.X.jar](https://gitee.com/cdkjframework/wiki-framework/rel
 
 Visit the Gitee
 homepage: [https://gitee.com/cdkjframework/wiki-framework](https://gitee.com/cdkjframework/wiki-framework).  
-Download the source (master or 1.0.12 branch), navigate to the project directory, and execute:
+Download the source (master or 1.1.0 branch), navigate to the project directory, and execute:
 
 ```sh
 ./wiki.sh install
