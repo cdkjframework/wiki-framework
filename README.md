@@ -164,6 +164,7 @@ Wiki-Framework的源码分为两个分支，功能如下：
 
 - QQ ①群： 25056933
 - 公众号：维基框架 （framewiki-com）
+- 电子邮件：[wiki@framewiki.com](mailto:wiki@framewiki.com)
 - [Gitee issue](https://gitee.com/cdkjframework/wiki-framework/issues)
 - [Github issue](https://github.com/cdkjframework/wiki-framework/issues)
 
