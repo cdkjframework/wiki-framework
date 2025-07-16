@@ -169,6 +169,9 @@ The source code of Wiki-Framework is divided into two branches, with the followi
 
 Include JDK version, Wiki-Framework version, and relevant dependencies when reporting issues.
 
+- QQ ①Group： 25056933
+- Official Account：维基框架 （framewiki-com）
+- E-mail：wiki@framewiki.com
 - [Gitee Issues](https://gitee.com/cdkjframework/wiki-framework/issues)
 - [GitHub Issues](https://github.com/cdkjframework/wiki-framework/issues)
 
