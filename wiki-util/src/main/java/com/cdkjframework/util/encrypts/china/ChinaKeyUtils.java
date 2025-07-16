@@ -115,19 +115,19 @@ public class ChinaKeyUtils {
    *
    * @param encodeData 加密数据
    * @param privateKey 私钥
-   * @return
+   * @return 返回结果
    */
   public static byte[] decrypt(byte[] encodeData, PrivateKey privateKey) {
-    SM2Engine localSM2Engine = new SM2Engine();
+    SM2Engine sm2Engine = new SM2Engine();
     BCECPrivateKey sm2PriK = (BCECPrivateKey) privateKey;
-    ECParameterSpec localECParameterSpec = sm2PriK.getParameters();
-    ECDomainParameters localECDomainParameters = new ECDomainParameters(localECParameterSpec.getCurve(),
-        localECParameterSpec.getG(), localECParameterSpec.getN());
-    ECPrivateKeyParameters localECPrivateKeyParameters = new ECPrivateKeyParameters(sm2PriK.getD(),
-        localECDomainParameters);
-    localSM2Engine.init(false, localECPrivateKeyParameters);
+    ECParameterSpec sm2PriKParameters = sm2PriK.getParameters();
+    ECDomainParameters ecDomainParameters = new ECDomainParameters(sm2PriKParameters.getCurve(),
+        sm2PriKParameters.getG(), sm2PriKParameters.getN());
+    ECPrivateKeyParameters ecPrivateKeyParameters = new ECPrivateKeyParameters(sm2PriK.getD(),
+        ecDomainParameters);
+    sm2Engine.init(false, ecPrivateKeyParameters);
     try {
-      return localSM2Engine.processBlock(encodeData, IntegerConsts.ZERO, encodeData.length);
+      return sm2Engine.processBlock(encodeData, IntegerConsts.ZERO, encodeData.length);
     } catch (InvalidCipherTextException e) {
       logUtils.error(e, e.toString());
       return null;

@@ -15,8 +15,8 @@ import java.util.List;
 /**
  * @ProjectName: HT-OMS-Project-WEB
  * @Package: com.cdkjframework.core.user
- * @ClassName: WebMvcConfigurer
- * @Description: java类作用描述
+ * @ClassName: WebConfigurer
+ * @Description: Web多视图配置器
  * @Author: xiaLin
  * @Version: 1.0
  */

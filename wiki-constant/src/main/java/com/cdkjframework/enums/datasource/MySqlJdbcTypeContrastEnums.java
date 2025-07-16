@@ -15,6 +15,9 @@ import java.util.Optional;
  */
 
 public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
+  /**
+   * VARCHAR
+   */
   VARCHAR {
     /**
      * 获取枚举值
@@ -36,6 +39,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "VARCHAR";
     }
   },
+  /**
+   * KEYID
+   */
   KEYID {
     /**
      * 获取枚举值
@@ -57,6 +63,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "VARCHAR";
     }
   },
+  /**
+   * 字符串
+   */
   BPCHAR {
     /**
      * 获取枚举值
@@ -78,6 +87,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "VARCHAR";
     }
   },
+  /**
+   * 数字
+   */
   DECIMAL {
     /**
      * 获取枚举值
@@ -99,6 +111,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "DECIMAL";
     }
   },
+  /**
+   * 数字
+   */
   NUMERIC {
     /**
      * 获取枚举值
@@ -120,6 +135,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "NUMERIC";
     }
   },
+  /**
+   * 字符
+   */
   CHAR {
     /**
      * 获取枚举值
@@ -141,6 +159,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "CHAR";
     }
   },
+  /**
+   * 小数
+   */
   TINYINT {
     /**
      * 获取枚举值
@@ -162,6 +183,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "TINYINT";
     }
   },
+  /**
+   * 小数
+   */
   SMALLINT {
     /**
      * 获取枚举值
@@ -183,6 +207,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "SMALLINT";
     }
   },
+  /**
+   * 整数
+   */
   INT {
     /**
      * 获取枚举值
@@ -204,6 +231,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "INTEGER";
     }
   },
+  /**
+   * 整数
+   */
   INT2 {
     /**
      * 获取枚举值
@@ -225,6 +255,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "INTEGER";
     }
   },
+  /**
+   * 整数
+   */
   INT4 {
     /**
      * 获取枚举值
@@ -246,6 +279,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "INTEGER";
     }
   },
+  /**
+   * 整数
+   */
   INT8 {
     /**
      * 获取枚举值
@@ -267,6 +303,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "INTEGER";
     }
   },
+  /**
+   * 整数
+   */
   MEDIUMINT {
     /**
      * 获取枚举值
@@ -288,6 +327,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "INTEGER";
     }
   },
+  /**
+   * 整数
+   */
   FLOAT {
     /**
      * 获取枚举值
@@ -309,6 +351,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "FLOAT";
     }
   },
+  /**
+   * 整数
+   */
   BIGINT {
     /**
      * 获取枚举值
@@ -330,6 +375,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "BIGINT";
     }
   },
+  /**
+   * 浮点数
+   */
   DOUBLE {
     /**
      * 获取枚举值
@@ -351,6 +399,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "DOUBLE";
     }
   },
+  /**
+   * BIT
+   */
   BIT {
     /**
      * 获取枚举值
@@ -372,6 +423,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "BOOLEAN";
     }
   },
+  /**
+   * DATE
+   */
   DATE {
     /**
      * 获取枚举值
@@ -393,6 +447,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "DATE";
     }
   },
+  /**
+   * TIME
+   */
   TIME {
     /**
      * 获取枚举值
@@ -414,7 +471,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "TIME";
     }
   },
-
+  /**
+   * DATETIME
+   */
   DATETIME {
     /**f
      *
@@ -435,6 +494,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "TIMESTAMP";
     }
   },
+  /**
+   * TIMESTAMP
+   */
   TIMESTAMP {
     /**
      * 获取枚举值
@@ -456,6 +518,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "TIMESTAMP";
     }
   },
+  /**
+   * TEXT
+   */
   TEXT {
     /**
      * 获取枚举值
@@ -477,6 +542,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "VARCHAR";
     }
   },
+  /**
+   * MEDIUMTEXT
+   */
   MEDIUMTEXT {
     /**
      * 获取枚举值
@@ -498,6 +566,9 @@ public enum MySqlJdbcTypeContrastEnums implements BasicsEnum {
       return "VARCHAR";
     }
   },
+  /**
+   * 长整形
+   */
   LONGTEXT {
     /**
      * 获取枚举值

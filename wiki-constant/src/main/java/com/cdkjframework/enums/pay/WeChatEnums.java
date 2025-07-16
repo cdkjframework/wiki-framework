@@ -12,79 +12,133 @@ import com.cdkjframework.enums.InterfaceEnum;
  */
 public enum WeChatEnums implements InterfaceEnum {
 
-    INVALID_REQUEST("invalid_request", "参数错误"),
+  /**
+   * 参数错误
+   */
+  INVALID_REQUEST("invalid_request", "参数错误"),
 
-    NOAUTH("noauth", "商户无此接口权限"),
+  /**
+   * 商户无此接口权限
+   */
+  NOAUTH("noauth", "商户无此接口权限"),
 
-    NOTENOUGH("notenough", "余额不足"),
+  /**
+   * 余额不足
+   */
+  NOTENOUGH("notenough", "余额不足"),
 
-    ORDERPAID("orderpaid", "商户订单已支付"),
+  /**
+   * 商户订单已支付
+   */
+  ORDERPAID("orderpaid", "商户订单已支付"),
 
-    ORDERCLOSED("orderclosed", "订单已关闭"),
+  /**
+   * 订单已关闭
+   */
+  ORDERCLOSED("orderclosed", "订单已关闭"),
 
-    SYSTEMERROR("systemerror", "系统错误"),
+  /**
+   * 系统错误
+   */
+  SYSTEMERROR("systemerror", "系统错误"),
 
-    APPID_NOT_EXIST("appid_not_exist", "APPID不存在"),
+  /**
+   * 商户APPID不存在
+   */
+  APPID_NOT_EXIST("appid_not_exist", "APPID不存在"),
 
-    MCHID_NOT_EXIST("mchid_not_exist", "MCHID不存在"),
+  /**
+   * 商户号不存在
+   */
+  MCHID_NOT_EXIST("mchid_not_exist", "MCHID不存在"),
 
-    APPID_MCHID_NOT_MATCH("appid_mchid_not_match", "appid和mch_id不匹配"),
+  /**
+   * appid和mch_id不匹配
+   */
+  APPID_MCHID_NOT_MATCH("appid_mchid_not_match", "appid和mch_id不匹配"),
 
-    LACK_PARAMS("lack_params", "缺少参数"),
+  /**
+   * 缺少参数
+   */
+  LACK_PARAMS("lack_params", "缺少参数"),
 
-    OUT_TRADE_NO_USED("out_trade_no_used", "商户订单号重复"),
+  /**
+   * 商户订单号重复
+   */
+  OUT_TRADE_NO_USED("out_trade_no_used", "商户订单号重复"),
 
-    SIGNERROR("signerror", "签名错误"),
+  /**
+   * 签名错误
+   */
+  SIGNERROR("signerror", "签名错误"),
 
-    XML_FORMAT_ERROR("xml_format_error", "XML格式错误"),
+  /**
+   * XML格式错误
+   */
+  XML_FORMAT_ERROR("xml_format_error", "XML格式错误"),
 
-    REQUIRE_POST_METHOD("require_post_method", "请使用post方法"),
+  /**
+   * 请使用post方法
+   */
+  REQUIRE_POST_METHOD("require_post_method", "请使用post方法"),
 
-    POST_DATA_EMPTY("post_data_empty", "post数据为空"),
+  /**
+   * post数据为空
+   */
+  POST_DATA_EMPTY("post_data_empty", "post数据为空"),
 
-    NOT_UTF8("not_utf8", "编码格式错误");
+  /**
+   * 编码格式错误
+   */
+  NOT_UTF8("not_utf8", "编码格式错误");
 
-    private final String value;
-    private final String text;
+  /**
+   * 枚举值
+   */
+  private final String value;
+  /**
+   * 描述
+   */
+  private final String text;
 
-    /**
-     * 构造
-     *
-     * @param value 值
-     * @param text  名称
-     */
-    WeChatEnums(String value, String text) {
-        this.value = value;
-        this.text = text;
-    }
+  /**
+   * 构造
+   *
+   * @param value 值
+   * @param text  名称
+   */
+  WeChatEnums(String value, String text) {
+    this.value = value;
+    this.text = text;
+  }
 
-    /**
-     * 获取值
-     *
-     * @return 返回值
-     */
-    @Override
-    public String getValue() {
-        return value;
-    }
+  /**
+   * 获取值
+   *
+   * @return 返回值
+   */
+  @Override
+  public String getValue() {
+    return value;
+  }
 
-    /**
-     * 获取描述
-     *
-     * @return 返描述
-     */
-    @Override
-    public String getText() {
-        return text;
-    }
+  /**
+   * 获取描述
+   *
+   * @return 返描述
+   */
+  @Override
+  public String getText() {
+    return text;
+  }
 
-    /**
-     * 获取下节点值
-     *
-     * @return 返下节点值
-     */
-    @Override
-    public String getNode() {
-        return null;
-    }
+  /**
+   * 获取下节点值
+   *
+   * @return 返下节点值
+   */
+  @Override
+  public String getNode() {
+    return null;
+  }
 }

@@ -12,6 +12,15 @@ public class AlgoParams {
 
   /**
    * 构造函数
+   *
+   * @param name     名称
+   * @param hashSize 输出字节数
+   * @param poly     多项式
+   * @param init     初始值
+   * @param refIn    反转输入
+   * @param refOut   反转输出
+   * @param xorOut   结果异或
+   * @param check    校验值
    */
   public AlgoParams(String name, int hashSize, long poly, long init, boolean refIn, boolean refOut, long xorOut, long check) {
     this.name = name;
@@ -25,13 +34,7 @@ public class AlgoParams {
   }
 
   /**
-   * This field is not strictly part of the definition, and, in
-   * the event of an inconsistency between this field and the other
-   * field, the other fields take precedence.This field is a check
-   * value that can be used as a weak validator of implementations of
-   * the algorithm.The field contains the checksum obtained when the
-   * ASCII string "123456789" is fed through the specified algorithm
-   * (i.e. 313233... (hexadecimal)).
+   * This is the official checksum value.
    */
   public long check;
 

@@ -42,19 +42,21 @@ public interface IController {
   /**
    * 获取抽象信息
    *
-   * @param clasz 实体
+   * @param clazz 实体
+   * @param <T>   泛型
    * @return 返回用户抽象实体
    */
-  <T> T getCurrentUser(Class<T> clasz);
+  <T> T getCurrentUser(Class<T> clazz);
 
   /**
    * 获取抽象信息
    *
    * @param id    主键
-   * @param clasz 实体
+   * @param clazz 实体
+   * @param <T>   泛型
    * @return 返回用户抽象实体
    */
-  <T> T getCurrentUser(String id, Class<T> clasz);
+  <T> T getCurrentUser(String id, Class<T> clazz);
 
   /**
    * 获取参数
@@ -132,6 +134,7 @@ public interface IController {
    *
    * @param inputStream 数据流
    * @param clazz       要转换的类
+   * @param <T>         泛型
    * @return 返回结果
    */
   <T> List<T> importExcelToList(InputStream inputStream, Class<T> clazz);
@@ -151,6 +154,7 @@ public interface IController {
    * @param clazz    数据类型
    * @param fileName 文件名
    * @param <T>      类型
+   * @throws IOException 抛出IO异常
    */
   <T> void downloadOutput(List<T> dataList, Class<T> clazz, String fileName) throws IOException;
 
@@ -174,7 +178,7 @@ public interface IController {
    * 获取请求流
    *
    * @return 返回流
-   * @throws IOException
+   * @throws IOException 抛出IO异常
    */
   InputStream getRequestStream() throws IOException;
 

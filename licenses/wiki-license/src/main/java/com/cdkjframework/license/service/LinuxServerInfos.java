@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * <p>用于获取客户Linux服务器的基本信息</p>
- *
- * @author appleyk
- * @version V.0.2.1
- * @blob https://blog.csdn.net/appleyk
- * @date created on  10:42 下午 2020/8/21
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.service
+ * @ClassName: LinuxServerInfos
+ * @Description: 用于获取客户Linux服务器的基本信息
+ * @Author: xiaLin
+ * @Version: 1.0
  */
 public class LinuxServerInfos extends AServerInfos {
 

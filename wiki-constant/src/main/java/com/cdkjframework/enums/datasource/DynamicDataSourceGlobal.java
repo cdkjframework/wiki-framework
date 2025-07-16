@@ -10,5 +10,12 @@ package com.cdkjframework.enums.datasource;
  */
 
 public enum DynamicDataSourceGlobal {
-    READ, WRITE;
+  /**
+   * 读
+   */
+  READ,
+  /**
+   * 写
+   */
+  WRITE;
 }

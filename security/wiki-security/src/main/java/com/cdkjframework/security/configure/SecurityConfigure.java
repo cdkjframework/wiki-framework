@@ -26,6 +26,8 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
+ * 权限配置 开启权限注解,默认是关闭的
+ *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.config
  * @ClassName: SecurityConfig
@@ -115,52 +117,52 @@ public class SecurityConfigure {
     int size = customConfig.getPatternsUrls().size();
     String[] patternsUrls = customConfig.getPatternsUrls().toArray(new String[size]);
     return http
-            // 配置未登录自定义处理类
-            .httpBasic(basic ->
-                    basic.authenticationEntryPoint(userAuthenticationEntryPointHandler)
-            )
-            // 禁用缓存
-            .headers(header -> header.cacheControl(cache -> cache.disable()))
-            // 关闭csrf
-            .csrf(AbstractHttpConfigurer::disable)
-            // 配置登录地址
-            .formLogin(form -> form.loginPage(customConfig.getLoginPage())
-                    .loginProcessingUrl(customConfig.getLoginUrl())
-                    .defaultSuccessUrl(customConfig.getLoginSuccess())
-                    // 配置登录成功自定义处理类
-                    .successHandler(userLoginSuccessHandler)
-                    // 配置登录失败自定义处理类
-                    .failureHandler(userLoginFailureHandler)
-                    .permitAll()
-            )
-            // 禁用默认登出页
-            .logout(logout -> logout.logoutUrl(customConfig.getLogoutUrl())
-                    .logoutSuccessHandler(userLogoutSuccessHandler)
-                    .permitAll()
-            )
-            // 配置没有权限自定义处理类
-            .exceptionHandling(exception -> exception.accessDeniedHandler(userAuthAccessDeniedHandler))
-            // 禁用session
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            // 配置拦截信息
-            .authorizeHttpRequests(authorization -> authorization
-                    // 允许所有的OPTIONS请求
-                    .requestMatchers(HttpMethod.OPTIONS, PATTERNS).permitAll()
-                    // 放行白名单
-                    .requestMatchers(patternsUrls).permitAll()
-                    // 根据接口所需权限进行动态鉴权
-                    .anyRequest()
-                    .authenticated()
-            )
-            // 配置登录验证逻辑
-            .authenticationProvider(userAuthenticationProvider)
-            // 注册自定义拦截器
-            .addFilterBefore(new ValidateCodeFilter(), UsernamePasswordAuthenticationFilter.class)
-            // 权限验证
-            .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-            // 添加JWT过滤器
-            .addFilter(new JwtAuthenticationFilter(authentication, customConfig))
-            .build();
+        // 配置未登录自定义处理类
+        .httpBasic(basic ->
+            basic.authenticationEntryPoint(userAuthenticationEntryPointHandler)
+        )
+        // 禁用缓存
+        .headers(header -> header.cacheControl(cache -> cache.disable()))
+        // 关闭csrf
+        .csrf(AbstractHttpConfigurer::disable)
+        // 配置登录地址
+        .formLogin(form -> form.loginPage(customConfig.getLoginPage())
+            .loginProcessingUrl(customConfig.getLoginUrl())
+            .defaultSuccessUrl(customConfig.getLoginSuccess())
+            // 配置登录成功自定义处理类
+            .successHandler(userLoginSuccessHandler)
+            // 配置登录失败自定义处理类
+            .failureHandler(userLoginFailureHandler)
+            .permitAll()
+        )
+        // 禁用默认登出页
+        .logout(logout -> logout.logoutUrl(customConfig.getLogoutUrl())
+            .logoutSuccessHandler(userLogoutSuccessHandler)
+            .permitAll()
+        )
+        // 配置没有权限自定义处理类
+        .exceptionHandling(exception -> exception.accessDeniedHandler(userAuthAccessDeniedHandler))
+        // 禁用session
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        // 配置拦截信息
+        .authorizeHttpRequests(authorization -> authorization
+            // 允许所有的OPTIONS请求
+            .requestMatchers(HttpMethod.OPTIONS, PATTERNS).permitAll()
+            // 放行白名单
+            .requestMatchers(patternsUrls).permitAll()
+            // 根据接口所需权限进行动态鉴权
+            .anyRequest()
+            .authenticated()
+        )
+        // 配置登录验证逻辑
+        .authenticationProvider(userAuthenticationProvider)
+        // 注册自定义拦截器
+        .addFilterBefore(new ValidateCodeFilter(), UsernamePasswordAuthenticationFilter.class)
+        // 权限验证
+        .addFilterAt(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+        // 添加JWT过滤器
+        .addFilter(new JwtAuthenticationFilter(authentication, customConfig))
+        .build();
   }
 
   /**

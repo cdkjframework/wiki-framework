@@ -5,12 +5,13 @@
     <parent>
         <artifactId>wiki-framework</artifactId>
         <groupId>com.framewiki</groupId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>queue</artifactId>
     <description>消息组件</description>
+    <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <modules>
         <module>wiki-kafka</module>
@@ -51,9 +52,9 @@
 
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Repository</id>
-            <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        <id>wiki</id>
+        <layout>default</layout>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 

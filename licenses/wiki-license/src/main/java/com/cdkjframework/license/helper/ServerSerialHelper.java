@@ -14,6 +14,14 @@ import java.util.Scanner;
  * @blob https://blog.csdn.net/appleyk
  * @date created on  10:42 下午 2020/8/21
  */
+/**
+ * @ProjectName: wiki-framework
+ * @Package: com.cdkjframework.license.helper
+ * @ClassName: ParamInitHelper
+ * @Description: 获取服务器硬件序列号辅助类
+ * @Author: xiaLin
+ * @Version: 1.0
+ */
 public class ServerSerialHelper {
 
     /**

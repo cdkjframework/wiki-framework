@@ -10,6 +10,10 @@ package com.cdkjframework.enums;
  */
 
 public enum HttpMethodEnums {
+
+    /**
+     * 文件上传
+     */
     FILE {
         /**
          * 获取枚举值
@@ -31,6 +35,9 @@ public enum HttpMethodEnums {
             return "文件上传";
         }
     },
+    /**
+     * GET请求
+     */
     GET {
         /**
          * 获取枚举值
@@ -52,6 +59,9 @@ public enum HttpMethodEnums {
             return "GET请求";
         }
     },
+    /**
+     * POST请求
+     */
     POST {
         /**
          * 获取枚举值

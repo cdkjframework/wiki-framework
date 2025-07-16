@@ -45,6 +45,7 @@ public class CopyUtils {
    * 获取到空值列
    *
    * @param source 原数据源
+   * @param <S>    源
    * @return 返回结果
    */
   public static <S> String[] getNullPropertyNames(S source) {
@@ -77,11 +78,12 @@ public class CopyUtils {
    *
    * @param list   源数据
    * @param target 要转换成的对象
+   * @param <S>    源
    * @return 返回对象数据集
    */
   @Deprecated
   public static <S, T> List<T> copyPropertiesList(List<S> list, Class<T> target) {
-    List<T> result = new ArrayList();
+    List<T> result = new ArrayList<>();
     if (list == null) {
       return result;
     }
@@ -102,11 +104,12 @@ public class CopyUtils {
    *
    * @param list   源数据
    * @param target 要转换成的对象
+   * @param <S>    源
    * @return 返回对象数据集
    */
   @Deprecated
   public static <S, T> List<T> copyNoNullPropertiesList(List<S> list, Class<T> target) {
-    List<T> result = new ArrayList();
+    List<T> result = new ArrayList<>();
     if (list != null) {
       for (S o : list) {
         try {
@@ -126,9 +129,11 @@ public class CopyUtils {
    *
    * @param source 原数据源
    * @param target 当前数据
+   * @param <S>    源
+   * @param <T>    目标
    */
   public static <S, T> void copyProperties(S source, T target) {
-    copyProperties(source, target, false);
+    copyProperties(source, target, Boolean.FALSE);
   }
 
   /**
@@ -136,9 +141,11 @@ public class CopyUtils {
    *
    * @param source 原数据源
    * @param target 当前数据
+   * @param <S>    源
+   * @param <T>    目标
    */
   public static <S, T> void copyNoNullProperties(S source, T target) {
-    copyProperties(source, target, true);
+    copyProperties(source, target, Boolean.TRUE);
   }
 
   /**
@@ -146,14 +153,16 @@ public class CopyUtils {
    *
    * @param sourceList 原数据源
    * @param targetList 当前数据
+   * @param <S>        源
+   * @param <T>        目标
    */
   public static <S, T> List<T> copyProperties(List<S> sourceList, Class<T> targetList) {
-    List<T> result = new ArrayList();
+    List<T> result = new ArrayList<>();
     if (sourceList != null) {
       for (S o : sourceList) {
         try {
           T d = targetList.getDeclaredConstructor().newInstance();
-          copyProperties(o, d, true);
+          copyProperties(o, d, Boolean.TRUE);
           result.add(d);
         } catch (Exception e) {
           logUtil.error(e.getMessage());
@@ -168,6 +177,8 @@ public class CopyUtils {
    *
    * @param source 原数据源
    * @param target 当前数据
+   * @param <S>    源
+   * @param <T>    目标
    */
   public static <S, T> T copyProperties(S source, Class<T> target) {
     T t;
@@ -176,7 +187,7 @@ public class CopyUtils {
         return null;
       }
       t = target.getDeclaredConstructor().newInstance();
-      copyProperties(source, t, false);
+      copyProperties(source, t, Boolean.FALSE);
       return t;
     } catch (Exception ex) {
       logUtil.error(ex.getCause(), ex.getMessage());
@@ -189,9 +200,11 @@ public class CopyUtils {
    *
    * @param sourceList 原数据源
    * @param targetList 当前数据
+   * @param <S>        源
+   * @param <T>        目标
    */
   public static <S, T> List<T> copyNoNullProperties(List<S> sourceList, Class<T> targetList) {
-    List<T> result = new ArrayList();
+    List<T> result = new ArrayList<>();
     if (sourceList == null) {
       return result;
     }
@@ -199,7 +212,7 @@ public class CopyUtils {
       try {
 
         T d = targetList.getDeclaredConstructor().newInstance();
-        copyProperties(o, d, true);
+        copyProperties(o, d, Boolean.TRUE);
         result.add(d);
       } catch (Exception e) {
         logUtil.error(e.getMessage());
@@ -213,6 +226,8 @@ public class CopyUtils {
    *
    * @param source 原数据源
    * @param target 当前数据
+   * @param <S>    源
+   * @param <T>    目标
    */
   public static <S, T> T copyNoNullProperties(S source, Class<T> target) {
     T t;
@@ -221,7 +236,7 @@ public class CopyUtils {
         return null;
       }
       t = target.getDeclaredConstructor().newInstance();
-      copyProperties(source, t, true);
+      copyProperties(source, t, Boolean.TRUE);
       return t;
     } catch (Exception ex) {
       logUtil.error(ex.getCause(), ex.getMessage());
@@ -254,7 +269,7 @@ public class CopyUtils {
       List<Field> fields = ReflectionUtils.getDeclaredFields(source.getClass());
       for (Field targetField :
           targetFields) {
-        targetField.setAccessible(true);
+        targetField.setAccessible(Boolean.TRUE);
         // 读取值
         Object value = ReflectionUtils.getFieldValue(targetField, target);
         String typeName = targetField.getType().getTypeName();
@@ -290,7 +305,7 @@ public class CopyUtils {
         } else if ((targetField.getType().equals(LocalDate.class))) {
           clazz = LocalDate.parse(String.valueOf(value));
         } else if (targetField.getType().equals(BigDecimal.class)) {
-          clazz = BigDecimal.valueOf(Double.valueOf(String.valueOf(value)));
+          clazz = BigDecimal.valueOf(Double.parseDouble(String.valueOf(value)));
         } else if (DATA_TYPE.contains(typeName)) {
           buildArrayList((List) value, target, targetField);
           continue;
@@ -312,6 +327,10 @@ public class CopyUtils {
    *
    * @param arrayList   列表数据
    * @param targetField 目标类
+   * @param <T>         目标
+   * @param target      目标对象
+   * @throws IllegalAccessException 异常
+   * @throws InstantiationException 创建异常
    */
   private static <T> void buildArrayList(List arrayList, T target, Field targetField) throws IllegalAccessException, InstantiationException {
     Class clazz = (Class) ((ParameterizedType) targetField.getGenericType()).getActualTypeArguments()[0];

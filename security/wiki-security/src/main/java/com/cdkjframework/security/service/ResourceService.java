@@ -6,6 +6,8 @@ import com.cdkjframework.entity.user.RoleEntity;
 import java.util.List;
 
 /**
+ * 资源服务接口
+ *
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.security.service
  * @ClassName: ResourceService
@@ -15,12 +17,12 @@ import java.util.List;
  */
 public interface ResourceService {
 
-    /**
-     * 查询资源列表
-     *
-     * @param roleList 角色列表
-     * @param userId   用户ID
-     * @return 返回结果
-     */
-    List<ResourceEntity> listResource(List<RoleEntity> roleList, String userId);
+  /**
+   * 查询资源列表
+   *
+   * @param roleList 角色列表
+   * @param userId   用户ID
+   * @return 返回结果
+   */
+  List<ResourceEntity> listResource(List<RoleEntity> roleList, String userId);
 }

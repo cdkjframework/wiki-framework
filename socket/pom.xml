@@ -5,12 +5,13 @@
     <parent>
         <artifactId>wiki-framework</artifactId>
         <groupId>com.framewiki</groupId>
-        <version>1.0.11</version>
+        <version>1.0.12</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>socket</artifactId>
     <description>长连接组件</description>
+    <name>${project.artifactId}</name>
 
     <packaging>pom</packaging>
 
@@ -19,7 +20,6 @@
         <module>wiki-socket-client</module>
         <module>wiki-web-socket</module>
         <module>wiki-web-socket-client</module>
-        <module>wiki-sse</module>
     </modules>
 
     <properties>
@@ -59,9 +59,9 @@
 
     <distributionManagement>
         <repository>
-            <id>cdkj Maven Repository</id>
-            <layout>default</layout>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+        <id>wiki</id>
+        <layout>default</layout>
+        <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
 </project>

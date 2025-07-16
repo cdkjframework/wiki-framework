@@ -7,8 +7,9 @@
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
   <description>wiki-framework 框架依赖包</description>
-  <version>1.0.11</version>
+  <version>1.0.12</version>
   <packaging>pom</packaging>
+  <name>wiki-pom</name>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -18,7 +19,7 @@
   </parent>
 
   <properties>
-    <wiki.version>1.0.11</wiki.version>
+    <wiki.version>1.0.12</wiki.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>
@@ -284,7 +285,16 @@
         <artifactId>wiki-kafka-client</artifactId>
         <version>${wiki.version}</version>
       </dependency>
-
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-mqtt</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-mqtt-client</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-web</artifactId>
@@ -1043,56 +1053,10 @@
     </dependencies>
   </dependencyManagement>
 
-  <build>
-    <plugins>
-      <!--打包-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>*.properties</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <!--<goals>-->
-            <!--<goal>test-jar</goal>-->
-            <!--</goals>-->
-          </execution>
-        </executions>
-      </plugin>
-      <!--源码打包-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-              <!--<goal>test-jar</goal>-->
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>17</source>
-          <target>17</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
   <distributionManagement>
     <repository>
-      <id>cdkj Maven Repository</id>
-      <layout>default</layout>
-      <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+      <id>wiki</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
 </project>

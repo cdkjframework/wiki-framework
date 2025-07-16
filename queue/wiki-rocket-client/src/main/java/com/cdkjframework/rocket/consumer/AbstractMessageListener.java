@@ -25,60 +25,60 @@ import org.springframework.util.CollectionUtils;
 @Component
 @RequiredArgsConstructor
 public abstract class AbstractMessageListener implements MessageOrderListener,
-        RocketMessageListener {
+    RocketMessageListener {
 
-    /**
-     * 日志
-     */
-    private static LogUtils logUtil = LogUtils.getLogger(AbstractMessageListener.class);
+  /**
+   * 日志
+   */
+  private static LogUtils logUtil = LogUtils.getLogger(AbstractMessageListener.class);
 
-    /**
-     * TAG信息
-     */
-    private final AliCloudRocketMqConfig aliCloudRocketMqConfig;
+  /**
+   * TAG信息
+   */
+  private final AliCloudRocketMqConfig aliCloudRocketMqConfig;
 
-    /**
-     * 订阅消息回传
-     *
-     * @param message        消息内容
-     * @param consumeContext
-     * @return 返回结果
-     */
-    @Override
-    public final OrderAction consume(Message message, ConsumeOrderContext consumeContext) {
-        //调用参数
-        try {
-            if (!CollectionUtils.isEmpty(aliCloudRocketMqConfig.getTag()) &&
-                    !aliCloudRocketMqConfig.getTag().contains(message.getTag())) {
-                return OrderAction.Suspend;
-            }
-
-            RocketMqCallbackEntity callbackEntity = new RocketMqCallbackEntity();
-            callbackEntity.setBornTimestamp(message.getBornTimestamp());
-            callbackEntity.setMessage(new String(message.getBody()));
-            callbackEntity.setMessageId(message.getMsgID());
-            callbackEntity.setTag(message.getTag());
-            callbackEntity.setTopic(message.getTopic());
-            callbackEntity.setShardingKey(message.getShardingKey());
-            callbackEntity.setStartDeliverTime(message.getStartDeliverTime());
-
-            consume(callbackEntity);
-
-            // 消息成功
-            return OrderAction.Success;
-        } catch (GlobalException e) {
-            logUtil.error(e.getMessage());
-        }
-        // 消费失败
+  /**
+   * 订阅消息回传
+   *
+   * @param message        消息内容
+   * @param consumeContext 上下文信息
+   * @return 返回结果
+   */
+  @Override
+  public final OrderAction consume(Message message, ConsumeOrderContext consumeContext) {
+    //调用参数
+    try {
+      if (!CollectionUtils.isEmpty(aliCloudRocketMqConfig.getTag()) &&
+          !aliCloudRocketMqConfig.getTag().contains(message.getTag())) {
         return OrderAction.Suspend;
-    }
+      }
 
-    /**
-     * consume
-     *
-     * @param callback 返回数据结果
-     * @throws GlobalException 异常信息
-     */
-    @Override
-    public abstract void consume(RocketMqCallbackEntity callback) throws GlobalException;
+      RocketMqCallbackEntity callbackEntity = new RocketMqCallbackEntity();
+      callbackEntity.setBornTimestamp(message.getBornTimestamp());
+      callbackEntity.setMessage(new String(message.getBody()));
+      callbackEntity.setMessageId(message.getMsgID());
+      callbackEntity.setTag(message.getTag());
+      callbackEntity.setTopic(message.getTopic());
+      callbackEntity.setShardingKey(message.getShardingKey());
+      callbackEntity.setStartDeliverTime(message.getStartDeliverTime());
+
+      consume(callbackEntity);
+
+      // 消息成功
+      return OrderAction.Success;
+    } catch (GlobalException e) {
+      logUtil.error(e.getMessage());
+    }
+    // 消费失败
+    return OrderAction.Suspend;
+  }
+
+  /**
+   * consume
+   *
+   * @param callback 返回数据结果
+   * @throws GlobalException 异常信息
+   */
+  @Override
+  public abstract void consume(RocketMqCallbackEntity callback) throws GlobalException;
 }

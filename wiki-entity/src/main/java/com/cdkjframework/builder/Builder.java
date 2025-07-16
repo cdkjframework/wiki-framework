@@ -20,28 +20,31 @@ public class Builder<T> {
    * 供应商
    * 实例化器
    */
-  private final Supplier<T> instantiator;
+  private final Supplier<T> instantiate;
 
   /**
    * 修饰符
    */
-  private List<Consumer<T>> modifiers = new ArrayList<>();
+  private final List<Consumer<T>> modifiers = new ArrayList<>();
 
   /**
    * 构建函数
+   *
+   * @param instantiate 实例化器
    */
-  public Builder(Supplier<T> instantiator) {
-    this.instantiator = instantiator;
+  public Builder(Supplier<T> instantiate) {
+    this.instantiate = instantiate;
   }
 
   /**
    * 构建方法
    *
-   * @param <T> 实体类型
+   * @param <T>         实体类型
+   * @param instantiate 实例化器
    * @return 返回结果
    */
-  public static <T> Builder<T> of(Supplier<T> instantiator) {
-    return new Builder<>(instantiator);
+  public static <T> Builder<T> of(Supplier<T> instantiate) {
+    return new Builder<>(instantiate);
   }
 
   /**
@@ -98,7 +101,7 @@ public class Builder<T> {
    * @return 返回构建结果
    */
   public T build() {
-    T value = instantiator.get();
+    T value = instantiate.get();
     modifiers.forEach(modifier -> modifier.accept(value));
     modifiers.clear();
     return value;
@@ -109,6 +112,12 @@ public class Builder<T> {
    */
   @FunctionalInterface
   public interface Consumer1<T, S> {
+    /**
+     * 执行
+     *
+     * @param t 值
+     * @param s 值
+     */
     void accept(T t, S s);
   }
 
@@ -117,6 +126,13 @@ public class Builder<T> {
    */
   @FunctionalInterface
   public interface Consumer2<T, S, R> {
+    /**
+     * 执行
+     *
+     * @param t 值
+     * @param s 值
+     * @param r 值
+     */
     void accept(T t, S s, R r);
   }
 
@@ -125,6 +141,14 @@ public class Builder<T> {
    */
   @FunctionalInterface
   public interface Consumer3<T, S, R, X> {
+    /**
+     * 执行
+     *
+     * @param t 值
+     * @param s 值
+     * @param r 值
+     * @param x 值
+     */
     void accept(T t, S s, R r, X x);
   }
 }

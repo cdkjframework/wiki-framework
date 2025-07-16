@@ -5,11 +5,13 @@
   <parent>
     <groupId>com.framewiki</groupId>
     <artifactId>wiki-framework</artifactId>
-    <version>1.0.11</version>
+    <version>1.0.12</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wiki-util</artifactId>
+  <description>工具类包</description>
+  <name>${project.artifactId}</name>
 
   <dependencies>
     <dependency>
@@ -379,58 +381,4 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-
-  <build>
-    <plugins>
-      <!--打包-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <configuration>
-          <excludes>
-            <exclude>*.properties</exclude>
-          </excludes>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <!--<goals>-->
-            <!--<goal>test-jar</goal>-->
-            <!--</goals>-->
-          </execution>
-        </executions>
-      </plugin>
-      <!--源码打包-->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <executions>
-          <execution>
-            <phase>compile</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-              <!--<goal>test-jar</goal>-->
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <configuration>
-          <source>17</source>
-          <target>17</target>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
-
-
-  <distributionManagement>
-    <repository>
-      <id>cdkj Maven Repository</id>
-      <layout>default</layout>
-      <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
-    </repository>
-  </distributionManagement>
 </project>

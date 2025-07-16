@@ -62,6 +62,11 @@ public class HttpRequestEntity {
   private String name;
 
   /**
+   * 是否为表单
+   */
+  private boolean form = Boolean.FALSE;
+
+  /**
    * 代理
    */
   private Proxy proxy;
