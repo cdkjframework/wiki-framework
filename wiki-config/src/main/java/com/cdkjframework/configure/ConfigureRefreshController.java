@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigureRefreshController {
 
     /**
-     * 上下文刷新器 ZHONGYIDONG
+     * 上下文刷新器
      */
     private ContextRefresher contextRefresher;
 
