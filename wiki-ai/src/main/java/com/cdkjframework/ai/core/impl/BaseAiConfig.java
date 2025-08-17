@@ -2,6 +2,7 @@ package com.cdkjframework.ai.core.impl;
 
 import com.cdkjframework.ai.core.AiConfig;
 
+import java.net.Proxy;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -41,6 +42,11 @@ public class BaseAiConfig implements AiConfig {
    * 读取超时时间
    */
   protected volatile int readTimeout = 300000;
+
+  /**
+   * 代理
+   */
+  protected volatile Proxy proxy;
 
   /**
    * 设置apiKey
@@ -172,5 +178,25 @@ public class BaseAiConfig implements AiConfig {
   @Override
   public int getReadTimeout() {
     return readTimeout;
+  }
+
+  /**
+   * 写入代理
+   *
+   * @param proxy
+   */
+  @Override
+  public void setProxy(Proxy proxy) {
+    this.proxy = proxy;
+  }
+
+  /**
+   * 获取代理
+   *
+   * @return Proxy 返回代理信息
+   */
+  @Override
+  public Proxy getProxy() {
+    return proxy;
   }
 }

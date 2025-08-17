@@ -2,8 +2,9 @@ package com.cdkjframework.ai.model.deepseek;
 
 import com.cdkjframework.ai.core.impl.BaseAiConfig;
 import com.cdkjframework.ai.enums.DeepSeek;
+import com.cdkjframework.ai.enums.DouBao;
 import com.cdkjframework.ai.enums.ModelsName;
-import com.cdkjframework.ai.enums.Openai;
+import com.cdkjframework.util.tool.StringUtils;
 
 /**
  * openai配置类，初始化API接口地址，设置默认的模型
@@ -23,7 +24,9 @@ public class DeepSeekConfig extends BaseAiConfig {
   public DeepSeekConfig() {
     // API接口地址
     super.setApiUrl("https://api.deepseek.com");
-    super.setModel(DeepSeek.DEEPSEEK_REASONER.getModel());
+    if (StringUtils.isNullAndSpaceOrEmpty(super.getModel())) {
+      super.setModel(DeepSeek.DEEPSEEK_REASONER.getModel());
+    }
   }
 
   /**

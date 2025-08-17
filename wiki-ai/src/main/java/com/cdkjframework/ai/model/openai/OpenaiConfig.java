@@ -3,6 +3,8 @@ package com.cdkjframework.ai.model.openai;
 import com.cdkjframework.ai.core.impl.BaseAiConfig;
 import com.cdkjframework.ai.enums.ModelsName;
 import com.cdkjframework.ai.enums.Openai;
+import com.cdkjframework.ai.enums.Qwen;
+import com.cdkjframework.util.tool.StringUtils;
 
 /**
  * openai配置类，初始化API接口地址，设置默认的模型
@@ -22,7 +24,9 @@ public class OpenaiConfig extends BaseAiConfig {
   public OpenaiConfig() {
     // API接口地址
     super.setApiUrl("https://api.openai.com/v1");
-    super.setModel(Openai.GPT_4O.getModel());
+    if (StringUtils.isNullAndSpaceOrEmpty(super.getModel())) {
+      super.setModel(Openai.GPT_4O.getModel());
+    }
   }
 
   /**

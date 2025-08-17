@@ -60,6 +60,11 @@ public class BaseAiService {
       entity.setRequestAddress(config.getApiUrl() + endpoint);
       entity.setMethod(HttpMethodEnums.GET);
 
+      // 代理
+      if (config.getProxy() != null){
+        entity.setProxy(config.getProxy());
+      }
+
       // 设置 http 请求头
       Map<String, String> headerMap = new HashMap<>(IntegerConsts.THREE);
       headerMap.put(HttpHeaderConsts.ACCEPT, AiConstant.CONTENT_TYPE_VALUE);
@@ -87,6 +92,11 @@ public class BaseAiService {
       entity.setParams(paramJson);
       entity.setContentType(AiConstant.CONTENT_TYPE_VALUE);
       entity.setMethod(HttpMethodEnums.POST);
+
+      // 代理
+      if (config.getProxy() != null){
+        entity.setProxy(config.getProxy());
+      }
 
       // 设置 http 请求头
       Map<String, String> headerMap = new HashMap<>(IntegerConsts.THREE);
@@ -148,6 +158,11 @@ public class BaseAiService {
       entity.setJson(Boolean.FALSE);
       entity.setMethod(HttpMethodEnums.POST);
       entity.setContentType(AiConstant.CONTENT_TYPE_MULTIPART_VALUE);
+
+      // 代理
+      if (config.getProxy() != null){
+        entity.setProxy(config.getProxy());
+      }
 
       // 设置 http 请求头
       Map<String, String> headerMap = new HashMap<>(IntegerConsts.THREE);

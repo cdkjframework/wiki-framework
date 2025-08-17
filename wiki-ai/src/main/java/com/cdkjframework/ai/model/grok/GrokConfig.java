@@ -1,9 +1,11 @@
 package com.cdkjframework.ai.model.grok;
 
 import com.cdkjframework.ai.core.impl.BaseAiConfig;
+import com.cdkjframework.ai.enums.DeepSeek;
 import com.cdkjframework.ai.enums.DouBao;
 import com.cdkjframework.ai.enums.Grok;
 import com.cdkjframework.ai.enums.ModelsName;
+import com.cdkjframework.util.tool.StringUtils;
 
 /**
  * openai配置类，初始化API接口地址，设置默认的模型
@@ -23,7 +25,9 @@ public class GrokConfig extends BaseAiConfig {
   public GrokConfig() {
     // API接口地址
     super.setApiUrl("https://api.x.ai/v1");
-    super.setModel(Grok.GROK_2_1212.getModel());
+    if (StringUtils.isNullAndSpaceOrEmpty(super.getModel())) {
+      super.setModel(Grok.GROK_2_1212.getModel());
+    }
   }
 
   /**
