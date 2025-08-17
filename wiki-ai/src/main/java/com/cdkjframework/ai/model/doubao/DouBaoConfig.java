@@ -4,6 +4,8 @@ import com.cdkjframework.ai.core.impl.BaseAiConfig;
 import com.cdkjframework.ai.enums.DeepSeek;
 import com.cdkjframework.ai.enums.DouBao;
 import com.cdkjframework.ai.enums.ModelsName;
+import com.cdkjframework.ai.enums.Openai;
+import com.cdkjframework.util.tool.StringUtils;
 
 /**
  * openai配置类，初始化API接口地址，设置默认的模型
@@ -23,7 +25,9 @@ public class DouBaoConfig extends BaseAiConfig {
   public DouBaoConfig() {
     // API接口地址
     super.setApiUrl("https://ark.cn-beijing.volces.com/api/v3");
-    super.setModel(DouBao.DOUBAO_1_5_LITE_32K.getModel());
+    if (StringUtils.isNullAndSpaceOrEmpty(super.getModel())) {
+      super.setModel(DouBao.DOUBAO_SEED_1_6_FLASH_250615.getModel());
+    }
   }
 
   /**

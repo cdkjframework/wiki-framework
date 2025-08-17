@@ -3,8 +3,7 @@ package com.cdkjframework.ai.model.doubao;
 import com.cdkjframework.ai.core.AiConfig;
 import com.cdkjframework.ai.core.AiProvider;
 import com.cdkjframework.ai.enums.ModelsName;
-import com.cdkjframework.ai.model.deepseek.DeepSeekService;
-import com.cdkjframework.ai.model.deepseek.impl.DeepSeekServiceImpl;
+import com.cdkjframework.ai.model.doubao.impl.DouBaoServiceImpl;
 
 /**
  * @ProjectName: wiki-framework
@@ -23,7 +22,7 @@ public class DouBaoProvider implements AiProvider {
    */
   @Override
   public String getServiceName() {
-    return ModelsName.DEEPSEEK.getValue();
+    return ModelsName.DOUBAO.getValue();
   }
 
   /**
@@ -33,7 +32,7 @@ public class DouBaoProvider implements AiProvider {
    * @return 返回服务
    */
   @Override
-  public DeepSeekService create(AiConfig config) {
-    return new DeepSeekServiceImpl(config);
+  public DouBaoService create(AiConfig config) {
+    return new DouBaoServiceImpl(config);
   }
 }

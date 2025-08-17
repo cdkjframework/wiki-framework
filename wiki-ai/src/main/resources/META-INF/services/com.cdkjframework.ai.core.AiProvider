@@ -1,0 +1,5 @@
+com.cdkjframework.ai.model.deepseek.DeepSeekProvider
+com.cdkjframework.ai.model.openai.OpenaiProvider
+com.cdkjframework.ai.model.doubao.DouBaoProvider
+com.cdkjframework.ai.model.grok.GrokProvider
+com.cdkjframework.ai.model.qwen.QwenProvider

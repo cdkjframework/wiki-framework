@@ -1,4 +1,4 @@
-package com.cdkjframework.ai.model.openai;
+package com.cdkjframework.ai.model.qwen;
 
 import com.cdkjframework.ai.core.impl.BaseAiConfig;
 import com.cdkjframework.ai.enums.ModelsName;
@@ -7,25 +7,23 @@ import com.cdkjframework.ai.enums.Qwen;
 import com.cdkjframework.util.tool.StringUtils;
 
 /**
- * openai配置类，初始化API接口地址，设置默认的模型
- *
  * @ProjectName: wiki-framework
- * @Package: com.cdkjframework.ai.model.openai
- * @ClassName: OpenaiConfig
- * @Description: openai配置类，初始化API接口地址，设置默认的模型
+ * @Package: com.cdkjframework.ai.model.qwen
+ * @ClassName: QwenConfig
+ * @Description: java类作用描述
  * @Author: xiaLin
+ * @Date: 2025/8/3 9:07
  * @Version: 1.0
  */
-public class OpenaiConfig extends BaseAiConfig {
-
+public class QwenConfig extends BaseAiConfig {
   /**
    * 构造函数
    */
-  public OpenaiConfig() {
+  public QwenConfig() {
     // API接口地址
-    super.setApiUrl("https://api.openai.com/v1");
+    super.setApiUrl("https://dashscope.aliyuncs.com/compatible-mode/v1");
     if (StringUtils.isNullAndSpaceOrEmpty(super.getModel())) {
-      super.setModel(Openai.GPT_4O.getModel());
+      super.setModel(Qwen.QWEN_PLUS.getModel());
     }
   }
 
@@ -34,7 +32,7 @@ public class OpenaiConfig extends BaseAiConfig {
    *
    * @param apiKey API密钥
    */
-  public OpenaiConfig(String apiKey) {
+  public QwenConfig(String apiKey) {
     this();
     super.setApiKey(apiKey);
   }
@@ -46,7 +44,6 @@ public class OpenaiConfig extends BaseAiConfig {
    */
   @Override
   public String getModelName() {
-    return ModelsName.OPENAI.getValue();
+    return ModelsName.QWEN.getValue();
   }
-
 }

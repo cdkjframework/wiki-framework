@@ -142,6 +142,21 @@
     <dependencies>
       <dependency>
         <groupId>com.framewiki</groupId>
+        <artifactId>wiki-ai</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-all-jpa</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-all</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
         <artifactId>wiki-center</artifactId>
         <version>${wiki.version}</version>
       </dependency>

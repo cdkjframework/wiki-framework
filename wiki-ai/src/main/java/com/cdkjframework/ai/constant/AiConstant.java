@@ -65,6 +65,11 @@ public interface AiConstant {
   String IMAGE = "image";
 
   /**
+   * 视频
+   */
+  String VIDEO = "video";
+
+  /**
    * 蒙版
    */
   String MASK = "mask";
@@ -332,5 +337,27 @@ public interface AiConstant {
      * 检查文本或图片
      */
     String MODERATIONS = "/moderations";
+  }
+
+  /**
+   * 千问
+   */
+  interface Qwen {
+
+    /**
+     * 对话 SSE
+     */
+    String QWEN_CHAT_SSE = "qwen-chat-sse";
+
+    /**
+     * 对话 SSE
+     */
+    String QWEN_CHAT_VISION_SSE = "qwen-chat-sse";
+
+    /**
+     * 对话
+     */
+    String CHAT_ENDPOINT = "/chat/completions";
+
   }
 }
