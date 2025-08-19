@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -88,4 +89,10 @@ public interface UserAuthenticationService {
 	 * @throws GlobalException 异常信息
 	 */
 	void logout(HttpServletRequest request) throws GlobalException;
+
+	/**
+	 * 切换机构信息
+	 * @param id 机构ID
+	 */
+	void change( String id);
 }

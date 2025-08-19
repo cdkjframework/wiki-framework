@@ -10,6 +10,7 @@ import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.*;
 import com.cdkjframework.util.encrypts.AesUtils;
@@ -27,7 +28,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +62,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
   /**
    * 用户信息查询服务
    */
-  private final UserDetailsService userDetailsService;
+  private final IUserDetailsService userDetailsService;
 
   /**
    * 用户角色服务
@@ -153,6 +153,9 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     RedisUtils.syncDel(ticketKey);
     user.setToken(jwtToken);
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
+
+    // 构建用户机构信息
+    userDetailsService.buildOrganization(user);
 
     // 读取当前用户所登录平台资源数据
     List<ResourceEntity> resourceList = resourceServiceImpl.listResource(new ArrayList<>(), user.getUserId());
@@ -247,6 +250,24 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     // 删除 用户工作流引擎
     key = CacheConsts.WORK_FLOW + user.getId();
     RedisUtils.syncDel(key);
+  }
+
+  /**
+   * 切换机构信息
+   * @param id 机构ID
+   */
+  @Override
+  public void change(String id) {
+    // 切换机构信息
+    String key = CacheConsts.USER_LOGIN + id;
+    SecurityUserEntity user = RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
+    if (user == null) {
+      throw new GlobalRuntimeException("用户信息错误！");
+    }
+    // 切换机构
+    userDetailsService.buildOrganization(user);
+    // 更新缓存
+    RedisUtils.syncEntitySet(key, user, EFFECTIVE);
   }
 
   /**
