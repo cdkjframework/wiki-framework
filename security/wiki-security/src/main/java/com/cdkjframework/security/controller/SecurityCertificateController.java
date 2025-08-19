@@ -242,13 +242,14 @@ public class SecurityCertificateController {
 
   /**
    * 切换机构
+   *
+   * @param id 机构ID
    */
   @ResponseBody
   @Operation(summary = "切换机构")
   @GetMapping(value = "/change.html")
   public void change(@RequestParam("id") String id) {
-    String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
-    RedisUtils.hSet(statusKey, id, String.valueOf(IntegerConsts.ONE));
+    userAuthenticationServiceImpl.change(id);
   }
 
   /**

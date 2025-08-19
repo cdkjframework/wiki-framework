@@ -254,20 +254,16 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
 
   /**
    * 切换机构信息
+   *
    * @param id 机构ID
    */
   @Override
   public void change(String id) {
-    // 切换机构信息
-    String key = CacheConsts.USER_LOGIN + id;
-    SecurityUserEntity user = RedisUtils.syncGetEntity(key, SecurityUserEntity.class);
-    if (user == null) {
-      throw new GlobalRuntimeException("用户信息错误！");
+    if (StringUtils.isNullAndSpaceOrEmpty(id)) {
+      throw new GlobalRuntimeException("机构ID不能为空");
     }
-    // 切换机构
-    userDetailsService.buildOrganization(user);
-    // 更新缓存
-    RedisUtils.syncEntitySet(key, user, EFFECTIVE);
+    // 切换机构信息
+    userDetailsService.change(id);
   }
 
   /**

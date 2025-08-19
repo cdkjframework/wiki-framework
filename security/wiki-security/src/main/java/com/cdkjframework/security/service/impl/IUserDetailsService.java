@@ -22,7 +22,16 @@ public interface IUserDetailsService extends UserDetailsService {
    * @param user 用户信息
    * @return 返回用户所在的组织列表
    */
-  default void buildOrganization(SecurityUserEntity user){
+  default void buildOrganization(SecurityUserEntity user) {
+
+  }
+
+  /**
+   * 切换机构信息
+   *
+   * @param id 机构ID
+   */
+  default void change(String id) {
 
   }
 }
