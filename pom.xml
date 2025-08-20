@@ -219,7 +219,7 @@
                         <extensions>true</extensions>
                         <configuration>
                             <publishingServerId>wiki</publishingServerId>
-                            <autoPublish>false</autoPublish> <!-- 自动发布 -->
+                            <autoPublish>true</autoPublish> <!-- 自动发布 -->
                         </configuration>
                     </plugin>
                 </plugins>
