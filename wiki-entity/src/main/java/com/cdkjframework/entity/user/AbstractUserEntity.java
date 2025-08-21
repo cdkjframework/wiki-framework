@@ -132,4 +132,8 @@ public abstract class AbstractUserEntity extends BaseEntity {
    * 备注
    */
   private String remark;
+  /**
+   * 员工ID
+   */
+  private String employeeId;
 }
