@@ -10,6 +10,9 @@
   </parent>
 
   <artifactId>wiki-ai</artifactId>
+  <name>${project.artifactId}</name>
+  <description>AI 模块，提供DeepDeek、Qwen、Grok、DouBao、ChatGPT等。</description>
+  <url>https://github.com/cdkjframework/wiki-framework</url>
 
   <properties>
     <java.version>17</java.version>
@@ -28,42 +31,4 @@
       <artifactId>wiki-util</artifactId>
     </dependency>
   </dependencies>
-
-  <profiles>
-    <profile>
-      <id>wiki</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <!-- GPG -->
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <version>3.2.8</version>
-            <executions>
-              <execution>
-                <id>wiki</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.sonatype.central</groupId>
-            <artifactId>central-publishing-maven-plugin</artifactId>
-            <version>0.8.0</version>
-            <extensions>true</extensions>
-            <configuration>
-              <publishingServerId>wiki</publishingServerId>
-              <autoPublish>true</autoPublish> <!-- 自动发布 -->
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
 </project>
