@@ -13,6 +13,13 @@
   <description>工具类包</description>
   <name>${project.artifactId}</name>
 
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.framewiki</groupId>
@@ -209,7 +216,6 @@
       <artifactId>jdom2</artifactId>
     </dependency>
     <!-- end aliYun-sdk-oss -->
-
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
@@ -219,12 +225,6 @@
       <artifactId>jackson-annotations</artifactId>
       <scope>compile</scope>
     </dependency>
-
-    <!--        <dependency>-->
-    <!--            <groupId>net.sf.barcode4j</groupId>-->
-    <!--            <artifactId>barcode4j</artifactId>-->
-    <!--        </dependency>-->
-
     <dependency>
       <groupId>com.google.zxing</groupId>
       <artifactId>core</artifactId>
@@ -328,17 +328,6 @@
       <groupId>org.apache.httpcomponents.client5</groupId>
       <artifactId>httpclient5</artifactId>
     </dependency>
-    <!-- 极光推送 -->
-    <!--        <dependency>-->
-    <!--            <groupId>cn.jpush.api</groupId>-->
-    <!--            <artifactId>jpush-client</artifactId>-->
-    <!--            <exclusions>-->
-    <!--                <exclusion>-->
-    <!--                    <groupId>io.netty</groupId>-->
-    <!--                    <artifactId>netty-all</artifactId>-->
-    <!--                </exclusion>-->
-    <!--            </exclusions>-->
-    <!--        </dependency>-->
     <dependency>
       <groupId>cn.jpush.api</groupId>
       <artifactId>jiguang-common</artifactId>
@@ -374,11 +363,4 @@
       <artifactId>ulid-creator</artifactId>
     </dependency>
   </dependencies>
-
-  <properties>
-    <java.version>17</java.version>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
 </project>

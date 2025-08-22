@@ -2,228 +2,231 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>wiki-framework</artifactId>
-    <packaging>pom</packaging>
+  <artifactId>wiki-framework</artifactId>
+  <packaging>pom</packaging>
+  <version>1.1.0</version>
+  <name>wiki-framework</name>
+  <url>https://framewiki.com</url>
+
+  <description>维基框架 wiki-framework https://framewiki.com</description>
+
+  <modules>
+    <module>wiki-cloud</module>
+    <module>wiki-util</module>
+    <module>wiki-core</module>
+    <!--    <module>wiki-wechat</module>-->
+    <module>wiki-pom</module>
+    <module>wiki-entity</module>
+    <module>wiki-constant</module>
+    <module>wiki-message</module>
+    <!--<module>wiki-web</module>-->
+    <module>wiki-center</module>
+    <module>wiki-log</module>
+    <module>wiki-config</module>
+    <module>wiki-swagger</module>
+    <!--    <module>wiki-login</module>-->
+    <module>datasource</module>
+    <module>licenses</module>
+    <module>cache</module>
+    <module>socket</module>
+    <module>security</module>
+    <module>queue</module>
+    <module>wiki-minio</module>
+    <module>wiki-all</module>
+    <module>wiki-all-jpa</module>
+    <module>wiki-ai</module>
+  </modules>
+
+  <parent>
+    <groupId>com.framewiki</groupId>
+    <artifactId>wiki-pom</artifactId>
     <version>1.1.0</version>
-    <name>wiki-framework</name>
-    <url>https://framewiki.com</url>
+  </parent>
 
-    <description>维基框架 wiki-framework https://framewiki.com</description>
-
-    <modules>
-        <module>wiki-cloud</module>
-        <module>wiki-util</module>
-        <module>wiki-core</module>
-        <!--    <module>wiki-wechat</module>-->
-        <module>wiki-pom</module>
-        <module>wiki-entity</module>
-        <module>wiki-constant</module>
-        <module>wiki-message</module>
-        <!--<module>wiki-web</module>-->
-        <module>wiki-center</module>
-        <module>wiki-log</module>
-        <module>wiki-config</module>
-        <module>wiki-swagger</module>
-        <!--    <module>wiki-login</module>-->
-        <module>datasource</module>
-        <module>licenses</module>
-        <module>cache</module>
-        <module>socket</module>
-        <module>security</module>
-        <module>queue</module>
-        <module>wiki-minio</module>
-        <module>wiki-all</module>
-        <module>wiki-all-jpa</module>
-        <module>wiki-ai</module>
-    </modules>
-
-    <parent>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-pom</artifactId>
         <version>1.1.0</version>
-    </parent>
+        <scope>import</scope>
+        <type>pom</type>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.framewiki</groupId>
-                <artifactId>wiki-pom</artifactId>
-                <version>1.1.0</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+  <issueManagement>
+    <system>GitHub Issues</system>
+    <url>https://github.com/cdkjframework/wiki-framework/issues</url>
+  </issueManagement>
 
-    <issueManagement>
-        <system>GitHub Issues</system>
-        <url>https://github.com/cdkjframework/wiki-framework/issues</url>
-    </issueManagement>
+  <licenses>
+    <license>
+      <name>Mulan Permissive Software License，Version 2</name>
+      <url>https://license.coscl.org.cn/MulanPSL2</url>
+    </license>
+  </licenses>
 
-    <licenses>
-        <license>
-            <name>Mulan Permissive Software License，Version 2</name>
-            <url>https://license.coscl.org.cn/MulanPSL2</url>
-        </license>
-    </licenses>
+  <developers>
+    <developer>
+      <name>wiki</name>
+      <email>wiki@framewiki.com</email>
+    </developer>
+  </developers>
 
-    <developers>
-        <developer>
-            <name>wiki</name>
-            <email>wiki@framewiki.com</email>
-        </developer>
-    </developers>
+  <scm>
+    <connection>scm:git@github.com:cdkjframework/wiki-framework.git</connection>
+    <developerConnection>scm:git@github.com:cdkjframework/wiki-framework.git</developerConnection>
+    <url>git@github.com:cdkjframework/wiki-framework.git</url>
+  </scm>
 
-    <scm>
-        <connection>scm:git@github.com:cdkjframework/wiki-framework.git</connection>
-        <developerConnection>scm:git@github.com:cdkjframework/wiki-framework.git</developerConnection>
-        <url>git@github.com:cdkjframework/wiki-framework.git</url>
-    </scm>
+  <properties>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-    <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
+  <repositories>
+    <repository>
+      <id>cdkj Maven Repository</id>
+      <name>cdkj Maven Repository</name>
+      <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+    </repository>
 
-    <repositories>
-        <repository>
-            <id>cdkj Maven Repository</id>
-            <name>cdkj Maven Repository</name>
-            <url>https://packages.aliyun.com/maven/repository/2132815-release-WZ8rip/</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-        </repository>
+    <repository>
+      <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
+      就会覆盖中央仓库的配置 -->
+      <id>mvnRepository</id>
+      <name>mvnRepository</name>
+      <url>https://maven.aliyun.com/repository/central</url>
+      <releases>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
-        <repository>
-            <!-- Maven 自带的中央仓库使用的Id为central 如果其他的仓库声明也是用该Id
-            就会覆盖中央仓库的配置 -->
-            <id>mvnRepository</id>
-            <name>mvnRepository</name>
-            <url>https://maven.aliyun.com/repository/central</url>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
+  <distributionManagement>
+    <repository>
+      <id>wiki</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
-    <distributionManagement>
-        <repository>
-            <id>wiki</id>
-            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <!--打包-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>*.properties</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!--源码打包-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+              <!--<goal>test-jar</goal>-->
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase> <!-- 绑定到打包阶段 -->
+            <goals>
+              <goal>jar</goal> <!-- 生成 Javadoc JAR 文件 -->
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>17</source> <!-- 指定 JDK 版本 -->
+          <!-- 关闭严格检查 -->
+          <doclint>none</doclint>
+          <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*</include>
-                </includes>
-            </resource>
-        </resources>
+  <profiles>
+    <profile>
+      <id>wiki</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
         <plugins>
-            <!--打包-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>*.properties</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--源码打包-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                            <!--<goal>test-jar</goal>-->
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <phase>package</phase> <!-- 绑定到打包阶段 -->
-                        <goals>
-                            <goal>jar</goal> <!-- 生成 Javadoc JAR 文件 -->
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <source>17</source> <!-- 指定 JDK 版本 -->
-                    <!-- 关闭严格检查 -->
-                    <doclint>none</doclint>
-                    <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
-                </configuration>
-            </plugin>
+          <!-- GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.8</version>
+            <executions>
+              <execution>
+                <id>wiki</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.8.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>wiki</publishingServerId>
+              <autoPublish>true</autoPublish> <!-- 自动发布 -->
+            </configuration>
+          </plugin>
         </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>wiki</id>
-            <build>
-                <plugins>
-                    <!-- GPG -->
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>3.2.8</version>
-                        <executions>
-                            <execution>
-                                <id>wiki</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.sonatype.central</groupId>
-                        <artifactId>central-publishing-maven-plugin</artifactId>
-                        <version>0.8.0</version>
-                        <extensions>true</extensions>
-                        <configuration>
-                            <publishingServerId>wiki</publishingServerId>
-                            <autoPublish>false</autoPublish> <!-- 自动发布 -->
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+      </build>
+    </profile>
+  </profiles>
 </project>
