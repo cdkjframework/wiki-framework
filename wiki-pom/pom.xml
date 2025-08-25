@@ -7,7 +7,7 @@
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
   <description>wiki-framework 框架依赖包</description>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <packaging>pom</packaging>
   <name>wiki-pom</name>
 
@@ -228,6 +228,11 @@
       <dependency>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-security</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-oauth2</artifactId>
         <version>${wiki.version}</version>
       </dependency>
       <dependency>
@@ -1063,7 +1068,7 @@
       <dependency>
         <groupId>com.ccb.occ</groupId>
         <artifactId>comm-openapi-client</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

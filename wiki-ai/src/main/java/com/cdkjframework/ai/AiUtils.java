@@ -7,6 +7,7 @@ import com.cdkjframework.ai.model.deepseek.DeepSeekService;
 import com.cdkjframework.ai.model.doubao.DouBaoService;
 import com.cdkjframework.ai.model.grok.GrokService;
 import com.cdkjframework.ai.model.openai.OpenaiService;
+import com.cdkjframework.ai.model.qwen.QwenService;
 
 import java.util.List;
 
@@ -83,6 +84,16 @@ public class AiUtils {
    */
   public static OpenaiService findOpenAiService(final AiConfig config) {
     return findAiService(config, OpenaiService.class);
+  }
+
+  /**
+   * 获取Qwen模型服务
+   *
+   * @param config 创建的AI服务模型的配置
+   * @return QwenService
+   */
+  public static QwenService findQwenService(final AiConfig config) {
+    return findAiService(config, QwenService.class);
   }
 
   /**
