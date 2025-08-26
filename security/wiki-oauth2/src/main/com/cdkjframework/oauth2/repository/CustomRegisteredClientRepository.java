@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.repository
  * @ClassName: CustomRegisteredClientRepository
- * @Description: java类作用描述
+ * @Description: 自定义注册客户端存储库
  * @Author: xiaLin
  * @Date: 2025/7/31 18:01
  * @Version: 1.0

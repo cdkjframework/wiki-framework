@@ -29,7 +29,7 @@ import static com.cdkjframework.oauth2.constant.OAuth2Constant.*;
 /**
  * OAuth2授权服务实现类
  *
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.service.impl
  * @ClassName: Oauth2AuthorizationServiceImpl
  * @Description: OAuth2授权服务实现类

@@ -23,7 +23,7 @@ import java.util.UUID;
 import static com.cdkjframework.oauth2.constant.OAuth2Constant.TOKEN_TYPE;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.service
  * @ClassName: JwtTokenProvider
  * @Description: java类作用描述

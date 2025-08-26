@@ -3,10 +3,10 @@ package com.cdkjframework.oauth2.repository;
 import com.cdkjframework.oauth2.entity.OAuth2Token;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.repository
  * @ClassName: OAuth2TokenRepository
- * @Description: java类作用描述
+ * @Description: OAuth2令牌仓库
  * @Author: xiaLin
  * @Date: 2025/7/31 22:33
  * @Version: 1.0

@@ -7,10 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.controller
  * @ClassName: Oauth2AuthorizationController
- * @Description: java类作用描述
+ * @Description: oauth2授权控制器
  * @Author: xiaLin
  * @Date: 2025/7/31 13:31
  * @Version: 1.0

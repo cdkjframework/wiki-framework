@@ -5,10 +5,10 @@ import com.cdkjframework.oauth2.entity.ClientDetails;
 import java.util.List;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.repository
  * @ClassName: OAuth2ClientRepository
- * @Description: java类作用描述
+ * @Description: OAuth2客户端仓库
  * @Author: xiaLin
  * @Date: 2025/7/31 18:02
  * @Version: 1.0

@@ -5,10 +5,10 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.entity
  * @ClassName: AuthorizationCode
- * @Description: java类作用描述
+ * @Description: 授权码实体
  * @Author: xiaLin
  * @Date: 2025/7/31 13:31
  * @Version: 1.0

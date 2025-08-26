@@ -5,7 +5,7 @@ import com.cdkjframework.builder.ResponseBuilder;
 /**
  * OAuth2授权服务接口
  * 
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.service
  * @ClassName: Oauth2AuthorizationService
  * @Description: OAuth2授权服务接口

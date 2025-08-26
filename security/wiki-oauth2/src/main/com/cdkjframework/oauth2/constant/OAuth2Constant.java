@@ -1,7 +1,7 @@
 package com.cdkjframework.oauth2.constant;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.constant
  * @ClassName: OAuth2Constant
  * @Description: java类作用描述

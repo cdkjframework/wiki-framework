@@ -5,23 +5,48 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.entity
  * @ClassName: OAuth2Token
- * @Description: java类作用描述
+ * @Description: OAuth2 令牌实体
  * @Author: xiaLin
  * @Date: 2025/7/31 22:06
  * @Version: 1.0
  */
 @Data
 public class OAuth2Token {
+
+  /**
+   * 令牌ID
+   */
   private String id;
 
+  /**
+   * 客户端ID
+   */
   private String clientId;
+
+  /**
+   * 用户ID
+   */
   private String userId;
+
+  /**
+   * 作用域
+   */
   private String accessToken;
+  /**
+   * 刷新令牌
+   */
   private String refreshToken;
+
+  /**
+   * 令牌类型
+   */
   private LocalDateTime issuedAt;
+  /**
+   * 过期时间
+   */
   private LocalDateTime expiration;
 
   /**

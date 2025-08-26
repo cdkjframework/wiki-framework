@@ -3,10 +3,10 @@ package com.cdkjframework.oauth2.repository;
 import com.cdkjframework.oauth2.entity.AuthorizationCode;
 
 /**
- * @ProjectName: cdjsyun-tool
+ * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.repository
  * @ClassName: AuthorizationCodeRepository
- * @Description: java类作用描述
+ * @Description: 授权码仓库
  * @Author: xiaLin
  * @Date: 2025/7/31 13:30
  * @Version: 1.0
