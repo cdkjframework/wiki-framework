@@ -3,6 +3,8 @@ package com.cdkjframework.all.jpa.annotation;
 import com.cdkjframework.datasource.jpa.annotation.EnableAutoJpa;
 import com.cdkjframework.redis.annotation.EnableAutoRedis;
 
+import java.lang.annotation.*;
+
 /**
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.all.jpa.annotation
@@ -11,6 +13,9 @@ import com.cdkjframework.redis.annotation.EnableAutoRedis;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 @EnableAutoJpa
 @EnableAutoRedis
 public @interface EnableAutoWiki {
