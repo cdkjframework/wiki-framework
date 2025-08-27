@@ -1,10 +1,12 @@
 package com.cdkjframework.oauth2.provider;
 
-import com.cdkjframework.oauth2.constant.OAuth2Constant;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.oauth2.constant.OAuth2Constant;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.encrypts.Md5Utils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
@@ -104,11 +106,11 @@ public class JwtTokenProvider {
    * @return 返回 用户名（clientId）
    */
   public static String getClientIdFromToken(String token) {
-    return Jwts.parser()
-        .setSigningKey(OAuth2Constant.SECRET_KEY)
-        .parseClaimsJws(token)
-        .getBody()
-        .getSubject();
+    Claims claims = JwtUtils.parseJwt(token, OAuth2Constant.SECRET_KEY);
+    if (claims == null) {
+      return null;
+    }
+    return ConvertUtils.convertString(claims.get(BusinessConsts.LOGIN_NAME));
   }
 
   /**

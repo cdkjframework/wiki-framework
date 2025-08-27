@@ -24,11 +24,15 @@ public interface OAuth2Constant {
     /**
      * 访问令牌端点
      */
-    String OAUTH2_ACCESS_TOKEN = "/oauth2/token";
+    String OAUTH2_ACCESS_TOKEN = "/oauth2/access_token";
     /**
      * 刷新令牌端点
      */
-    String OAUTH2_REFRESH_TOKEN = "/oauth2/token";
+    String OAUTH2_REFRESH_TOKEN = "/oauth2/refresh_token";
+    /**
+     * 撤销令牌端点
+     */
+    String OAUTH2_REVOKE = "/oauth2/revoke";
 
     /**
      * 密钥

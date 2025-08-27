@@ -8,7 +8,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import java.io.IOException;
 
 import static com.cdkjframework.oauth2.constant.OAuth2Constant.*;
-import static com.cdkjframework.oauth2.constant.OAuth2Constant.OAUTH2_REFRESH_TOKEN;
 
 /**
  * @ProjectName: wiki-oauth2
