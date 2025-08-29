@@ -4,6 +4,7 @@ import com.cdkjframework.oauth2.constant.OAuth2Constant;
 import com.cdkjframework.oauth2.entity.ClientDetails;
 import com.cdkjframework.oauth2.provider.JwtTokenProvider;
 import com.cdkjframework.oauth2.repository.OAuth2ClientRepository;
+import com.cdkjframework.util.tool.StringUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,12 +14,16 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 /**
@@ -35,9 +40,9 @@ import java.util.stream.Collectors;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
   /**
-   * OAuth2令牌存储库
+   * 使用自定义的 RegisteredClientRepository 进行客户端与权限信息的加载
    */
-  private final OAuth2ClientRepository oAuth2ClientRepository;
+  private final RegisteredClientRepository registeredClientRepository;
 
   /**
    * 是否进行内部筛选
@@ -52,7 +57,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     String token = request.getHeader(OAuth2Constant.AUTHORIZATION);
 
-    if (StringUtils.hasText(token) && token.startsWith(OAuth2Constant.BEARER)) {
+    if (StringUtils.isNotNullAndEmpty(token) && token.startsWith(OAuth2Constant.BEARER)) {
       try {
         String jwt = token.replace(OAuth2Constant.BEARER, OAuth2Constant.EMPTY);
 
@@ -60,19 +65,31 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         JwtTokenProvider.validateToken(jwt);
         String clientId = JwtTokenProvider.getClientIdFromToken(jwt);
 
-        // 获取客户端详情
-        ClientDetails clientDetails = oAuth2ClientRepository.findByClientId(clientId);
-        if (clientDetails == null) {
+        // 通过自定义仓库加载 RegisteredClient
+        RegisteredClient registeredClient = registeredClientRepository.findByClientId(clientId);
+        if (registeredClient == null) {
           response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-          response.getWriter().write("Client not found: " + clientId);
+          response.setContentType("application/json");
+          response.getWriter().write("{\"error\":\"Client Not Found\",\"clientId\":\"" + clientId + "\"}");
           return;
         }
 
-        // 获取授权类型并设置权限
-        List<GrantedAuthority> authorities = parseClientAuthorities(clientDetails);
+        // 从 RegisteredClient 构造权限集合（Scopes -> SCOPE_xxx，GrantTypes -> GRANT_xxx）
+        List<GrantedAuthority> authorities = parseAuthorities(registeredClient);
 
-        // 设置认证信息到SecurityContext
-        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(clientId, clientDetails.getClientSecret(), authorities));
+        // 基于 HTTP 方法的简单权限校验：GET/HEAD/OPTIONS 需要 SCOPE_read，其它需要 SCOPE_write
+        if (!checkHttpMethodPermission(request.getMethod(), authorities)) {
+          response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+          response.setContentType("application/json");
+          response.getWriter().write("{\"error\":\"Forbidden\",\"message\":\"insufficient_scope\"}");
+          return;
+        }
+        request.setAttribute(OAuth2Constant.CLIENT_ID, clientId);
+
+        // 设置认证信息到 SecurityContext
+        SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(clientId, registeredClient.getClientSecret(), authorities)
+        );
 
       } catch (Exception e) {
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -81,19 +98,34 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         return;
       }
     }
+
     // Proceed with the filter chain
     filterChain.doFilter(request, response);
   }
 
   /**
-   * 解析客户端的授权类型并返回权限集合
+   * 将 RegisteredClient 的 scopes 与授权类型转换为权限集合
+   * - Scopes: 生成形如 SCOPE_xxx 的权限
+   * - GrantTypes: 生成形如 GRANT_xxx 的权限
    */
-  private List<GrantedAuthority> parseClientAuthorities(ClientDetails clientDetails) {
-    return clientDetails.getAuthorizedGrantTypes().isEmpty()
-        ? List.of()
-        : List.of(clientDetails.getAuthorizedGrantTypes().split(","))
-        .stream()
-        .map(SimpleGrantedAuthority::new)
-        .collect(Collectors.toList());
+  private List<GrantedAuthority> parseAuthorities(RegisteredClient client) {
+    List<GrantedAuthority> list = new ArrayList<>();
+    // scopes -> SCOPE_*
+    client.getScopes().forEach(scope -> list.add(new SimpleGrantedAuthority("SCOPE_" + scope)));
+    // grant types -> GRANT_*
+    client.getAuthorizationGrantTypes().stream()
+        .map(AuthorizationGrantType::getValue)
+        .forEach(gt -> list.add(new SimpleGrantedAuthority("GRANT_" + gt)));
+    return list;
+  }
+
+  /**
+   * 基于 HTTP 方法的通用权限校验
+   */
+  private boolean checkHttpMethodPermission(String method, List<GrantedAuthority> authorities) {
+    String m = method == null ? "GET" : method.toUpperCase(Locale.ROOT);
+    boolean isRead = m.equals("GET") || m.equals("HEAD") || m.equals("OPTIONS");
+    String required = isRead ? "SCOPE_read" : "SCOPE_write";
+    return authorities.stream().anyMatch(a -> a.getAuthority().equals(required));
   }
 }

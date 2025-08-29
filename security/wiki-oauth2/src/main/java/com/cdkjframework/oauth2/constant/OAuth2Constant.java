@@ -14,25 +14,26 @@ public interface OAuth2Constant {
     /**
      * 授权端点
      */
+    // 注意：不以双斜杠结尾，避免路径拼接出现 //
     String OAUTH2 = "/oauth2/";
 
     /**
      * 授权端点
      */
-    String AUTHORIZATION_CODE = "/oauth2/authorize";
+    String AUTHORIZATION_CODE = OAUTH2 + "authorize";
 
     /**
      * 访问令牌端点
      */
-    String OAUTH2_ACCESS_TOKEN = "/oauth2/access_token";
+    String OAUTH2_ACCESS_TOKEN = OAUTH2 + "access_token";
     /**
      * 刷新令牌端点
      */
-    String OAUTH2_REFRESH_TOKEN = "/oauth2/refresh_token";
+    String OAUTH2_REFRESH_TOKEN = OAUTH2 + "refresh_token";
     /**
      * 撤销令牌端点
      */
-    String OAUTH2_REVOKE = "/oauth2/revoke";
+    String OAUTH2_REVOKE = OAUTH2 + "revoke";
 
     /**
      * 密钥
@@ -48,6 +49,11 @@ public interface OAuth2Constant {
      * 权限值
      */
     String BEARER = "Bearer ";
+
+    /**
+     * 授权类型
+     */
+    String CLIENT_ID = "client_id";
 
     /**
      * 空

@@ -3,6 +3,7 @@ package com.cdkjframework.oauth2.repository;
 import com.cdkjframework.oauth2.entity.ClientDetails;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @ProjectName: wiki-oauth2
@@ -21,12 +22,20 @@ public interface OAuth2ClientRepository {
    * @param clientId 客户端ID
    * @return 客户端详情
    */
-  ClientDetails findByClientId(String clientId);
+  Optional<ClientDetails> findByClientId(String clientId);
 
   /**
-   * 查找所有客户端详情
+   * 保存客户端详情
    *
-   * @return 客户端详情列表
+   * @param clientDetails 客户端详情
    */
-  List<ClientDetails> findAll();
+  void save(ClientDetails clientDetails);
+
+  /**
+   * 根据ID查找客户端详情
+   *
+   * @param id 客户端ID
+   * @return 客户端详情
+   */
+  Optional<ClientDetails> findById(String id);
 }

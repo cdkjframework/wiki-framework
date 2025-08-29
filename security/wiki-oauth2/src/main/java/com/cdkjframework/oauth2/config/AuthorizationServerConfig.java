@@ -14,6 +14,9 @@ import org.springframework.security.oauth2.server.authorization.settings.Authori
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.cdkjframework.oauth2.constant.OAuth2Constant.*;
 
 /**
@@ -42,12 +45,6 @@ public class AuthorizationServerConfig {
   private final Oauth2Config oauth2Config;
 
   /**
-   * 上下文路径
-   */
-  @Value("${server.servlet.context-path:''}")
-  private String contextPath;
-
-  /**
    * 定义安全策略
    *
    * @param http http安全
@@ -56,38 +53,28 @@ public class AuthorizationServerConfig {
    */
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    String path;
-    if (StringUtils.isNotNullAndEmpty(this.contextPath)) {
-      path = this.contextPath;
-    } else if (StringUtils.isNotNullAndEmpty(this.oauth2Config.getContextPath())) {
-      path = oauth2Config.getContextPath();
-    } else {
-      path = StringUtils.Empty;
-    }
-    String[] publicEndpoints = {
-        path + AUTHORIZATION_CODE,
-        path + OAUTH2_ACCESS_TOKEN,
-        path + OAUTH2_REFRESH_TOKEN
+    List<String> publicEndpoints = new ArrayList<>() {
+      {
+        add(AUTHORIZATION_CODE);
+        add(OAUTH2_ACCESS_TOKEN);
+        add(OAUTH2_REFRESH_TOKEN);
+      }
     };
-    String finalPath = path + oauth2Config.getPath();
+    publicEndpoints.addAll(oauth2Config.getAllowList());
+    List<String> finalPathArray = oauth2Config.getApiPathPatterns();
     http
         // 配置授权规则
-        .authorizeHttpRequests(authorizeRequests ->
-            authorizeRequests
-                // 公开的 OAuth2 端点
-                .requestMatchers(publicEndpoints)
-                .permitAll()
-                // 权限页面
-                .requestMatchers(finalPath).authenticated()
-                // 其他请求需要认证
-                .anyRequest().authenticated()
-        )
+        .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+            // 公开的 OAuth2 端点
+            .requestMatchers(publicEndpoints.toArray(String[]::new)).permitAll()
+            // 权限页面
+            .requestMatchers(finalPathArray.toArray(String[]::new)).authenticated()
+            // 其他请求需要认证
+            .anyRequest().authenticated())
         // 在 UsernamePasswordAuthenticationFilter 前添加 JWT 过滤器
         .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
         // 禁用 Session
-        .sessionManagement(session ->
-            session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-        )
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         // 可选：禁用 CSRF 防护（针对无状态认证，如 JWT）
         .csrf(csrf -> csrf.disable());
 
@@ -100,9 +87,9 @@ public class AuthorizationServerConfig {
   @Bean
   public AuthorizationServerSettings authorizationServerSettings() {
     return AuthorizationServerSettings.builder()
-        .authorizationEndpoint(contextPath + AUTHORIZATION_CODE)
-        .tokenEndpoint(contextPath + OAUTH2_ACCESS_TOKEN)
-        .tokenRevocationEndpoint(contextPath + OAUTH2_REVOKE)
+        .authorizationEndpoint(AUTHORIZATION_CODE)
+        .tokenEndpoint(OAUTH2_ACCESS_TOKEN)
+        .tokenRevocationEndpoint(OAUTH2_REVOKE)
         .build();
   }
 }

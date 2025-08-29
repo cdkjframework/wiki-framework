@@ -11,7 +11,10 @@ import com.cdkjframework.oauth2.repository.CustomRegisteredClientRepository;
 import com.cdkjframework.oauth2.repository.OAuth2TokenRepository;
 import com.cdkjframework.oauth2.service.Oauth2AuthorizationService;
 import com.cdkjframework.oauth2.service.Oauth2TokenService;
+import com.cdkjframework.util.network.http.HttpServletUtils;
 import com.cdkjframework.util.tool.JsonUtils;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -78,11 +81,12 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
    */
   @Override
   public ResponseBuilder authorizationCode(String clientId, String responseType, String scope) {
+    HttpServletResponse response = HttpServletUtils.getResponse();
     // 验证客户端
     RegisteredClient client = registeredClientRepository.findByClientId(clientId);
     if (client == null) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(TIMESTAMP_ERROR, "Invalid client ID")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(CODE_ERROR, "Invalid client ID");
     }
     // 生成授权编码
     String authCode = generate(IntegerConsts.SEVEN);
@@ -115,48 +119,50 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
   @Override
   public ResponseBuilder accessToken(String code, String timestamp, String signature, String clientId,
                                      String grantType) {
+    HttpServletResponse response = HttpServletUtils.getResponse();
     // 验证时间戳
     try {
       verifyTimestamp(timestamp);
     } catch (IllegalArgumentException e) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(TIMESTAMP_ERROR, e.getMessage())));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(TIMESTAMP_ERROR, e.getMessage());
     }
 
     // 1. 验证授权码是否有效
     AuthorizationCode authorizationCode = authorizationCodeRepository.findByCode(code);
     if (ObjectUtils.isEmpty(authorizationCode)) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(CODE_ERROR, "Invalid authorization code")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(CODE_ERROR, "Invalid authorization code");
     }
     if (authorizationCode.isExpired()) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(CODE_EXPIRED, "expired authorization code")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(CODE_EXPIRED, "expired authorization code");
     }
 
     // 2. 校验客户端 ID 和客户端密钥
     if (!StringUtils.hasText(grantType)) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(GRANT_TYPE, "grant_type not found")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(GRANT_TYPE, "grant_type not found");
     }
     // 根据 clientId 查找注册的客户端
     RegisteredClient client = registeredClientRepository.findByClientId(clientId);
     if (ObjectUtils.isEmpty(client)) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(CLIENT_ERROR, "client_id not found")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(CLIENT_ERROR, "client_id not found");
     }
 
     // 验证签名
     try {
       verifySignature(client, signature, clientId, timestamp);
     } catch (IllegalArgumentException e) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(), SIGNATURE_ERROR + e.getMessage());
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(SIGNATURE_ERROR, e.getMessage());
     }
 
     AuthorizationGrantType authorizationGrantType = new AuthorizationGrantType(grantType.toLowerCase());
     if (!client.getAuthorizationGrantTypes().contains(authorizationGrantType)) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(GRANT_TYPE_ERROR, "Invalid grant_type")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(GRANT_TYPE_ERROR, "Invalid grant_type");
     }
 
     // 3. 生成访问令牌（Access Token）
@@ -177,14 +183,14 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
     auth2TokenRepository.save(oauth2Token);
 
     // 6. 返回令牌信息
-    Map<String, Object> response = new HashMap<>(IntegerConsts.THREE);
-    response.put(REFRESH_TOKEN, refreshToken);
-    response.put(ACCESS_TOKEN, accessToken);
-    response.put(EXPIRES_IN, 3600 * IntegerConsts.TWENTY_TWO * IntegerConsts.SEVEN);
-    response.put(TOKEN_TYPE, BEARER);
+    Map<String, Object> responseBody = new HashMap<>(IntegerConsts.THREE);
+    responseBody.put(REFRESH_TOKEN, refreshToken);
+    responseBody.put(ACCESS_TOKEN, accessToken);
+    responseBody.put(EXPIRES_IN, 3600 * IntegerConsts.TWENTY_TWO * IntegerConsts.SEVEN);
+    responseBody.put(TOKEN_TYPE, BEARER);
 
     // 返回成功响应
-    return ResponseBuilder.successBuilder(response);
+    return ResponseBuilder.successBuilder(responseBody);
   }
 
   /**
@@ -195,20 +201,21 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
    */
   @Override
   public ResponseBuilder refreshToken(String refreshToken) {
+    HttpServletResponse response = HttpServletUtils.getResponse();
     if (!StringUtils.hasText(refreshToken)) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(REFRESH_TOKEN_ERROR, "Invalid refresh token")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(REFRESH_TOKEN_ERROR, "Invalid refresh token");
     }
     // 1. 验证刷新令牌是否有效
     OAuth2Token oauth2Token = auth2TokenRepository.findByRefreshToken(refreshToken);
     if (ObjectUtils.isEmpty(oauth2Token) || !StringUtils.hasText(oauth2Token.getRefreshToken())) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(REFRESH_TOKEN_ERROR, "Invalid refresh token")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(REFRESH_TOKEN_ERROR, "Invalid refresh token");
     }
     // 2. 检查刷新令牌是否过期
     if (oauth2Token.isExpired()) {
-      throw new GlobalRuntimeException(HttpStatus.BAD_REQUEST.value(),
-          JsonUtils.objectToJsonString(ResponseBuilder.failBuilder(REFRESH_TOKEN_EXPIRED, "Refresh token has expired")));
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      return ResponseBuilder.failBuilder(REFRESH_TOKEN_EXPIRED, "Refresh token has expired");
     }
 
     // 3. 重新生成新的访问令牌
@@ -226,14 +233,14 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
     auth2TokenRepository.save(oauth2Token);
 
     // 1. 返回令牌信息
-    Map<String, Object> response = new HashMap<>(IntegerConsts.THREE);
-    response.put(REFRESH_TOKEN, newRefreshToken);
-    response.put(ACCESS_TOKEN, newAccessToken);
-    response.put(TOKEN_TYPE, BEARER);
-    response.put(EXPIRES_IN, 3600 * 24 * IntegerConsts.SEVEN);
+    Map<String, Object> responseBody = new HashMap<>(IntegerConsts.THREE);
+    responseBody.put(REFRESH_TOKEN, newRefreshToken);
+    responseBody.put(ACCESS_TOKEN, newAccessToken);
+    responseBody.put(TOKEN_TYPE, BEARER);
+    responseBody.put(EXPIRES_IN, 3600 * 24 * IntegerConsts.SEVEN);
 
     // 返回新的访问令牌
-    return ResponseBuilder.successBuilder(response);
+    return ResponseBuilder.successBuilder(responseBody);
   }
 
   /**
