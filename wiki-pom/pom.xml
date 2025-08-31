@@ -222,7 +222,7 @@
       </dependency>
       <dependency>
         <groupId>com.framewiki</groupId>
-        <artifactId>wiki-security-client</artifactId>
+        <artifactId>wiki-oauth2</artifactId>
         <version>${wiki.version}</version>
       </dependency>
       <dependency>
