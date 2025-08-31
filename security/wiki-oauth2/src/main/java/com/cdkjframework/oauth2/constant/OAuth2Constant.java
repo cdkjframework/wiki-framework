@@ -4,7 +4,7 @@ package com.cdkjframework.oauth2.constant;
  * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.constant
  * @ClassName: OAuth2Constant
- * @Description: java类作用描述
+ * @Description: 常量
  * @Author: xiaLin
  * @Date: 2025/7/31 16:51
  * @Version: 1.0

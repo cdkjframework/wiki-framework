@@ -11,8 +11,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,7 +26,7 @@ import static com.cdkjframework.oauth2.constant.OAuth2Constant.TOKEN_TYPE;
  * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.service
  * @ClassName: JwtTokenProvider
- * @Description: java类作用描述
+ * @Description: JWT 令牌提供者
  * @Author: xiaLin
  * @Date: 2025/7/31 13:30
  * @Version: 1.0
@@ -41,7 +39,7 @@ public class JwtTokenProvider {
    *
    * @param clientId              客户端ID
    * @param accessTokenTimeToLive 访问令牌存活时间（秒）
-   * @return 返回  JWT Token
+   * @return 返回 JWT Token
    */
   public static String generateToken(String clientId, Long accessTokenTimeToLive) {
     LocalDateTime now = LocalDateTime.now();
