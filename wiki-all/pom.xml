@@ -13,7 +13,7 @@
   <artifactId>wiki-all</artifactId>
   <name>${project.artifactId}</name>
   <description>Wiki-Framework 为开发者而生；是一个功能丰富且易用的Java工具库，通过诸多实用工具类的使用，旨在帮助开发为快速搭建开发项目提供便利。</description>
-  <url>https://github.com/cdkjframework/wiki-framework</url>
+  <url>https://framewiki.com</url>
 
   <properties>
     <java.version>17</java.version>

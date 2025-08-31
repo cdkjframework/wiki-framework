@@ -12,6 +12,7 @@
     <artifactId>wiki-log</artifactId>
     <description>日志模块(AOP切面)</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>

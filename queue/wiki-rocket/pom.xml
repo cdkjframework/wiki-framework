@@ -13,6 +13,7 @@
     <artifactId>wiki-rocket</artifactId>
     <description>rocket服务端</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>

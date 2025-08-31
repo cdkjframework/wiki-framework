@@ -14,6 +14,7 @@
 
     <description>系统软件证书核心业务模块，提供lic相关模型类和通用api控制器</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>

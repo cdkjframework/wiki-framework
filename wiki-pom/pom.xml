@@ -10,6 +10,7 @@
   <version>1.1.1</version>
   <packaging>pom</packaging>
   <name>wiki-pom</name>
+  <url>https://framewiki.com</url>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -1079,4 +1080,39 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>wiki</id>
+      <build>
+        <plugins>
+          <!-- GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.8</version>
+            <executions>
+              <execution>
+                <id>wiki</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.8.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>wiki</publishingServerId>
+              <autoPublish>true</autoPublish> <!-- 自动发布 -->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

@@ -12,6 +12,7 @@
   <artifactId>wiki-center</artifactId>
   <description>仅供服务接口</description>
   <name>${project.artifactId}</name>
+  <url>https://framewiki.com</url>
 
   <dependencies>
     <dependency>

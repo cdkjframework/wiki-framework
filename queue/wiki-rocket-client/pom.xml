@@ -13,6 +13,7 @@
     <artifactId>wiki-rocket-client</artifactId>
     <description>rocket客户端</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>
