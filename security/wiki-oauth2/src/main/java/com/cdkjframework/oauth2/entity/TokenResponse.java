@@ -7,7 +7,7 @@ import lombok.Data;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.oauth2.entity
  * @ClassName: TokenResponse
- * @Description: java类作用描述
+ * @Description: 令牌响应实体
  * @Author: xiaLin
  * @Date: 2025/8/31 15:40
  * @Version: 1.0
