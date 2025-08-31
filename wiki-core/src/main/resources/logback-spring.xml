@@ -6,7 +6,7 @@
 
   <!-- 定义了一个名为serverName的属性，它的值来自于logging.file.name，如果没有找到该属性默认为MyServerName（根据业务修改） -->
   <springProperty name="server.name" source="spring.application.name" defaultValue="framewiki"/>
-  <springProperty name="logging.path" source="logging.file.path" defaultValue="/opt/log/${server.name}"/>
+  <springProperty name="logging.path" source="logging.file.path" defaultValue="logs/${server.name}"/>
 
   <!-- 彩色日志依赖的渲染类 -->
   <!-- 定义了一个名为clr的转换规则，它使用org.springframework.boot.logging.logback.ColorConverter类进行转换，这个元素通常用于将日志输出中的文本着色，以便更容易地区分不同的日志级别或其他信息 -->

@@ -112,7 +112,7 @@ OSS、AliYun 短信、fasterxml.jackson、zxing、mqttv3、kryo、cxf Web Servic
     <parent>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-all</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
     </parent>
 
 ###### Gradle

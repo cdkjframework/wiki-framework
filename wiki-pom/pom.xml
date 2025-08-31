@@ -7,9 +7,10 @@
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
   <description>wiki-framework 框架依赖包</description>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <packaging>pom</packaging>
   <name>wiki-pom</name>
+  <url>https://framewiki.com</url>
 
   <parent>
     <groupId>org.springframework.boot</groupId>
@@ -19,7 +20,7 @@
   </parent>
 
   <properties>
-    <wiki.version>1.1.0</wiki.version>
+    <wiki.version>1.1.1</wiki.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>
@@ -86,7 +87,7 @@
 
     <log4j-core.version>2.13.0</log4j-core.version>
     <junit.jupiter.api.version>5.10.2</junit.jupiter.api.version>
-    <cxf.version>4.1.0</cxf.version>
+    <cxf.version>4.1.3</cxf.version>
     <pinyin4j.version>2.5.1</pinyin4j.version>
     <google.guava.version>33.2.1-jre</google.guava.version>
     <barcode4j.version>2.1</barcode4j.version>
@@ -222,12 +223,17 @@
       </dependency>
       <dependency>
         <groupId>com.framewiki</groupId>
-        <artifactId>wiki-security-client</artifactId>
+        <artifactId>wiki-oauth2</artifactId>
         <version>${wiki.version}</version>
       </dependency>
       <dependency>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-security</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
+        <artifactId>wiki-oauth</artifactId>
         <version>${wiki.version}</version>
       </dependency>
       <dependency>
@@ -1063,7 +1069,7 @@
       <dependency>
         <groupId>com.ccb.occ</groupId>
         <artifactId>comm-openapi-client</artifactId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -1074,4 +1080,39 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
+
+  <profiles>
+    <profile>
+      <id>wiki</id>
+      <build>
+        <plugins>
+          <!-- GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.8</version>
+            <executions>
+              <execution>
+                <id>wiki</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.8.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>wiki</publishingServerId>
+              <autoPublish>true</autoPublish> <!-- 自动发布 -->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

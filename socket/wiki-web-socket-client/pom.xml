@@ -5,7 +5,7 @@
     <parent>
         <artifactId>wiki-framework</artifactId>
         <groupId>com.framewiki</groupId>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -13,6 +13,7 @@
     <artifactId>wiki-web-socket-client</artifactId>
     <description>websocket客户端</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>

@@ -6,14 +6,14 @@
   <parent>
     <groupId>com.framewiki</groupId>
     <artifactId>wiki-pom</artifactId>
-    <version>1.1.0</version>
+    <version>1.1.1</version>
     <relativePath/>
   </parent>
 
   <artifactId>wiki-all</artifactId>
   <name>${project.artifactId}</name>
   <description>Wiki-Framework 为开发者而生；是一个功能丰富且易用的Java工具库，通过诸多实用工具类的使用，旨在帮助开发为快速搭建开发项目提供便利。</description>
-  <url>https://github.com/cdkjframework/wiki-framework</url>
+  <url>https://framewiki.com</url>
 
   <properties>
     <java.version>17</java.version>
@@ -48,4 +48,118 @@
       <artifactId>wiki-redis</artifactId>
     </dependency>
   </dependencies>
+
+  <distributionManagement>
+    <repository>
+      <id>wiki</id>
+      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
+
+  <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>**/*</include>
+        </includes>
+      </resource>
+    </resources>
+    <plugins>
+      <!--打包-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <configuration>
+          <excludes>
+            <exclude>*.properties</exclude>
+          </excludes>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+      <!--源码打包-->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>compile</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+              <!--<goal>test-jar</goal>-->
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-javadocs</id>
+            <phase>package</phase> <!-- 绑定到打包阶段 -->
+            <goals>
+              <goal>jar</goal> <!-- 生成 Javadoc JAR 文件 -->
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <source>17</source> <!-- 指定 JDK 版本 -->
+          <!-- 关闭严格检查 -->
+          <doclint>none</doclint>
+          <outputDirectory>${project.build.directory}/apidocs</outputDirectory>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>wiki</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <!-- GPG -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>3.2.8</version>
+            <executions>
+              <execution>
+                <id>wiki</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.8.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>wiki</publishingServerId>
+              <autoPublish>true</autoPublish> <!-- 自动发布 -->
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
