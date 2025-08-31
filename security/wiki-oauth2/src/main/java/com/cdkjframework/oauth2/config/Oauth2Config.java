@@ -38,4 +38,14 @@ public class Oauth2Config {
       "/error",
       "/error/**"
   );
+
+  /**
+   * 访问令牌的存活时间，单位为秒（默认值为 3600 秒，即 1 小时）。
+   */
+  private Long refreshTokenTimeToLive = 7 * 24 * 3600L;
+
+  /**
+   * 刷新令牌的存活时间，单位为秒（默认值为 86400 秒，即 24 小时）。
+   */
+  private Long accessTokenTimeToLive = 30 * 86400L;
 }

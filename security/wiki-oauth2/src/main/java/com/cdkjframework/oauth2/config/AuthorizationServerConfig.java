@@ -1,12 +1,9 @@
 package com.cdkjframework.oauth2.config;
 
 import com.cdkjframework.oauth2.filter.JwtTokenFilter;
-import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -55,9 +52,8 @@ public class AuthorizationServerConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     List<String> publicEndpoints = new ArrayList<>() {
       {
-        add(AUTHORIZATION_CODE);
+        add(AUTHORIZE);
         add(OAUTH2_ACCESS_TOKEN);
-        add(OAUTH2_REFRESH_TOKEN);
       }
     };
     publicEndpoints.addAll(oauth2Config.getAllowList());
@@ -87,7 +83,7 @@ public class AuthorizationServerConfig {
   @Bean
   public AuthorizationServerSettings authorizationServerSettings() {
     return AuthorizationServerSettings.builder()
-        .authorizationEndpoint(AUTHORIZATION_CODE)
+        .authorizationEndpoint(AUTHORIZE)
         .tokenEndpoint(OAUTH2_ACCESS_TOKEN)
         .tokenRevocationEndpoint(OAUTH2_REVOKE)
         .build();

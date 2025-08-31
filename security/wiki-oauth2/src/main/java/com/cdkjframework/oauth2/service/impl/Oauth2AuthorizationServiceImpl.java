@@ -3,8 +3,10 @@ package com.cdkjframework.oauth2.service.impl;
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.exceptions.GlobalRuntimeException;
+import com.cdkjframework.oauth2.config.Oauth2Config;
 import com.cdkjframework.oauth2.entity.AuthorizationCode;
 import com.cdkjframework.oauth2.entity.OAuth2Token;
+import com.cdkjframework.oauth2.entity.TokenResponse;
 import com.cdkjframework.oauth2.provider.JwtTokenProvider;
 import com.cdkjframework.oauth2.repository.AuthorizationCodeRepository;
 import com.cdkjframework.oauth2.repository.CustomRegisteredClientRepository;
@@ -12,16 +14,17 @@ import com.cdkjframework.oauth2.repository.OAuth2TokenRepository;
 import com.cdkjframework.oauth2.service.Oauth2AuthorizationService;
 import com.cdkjframework.oauth2.service.Oauth2TokenService;
 import com.cdkjframework.util.network.http.HttpServletUtils;
-import com.cdkjframework.util.tool.JsonUtils;
-import jakarta.servlet.http.HttpServletRequest;
+import com.cdkjframework.util.tool.CollectUtils;
+import com.cdkjframework.util.tool.StringUtils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
@@ -67,6 +70,11 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
   private final Oauth2TokenService oauth2TokenService;
 
   /**
+   * Oauth2配置
+   */
+  private final Oauth2Config oauth2Config;
+
+  /**
    * 安全字符集（排除易混淆字符）
    */
   private static final String SAFE_CHARACTERS = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnopqrstuvwxyz23456789";
@@ -77,7 +85,7 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
    * @param clientId     客户端ID
    * @param responseType 响应类型
    * @param scope        授权范围
-   * @return 授权页面或信息
+   * @return code
    */
   @Override
   public ResponseBuilder authorizationCode(String clientId, String responseType, String scope) {
@@ -86,7 +94,7 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
     RegisteredClient client = registeredClientRepository.findByClientId(clientId);
     if (client == null) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(CODE_ERROR, "Invalid client ID");
+      throw new GlobalRuntimeException(CODE_ERROR, "Invalid client ID");
     }
     // 生成授权编码
     String authCode = generate(IntegerConsts.SEVEN);
@@ -109,88 +117,93 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
   /**
    * 获取访问令牌
    *
-   * @param code      授权码
-   * @param timestamp 时间戳
-   * @param signature 签名
-   * @param clientId  客户端ID
-   * @param grantType 授权类型
+   * @param grantType    授权类型
+   * @param clientId     客户端ID
+   * @param code         授权码
+   * @param timestamp    时间戳
+   * @param refreshToken 刷新令牌
+   * @param signature    签名
    * @return 访问令牌
    */
   @Override
-  public ResponseBuilder accessToken(String code, String timestamp, String signature, String clientId,
-                                     String grantType) {
+  public TokenResponse token(String grantType, String clientId, String code, String timestamp, String refreshToken, String signature) {
     HttpServletResponse response = HttpServletUtils.getResponse();
+
+    // 2. 校验客户端 ID 和客户端密钥
+    if (StringUtils.isNullAndSpaceOrEmpty(grantType)) {
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      throw new GlobalRuntimeException(GRANT_TYPE, "grant_type not found");
+    }
+    // 3. 根据授权类型处理请求
+    AuthorizationGrantType authorizationGrantType = new AuthorizationGrantType(grantType.toLowerCase());
+    if (AuthorizationGrantType.AUTHORIZATION_CODE.equals(authorizationGrantType)) {
+      // 处理授权码模式
+      return handleAuthorizationCode(response, authorizationGrantType, clientId, code, timestamp, signature);
+    } else if (AuthorizationGrantType.REFRESH_TOKEN.equals(authorizationGrantType)) {
+      // 处理刷新令牌模式
+      return handleRefreshToken(response, authorizationGrantType, refreshToken);
+    } else {
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      throw new GlobalRuntimeException(GRANT_TYPE, "Unsupported grant_type");
+    }
+  }
+
+  /**
+   * 处理授权码模式
+   *
+   * @param response  HTTP响应对象
+   * @param grantType 授权类型
+   * @param clientId  客户端ID
+   * @param code      授权码
+   * @param timestamp 时间戳
+   * @param signature 签名
+   * @return 响应构建器
+   */
+  private TokenResponse handleAuthorizationCode(HttpServletResponse response, AuthorizationGrantType grantType,
+                                                String clientId, String code, String timestamp, String signature) {
     // 验证时间戳
     try {
       verifyTimestamp(timestamp);
     } catch (IllegalArgumentException e) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(TIMESTAMP_ERROR, e.getMessage());
+      throw new GlobalRuntimeException(TIMESTAMP_ERROR, e.getMessage());
     }
 
     // 1. 验证授权码是否有效
     AuthorizationCode authorizationCode = authorizationCodeRepository.findByCode(code);
     if (ObjectUtils.isEmpty(authorizationCode)) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(CODE_ERROR, "Invalid authorization code");
+      throw new GlobalRuntimeException(CODE_ERROR, "Invalid authorization code");
     }
     if (authorizationCode.isExpired()) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(CODE_EXPIRED, "expired authorization code");
+      throw new GlobalRuntimeException(CODE_EXPIRED, "expired authorization code");
     }
-
-    // 2. 校验客户端 ID 和客户端密钥
-    if (!StringUtils.hasText(grantType)) {
-      response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(GRANT_TYPE, "grant_type not found");
-    }
-    // 根据 clientId 查找注册的客户端
+    // 2. 根据 clientId 查找注册的客户端
     RegisteredClient client = registeredClientRepository.findByClientId(clientId);
     if (ObjectUtils.isEmpty(client)) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(CLIENT_ERROR, "client_id not found");
+      throw new GlobalRuntimeException(CLIENT_ERROR, "client_id not found");
     }
 
-    // 验证签名
+    // 3. 验证签名
     try {
       verifySignature(client, signature, clientId, timestamp);
     } catch (IllegalArgumentException e) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(SIGNATURE_ERROR, e.getMessage());
+      throw new GlobalRuntimeException(SIGNATURE_ERROR, e.getMessage());
     }
 
-    AuthorizationGrantType authorizationGrantType = new AuthorizationGrantType(grantType.toLowerCase());
-    if (!client.getAuthorizationGrantTypes().contains(authorizationGrantType)) {
+    // 4. 验证授权类型是否被允许
+    if (!client.getAuthorizationGrantTypes().contains(grantType)) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(GRANT_TYPE_ERROR, "Invalid grant_type");
+      throw new GlobalRuntimeException(GRANT_TYPE_ERROR, "Invalid grant_type");
     }
-
-    // 3. 生成访问令牌（Access Token）
-    String accessToken = JwtTokenProvider.generateToken(clientId);
-    oauth2TokenService.validateToken(accessToken);
-    // 4. 生成刷新令牌（Refresh Token）
-    String refreshToken = JwtTokenProvider.generateRefreshToken(clientId);
-
-    // 5. 将生成的令牌存储到数据库中
+    // 7. 将生成的令牌存储到数据库中
     OAuth2Token oauth2Token = new OAuth2Token();
-    oauth2Token.setClientId(clientId);
     oauth2Token.setUserId(code);
-    oauth2Token.setAccessToken(accessToken);
-    oauth2Token.setRefreshToken(refreshToken);
-    oauth2Token.setIssuedAt(LocalDateTime.now());
-    // 设置访问令牌过期时间为 7 天
-    oauth2Token.setExpiration(LocalDateTime.now().plusDays(IntegerConsts.SEVEN));
-    auth2TokenRepository.save(oauth2Token);
-
-    // 6. 返回令牌信息
-    Map<String, Object> responseBody = new HashMap<>(IntegerConsts.THREE);
-    responseBody.put(REFRESH_TOKEN, refreshToken);
-    responseBody.put(ACCESS_TOKEN, accessToken);
-    responseBody.put(EXPIRES_IN, 3600 * IntegerConsts.TWENTY_TWO * IntegerConsts.SEVEN);
-    responseBody.put(TOKEN_TYPE, BEARER);
-
-    // 返回成功响应
-    return ResponseBuilder.successBuilder(responseBody);
+    // 8. 构建授权
+    return buildToken(client, oauth2Token);
   }
 
   /**
@@ -199,48 +212,80 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
    * @param refreshToken 刷新令牌
    * @return 刷新后的访问令牌
    */
-  @Override
-  public ResponseBuilder refreshToken(String refreshToken) {
-    HttpServletResponse response = HttpServletUtils.getResponse();
-    if (!StringUtils.hasText(refreshToken)) {
+  public TokenResponse handleRefreshToken(HttpServletResponse response, AuthorizationGrantType grantType, String refreshToken) {
+    if (StringUtils.isNullAndSpaceOrEmpty(refreshToken)) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(REFRESH_TOKEN_ERROR, "Invalid refresh token");
+      throw new GlobalRuntimeException(REFRESH_TOKEN_ERROR, "Invalid refresh token");
     }
     // 1. 验证刷新令牌是否有效
     OAuth2Token oauth2Token = auth2TokenRepository.findByRefreshToken(refreshToken);
-    if (ObjectUtils.isEmpty(oauth2Token) || !StringUtils.hasText(oauth2Token.getRefreshToken())) {
+    if (ObjectUtils.isEmpty(oauth2Token) || StringUtils.isNullAndSpaceOrEmpty(oauth2Token.getRefreshToken())) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(REFRESH_TOKEN_ERROR, "Invalid refresh token");
+      throw new GlobalRuntimeException(REFRESH_TOKEN_ERROR, "Invalid refresh token");
+    }
+    int status = ConvertUtils.convertInt(oauth2Token.getStatus());
+    if (!IntegerConsts.ONE.equals(status)) {
+      response.setStatus(HttpStatus.BAD_REQUEST.value());
+      throw new GlobalRuntimeException(REFRESH_TOKEN_ERROR, "Invalid refresh token");
     }
     // 2. 检查刷新令牌是否过期
     if (oauth2Token.isExpired()) {
       response.setStatus(HttpStatus.BAD_REQUEST.value());
-      return ResponseBuilder.failBuilder(REFRESH_TOKEN_EXPIRED, "Refresh token has expired");
+      throw new GlobalRuntimeException(REFRESH_TOKEN_EXPIRED, "Refresh token has expired");
     }
 
-    // 3. 重新生成新的访问令牌
-    String newAccessToken = JwtTokenProvider.generateToken(oauth2Token.getClientId());
+    // 2. 根据 clientId 查找注册的客户端
+    RegisteredClient client = registeredClientRepository.findByClientId(oauth2Token.getClientId());
+    assert client != null;
 
-    // 4. 生成新的刷新令牌（可选）
-    String newRefreshToken = JwtTokenProvider.generateRefreshToken(oauth2Token.getClientId());
+    // 3. 构建授权
+    return buildToken(client, oauth2Token);
+  }
+
+  /**
+   * 构建并返回新的访问令牌和刷新令牌
+   *
+   * @param client      注册的客户端
+   * @param oauth2Token 当前的 OAuth2 令牌实体
+   * @return 响应构建器，包含新的访问令牌和刷新令牌
+   */
+  private TokenResponse buildToken(RegisteredClient client, OAuth2Token oauth2Token) {
+    // 1. 获取令牌设置
+    TokenSettings settings = client.getTokenSettings();
+    Long accessTokenTimeToLive, refreshTokenTimeToLive;
+    if (settings != null && CollectUtils.isNotEmpty(settings.getSettings())) {
+      Map<String, Object> map = settings.getSettings();
+      accessTokenTimeToLive = ConvertUtils.convertLong(map.get(ACCESS_TOKEN_TIME_TO_LIVE));
+      refreshTokenTimeToLive = ConvertUtils.convertLong(map.get(REFRESH_TOKEN_TIME_TO_LIVE));
+    } else {
+      accessTokenTimeToLive = oauth2Config.getAccessTokenTimeToLive();
+      refreshTokenTimeToLive = oauth2Config.getRefreshTokenTimeToLive();
+    }
+
+    // 2. 成新的访问令牌
+    String newAccessToken = JwtTokenProvider.generateToken(client.getClientId(), accessTokenTimeToLive);
+    oauth2TokenService.validateToken(newAccessToken);
+
+    // 3. 生成新的刷新令牌（可选）
+    String newRefreshToken = JwtTokenProvider.generateRefreshToken(client.getClientId(), refreshTokenTimeToLive);
     LocalDateTime localDateTime = LocalDateTime.now();
-    // 5. 更新数据库中的刷新令牌（这里我们选择创建一个新刷新令牌）
-    oauth2Token.setIssuedAt(localDateTime);
+    // 4. 更新数据库中的刷新令牌（这里我们选择创建一个新刷新令牌）
     oauth2Token.setAccessToken(newAccessToken);
     oauth2Token.setRefreshToken(newRefreshToken);
-    // 6. 设置访问令牌过期时间为 7 天
+    oauth2Token.setIssuedAt(localDateTime);
+    oauth2Token.setClientId(client.getClientId());
+    // 5. 设置访问令牌过期时间为 7 天
     oauth2Token.setExpiration(localDateTime.plusDays(IntegerConsts.SEVEN));
     auth2TokenRepository.save(oauth2Token);
 
-    // 1. 返回令牌信息
-    Map<String, Object> responseBody = new HashMap<>(IntegerConsts.THREE);
-    responseBody.put(REFRESH_TOKEN, newRefreshToken);
-    responseBody.put(ACCESS_TOKEN, newAccessToken);
-    responseBody.put(TOKEN_TYPE, BEARER);
-    responseBody.put(EXPIRES_IN, 3600 * 24 * IntegerConsts.SEVEN);
+    // 6. 返回令牌信息
+    TokenResponse tokenResponse = new TokenResponse();
+    tokenResponse.setAccessToken(newAccessToken);
+    tokenResponse.setRefreshToken(newRefreshToken);
+    tokenResponse.setExpiresIn(accessTokenTimeToLive);
 
     // 返回新的访问令牌
-    return ResponseBuilder.successBuilder(responseBody);
+    return tokenResponse;
   }
 
   /**
@@ -259,12 +304,12 @@ public class Oauth2AuthorizationServiceImpl implements Oauth2AuthorizationServic
     }
 
     //
-    LocalDateTime requestTime = LocalDateTime.ofEpochSecond(requestTimeMillis, 0, java.time.ZoneOffset.UTC);
+    LocalDateTime requestTime = LocalDateTime.ofEpochSecond(requestTimeMillis, IntegerConsts.ZERO, java.time.ZoneOffset.UTC);
     LocalDateTime beijingTime = requestTime.atZone(ZoneId.of("UTC")).withZoneSameInstant(ZoneId.of("Asia/Shanghai"))
         .toLocalDateTime();
 
     // 允许的时间窗口（例如5分钟）
-    long allowedWindowMillis = 5 * 60 * 1000;
+    long allowedWindowMillis = IntegerConsts.FIVE * IntegerConsts.SIXTY * IntegerConsts.ONE_THOUSAND;
 
     long timeDifference = Math.abs(java.time.Duration.between(currentTime, beijingTime).toMillis());
     if (timeDifference > allowedWindowMillis) {

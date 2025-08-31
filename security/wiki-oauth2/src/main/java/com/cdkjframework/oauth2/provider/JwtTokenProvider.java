@@ -39,13 +39,14 @@ public class JwtTokenProvider {
   /**
    * 生成 JWT Token
    *
-   * @param clientId 客户端ID
+   * @param clientId              客户端ID
+   * @param accessTokenTimeToLive 访问令牌存活时间（秒）
    * @return 返回  JWT Token
    */
-  public static String generateToken(String clientId) {
+  public static String generateToken(String clientId, Long accessTokenTimeToLive) {
     LocalDateTime now = LocalDateTime.now();
     // 1 天有效期
-    LocalDateTime expiryDate = now.plusDays(7);
+    LocalDateTime expiryDate = now.plusSeconds(accessTokenTimeToLive);
     Instant time = expiryDate.atZone(ZoneId.systemDefault()).toInstant();
     Long seconds = time.getEpochSecond() * IntegerConsts.ONE_THOUSAND;
 
@@ -55,11 +56,12 @@ public class JwtTokenProvider {
   /**
    * 生成 Refresh Token
    *
-   * @param clientId 客户端ID
+   * @param clientId               客户端ID
+   * @param refreshTokenTimeToLive 刷新令牌存活时间（秒）
    * @return 返回 Refresh Token
    */
-  public static String generateRefreshToken(String clientId) {
-    Instant time = Instant.now().plus(IntegerConsts.THIRTY, ChronoUnit.DAYS);
+  public static String generateRefreshToken(String clientId, Long refreshTokenTimeToLive) {
+    Instant time = Instant.now().plus(refreshTokenTimeToLive, ChronoUnit.SECONDS);
     // 构建包含客户端标识和唯一性的JWT
     return Jwts.builder()
         // JWT唯一标识
@@ -138,18 +140,6 @@ public class JwtTokenProvider {
    */
   public static String md5Signature(String clientSecret, String clientId, String timestamp) {
     String input = "client_id=" + clientId + "&client_secret=" + clientSecret + "&timestamp=" + timestamp;
-    try {
-      MessageDigest md = MessageDigest.getInstance("MD5");
-      md.update(input.getBytes());
-      byte[] digest = md.digest();
-      StringBuilder sb = new StringBuilder();
-      for (byte b : digest) {
-        sb.append(String.format("%02x", b));
-      }
-      return sb.toString();
-    } catch (NoSuchAlgorithmException e) {
-      // Log the error for better debugging, instead of just printing the stack trace
-      return "";
-    }
+    return Md5Utils.getMd5(input);
   }
 }

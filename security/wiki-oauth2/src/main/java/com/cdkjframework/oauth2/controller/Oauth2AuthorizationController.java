@@ -1,7 +1,7 @@
 package com.cdkjframework.oauth2.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
-import com.cdkjframework.oauth2.entity.RefreshToken;
+import com.cdkjframework.oauth2.entity.TokenResponse;
 import com.cdkjframework.oauth2.service.Oauth2AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -44,32 +44,22 @@ public class Oauth2AuthorizationController {
   /**
    * 获取访问令牌
    *
-   * @param code      授权码
-   * @param timestamp 时间戳
-   * @param clientId  客户端ID
-   * @param signature 签名
-   * @param grantType 授权类型
+   * @param grantType    授权类型
+   * @param clientId     客户端ID
+   * @param code         授权码
+   * @param timestamp    时间戳
+   * @param signature    签名
+   * @param refreshToken 刷新令牌
    * @return 访问令牌
    */
   @ResponseBody
-  @GetMapping("/access_token")
-  public ResponseBuilder accessToken(@RequestParam("code") String code,
-                                     @RequestParam("timestamp") String timestamp,
-                                     @RequestParam("client_id") String clientId,
-                                     @RequestParam("signature") String signature,
-                                     @RequestParam("grant_type") String grantType) {
-    return oauth2AuthorizationService.accessToken(code, timestamp, signature, clientId, grantType);
-  }
-
-  /**
-   * 刷新令牌
-   *
-   * @param refreshToken 刷新令牌
-   * @return 新的访问令牌
-   */
-  @ResponseBody
-  @PostMapping("/refresh_token")
-  public ResponseBuilder refreshToken(@RequestBody RefreshToken refreshToken) {
-    return oauth2AuthorizationService.refreshToken(refreshToken.getRefreshToken());
+  @GetMapping("/token")
+  public TokenResponse token(@RequestParam("grant_type") String grantType,
+                             @RequestParam(name = "client_id", required = false) String clientId,
+                             @RequestParam(name = "code", required = false) String code,
+                             @RequestParam(name = "timestamp", required = false) String timestamp,
+                             @RequestParam(name = "refresh_token", required = false) String refreshToken,
+                             @RequestParam(name = "signature", required = false) String signature) {
+    return oauth2AuthorizationService.token(grantType, clientId, code, timestamp, refreshToken, signature);
   }
 }

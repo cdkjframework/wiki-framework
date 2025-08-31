@@ -1,6 +1,7 @@
 package com.cdkjframework.oauth2.service;
 
 import com.cdkjframework.builder.ResponseBuilder;
+import com.cdkjframework.oauth2.entity.TokenResponse;
 
 /**
  * OAuth2授权服务接口
@@ -28,20 +29,13 @@ public interface Oauth2AuthorizationService {
   /**
    * 获取访问令牌
    *
-   * @param code      授权码
-   * @param timestamp 时间戳
-   * @param signature 签名
-   * @param clientId  客户端ID
-   * @param grantType 授权类型
-   * @return 访问令牌
-   */
-  ResponseBuilder accessToken(String code, String timestamp, String signature, String clientId, String grantType);
-
-  /**
-   * 刷新访问令牌
-   *
+   * @param grantType    授权类型
+   * @param clientId     客户端ID
+   * @param code         授权码
+   * @param timestamp    时间戳
    * @param refreshToken 刷新令牌
-   * @return 刷新后的访问令牌
+   * @param signature    签名
+   * @return
    */
-  ResponseBuilder refreshToken(String refreshToken);
+  TokenResponse token(String grantType, String clientId, String code, String timestamp, String refreshToken, String signature);
 }
