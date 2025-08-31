@@ -20,7 +20,5 @@
         <module>wiki-datasource-rw</module>
         <module>wiki-datasource-jpa</module>
         <module>wiki-datasource-mongodb</module>
-<!--        <module>wiki-datasource-elasticsearch</module>-->
-<!--        <module>mybatis-pro</module>-->
     </modules>
 </project>

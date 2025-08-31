@@ -19,5 +19,4 @@
         <module>wiki-security</module>
         <module>wiki-oauth2</module>
     </modules>
-
 </project>
