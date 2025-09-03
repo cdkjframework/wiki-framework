@@ -114,13 +114,13 @@ OSS、AliYun 短信、fasterxml.jackson、zxing、mqttv3、kryo、cxf Web Servic
 
 ###### Gradle
 
-    implementation 'com.framewiki:wiki-all:1.1.0'
+    implementation 'com.framewiki:wiki-all:1.1.1'
 
 #### 下载 jar
 
 点击以下链接，下载[wiki-all-X.X.X.jar](https://gitee.com/cdkjframework/wiki-framework/releases)即可
 
-- [Maven中央库](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.1.0/)
+- [Maven中央库](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.1.1/)
 
 > 注意
 > wiki-framework 1.0.8 开始只支持JDK17+，对Android平台没有测试，不能保证所有工具类或工具方法可用。
@@ -130,7 +130,7 @@ OSS、AliYun 短信、fasterxml.jackson、zxing、mqttv3、kryo、cxf Web Servic
 
 访问 wiki-framework
 的Gitee主页：[https://gitee.com/cdkjframework/wiki-framework](https://gitee.com/cdkjframework/wiki-framework)
-下载整个项目源码（master或1.1.0分支都可）然后进入wiki-framework项目目录执行：
+下载整个项目源码（master或1.1.1分支都可）然后进入wiki-framework项目目录执行：
 
 ```sh
 ./wiki.sh install
