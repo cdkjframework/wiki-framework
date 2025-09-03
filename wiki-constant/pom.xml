@@ -12,6 +12,7 @@
   <artifactId>wiki-constant</artifactId>
   <description>公共常量、枚举模块</description>
   <name>${project.artifactId}</name>
+  <url>https://framewiki.com</url>
 
   <properties>
     <java.version>17</java.version>

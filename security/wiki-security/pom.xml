@@ -12,6 +12,7 @@
     <artifactId>wiki-security</artifactId>
     <description>Spring Security认证模块</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>

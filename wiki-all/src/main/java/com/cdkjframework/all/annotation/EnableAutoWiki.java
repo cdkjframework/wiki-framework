@@ -3,6 +3,8 @@ package com.cdkjframework.all.annotation;
 import com.cdkjframework.datasource.mybatis.annotation.EnableAutoMybatis;
 import com.cdkjframework.redis.annotation.EnableAutoRedis;
 
+import java.lang.annotation.*;
+
 /**
  * @ProjectName: cdkjframework
  * @Package: com.cdkjframework.all.annotation
@@ -11,6 +13,9 @@ import com.cdkjframework.redis.annotation.EnableAutoRedis;
  * @Author: xiaLin
  * @Version: 1.0
  */
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
 @EnableAutoRedis
 @EnableAutoMybatis
 public @interface EnableAutoWiki {

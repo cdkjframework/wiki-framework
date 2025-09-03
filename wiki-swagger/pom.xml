@@ -12,6 +12,7 @@
   <artifactId>wiki-swagger</artifactId>
   <description>swagger模块</description>
   <name>${project.artifactId}</name>
+  <url>https://framewiki.com</url>
 
   <dependencies>
     <dependency>

@@ -50,6 +50,11 @@ public class OAuth2Token {
   private LocalDateTime expiration;
 
   /**
+   * 状态 0-无效 1-有效
+   */
+  private Integer status;
+
+  /**
    * 检查授权码是否过期
    *
    * @return true 如果授权码已过期，否则返回 false

@@ -1,16 +1,16 @@
 package com.cdkjframework.oauth2.provider;
 
-import com.cdkjframework.oauth2.constant.OAuth2Constant;
 import com.cdkjframework.constant.BusinessConsts;
 import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.oauth2.constant.OAuth2Constant;
 import com.cdkjframework.util.encrypts.JwtUtils;
 import com.cdkjframework.util.encrypts.Md5Utils;
+import com.cdkjframework.util.tool.number.ConvertUtils;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.stereotype.Component;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -26,7 +26,7 @@ import static com.cdkjframework.oauth2.constant.OAuth2Constant.TOKEN_TYPE;
  * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.service
  * @ClassName: JwtTokenProvider
- * @Description: java类作用描述
+ * @Description: JWT 令牌提供者
  * @Author: xiaLin
  * @Date: 2025/7/31 13:30
  * @Version: 1.0
@@ -37,13 +37,14 @@ public class JwtTokenProvider {
   /**
    * 生成 JWT Token
    *
-   * @param clientId 客户端ID
-   * @return 返回  JWT Token
+   * @param clientId              客户端ID
+   * @param accessTokenTimeToLive 访问令牌存活时间（秒）
+   * @return 返回 JWT Token
    */
-  public static String generateToken(String clientId) {
+  public static String generateToken(String clientId, Long accessTokenTimeToLive) {
     LocalDateTime now = LocalDateTime.now();
     // 1 天有效期
-    LocalDateTime expiryDate = now.plusDays(7);
+    LocalDateTime expiryDate = now.plusSeconds(accessTokenTimeToLive);
     Instant time = expiryDate.atZone(ZoneId.systemDefault()).toInstant();
     Long seconds = time.getEpochSecond() * IntegerConsts.ONE_THOUSAND;
 
@@ -53,11 +54,12 @@ public class JwtTokenProvider {
   /**
    * 生成 Refresh Token
    *
-   * @param clientId 客户端ID
+   * @param clientId               客户端ID
+   * @param refreshTokenTimeToLive 刷新令牌存活时间（秒）
    * @return 返回 Refresh Token
    */
-  public static String generateRefreshToken(String clientId) {
-    Instant time = Instant.now().plus(IntegerConsts.THIRTY, ChronoUnit.DAYS);
+  public static String generateRefreshToken(String clientId, Long refreshTokenTimeToLive) {
+    Instant time = Instant.now().plus(refreshTokenTimeToLive, ChronoUnit.SECONDS);
     // 构建包含客户端标识和唯一性的JWT
     return Jwts.builder()
         // JWT唯一标识
@@ -104,11 +106,11 @@ public class JwtTokenProvider {
    * @return 返回 用户名（clientId）
    */
   public static String getClientIdFromToken(String token) {
-    return Jwts.parser()
-        .setSigningKey(OAuth2Constant.SECRET_KEY)
-        .parseClaimsJws(token)
-        .getBody()
-        .getSubject();
+    Claims claims = JwtUtils.parseJwt(token, OAuth2Constant.SECRET_KEY);
+    if (claims == null) {
+      return null;
+    }
+    return ConvertUtils.convertString(claims.get(BusinessConsts.LOGIN_NAME));
   }
 
   /**
@@ -136,18 +138,6 @@ public class JwtTokenProvider {
    */
   public static String md5Signature(String clientSecret, String clientId, String timestamp) {
     String input = "client_id=" + clientId + "&client_secret=" + clientSecret + "&timestamp=" + timestamp;
-    try {
-      MessageDigest md = MessageDigest.getInstance("MD5");
-      md.update(input.getBytes());
-      byte[] digest = md.digest();
-      StringBuilder sb = new StringBuilder();
-      for (byte b : digest) {
-        sb.append(String.format("%02x", b));
-      }
-      return sb.toString();
-    } catch (NoSuchAlgorithmException e) {
-      // Log the error for better debugging, instead of just printing the stack trace
-      return "";
-    }
+    return Md5Utils.getMd5(input);
   }
 }

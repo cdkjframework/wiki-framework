@@ -13,6 +13,7 @@
     <artifactId>wiki-kafka</artifactId>
     <description>kafka服务模块</description>
     <name>${project.artifactId}</name>
+    <url>https://framewiki.com</url>
 
     <dependencies>
         <dependency>
