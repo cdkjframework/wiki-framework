@@ -28,6 +28,8 @@
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
+            <!-- 关键：添加 GPL 例外声明 -->
+            <scope>runtime</scope> <!-- 减少传染风险 -->
         </dependency>
         <!-- aliYun 数据库连接驱动 -->
         <dependency>
