@@ -199,24 +199,3 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
----------------------------------------------------
-THIRD-PARTY LICENSES NOTICES
-----------------------------------------------------
-
-This project includes third-party components governed by separate licenses.
-
-1. MySQL Connector/J (com.mysql:mysql-connector-j)
-   - License: GNU General Public License v2.0 WITH Classpath-exception-2.0
-   - Official source: https://dev.mysql.com/downloads/connector/j/
-   - Classpath Exception Notice:
-     "As a special exception, the copyright holders give permission to link
-      this library with independent modules to produce an executable, regardless
-      of the license terms of these independent modules, and to copy and distribute
-      the resulting executable under terms of your choice, provided that you also
-      meet, for each linked independent module, the terms and conditions of the
-      license of that module. An independent module is a module which is not
-      derived from or based on this library. If you modify this library, you may
-      extend this exception to your version of the library, but you are not
-      obligated to do so. If you do not wish to do so, delete this exception
-      statement from your version."
-   - Full GPL-2.0 text: https://opensource.org/licenses/GPL-2.0
