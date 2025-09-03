@@ -18,9 +18,6 @@
 <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-0-13-later-archive-downloads.html">
     <img src="https://img.shields.io/badge/JDK-17+-red.svg" />
 </a>
-<a href="./LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-red" alt="license MIT">
-</a>
 </p>
 
 ## 介绍
