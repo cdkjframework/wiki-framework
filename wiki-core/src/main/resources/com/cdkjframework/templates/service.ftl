@@ -22,6 +22,11 @@ import ${packageName}.repository.${className}Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import java.util.Optional;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 </#if>
 import ${packageName}.service.${className}Service;
 
@@ -137,7 +142,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         JpaCriteriaBuilder<${className}Entity> builder = JpaCriteriaBuilder.Builder();
         builder = builder.autoBuilder(builder, ${classLowName}Dto, ${className}Entity.class);
         Optional<${className}Entity> optional = ${classLowName}Repository.findOne(builder.build());
-        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${classLowName}Dto.class)).orElse(null);
+        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${className}Dto.class)).orElse(null);
         </#if>
     }
 
@@ -155,7 +160,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         </#if>
         <#if jpa>
         Optional<${className}Entity> optional = ${classLowName}Repository.findById(id);
-        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${classLowName}Dto.class)).orElse(null);
+        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${className}Dto.class)).orElse(null);
         </#if>
     }
 
