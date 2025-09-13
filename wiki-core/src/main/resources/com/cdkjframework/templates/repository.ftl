@@ -1,6 +1,6 @@
 package ${packageName}.repository;
 
-import com.framewiki.datasource.jpa.repository.IRepositoryString;
+import com.cdkjframework.datasource.jpa.repository.IRepositoryString;
 
 
 import ${packageName}.entity.${className}Entity;

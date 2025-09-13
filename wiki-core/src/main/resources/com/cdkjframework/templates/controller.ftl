@@ -1,13 +1,13 @@
 package ${packageName}.web.controller;
 
 import com.cdkjframework.entity.PageEntity;
-import com.framewiki.util.log.LogUtils;
-import com.framewiki.util.tool.CopyUtils;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 
 import ${packageName}.vo.${className}Vo;
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.service.${className}Service;
-import com.framewiki.core.controller.WebUiController;
+import com.cdkjframework.core.controller.WebUiController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

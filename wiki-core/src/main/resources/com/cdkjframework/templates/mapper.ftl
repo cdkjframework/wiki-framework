@@ -1,6 +1,6 @@
 package ${packageName}.mapper;
 
-import com.framewiki.core.base.mapper.BaseMapper;
+import com.cdkjframework.core.base.mapper.BaseMapper;
 import ${packageName}.entity.${className}Entity;
 
 import jakarta.persistence.*;
