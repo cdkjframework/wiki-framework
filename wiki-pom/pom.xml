@@ -7,7 +7,7 @@
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
   <description>wiki-framework 框架依赖包</description>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <packaging>pom</packaging>
   <name>wiki-pom</name>
   <url>https://framewiki.com</url>
@@ -20,7 +20,7 @@
   </parent>
 
   <properties>
-    <wiki.version>1.1.1</wiki.version>
+    <wiki.version>1.1.2</wiki.version>
     <compress.version>1.26.2</compress.version>
     <codecentric.version>2.3.1</codecentric.version>
     <ribbon.version>2.7.18</ribbon.version>
@@ -31,6 +31,7 @@
     <disruptor.version>3.4.2</disruptor.version>
     <spring.eureka.version>4.1.3</spring.eureka.version>
     <spring.consul.version>4.1.2</spring.consul.version>
+    <spring-alibaba-nacos-config.version>2023.0.3.3</spring-alibaba-nacos-config.version>
     <spring.cloud.version>2023.0.3</spring.cloud.version>
     <spring.platform.version>Cairo-SR8</spring.platform.version>
     <spring.version>6.1.14</spring.version>
@@ -460,6 +461,16 @@
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-starter-consul-config</artifactId>
         <version>${spring.consul.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-alibaba-nacos-config</artifactId>
+        <version>${spring-alibaba-nacos-config.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.cloud</groupId>
+        <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        <version>${spring-alibaba-nacos-config.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
@@ -1069,7 +1080,7 @@
       <dependency>
         <groupId>com.ccb.occ</groupId>
         <artifactId>comm-openapi-client</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

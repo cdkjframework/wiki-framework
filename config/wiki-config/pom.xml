@@ -5,12 +5,13 @@
   <parent>
     <artifactId>wiki-framework</artifactId>
     <groupId>com.framewiki</groupId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
+    <relativePath>../../pom.xml</relativePath>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
   <artifactId>wiki-config</artifactId>
-  <description>配置中心基础包</description>
+  <description>Spring Cloud Config 配置中心基础包</description>
   <name>${project.artifactId}</name>
   <url>https://framewiki.com</url>
 

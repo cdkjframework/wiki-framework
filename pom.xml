@@ -6,7 +6,7 @@
 
   <artifactId>wiki-framework</artifactId>
   <packaging>pom</packaging>
-  <version>1.1.1</version>
+  <version>1.1.2</version>
   <name>wiki-framework</name>
   <url>https://framewiki.com</url>
 
@@ -22,7 +22,6 @@
     <module>wiki-message</module>
     <module>wiki-center</module>
     <module>wiki-log</module>
-    <module>wiki-config</module>
     <module>wiki-swagger</module>
     <module>datasource</module>
     <module>licenses</module>
@@ -34,12 +33,13 @@
     <module>wiki-all</module>
     <module>wiki-all-jpa</module>
     <module>wiki-ai</module>
+    <module>config</module>
   </modules>
 
   <parent>
     <groupId>com.framewiki</groupId>
     <artifactId>wiki-pom</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
   </parent>
 
   <dependencyManagement>
@@ -47,7 +47,7 @@
       <dependency>
         <groupId>com.framewiki</groupId>
         <artifactId>wiki-pom</artifactId>
-        <version>1.1.1</version>
+        <version>1.1.2</version>
         <scope>import</scope>
         <type>pom</type>
       </dependency>
