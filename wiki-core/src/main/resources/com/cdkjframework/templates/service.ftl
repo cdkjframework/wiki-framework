@@ -1,12 +1,12 @@
 package ${packageName}.service.impl;
 
-import com.framewiki.constant.IntegerConsts;
-import com.framewiki.core.member.CurrentUser;
+import com.cdkjframework.constant.IntegerConsts;
+import com.cdkjframework.core.member.CurrentUser;
 import com.cdkjframework.entity.BaseEntity;
 import com.cdkjframework.entity.PageEntity;
-import com.framewiki.util.log.LogUtils;
-import com.framewiki.util.make.GeneratedValueUtils;
-import com.framewiki.util.tool.CopyUtils;
+import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.make.GeneratedValueUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 
 import ${packageName}.dto.${className}Dto;
 import ${packageName}.entity.${className}Entity;
@@ -17,11 +17,16 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 </#if>
 <#if jpa>
-import com.framewiki.datasource.jpa.builder.JpaCriteriaBuilder;
+import com.cdkjframework.datasource.jpa.builder.JpaCriteriaBuilder;
 import ${packageName}.repository.${className}Repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import java.util.Optional;
+
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 </#if>
 import ${packageName}.service.${className}Service;
 
@@ -137,7 +142,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         JpaCriteriaBuilder<${className}Entity> builder = JpaCriteriaBuilder.Builder();
         builder = builder.autoBuilder(builder, ${classLowName}Dto, ${className}Entity.class);
         Optional<${className}Entity> optional = ${classLowName}Repository.findOne(builder.build());
-        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${classLowName}Dto.class)).orElse(null);
+        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${className}Dto.class)).orElse(null);
         </#if>
     }
 
@@ -155,7 +160,7 @@ public class ${className}ServiceImpl implements ${className}Service {
         </#if>
         <#if jpa>
         Optional<${className}Entity> optional = ${classLowName}Repository.findById(id);
-        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${classLowName}Dto.class)).orElse(null);
+        return optional.map(${classLowName} -> CopyUtils.copyProperties(${classLowName}, ${className}Dto.class)).orElse(null);
         </#if>
     }
 

@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.framewiki</groupId>
     <artifactId>security</artifactId>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
   </parent>
 
   <artifactId>wiki-oauth2</artifactId>
@@ -22,7 +22,14 @@
   </properties>
 
   <dependencies>
-    <!-- Spring Security OAuth2 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+    </dependency>
     <!-- Spring Security OAuth2 Authorization Server -->
     <dependency>
       <groupId>org.springframework.security</groupId>
@@ -67,6 +74,10 @@
     <dependency>
       <groupId>com.framewiki</groupId>
       <artifactId>wiki-util</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
     </dependency>
   </dependencies>
 

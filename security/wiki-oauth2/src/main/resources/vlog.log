@@ -1,0 +1,1 @@
+并开启 actuator 暴露 /actuator/prometheus。

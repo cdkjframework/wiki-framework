@@ -1,6 +1,6 @@
 package ${packageName}.service;
 
-import com.framewiki.core.base.service.BasicService;
+import com.cdkjframework.core.base.service.BasicService;
 import com.cdkjframework.entity.PageEntity;
 
 import ${packageName}.dto.${className}Dto;

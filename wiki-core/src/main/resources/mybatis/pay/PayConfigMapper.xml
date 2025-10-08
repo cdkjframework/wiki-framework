@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!--这里的namespace必须和是对应的mapper.java的地址-->
-<mapper namespace="com.framewiki.core.business.mapper.PayConfigMapper">
+<mapper namespace="com.cdkjframework.core.business.mapper.PayConfigMapper">
     <resultMap id="ResultMapPayConfig" type="com.cdkjframework.entity.pay.PayConfigEntity">
         <id column="id" property="id" jdbcType="VARCHAR"></id>
         <result column="app_id" property="appId" jdbcType="VARCHAR"/>

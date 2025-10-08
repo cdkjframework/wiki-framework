@@ -151,9 +151,12 @@ public class GlobalResponseHandler extends BodyHandler implements ResponseBodyAd
       json = AesUtils.base64Encode(json);
     }
 
+    if(String.class.getName().equals(o.getClass().getName())){
+      return json;
+    }
     if (!encryption && customConfig.isJson()) {
       // 数据类型
-      String dataType = "java.util.ArrayList";
+      String dataType = ArrayList.class.getName();
       if (dataType.equals(o.getClass().getName())) {
         return JsonUtils.parseArray(json);
       }
