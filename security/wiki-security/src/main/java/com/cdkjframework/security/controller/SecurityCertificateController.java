@@ -241,6 +241,18 @@ public class SecurityCertificateController {
   }
 
   /**
+   * 切换机构
+   *
+   * @param id 机构ID
+   */
+  @ResponseBody
+  @Operation(summary = "切换机构")
+  @GetMapping(value = "/change.html")
+  public void change(@RequestParam("id") String id) {
+    userAuthenticationServiceImpl.change(id);
+  }
+
+  /**
    * 扫码完成接口
    *
    * @param username 用户名
@@ -251,7 +263,6 @@ public class SecurityCertificateController {
   @Operation(summary = "扫码完成接口【即登录】")
   @PostMapping(value = "/completed.html")
   public void completed(@RequestParam("username") String username, @RequestParam("id") String id) throws Exception {
-
     String statusKey = CacheConsts.USER_PREFIX + BusinessConsts.STATUS;
     Integer status = ConvertUtils.convertInt(RedisUtils.hGet(statusKey, id));
     if (!status.equals(IntegerConsts.ONE)) {

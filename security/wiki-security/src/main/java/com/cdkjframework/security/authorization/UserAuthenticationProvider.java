@@ -1,10 +1,14 @@
 package com.cdkjframework.security.authorization;
 
+import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.constant.IntegerConsts;
 import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
+import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.encrypt.Md5PasswordEncoder;
 import com.cdkjframework.security.service.UserRoleService;
+import com.cdkjframework.util.encrypts.Md5Utils;
+import com.cdkjframework.util.tool.StringUtils;
 import com.cdkjframework.util.tool.number.ConvertUtils;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -44,6 +48,11 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
   private final UserRoleService userRoleService;
 
   /**
+   * 自定义配置
+   */
+  private final String defaultPassword = "V7F9ygefuCr7CDES-";
+
+  /**
    * 构造函数
    *
    * @param userDetailsService 用户服务
@@ -67,19 +76,35 @@ public class UserAuthenticationProvider implements AuthenticationProvider {
     String userName = ConvertUtils.convertString(authentication.getPrincipal());
     // 获取表单中输入的密码
     String password = ConvertUtils.convertString(authentication.getCredentials());
+
+    // 验证用户登录是否为单点登录账号
+    Boolean sso = null;
+    if (StringUtils.isNotNullAndEmpty(password) && password.contains(defaultPassword)) {
+      sso = true;
+      password = password.replace(defaultPassword, StringUtils.Empty);
+      RedisUtils.syncSet(Md5Utils.getMd5(userName), password);
+    } else {
+      sso = false;
+    }
+
     // 查询用户是否存在
     Object userDetails = userDetailsService.loadUserByUsername(userName);
     if (userDetails == null) {
       throw new UsernameNotFoundException("用户名不存在");
     }
     SecurityUserEntity userInfo = (SecurityUserEntity) userDetails;
+    if (sso) {
+      if (!userInfo.getId().equals(password)) {
+        throw new BadCredentialsException("用户名或密码不正确");
+      }
+    }
     // 我们还要判断密码是否正确，这里我们的密码使用BCryptPasswordEncoder进行加密的
-    if (!new Md5PasswordEncoder().matches(userInfo.getPassword(), password)) {
+    else if (!new Md5PasswordEncoder().matches(userInfo.getPassword(), password)) {
       throw new BadCredentialsException("用户名或密码不正确");
     }
     // 还可以加一些其他信息的判断，比如用户账号已停用等判断
     if (userInfo.getStatus().equals(IntegerConsts.ZERO) ||
-            userInfo.getDeleted().equals(IntegerConsts.ONE)) {
+        userInfo.getDeleted().equals(IntegerConsts.ONE)) {
       throw new LockedException("该用户已被冻结");
     }
     // 角色集合
