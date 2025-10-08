@@ -208,6 +208,8 @@ public class HttpRequestUtils {
       connection.setRequestProperty(HttpHeaderConsts.CONTENT_TYPE, entity.getContentType());
       // 设置通用的请求属性
       //设置 http 请求头
+
+
       setHeader(connection, entity);
       connection.setRequestMethod(HttpMethodEnums.POST.getValue());
       // 发送POST请求必须设置如下两行

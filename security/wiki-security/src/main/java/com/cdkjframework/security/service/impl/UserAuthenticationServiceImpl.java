@@ -10,6 +10,7 @@ import com.cdkjframework.entity.user.RoleEntity;
 import com.cdkjframework.entity.user.UserEntity;
 import com.cdkjframework.entity.user.security.SecurityUserEntity;
 import com.cdkjframework.exceptions.GlobalException;
+import com.cdkjframework.exceptions.GlobalRuntimeException;
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.security.service.*;
 import com.cdkjframework.util.encrypts.AesUtils;
@@ -27,7 +28,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
@@ -39,6 +39,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static com.cdkjframework.constant.BusinessConsts.TICKET_SUFFIX;
+import static com.cdkjframework.constant.CacheConsts.*;
 
 /**
  * 用户身份验证服务
@@ -62,7 +63,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
   /**
    * 用户信息查询服务
    */
-  private final UserDetailsService userDetailsService;
+  private final IUserDetailsService userDetailsService;
 
   /**
    * 用户角色服务
@@ -154,9 +155,14 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     user.setToken(jwtToken);
     response.setHeader(BusinessConsts.HEADER_TOKEN, jwtToken);
 
+    // 构建用户机构信息
+    userDetailsService.buildOrganization(user);
+    RedisUtils.syncEntitySet(key, user, EFFECTIVE);
+
     // 读取当前用户所登录平台资源数据
     List<ResourceEntity> resourceList = resourceServiceImpl.listResource(new ArrayList<>(), user.getUserId());
     user.setResourceList(resourceList);
+    RedisUtils.syncEntitySet(USER_RESOURCE_ALL + token, resourceList, EFFECTIVE);
 
     // 读取配置信息
     BmsConfigureEntity configure = new BmsConfigureEntity();
@@ -166,6 +172,7 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     configure.setStatus(IntegerConsts.ONE);
     List<BmsConfigureEntity> configureList = configureServiceImpl.listConfigure(configure);
     user.setConfigureList(configureList);
+    RedisUtils.syncEntitySet(WORK_FLOW + token, configureList, EFFECTIVE);
 
     // 删除数据
     RedisUtils.syncDel(ticketKey);
@@ -242,11 +249,25 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     key = CacheConsts.USER_RESOURCE + tokenValue;
     RedisUtils.syncDel(key);
     // 删除 用户全部资源
-    key = CacheConsts.USER_RESOURCE_ALL + user.getId();
+    key = USER_RESOURCE_ALL + user.getId();
     RedisUtils.syncDel(key);
     // 删除 用户工作流引擎
-    key = CacheConsts.WORK_FLOW + user.getId();
+    key = WORK_FLOW + user.getId();
     RedisUtils.syncDel(key);
+  }
+
+  /**
+   * 切换机构信息
+   *
+   * @param id 机构ID
+   */
+  @Override
+  public void change(String id) {
+    if (StringUtils.isNullAndSpaceOrEmpty(id)) {
+      throw new GlobalRuntimeException("机构ID不能为空");
+    }
+    // 切换机构信息
+    userDetailsService.change(id);
   }
 
   /**
