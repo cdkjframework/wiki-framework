@@ -100,7 +100,7 @@ public class HttpsClientUtils {
         String gzipParams = GzipUtils.gZip(param, requestEntity.getCharset());
         stringEntity = new StringEntity(gzipParams, content);
       } else {
-        content = ContentType.create(HttpHeaderConsts.CONTENT_TYPE, requestEntity.getContentType());
+        content = ContentType.create(requestEntity.getContentType());
         stringEntity = new StringEntity(param, content);
       }
 
