@@ -14,7 +14,7 @@ import com.cdkjframework.oauth2.entity.TokenResponse;
  * @Date: 2025/7/31 21:15
  * @Version: 1.0
  */
-public interface Oauth2AuthorizationService {
+public interface CustomOauth2AuthorizationService {
 
   /**
    * 授权端点

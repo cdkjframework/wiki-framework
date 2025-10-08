@@ -2,7 +2,7 @@ package com.cdkjframework.oauth2.controller;
 
 import com.cdkjframework.builder.ResponseBuilder;
 import com.cdkjframework.oauth2.entity.TokenResponse;
-import com.cdkjframework.oauth2.service.Oauth2AuthorizationService;
+import com.cdkjframework.oauth2.service.CustomOauth2AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/oauth2")
+@RequestMapping(value = "/oauth")
 public class Oauth2AuthorizationController {
 
   /**
    * oauth2授权服务
    */
-  private final Oauth2AuthorizationService oauth2AuthorizationService;
+  private final CustomOauth2AuthorizationService customOauth2AuthorizationService;
 
   /**
    * 授权端点
@@ -38,7 +38,7 @@ public class Oauth2AuthorizationController {
   public ResponseBuilder authorizationCode(@RequestParam("client_id") String clientId,
                                            @RequestParam("response_type") String responseType,
                                            @RequestParam("scope") String scope) {
-    return oauth2AuthorizationService.authorizationCode(clientId, responseType, scope);
+    return customOauth2AuthorizationService.authorizationCode(clientId, responseType, scope);
   }
 
   /**
@@ -60,6 +60,6 @@ public class Oauth2AuthorizationController {
                              @RequestParam(name = "timestamp", required = false) String timestamp,
                              @RequestParam(name = "refresh_token", required = false) String refreshToken,
                              @RequestParam(name = "signature", required = false) String signature) {
-    return oauth2AuthorizationService.token(grantType, clientId, code, timestamp, refreshToken, signature);
+    return customOauth2AuthorizationService.token(grantType, clientId, code, timestamp, refreshToken, signature);
   }
 }

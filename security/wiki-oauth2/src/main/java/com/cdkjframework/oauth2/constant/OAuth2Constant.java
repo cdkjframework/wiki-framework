@@ -15,27 +15,81 @@ public interface OAuth2Constant {
    * 授权端点
    * 注意：不以双斜杠结尾，避免路径拼接出现
    */
-  String OAUTH2 = "/oauth2/";
-
+  String OAUTH2 = "/oauth2";
 
   /**
-   * 授权类型 - 刷新令牌
+   * 未知
    */
-  String REFRESH_TOKEN = "refresh_token";
+  String UNKNOWN = "unknown";
+
+  /**
+   * 请求
+   */
+  String REQUEST = "REQUEST";
+
+  /**
+   * 代理
+   */
+  String USER_AGENT = "User-Agent";
+
+  /**
+   * 认证成功
+   */
+  String AUTH_SUCCESS = "AUTH_SUCCESS";
+
+  /**
+   * 认证成功总数
+   */
+  String AUTH_SUCCESS_TOTAL = AUTH_SUCCESS.toLowerCase() + "_total";
+
+  /**
+   * 认证失败
+   */
+  String AUTH_FAILURE = "AUTH_FAILURE";
+
+  /**
+   * 认证失败总数
+   */
+  String AUTH_FAILURE_TOTAL = AUTH_FAILURE.toLowerCase() + "_total";
+
+  /**
+   * 认证失败总数
+   */
+  String AUTH_EVENTS_TOTAL = "AUTH_EVENTS_TOTAL";
+
+  /**
+   * 令牌请求总数
+   */
+  String TOKEN_REQUESTS_TOTAL = "token_requests_total";
+
+  /**
+   * 令牌请求延迟秒数
+   */
+  String TOKEN_LATENCY_SECONDS = "token_latency_seconds";
 
   /**
    * 授权端点
    */
-  String AUTHORIZE = OAUTH2 + "authorize";
+  String AUTHORIZE = OAUTH2 + "/authorize";
+
+  /**
+   * 代理头
+   */
+  String X_FORWARDED_FOR = "X-Forwarded-For";
 
   /**
    * 访问令牌端点
    */
-  String OAUTH2_ACCESS_TOKEN = OAUTH2 + "token";
+  String OAUTH2_ACCESS_TOKEN = OAUTH2 + "/token";
+
+  /**
+   * 访问令牌端点
+   */
+  String TOKEN = "/token";
   /**
    * 撤销令牌端点
    */
-  String OAUTH2_REVOKE = OAUTH2 + "revoke";
+  String OAUTH2_REVOKE = OAUTH2 + "/revoke";
 
   /**
    * 密钥
@@ -53,9 +107,42 @@ public interface OAuth2Constant {
   String BEARER = "Bearer ";
 
   /**
-   * 授权类型
+   * 客户端ID
    */
   String CLIENT_ID = "client_id";
+  /**
+   * 远程IP
+   */
+  String REMOTE_IP = "remote_ip";
+  /**
+   * 开始时间
+   */
+  String START_TIME = "start_time";
+
+  /**
+   * 令牌请求总数
+   */
+  String TOKEN_ISSUED_TOTAL = "token_issued_total";
+
+  /**
+   * 令牌撤销总数
+   */
+  String TOKEN_REVOKED_TOTAL = "token_revoked_total";
+
+  /**
+   * 令牌撤销失败总数
+   */
+  String TOKEN_REVOCATION_FAILURES_TOTAL = "token_revocation_failures_total";
+
+  /**
+   * 签发
+   */
+  String ISSUED = "ISSUED";
+
+  /**
+   * 撤销
+   */
+  String REVOKED = "REVOKED";
 
   /**
    * 空

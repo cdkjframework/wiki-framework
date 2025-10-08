@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 
 /**
+ * 客户端详情实体
+ *
  * @ProjectName: wiki-oauth2
  * @Package: com.cdkjframework.oauth2.entity
  * @ClassName: ClientDetails
@@ -11,7 +13,8 @@ import lombok.Data;
  * @Author: xiaLin
  * @Date: 2025/7/31 18:05
  * @Version: 1.0
- */@Data
+ */
+@Data
 @Builder
 public class ClientDetails {
 
