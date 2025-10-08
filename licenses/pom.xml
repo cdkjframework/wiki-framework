@@ -20,4 +20,11 @@
         <module>wiki-license-verify</module>
         <module>wiki-license-core</module>
     </modules>
+    <distributionManagement>
+        <repository>
+            <id>wiki</id>
+            <layout>default</layout>
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
 </project>

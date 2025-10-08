@@ -88,4 +88,9 @@ public class OrganizationEntity extends BaseEntity implements Serializable {
      */
     @Column(name = "middle")
     private Integer middle;
+    /**
+     * 社会统一编码
+     */
+    @Column(name = "social_unified_code")
+    private String socialUnifiedCode;
 }

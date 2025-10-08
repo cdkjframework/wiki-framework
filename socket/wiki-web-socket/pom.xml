@@ -15,6 +15,13 @@
     <name>${project.artifactId}</name>
     <url>https://framewiki.com</url>
 
+    <properties>
+        <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <dependencies>
         <!-- 加载 webSocket -->
         <dependency>
@@ -38,11 +45,4 @@
             <artifactId>netty-all</artifactId>
         </dependency>
     </dependencies>
-
-    <properties>
-        <java.version>17</java.version>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    </properties>
 </project>
