@@ -4,17 +4,23 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
+import com.cdkjframework.datasource.mybatis.enums.DataSourceType;
+import com.cdkjframework.datasource.mybatis.holder.DynamicDataSource;
 import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @ProjectName: com.cdkjframework.core
@@ -24,8 +30,7 @@ import java.sql.SQLException;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@RequiredArgsConstructor
-@ImportAutoConfiguration(value = {MybatisConfiguration.class})
+@ImportAutoConfiguration(value = {MybatisConfiguration.class, MapperScannerConfiguration.class})
 public class MybatisDruidDbConfiguration {
 
   /**
@@ -47,32 +52,105 @@ public class MybatisDruidDbConfiguration {
    */
   private final CustomConfig customConfig;
 
+  public MybatisDruidDbConfiguration(MybatisConfig mybatisSqlConfig, DataSourceConfig dataSourceConfig, CustomConfig customConfig) {
+    this.mybatisSqlConfig = mybatisSqlConfig;
+    this.dataSourceConfig = dataSourceConfig;
+    this.customConfig = customConfig;
+    new AesUtils(customConfig);
+  }
+
   /**
    * 加载数据源
    *
    * @return DataSource
    */
-  @Bean(name = "mybatisDataSource")
-  @Qualifier("mybatisDataSource")
-  public DataSource mybatisDataSource() {
-
+  @Bean(name = "masterDataSource")
+  public DataSource masterDataSource() {
     DruidDataSource datasource = new DruidDataSource();
+    MybatisConfig.Master master = mybatisSqlConfig.getMaster();
+    if (master == null) {
+      master = CopyUtils.copyNoNullProperties(mybatisSqlConfig, MybatisConfig.Master.class);
+    }
 
     //设置数据库连接
     if (dataSourceConfig.isEncryption()) {
-      AesUtils aes = new AesUtils(customConfig);
-      datasource.setUrl(AesUtils.base64Decrypt(mybatisSqlConfig.getUrl()));
-      datasource.setUsername(AesUtils.base64Decrypt(mybatisSqlConfig.getUsername()));
-      datasource.setPassword(AesUtils.base64Decrypt(mybatisSqlConfig.getPassword()));
+      datasource.setUrl(AesUtils.base64Decrypt(master.getUrl()));
+      datasource.setUsername(AesUtils.base64Decrypt(master.getUsername()));
+      datasource.setPassword(AesUtils.base64Decrypt(master.getPassword()));
     } else {
-      datasource.setUrl(mybatisSqlConfig.getUrl());
-      datasource.setUsername(mybatisSqlConfig.getUsername());
-      datasource.setPassword(mybatisSqlConfig.getPassword());
+      datasource.setUrl(master.getUrl());
+      datasource.setUsername(master.getUsername());
+      datasource.setPassword(master.getPassword());
     }
-    if (StringUtils.isNotNullAndEmpty(mybatisSqlConfig.getDriverClassName())) {
-      datasource.setDriverClassName(mybatisSqlConfig.getDriverClassName());
+    if (StringUtils.isNotNullAndEmpty(master.getDriverClassName())) {
+      datasource.setDriverClassName(master.getDriverClassName());
     }
 
+    // 构造数据源
+    buildDatasource(datasource);
+    // 返回结果
+    return datasource;
+  }
+
+  /**
+   * 加载数据源
+   *
+   * @return DataSource
+   */
+  @Bean(name = "slaveDataSource")
+  public DataSource slaveDataSource() {
+    MybatisConfig.Slave slave = mybatisSqlConfig.getSlave();
+    if (slave == null) {
+      return masterDataSource();
+    }
+    DruidDataSource datasource = new DruidDataSource();
+    //设置数据库连接
+    if (dataSourceConfig.isEncryption()) {
+      datasource.setUrl(AesUtils.base64Decrypt(slave.getUrl()));
+      datasource.setUsername(AesUtils.base64Decrypt(slave.getUsername()));
+      datasource.setPassword(AesUtils.base64Decrypt(slave.getPassword()));
+    } else {
+      datasource.setUrl(slave.getUrl());
+      datasource.setUsername(slave.getUsername());
+      datasource.setPassword(slave.getPassword());
+    }
+    if (StringUtils.isNotNullAndEmpty(slave.getDriverClassName())) {
+      datasource.setDriverClassName(slave.getDriverClassName());
+    }
+
+    // 构造数据源
+    buildDatasource(datasource);
+    // 返回结果
+    return datasource;
+  }
+
+  /**
+   * 标识为首选数据源
+   *
+   * @param masterDataSource 主库
+   * @param slaveDataSource  从库
+   * @return 返回结果
+   */
+  @Bean
+  @Primary
+  public DataSource dynamicDataSource(DataSource masterDataSource, DataSource slaveDataSource) {
+    Map<Object, Object> targetDataSources = new HashMap<>();
+    targetDataSources.put(DataSourceType.MASTER, masterDataSource);
+    targetDataSources.put(DataSourceType.SLAVE, slaveDataSource);
+
+    DynamicDataSource dynamicDataSource = new DynamicDataSource();
+    dynamicDataSource.setTargetDataSources(targetDataSources);
+    // 默认指向主库
+    dynamicDataSource.setDefaultTargetDataSource(masterDataSource);
+    return dynamicDataSource;
+  }
+
+  /**
+   * 构建数据源
+   *
+   * @param datasource 数据源
+   */
+  private void buildDatasource(DruidDataSource datasource) {
     //configuration
     if (StringUtils.isNotNullAndEmpty(dataSourceConfig.getInitialSize())) {
       datasource.setInitialSize(dataSourceConfig.getInitialSize());
@@ -122,7 +200,5 @@ public class MybatisDruidDbConfiguration {
     }
     //连接特性
     datasource.setConnectionProperties(dataSourceConfig.getConnectionProperties());
-
-    return datasource;
   }
 }
