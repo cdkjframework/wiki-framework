@@ -23,6 +23,49 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "spring.datasource")
 public class MybatisConfig {
 
+  /**
+   * 数据库连接地址
+   */
+  private String url;
+
+  /**
+   * 数据库用户名
+   */
+  private String username;
+
+  /**
+   * 数据库密码
+   */
+  private String password;
+
+  /**
+   * 数据库连接驱动
+   */
+  private String driverClassName;
+
+  /**
+   * Mapper 文件路径
+   */
+  private List<String> mybatisMapper;
+
+  /**
+   * Mapper Xml 路径
+   */
+  private List<String> mybatisMapperXml;
+
+  /**
+   * 主库配置
+   */
+  private Master master;
+
+  /**
+   * 从库配置
+   */
+  private Slave slave;
+
+  @Data
+  public static class Slave {
+
     /**
      * 数据库连接地址
      */
@@ -52,63 +95,38 @@ public class MybatisConfig {
      * Mapper Xml 路径
      */
     private List<String> mybatisMapperXml;
+  }
+
+  @Data
+  public static class Master {
+    /**
+     * 数据库连接地址
+     */
+    private String url;
 
     /**
-     * 主库配置
+     * 数据库用户名
      */
-    private Master master;
+    private String username;
 
     /**
-     * 从库配置
+     * 数据库密码
      */
-    private Slave slave;
-    
-    @Data
-    public static class Slave {
+    private String password;
 
-        /**
-         * 数据库连接地址
-         */
-        private String url;
+    /**
+     * 数据库连接驱动
+     */
+    private String driverClassName;
 
-        /**
-         * 数据库用户名
-         */
-        private String username;
+    /**
+     * Mapper 文件路径
+     */
+    private List<String> mybatisMapper;
 
-        /**
-         * 数据库密码
-         */
-        private String password;
-
-        /**
-         * 数据库连接驱动
-         */
-        private String driverClassName;
-    }
-
-    @Data
-    public static class Master {
-    
-
-        /**
-         * 数据库连接地址
-         */
-        private String url;
-
-        /**
-         * 数据库用户名
-         */
-        private String username;
-
-        /**
-         * 数据库密码
-         */
-        private String password;
-
-        /**
-         * 数据库连接驱动
-         */
-        private String driverClassName;
-    }
+    /**
+     * Mapper Xml 路径
+     */
+    private List<String> mybatisMapperXml;
+  }
 }

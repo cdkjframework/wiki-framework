@@ -1,5 +1,6 @@
 package com.cdkjframework.datasource.mybatis.holder;
 
+import com.cdkjframework.datasource.mybatis.enums.DataSourceType;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 /**
@@ -16,7 +17,7 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
    * 获取当前数据源
    */
   @Override
-  protected Object determineCurrentLookupKey() {
+  protected DataSourceType determineCurrentLookupKey() {
     return DataSourceContextHolder.getDataSourceType();
   }
 }

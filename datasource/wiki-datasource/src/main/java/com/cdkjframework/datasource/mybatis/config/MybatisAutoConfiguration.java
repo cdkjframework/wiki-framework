@@ -3,6 +3,7 @@ package com.cdkjframework.datasource.mybatis.config;
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
 import com.cdkjframework.datasource.mybatis.aspect.DataSourceAspect;
+import com.cdkjframework.datasource.mybatis.connectivity.MapperPrimaryScannerConfiguration;
 import com.cdkjframework.datasource.mybatis.connectivity.MapperScannerConfiguration;
 import com.cdkjframework.datasource.mybatis.connectivity.MybatisConfiguration;
 import com.cdkjframework.datasource.mybatis.connectivity.MybatisDruidDbConfiguration;
@@ -55,6 +56,16 @@ public class MybatisAutoConfiguration {
     return new MybatisConfiguration(mybatisConfig);
   }
 
+  /**
+   * mapper 扫描配置
+   *
+   * @return 返回结果
+   */
+  @Bean
+  @ConditionalOnMissingBean(MybatisConfiguration.class)
+  public MapperPrimaryScannerConfiguration mapperPrimaryScannerConfiguration() {
+    return new MapperPrimaryScannerConfiguration(mybatisConfig);
+  }
   /**
    * mapper 扫描配置
    *

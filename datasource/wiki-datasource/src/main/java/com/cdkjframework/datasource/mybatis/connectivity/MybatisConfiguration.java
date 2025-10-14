@@ -77,7 +77,42 @@ public class MybatisConfiguration {
    * @throws Exception 异常信息
    */
   @Bean
-  public SqlSessionFactory mybatisSessionFactory() throws Exception {
+  public SqlSessionFactory primarySessionFactory() throws Exception {
+    SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
+
+    try {
+      // 设置类型
+      List<TypeHandler> typeHandlerList = new ArrayList<>();
+      buildTypeHandler(typeHandlerList);
+      sqlSessionFactoryBean.setTypeHandlers(typeHandlerList.toArray(new TypeHandler[0]));
+      // 数据源
+      sqlSessionFactoryBean.setDataSource(dynamicDataSource);
+      // 配置信息
+      sqlSessionFactoryBean.setConfiguration(buildMyBatisConfiguration());
+      sqlSessionFactoryBean.setTypeAliases(new Class[] { LogbackImpl.class });
+
+      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+
+      // Mapper xml 路径
+      MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
+      sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
+      // 分页
+      sqlSessionFactoryBean.setPlugins(new Interceptor[] { buildPageHelper() });
+
+    } catch (Exception ex) {
+      logUtil.error(ex.getMessage());
+    }
+    return sqlSessionFactoryBean.getObject();
+  }
+
+  /**
+   * 创建 SQL 连接工厂
+   *
+   * @return 返回结果
+   * @throws Exception 异常信息
+   */
+  @Bean
+  public SqlSessionFactory sessionFactory() throws Exception {
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
     try {
