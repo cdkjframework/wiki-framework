@@ -16,6 +16,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>wiki-sse</module>
         <module>wiki-socket</module>
         <module>wiki-socket-client</module>
         <module>wiki-web-socket</module>
