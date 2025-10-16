@@ -199,6 +199,11 @@
       </dependency>
       <dependency>
         <groupId>com.framewiki</groupId>
+        <artifactId>wiki-sse</artifactId>
+        <version>${wiki.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.framewiki</groupId>
         <artifactId>wiki-constant</artifactId>
         <version>${wiki.version}</version>
       </dependency>
