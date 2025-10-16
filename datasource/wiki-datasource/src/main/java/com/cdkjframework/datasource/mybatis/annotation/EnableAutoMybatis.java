@@ -9,7 +9,7 @@ import java.lang.annotation.*;
  * @ProjectName: wiki-framework
  * @Package: com.cdkjframework.datasource.mybatis.annotation
  * @ClassName: EnableAutoMybatis
- * @Description: java类作用描述
+ * @Description: 启用 Mybatis 自动配置
  * @Author: xiaLin
  * @Date: 2023/12/5 17:27
  * @Version: 1.0

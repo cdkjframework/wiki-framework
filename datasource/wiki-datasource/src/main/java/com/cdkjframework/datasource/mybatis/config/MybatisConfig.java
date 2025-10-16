@@ -1,8 +1,9 @@
 package com.cdkjframework.datasource.mybatis.config;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+
+import java.util.List;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Configuration;
@@ -16,13 +17,54 @@ import org.springframework.context.annotation.Configuration;
  * @Version: 1.0
  */
 
-@Getter
-@Setter
-@ToString
+@Data
 @Configuration
 @RefreshScope
-@ConfigurationProperties(prefix = "spring.datasource.mybatis")
+@ConfigurationProperties(prefix = "spring.datasource")
 public class MybatisConfig {
+
+  /**
+   * 数据库连接地址
+   */
+  private String url;
+
+  /**
+   * 数据库用户名
+   */
+  private String username;
+
+  /**
+   * 数据库密码
+   */
+  private String password;
+
+  /**
+   * 数据库连接驱动
+   */
+  private String driverClassName;
+
+  /**
+   * Mapper 文件路径
+   */
+  private List<String> mybatisMapper;
+
+  /**
+   * Mapper Xml 路径
+   */
+  private List<String> mybatisMapperXml;
+
+  /**
+   * 主库配置
+   */
+  private Master master;
+
+  /**
+   * 从库配置
+   */
+  private Slave slave;
+
+  @Data
+  public static class Slave {
 
     /**
      * 数据库连接地址
@@ -47,10 +89,44 @@ public class MybatisConfig {
     /**
      * Mapper 文件路径
      */
-    private String mybatisMapper;
+    private List<String> mybatisMapper;
 
     /**
      * Mapper Xml 路径
      */
-    private String mybatisMapperXml;
+    private List<String> mybatisMapperXml;
+  }
+
+  @Data
+  public static class Master {
+    /**
+     * 数据库连接地址
+     */
+    private String url;
+
+    /**
+     * 数据库用户名
+     */
+    private String username;
+
+    /**
+     * 数据库密码
+     */
+    private String password;
+
+    /**
+     * 数据库连接驱动
+     */
+    private String driverClassName;
+
+    /**
+     * Mapper 文件路径
+     */
+    private List<String> mybatisMapper;
+
+    /**
+     * Mapper Xml 路径
+     */
+    private List<String> mybatisMapperXml;
+  }
 }

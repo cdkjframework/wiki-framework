@@ -2,6 +2,9 @@ package com.cdkjframework.datasource.mybatis.config;
 
 import com.cdkjframework.config.CustomConfig;
 import com.cdkjframework.config.DataSourceConfig;
+import com.cdkjframework.datasource.mybatis.aspect.DataSourceAspect;
+import com.cdkjframework.datasource.mybatis.connectivity.MapperPrimaryScannerConfiguration;
+import com.cdkjframework.datasource.mybatis.connectivity.MapperScannerConfiguration;
 import com.cdkjframework.datasource.mybatis.connectivity.MybatisConfiguration;
 import com.cdkjframework.datasource.mybatis.connectivity.MybatisDruidDbConfiguration;
 import lombok.RequiredArgsConstructor;
@@ -28,11 +31,11 @@ import org.springframework.context.annotation.Lazy;
 @RequiredArgsConstructor
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties({
-        CustomConfig.class,
-        MybatisConfig.class,
-        DataSourceConfig.class
+    CustomConfig.class,
+    MybatisConfig.class,
+    DataSourceConfig.class
 })
-@ImportAutoConfiguration(value = {MybatisDruidDbConfiguration.class})
+@ImportAutoConfiguration(value = {MybatisDruidDbConfiguration.class, DataSourceAspect.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(MybatisMarkerConfiguration.Marker.class)
 public class MybatisAutoConfiguration {
@@ -51,5 +54,26 @@ public class MybatisAutoConfiguration {
   @ConditionalOnMissingBean(MybatisDruidDbConfiguration.class)
   public MybatisConfiguration mybatisDruidDbStartTrigger() {
     return new MybatisConfiguration(mybatisConfig);
+  }
+
+  /**
+   * mapper 扫描配置
+   *
+   * @return 返回结果
+   */
+  @Bean
+  @ConditionalOnMissingBean(MybatisConfiguration.class)
+  public MapperPrimaryScannerConfiguration mapperPrimaryScannerConfiguration() {
+    return new MapperPrimaryScannerConfiguration(mybatisConfig);
+  }
+  /**
+   * mapper 扫描配置
+   *
+   * @return 返回结果
+   */
+  @Bean
+  @ConditionalOnMissingBean(MybatisConfiguration.class)
+  public MapperScannerConfiguration mapperScannerConfiguration() {
+    return new MapperScannerConfiguration(mybatisConfig);
   }
 }
