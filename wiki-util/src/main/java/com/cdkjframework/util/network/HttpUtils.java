@@ -1,5 +1,8 @@
 package com.cdkjframework.util.network;
 
+import com.cdkjframework.enums.HttpMethodEnums;
+import com.cdkjframework.util.tool.StringUtils;
+
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -83,7 +86,7 @@ public class HttpUtils {
    * @return HttpUtils 链式构建对象
    */
   public static HttpUtils get() {
-    return new HttpUtils("GET");
+    return new HttpUtils(HttpMethodEnums.GET.getValue());
   }
 
   /**
@@ -92,7 +95,7 @@ public class HttpUtils {
    * @return HttpUtils 链式构建对象
    */
   public static HttpUtils post() {
-    return new HttpUtils("POST");
+    return new HttpUtils(HttpMethodEnums.POST.getValue());
   }
 
   /**
@@ -101,7 +104,7 @@ public class HttpUtils {
    * @return HttpUtils 链式构建对象
    */
   public static HttpUtils upload() {
-    HttpUtils h = new HttpUtils("POST");
+    HttpUtils h = new HttpUtils(HttpMethodEnums.POST.getValue());
     h.isUpload = true;
     return h;
   }
@@ -189,9 +192,9 @@ public class HttpUtils {
     try {
       if (isUpload) {
         return doUpload();
-      } else if ("GET".equalsIgnoreCase(method)) {
+      } else if (HttpMethodEnums.GET.getValue().equalsIgnoreCase(method)) {
         return doGet();
-      } else if ("POST".equalsIgnoreCase(method)) {
+      } else if (HttpMethodEnums.POST.getValue().equalsIgnoreCase(method)) {
         return doPost();
       }
     } catch (Exception e) {
@@ -211,21 +214,22 @@ public class HttpUtils {
    * @throws Exception 网络异常
    */
   private String doGet() throws Exception {
-    StringBuilder paramStr = new StringBuilder();
+    StringBuilder paramStr = new StringBuilder(url);
     if (!params.isEmpty()) {
-      paramStr.append("?");
+      paramStr.append(StringUtils.QUESTION_MARK);
       for (Map.Entry<String, String> entry : params.entrySet()) {
+        if (!paramStr.toString().endsWith(StringUtils.QUESTION_MARK)) {
+          paramStr.append(StringUtils.AMPERSAND);
+        }
         paramStr.append(entry.getKey())
-            .append("=")
-            .append(entry.getValue())
-            .append("&");
+            .append(StringUtils.EQUALS)
+            .append(entry.getValue());
       }
-      paramStr.deleteCharAt(paramStr.length() - 1);
     }
 
-    URL urlObj = new URL(url + paramStr);
+    URL urlObj = new URL(paramStr.toString());
     HttpURLConnection conn = openConnection(urlObj);
-    conn.setRequestMethod("GET");
+    conn.setRequestMethod(HttpMethodEnums.GET.getValue());
     setHeaders(conn);
 
     return readResponse(conn);
@@ -244,19 +248,18 @@ public class HttpUtils {
   private String doPost() throws Exception {
     URL urlObj = new URL(url);
     HttpURLConnection conn = openConnection(urlObj);
-    conn.setRequestMethod("POST");
+    conn.setRequestMethod(HttpMethodEnums.POST.getValue());
     conn.setDoOutput(true);
     setHeaders(conn);
 
     StringBuilder paramStr = new StringBuilder();
     for (Map.Entry<String, String> entry : params.entrySet()) {
+      if (!paramStr.isEmpty()) {
+        paramStr.append(StringUtils.AMPERSAND);
+      }
       paramStr.append(entry.getKey())
-          .append("=")
-          .append(entry.getValue())
-          .append("&");
-    }
-    if (!params.isEmpty()) {
-      paramStr.deleteCharAt(paramStr.length() - 1);
+          .append(StringUtils.EQUALS)
+          .append(entry.getValue());
     }
 
     try (OutputStream os = conn.getOutputStream()) {
@@ -281,7 +284,7 @@ public class HttpUtils {
     URL urlObj = new URL(url);
     HttpURLConnection conn = openConnection(urlObj);
 
-    conn.setRequestMethod("POST");
+    conn.setRequestMethod(HttpMethodEnums.POST.getValue());
     conn.setDoOutput(true);
     conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
     setHeaders(conn);
@@ -355,7 +358,7 @@ public class HttpUtils {
         : conn.getInputStream();
 
     if (is == null) {
-      return "";
+      return StringUtils.EMPTY;
     }
 
     try (BufferedReader reader = new BufferedReader(new InputStreamReader(is))) {
