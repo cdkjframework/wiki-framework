@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration(proxyBeanMethods = false)
 public class MinioMarkerConfiguration {
 	@Bean
-	public Marker mybatisMarker() {
+	public Marker minioMarker() {
 		return new Marker();
 	}
 
