@@ -56,6 +56,15 @@ public interface SseEmitterCallback {
     void onPublishSuccess(String sessionId, String message);
 
     /**
+     * 发布失败回调
+     *
+     * @param sessionId 会话ID
+     * @param message   发布的消息内容
+     * @param throwable 异常信息
+     */
+    void onPublishFailure(String sessionId, String message, Throwable throwable);
+
+    /**
      * 心跳回调
      *
      * @param sessionId 会话ID

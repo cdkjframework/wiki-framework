@@ -252,6 +252,8 @@ public class SseEmitterConnectionService {
             // 调用发布成功回调
             sseEmitterCallback.onPublishSuccess(sessionId, message);
         } catch (IOException e) {
+            // 调用发布失败回调
+            sseEmitterCallback.onPublishFailure(sessionId, message, e);
             logUtils.error("发送消息失败，sessionId: {}, message: {}, error: {}", sessionId, message, e.getMessage());
             // 发送失败，移除失效的连接
             disconnect(sessionId);
