@@ -250,7 +250,7 @@ public class SseEmitterConnectionService {
             emitter.send(SseEmitter.event().data(message, MediaType.TEXT_PLAIN) // 实际数据
                     .id(GeneratedValueUtils.getOrderlyShortUuid()));
             // 调用发布成功回调
-            sseEmitterCallback.onPublishSuccess(sessionId);
+            sseEmitterCallback.onPublishSuccess(sessionId, message);
         } catch (IOException e) {
             logUtils.error("发送消息失败，sessionId: {}, message: {}, error: {}", sessionId, message, e.getMessage());
             // 发送失败，移除失效的连接
