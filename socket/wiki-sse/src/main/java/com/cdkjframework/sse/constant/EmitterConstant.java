@@ -12,9 +12,14 @@ package com.cdkjframework.sse.constant;
 public interface EmitterConstant {
 
   /**
-   * 连接超时时间，默认30分钟
+   * 成功事件
    */
   String SUCCESS = "success";
+
+  /**
+   * 连接成功事件
+   */
+  String CONNECTED = "connected";
 
   /**
    * 心跳事件

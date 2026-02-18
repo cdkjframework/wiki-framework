@@ -11,46 +11,53 @@ package com.cdkjframework.sse.service;
  */
 public interface SseEmitterCallback {
 
-  /**
-   * 断开连接回调
-   *
-   * @param sessionId 会话ID
-   */
-  void onDisconnect(String sessionId);
+    /**
+     * 断开连接回调
+     *
+     * @param sessionId 会话ID
+     */
+    void onDisconnect(String sessionId);
 
-  /**
-   * 连接回调
-   *
-   * @param sessionId 会话ID
-   */
-  void onConnect(String sessionId);
+    /**
+     * 连接回调
+     *
+     * @param sessionId 会话ID
+     */
+    void onConnect(String sessionId);
 
-  /**
-   * 错误回调
-   *
-   * @param sessionId 会话ID
-   * @param throwable 异常信息
-   */
-  void onError(String sessionId, Throwable throwable);
+    /**
+     * 错误回调
+     *
+     * @param sessionId 会话ID
+     * @param throwable 异常信息
+     */
+    void onError(String sessionId, Throwable throwable);
 
-  /**
-   * 超时回调
-   *
-   * @param sessionId 会话ID
-   */
-  void onTimeout(String sessionId);
+    /**
+     * 超时回调
+     *
+     * @param sessionId 会话ID
+     */
+    void onTimeout(String sessionId);
 
-  /**
-   * 完成回调
-   *
-   * @param sessionId 会话ID
-   */
-  void onCompletion(String sessionId);
+    /**
+     * 完成回调
+     *
+     * @param sessionId 会话ID
+     */
+    void onCompletion(String sessionId);
 
-  /**
-   * 心跳回调
-   *
-   * @param sessionId 会话ID
-   */
-  void onHeartbeat(String sessionId);
+    /**
+     * 发布成功回调
+     *
+     * @param sessionId 会话ID
+     */
+    void onPublishSuccess(String sessionId);
+
+    /**
+     * 心跳回调
+     *
+     * @param sessionId 会话ID
+     */
+    void onHeartbeat(String sessionId);
 }
