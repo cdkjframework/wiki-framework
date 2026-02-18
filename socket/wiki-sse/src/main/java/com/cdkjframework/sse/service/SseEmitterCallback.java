@@ -51,8 +51,9 @@ public interface SseEmitterCallback {
      * 发布成功回调
      *
      * @param sessionId 会话ID
+     * @param message   发布的消息内容
      */
-    void onPublishSuccess(String sessionId);
+    void onPublishSuccess(String sessionId, String message);
 
     /**
      * 心跳回调
