@@ -3,14 +3,15 @@ package com.cdkjframework.datasource.mybatis.connectivity;
 import com.cdkjframework.datasource.mybatis.LogbackImpl;
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CollectUtils;
 import com.github.pagehelper.PageInterceptor;
+import jakarta.annotation.Resource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.type.*;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
-import org.mybatis.spring.mapper.MapperScannerConfigurer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +21,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import jakarta.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -68,8 +69,6 @@ public class MybatisConfiguration {
   /**
    * mapper路径
    */
-  private static String MAPPER_LOCATION = "classpath*:";
-
   /**
    * 创建 SQL 连接工厂
    *
@@ -78,31 +77,7 @@ public class MybatisConfiguration {
    */
   @Bean
   public SqlSessionFactory primarySessionFactory() throws Exception {
-    SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
-
-    try {
-      // 设置类型
-      List<TypeHandler> typeHandlerList = new ArrayList<>();
-      buildTypeHandler(typeHandlerList);
-      sqlSessionFactoryBean.setTypeHandlers(typeHandlerList.toArray(new TypeHandler[0]));
-      // 数据源
-      sqlSessionFactoryBean.setDataSource(dynamicDataSource);
-      // 配置信息
-      sqlSessionFactoryBean.setConfiguration(buildMyBatisConfiguration());
-      sqlSessionFactoryBean.setTypeAliases(new Class[] { LogbackImpl.class });
-
-      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-      // Mapper xml 路径
-      MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
-      sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
-      // 分页
-      sqlSessionFactoryBean.setPlugins(new Interceptor[] { buildPageHelper() });
-
-    } catch (Exception ex) {
-      logUtil.error(ex.getMessage());
-    }
-    return sqlSessionFactoryBean.getObject();
+    return buildSqlSessionFactory(getPrimaryMapperXmlLocations());
   }
 
   /**
@@ -113,6 +88,17 @@ public class MybatisConfiguration {
    */
   @Bean
   public SqlSessionFactory sessionFactory() throws Exception {
+    return buildSqlSessionFactory(getSlaveMapperXmlLocations());
+  }
+
+  /**
+   * 创建 SQL 连接工厂
+   *
+   * @param mapperXmlLocations mapper xml 路径
+   * @return 返回结果
+   * @throws Exception 异常信息
+   */
+  private SqlSessionFactory buildSqlSessionFactory(List<String> mapperXmlLocations) throws Exception {
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
     try {
@@ -126,18 +112,63 @@ public class MybatisConfiguration {
       sqlSessionFactoryBean.setConfiguration(buildMyBatisConfiguration());
       sqlSessionFactoryBean.setTypeAliases(new Class[] { LogbackImpl.class });
 
-      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-      // Mapper xml 路径
-      MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
-      sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
+      sqlSessionFactoryBean.setMapperLocations(resolveMapperLocations(mapperXmlLocations));
       // 分页
       sqlSessionFactoryBean.setPlugins(new Interceptor[] { buildPageHelper() });
 
     } catch (Exception ex) {
-      logUtil.error(ex.getMessage());
+      logUtil.error(ex.getMessage(), ex);
     }
     return sqlSessionFactoryBean.getObject();
+  }
+
+  /**
+   * 主库 Mapper XML 路径
+   *
+   * @return 返回结果
+   */
+  private List<String> getPrimaryMapperXmlLocations() {
+    MybatisConfig.Master master = mybatisConfig.getMaster();
+    if (master != null && !CollectUtils.isEmpty(master.getMybatisMapperXml())) {
+      return master.getMybatisMapperXml();
+    }
+    return mybatisConfig.getMybatisMapperXml();
+  }
+
+  /**
+   * 从库 Mapper XML 路径
+   *
+   * @return 返回结果
+   */
+  private List<String> getSlaveMapperXmlLocations() {
+    MybatisConfig.Slave slave = mybatisConfig.getSlave();
+    if (slave != null && !CollectUtils.isEmpty(slave.getMybatisMapperXml())) {
+      return slave.getMybatisMapperXml();
+    }
+    return mybatisConfig.getMybatisMapperXml();
+  }
+
+  /**
+   * 解析 Mapper XML 资源
+   *
+   * @param mapperXmlLocations mapper xml 路径
+   * @return 返回资源数组
+   * @throws Exception 异常信息
+   */
+  private org.springframework.core.io.Resource[] resolveMapperLocations(List<String> mapperXmlLocations) throws Exception {
+    if (CollectUtils.isEmpty(mapperXmlLocations)) {
+      return new org.springframework.core.io.Resource[0];
+    }
+
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    List<org.springframework.core.io.Resource> resources = new ArrayList<>();
+    for (String mapperXmlLocation : mapperXmlLocations) {
+      if (mapperXmlLocation == null || mapperXmlLocation.isBlank()) {
+        continue;
+      }
+      Collections.addAll(resources, resolver.getResources("classpath*:" + mapperXmlLocation));
+    }
+    return resources.toArray(new org.springframework.core.io.Resource[0]);
   }
 
   /**

@@ -10,12 +10,9 @@ import com.cdkjframework.util.encrypts.AesUtils;
 import com.cdkjframework.util.log.LogUtils;
 import com.cdkjframework.util.tool.CopyUtils;
 import com.cdkjframework.util.tool.StringUtils;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
@@ -30,7 +27,7 @@ import java.util.Map;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@ImportAutoConfiguration(value = {MybatisConfiguration.class, MapperScannerConfiguration.class})
+@Configuration(proxyBeanMethods = false)
 public class MybatisDruidDbConfiguration {
 
   /**

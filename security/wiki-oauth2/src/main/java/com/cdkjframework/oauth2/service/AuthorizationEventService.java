@@ -1,9 +1,9 @@
 package com.cdkjframework.oauth2.service;
 
-import com.cdkjframework.oauth2.entity.AuthEvent;
-import com.cdkjframework.oauth2.entity.OAuth2Authorization;
-import com.cdkjframework.oauth2.entity.OAuth2AuthorizationToken;
-import com.cdkjframework.oauth2.entity.TokenEvent;
+//import com.cdkjframework.oauth2.entity.AuthEvent;
+//import com.cdkjframework.oauth2.entity.OAuth2Authorization;
+//import com.cdkjframework.oauth2.entity.OAuth2AuthorizationToken;
+//import com.cdkjframework.oauth2.entity.TokenEvent;
 import org.springframework.lang.Nullable;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 
@@ -21,32 +21,32 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 public interface AuthorizationEventService {
 
   /**
-   * 添加令牌事件
-   *
-   * @param tv 令牌事件
-   */
-  void addTokenEvent(TokenEvent tv);
-
-  /**
-   * 添加认证事件
-   *
-   * @param av 认证事件
-   */
-  void addAuthEvent(AuthEvent av);
-
-  /**
-   * 添加OAuth2授权
-   *
-   * @param authorization 授权实体
-   */
-  void addOAuth2Authorization(OAuth2Authorization authorization);
-
-  /**
-   * 添加OAuth2授权令牌
-   *
-   * @param token 授权令牌实体
-   */
-  void addOAuth2AuthorizationToken(OAuth2AuthorizationToken token);
+//   * 添加令牌事件
+//   *
+//   * @param tv 令牌事件
+//   */
+//  void addTokenEvent(TokenEvent tv);
+//
+//  /**
+//   * 添加认证事件
+//   *
+//   * @param av 认证事件
+//   */
+//  void addAuthEvent(AuthEvent av);
+//
+//  /**
+//   * 添加OAuth2授权
+//   *
+//   * @param authorization 授权实体
+//   */
+//  void addOAuth2Authorization(OAuth2Authorization authorization);
+//
+//  /**
+//   * 添加OAuth2授权令牌
+//   *
+//   * @param token 授权令牌实体
+//   */
+//  void addOAuth2AuthorizationToken(OAuth2AuthorizationToken token);
 
   /**
    * 删除授权及其辅助 token

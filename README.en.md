@@ -120,7 +120,7 @@ Add to your top-level POM:
 <parent>
   <groupId>com.framewiki</groupId>
   <artifactId>wiki-pom</artifactId>
-  <version>1.1.2</version>
+  <version>1.2.0</version>
 </parent>
 ```
 

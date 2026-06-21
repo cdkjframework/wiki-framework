@@ -1,10 +1,6 @@
 
 package com.cdkjframework.datasource.mybatis.connectivity;
 
-import java.io.IOException;
-import java.util.List;
-
-import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -12,7 +8,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
-import org.springframework.core.type.filter.TypeFilter;
 
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.tool.CollectUtils;
@@ -55,7 +50,7 @@ public class MapperScannerConfiguration implements BeanDefinitionRegistryPostPro
       return isInterface;
     });
     MybatisConfig.Slave slave = mybatisConfig.getSlave();
-    if (slave == null && CollectUtils.isEmpty(slave.getMybatisMapper())) {
+    if (slave == null || CollectUtils.isEmpty(slave.getMybatisMapper())) {
       return;
     }
     scanner.setSqlSessionFactoryBeanName("sessionFactory");
