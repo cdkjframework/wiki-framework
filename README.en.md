@@ -12,8 +12,8 @@
   <a target="_blank" href="https://search.maven.org/artifact/com.framewiki/wiki-all">
     <img src="https://img.shields.io/maven-central/v/com.framewiki/wiki-all.svg?label=Maven%20Central" alt="Maven Central"/>
   </a>
-  <a target="_blank" href="./LICENSE">
-    <img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Apache License 2.0"/>
+  <a target="_blank" href="https://license.coscl.org.cn/MulanPSL2">
+    <img alt="MulanPSL2" src="https://img.shields.io/:license-MulanPSL2-blue.svg" />
   </a>
   <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-0-13-later-archive-downloads.html">
     <img src="https://img.shields.io/badge/JDK-17+-red.svg" alt="JDK 17+"/>
