@@ -10,16 +10,13 @@
 	<a target="_blank" href="https://search.maven.org/artifact/com.framewiki/wiki-all">
 		<img src="https://img.shields.io/maven-central/v/com.framewiki/wiki-all.svg?label=Maven%20Central" />
 	</a>
-	<a target="_blank" href="https://license.coscl.org.cn/MulanPSL2">
-		<img src="https://img.shields.io/:license-MulanPSL2-blue.svg" />
+	<a target="_blank" href="./LICENSE">
+		<img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg" alt="Apache License 2.0" />
 	</a>
-  <a href='https://gitee.com/cdkjframework/wiki-framework/stargazers'><img src='https://gitee.com/cdkjframework/wiki-proxy/badge/star.svg?theme=dark' alt='star'></img></a>
-<a href='https://gitee.com/cdkjframework/wiki-framework/members'><img src='https://gitee.com/cdkjframework/wiki-proxy/badge/fork.svg?theme=dark' alt='fork'></img></a>
+  <a href='https://gitee.com/cdkjframework/wiki-framework/stargazers'><img src='https://gitee.com/cdkjframework/wiki-framework/badge/star.svg?theme=dark' alt='star'></img></a>
+<a href='https://gitee.com/cdkjframework/wiki-framework/members'><img src='https://gitee.com/cdkjframework/wiki-framework/badge/fork.svg?theme=dark' alt='fork'></img></a>
 <a target="_blank" href="https://www.oracle.com/java/technologies/javase/jdk17-0-13-later-archive-downloads.html">
     <img src="https://img.shields.io/badge/JDK-17+-red.svg" />
-</a>
-<a href="./LICENSE">
-    <img src="https://img.shields.io/badge/license-MIT-red" alt="license MIT">
 </a>
 </p>
 
@@ -44,7 +41,7 @@ classes are **curated and adapted** from existing sources. Therefore:
 
 ## Software Architecture
 
-Based on Spring Boot 3.3.5 and Spring Cloud 4.1.4, with integrations including MyBatis, JPA, PageHelper (pagination
+Based on Spring Boot 3.3.x and Spring Cloud 2023.0.x, with integrations including MyBatis, JPA, PageHelper (pagination
 plugin), and Alibaba database drivers.
 
 Includes the following tools: JWT, Redis, easyPoi (Excel import/export), MongoDB (Spring Boot-based), WebSocket (
@@ -127,14 +124,14 @@ Add to your top-level POM:
 ###### Gradle
 
 ```groovy
-implementation 'com.framewiki:wiki-pom:1.1.0'
+implementation 'com.framewiki:wiki-pom:1.2.0'
 ```
 
 #### Download JAR
 
 Download [wiki-all-X.X.X.jar](https://gitee.com/cdkjframework/wiki-framework/releases) directly:
 
-- [Maven Central](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.1.0/)
+- [Maven Central](https://repo1.maven.org/maven2/com/framewiki/wiki-all/1.2.0/)
 
 > **Note**  
 > Since version 1.0.8, Wiki-Framework requires **JDK 17+**. Compatibility with Android is untested.  
@@ -144,11 +141,29 @@ Download [wiki-all-X.X.X.jar](https://gitee.com/cdkjframework/wiki-framework/rel
 
 Visit the Gitee
 homepage: [https://gitee.com/cdkjframework/wiki-framework](https://gitee.com/cdkjframework/wiki-framework).  
-Download the source (master or 1.1.0 branch), navigate to the project directory, and execute:
+Download the source (master or 1.2.0 branch), then run the scripts from the project root.
+
+Linux / macOS:
 
 ```sh
 ./wiki.sh install
+./wiki.sh doc
+./wiki.sh pack
 ```
+
+Windows PowerShell:
+
+```powershell
+.\wiki.ps1 install
+.\wiki.ps1 doc
+.\wiki.ps1 pack
+```
+
+| Command | Description |
+| --- | --- |
+| `install` | Build and install the project into the local Maven repository. |
+| `doc` | Generate aggregated Java API docs under `target/site/apidocs`. |
+| `pack` | Build jar packages for the modules. |
 
 You can then include it via Maven.
 

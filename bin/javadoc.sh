@@ -1,12 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-#exec mvn javadoc:javadoc
+set -euo pipefail
 
-# 多模块聚合文档，生成在target/site/apidocs
-# shellcheck disable=SC2093
-exec mvn javadoc:aggregate
+BIN_HOME="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+ROOT_DIR="$(cd "$BIN_HOME/.." && pwd)"
+cd "$ROOT_DIR"
 
-bin_home="$(dirname ${BASH_SOURCE[0]})"
+# Multi-module aggregated API docs are generated under target/site/apidocs.
+mvn javadoc:aggregate
 
-# 拷贝自定义的index.html到聚合文档目录
-cp -vf $bin_home/../docs/apidocs/index.html $bin_home/../target/reports/apidocs/
+CUSTOM_INDEX="$ROOT_DIR/docs/apidocs/index.html"
+TARGET_INDEX="$ROOT_DIR/target/site/apidocs/index.html"
+
+if [ -f "$CUSTOM_INDEX" ] && [ -d "$(dirname "$TARGET_INDEX")" ]; then
+  cp -vf "$CUSTOM_INDEX" "$TARGET_INDEX"
+fi
