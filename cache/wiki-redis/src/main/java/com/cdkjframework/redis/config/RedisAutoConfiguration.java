@@ -2,6 +2,7 @@ package com.cdkjframework.redis.config;
 
 import com.cdkjframework.redis.RedisUtils;
 import com.cdkjframework.redis.connectivity.*;
+import com.cdkjframework.redis.lock.impl.RedisLettuceLock;
 import com.cdkjframework.redis.subscribe.ISubscribe;
 import com.cdkjframework.redis.subscribe.SubscribeConsumer;
 import io.lettuce.core.api.async.RedisAsyncCommands;
@@ -33,6 +34,7 @@ import org.springframework.context.annotation.Lazy;
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(RedisConfig.class)
 @ImportAutoConfiguration(value = {
+		RedisLettuceLock.class,
 		RedisConfiguration.class,
 		RedisClusterConfiguration.class,
 		RedisPublishConfiguration.class,

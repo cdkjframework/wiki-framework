@@ -3,7 +3,9 @@ package com.cdkjframework.datasource.mybatis.connectivity;
 import com.cdkjframework.datasource.mybatis.LogbackImpl;
 import com.cdkjframework.datasource.mybatis.config.MybatisConfig;
 import com.cdkjframework.util.log.LogUtils;
+import com.cdkjframework.util.tool.CollectUtils;
 import com.github.pagehelper.PageInterceptor;
+import jakarta.annotation.Resource;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -19,10 +21,10 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import jakarta.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
@@ -50,8 +52,9 @@ public class MybatisConfiguration {
   private final MybatisConfig mybatisConfig;
 
   /**
+   * 构造函数
    *
-   * @param mybatisConfig
+   * @param mybatisConfig Mybatis 配置
    */
   public MybatisConfiguration(MybatisConfig mybatisConfig) {
     this.mybatisConfig = mybatisConfig;
@@ -60,14 +63,20 @@ public class MybatisConfiguration {
   /**
    * 数据源
    */
-  @Resource(name = "mybatisDataSource")
-  @Qualifier("mybatisDataSource")
-  private DataSource mybatisDataSource;
+  @Resource(name = "dynamicDataSource")
+  private DataSource dynamicDataSource;
 
   /**
-   * mapper路径
+   * 创建主库 SQL 连接工厂
+   *
+   * @return 返回结果
+   * @throws Exception 异常信息
    */
-  private static String MAPPER_LOCATION = "classpath*:";
+  @Bean
+  @Primary
+  public SqlSessionFactory primarySessionFactory() throws Exception {
+    return buildSqlSessionFactory(getPrimaryMapperXmlLocations());
+  }
 
   /**
    * 创建 SQL 连接工厂
@@ -76,7 +85,18 @@ public class MybatisConfiguration {
    * @throws Exception 异常信息
    */
   @Bean
-  public SqlSessionFactory mybatisSessionFactory() throws Exception {
+  public SqlSessionFactory sessionFactory() throws Exception {
+    return buildSqlSessionFactory(getSlaveMapperXmlLocations());
+  }
+
+  /**
+   * 创建 SQL 连接工厂
+   *
+   * @param mapperXmlLocations mapper xml 路径
+   * @return 返回结果
+   * @throws Exception 异常信息
+   */
+  private SqlSessionFactory buildSqlSessionFactory(List<String> mapperXmlLocations) throws Exception {
     SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
 
     try {
@@ -85,23 +105,70 @@ public class MybatisConfiguration {
       buildTypeHandler(typeHandlerList);
       sqlSessionFactoryBean.setTypeHandlers(typeHandlerList.toArray(new TypeHandler[0]));
       // 数据源
-      sqlSessionFactoryBean.setDataSource(mybatisDataSource);
+      sqlSessionFactoryBean.setDataSource(dynamicDataSource);
       // 配置信息
       sqlSessionFactoryBean.setConfiguration(buildMyBatisConfiguration());
-      sqlSessionFactoryBean.setTypeAliases(new Class[]{LogbackImpl.class});
+      sqlSessionFactoryBean.setTypeAliases(new Class[] { LogbackImpl.class });
 
-      PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-
-      //Mapper xml 路径
-      MAPPER_LOCATION += mybatisConfig.getMybatisMapperXml();
-      sqlSessionFactoryBean.setMapperLocations(resolver.getResources(MAPPER_LOCATION));
-      //分页
-      sqlSessionFactoryBean.setPlugins(new Interceptor[]{buildPageHelper()});
+      sqlSessionFactoryBean.setMapperLocations(resolveMapperLocations(mapperXmlLocations));
+      // 分页
+      sqlSessionFactoryBean.setPlugins(new Interceptor[] { buildPageHelper() });
 
     } catch (Exception ex) {
-      logUtil.error(ex.getMessage());
+      logUtil.error(ex.getMessage(), ex);
+      // 初始化失败时上抛异常，避免后续调用 getObject() 返回 null
+      throw ex;
     }
     return sqlSessionFactoryBean.getObject();
+  }
+
+  /**
+   * 主库 Mapper XML 路径
+   *
+   * @return 返回结果
+   */
+  private List<String> getPrimaryMapperXmlLocations() {
+    MybatisConfig.Master master = mybatisConfig.getMaster();
+    if (master != null && !CollectUtils.isEmpty(master.getMybatisMapperXml())) {
+      return master.getMybatisMapperXml();
+    }
+    return mybatisConfig.getMybatisMapperXml();
+  }
+
+  /**
+   * 从库 Mapper XML 路径
+   *
+   * @return 返回结果
+   */
+  private List<String> getSlaveMapperXmlLocations() {
+    MybatisConfig.Slave slave = mybatisConfig.getSlave();
+    if (slave != null && !CollectUtils.isEmpty(slave.getMybatisMapperXml())) {
+      return slave.getMybatisMapperXml();
+    }
+    return mybatisConfig.getMybatisMapperXml();
+  }
+
+  /**
+   * 解析 Mapper XML 资源
+   *
+   * @param mapperXmlLocations mapper xml 路径
+   * @return 返回资源数组
+   * @throws Exception 异常信息
+   */
+  private org.springframework.core.io.Resource[] resolveMapperLocations(List<String> mapperXmlLocations) throws Exception {
+    if (CollectUtils.isEmpty(mapperXmlLocations)) {
+      return new org.springframework.core.io.Resource[0];
+    }
+
+    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+    List<org.springframework.core.io.Resource> resources = new ArrayList<>();
+    for (String mapperXmlLocation : mapperXmlLocations) {
+      if (mapperXmlLocation == null || mapperXmlLocation.isBlank()) {
+        continue;
+      }
+      Collections.addAll(resources, resolver.getResources("classpath*:" + mapperXmlLocation));
+    }
+    return resources.toArray(new org.springframework.core.io.Resource[0]);
   }
 
   /**
@@ -113,7 +180,7 @@ public class MybatisConfiguration {
   @Bean(name = "mybatisTransactionManager")
   @Primary
   public PlatformTransactionManager transactionManager() throws SQLException {
-    return new DataSourceTransactionManager(mybatisDataSource);
+    return new DataSourceTransactionManager(dynamicDataSource);
   }
 
   /**
@@ -124,7 +191,8 @@ public class MybatisConfiguration {
    * @throws Exception 异常信息
    */
   @Bean
-  public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
+  public SqlSessionTemplate sqlSessionTemplate(
+      @Qualifier("primarySessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
     return new SqlSessionTemplate(sqlSessionFactory);
   }
 
@@ -134,22 +202,21 @@ public class MybatisConfiguration {
    * @return 返回配置结果
    */
   private org.apache.ibatis.session.Configuration buildMyBatisConfiguration() {
-    //配置
-    org.apache.ibatis.session.Configuration configuration =
-            new org.apache.ibatis.session.Configuration();
+    // 配置
+    org.apache.ibatis.session.Configuration configuration = new org.apache.ibatis.session.Configuration();
     Properties properties = new Properties();
     configuration.setVariables(properties);
     configuration.setCallSettersOnNulls(true);
-    //这个配置使全局的映射器启用或禁用缓存。系统默认值是true
+    // 这个配置使全局的映射器启用或禁用缓存。系统默认值是true
     configuration.setCacheEnabled(false);
-    //全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。 系统默认值是true
+    // 全局启用或禁用延迟加载。当禁用时，所有关联对象都会即时加载。 系统默认值是true
     configuration.setLazyLoadingEnabled(false);
     // 允许或不允许多种结果集从一个单独的语句中返回（需要适合的驱动）。 系统默认值是true
     configuration.setMultipleResultSetsEnabled(false);
     // 使用列标签代替列名。不同的驱动在这方便表现不同。参考驱动文档或充分测试两种方法来决定所使用的驱动。 系统默认值是true
     configuration.setUseColumnLabel(true);
     // 允许 JDBC 支持生成的键。需要适合的驱动。如果设置为 true 则这个设置强制生成的键被使用，尽管一些驱动拒绝兼容但仍然有效（比如
-    //            Derby）。 系统默认值是false
+    // Derby）。 系统默认值是false
     configuration.setUseGeneratedKeys(false);
     // 配置默认的执行器。SIMPLE 执行器没有什么特别之处。REUSE 执行器重用预处理语句。BATCH 执行器重用语句和批量更新 系统默认值是SIMPLE
     configuration.setDefaultExecutorType(ExecutorType.SIMPLE);
@@ -157,10 +224,10 @@ public class MybatisConfiguration {
     configuration.setDefaultStatementTimeout(25000);
     // 设置字段和类是否支持驼峰命名的属性。 系统默认值是false
     configuration.setMapUnderscoreToCamelCase(true);
-    //  添加日志输出
+    // 添加日志输出
     configuration.setLogImpl(LogbackImpl.class);
 
-    //返回结果
+    // 返回结果
     return configuration;
   }
 
@@ -227,7 +294,7 @@ public class MybatisConfiguration {
     prop.setProperty("supportMethodsArguments", "false");
     // always总是返回PageInfo类型,check检查返回类型是否为PageInfo,none返回Page
     prop.setProperty("returnPageInfo", "none");
-    //添加插件
+    // 添加插件
     pageHelper.setProperties(prop);
 
     return pageHelper;

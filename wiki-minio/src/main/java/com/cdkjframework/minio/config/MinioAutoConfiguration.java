@@ -3,6 +3,7 @@ package com.cdkjframework.minio.config;
 import com.cdkjframework.minio.connectivity.MinioConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -26,6 +27,8 @@ import org.springframework.context.annotation.Lazy;
 @EnableConfigurationProperties({
 		MinioProperties.class
 })
+@ImportAutoConfiguration(value = {
+		MinioProperties.class})
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(MinioMarkerConfiguration.Marker.class)
 public class MinioAutoConfiguration {

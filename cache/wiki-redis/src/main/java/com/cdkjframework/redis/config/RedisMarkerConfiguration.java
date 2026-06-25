@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class RedisMarkerConfiguration {
 
   @Bean
-  public Marker swaggerMarker() {
+  public Marker redisMarker() {
     return new Marker();
   }
 
