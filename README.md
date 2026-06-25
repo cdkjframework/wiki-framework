@@ -260,4 +260,4 @@ mvn clean install -DskipTests
 
 ## 开源协议
 
-本项目基于 [Apache License 2.0](./LICENSE) 开源。
+本项目基于 [MulanPSL-2.0](./LICENSE) 开源。
