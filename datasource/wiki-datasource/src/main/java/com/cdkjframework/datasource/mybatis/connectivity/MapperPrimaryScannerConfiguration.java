@@ -7,9 +7,12 @@ import org.mybatis.spring.mapper.ClassPathMapperScanner;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.context.EnvironmentAware;
+import org.springframework.core.env.Environment;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+
+import java.util.List;
 
 /**
  * @ProjectName: com.cdkjframework.core
@@ -19,19 +22,13 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
  * @Author: xiaLin
  * @Version: 1.0
  */
-@Configuration
-public class MapperPrimaryScannerConfiguration implements BeanDefinitionRegistryPostProcessor {
+public class MapperPrimaryScannerConfiguration implements BeanDefinitionRegistryPostProcessor, EnvironmentAware {
 
-  /**
-   * 读取配置
-   */
-  private final MybatisConfig mybatisConfig;
+  private Environment environment;
 
-  /**
-   * 构造函数
-   */
-  public MapperPrimaryScannerConfiguration(MybatisConfig mybatisConfig) {
-    this.mybatisConfig = mybatisConfig;
+  @Override
+  public void setEnvironment(Environment environment) {
+    this.environment = environment;
   }
 
   /**
@@ -39,21 +36,18 @@ public class MapperPrimaryScannerConfiguration implements BeanDefinitionRegistry
    */
   @Override
   public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-    // 创建自定义的Mapper扫描器
-    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
-
-    // 设置扫描过滤器：只扫描接口
-    scanner.addIncludeFilter((MetadataReader metadataReader,
-                              MetadataReaderFactory metadataReaderFactory) -> {
-      boolean isInterface = metadataReader.getClassMetadata().isInterface();
-      return isInterface;
-    });
-    if (CollectUtils.isEmpty(mybatisConfig.getMybatisMapper())) {
+    MybatisConfig mybatisConfig = MybatisMapperScanSupport.bindMybatisConfig(environment);
+    List<String> mapperPackages = MybatisMapperScanSupport.resolvePrimaryMapperPackages(mybatisConfig);
+    if (CollectUtils.isEmpty(mapperPackages)) {
       return;
     }
+
+    ClassPathMapperScanner scanner = new ClassPathMapperScanner(registry);
+    scanner.addIncludeFilter((MetadataReader metadataReader,
+                              MetadataReaderFactory metadataReaderFactory) ->
+        metadataReader.getClassMetadata().isInterface());
     scanner.setSqlSessionFactoryBeanName("primarySessionFactory");
-    // 扫描所有指定的包
-    scanner.scan(mybatisConfig.getMybatisMapper().toArray(new String[0]));
+    scanner.scan(mapperPackages.toArray(new String[0]));
   }
 
 }

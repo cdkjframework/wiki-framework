@@ -18,7 +18,6 @@ import org.springframework.context.annotation.Configuration;
  */
 
 @Data
-@Configuration
 @RefreshScope
 @ConfigurationProperties(prefix = "spring.datasource")
 public class MybatisConfig {

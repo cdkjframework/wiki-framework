@@ -1,5 +1,6 @@
 package com.cdkjframework.datasource.mybatis.aspect;
 
+import com.cdkjframework.datasource.mybatis.annotation.Master;
 import com.cdkjframework.datasource.mybatis.annotation.Slave;
 import com.cdkjframework.datasource.mybatis.enums.DataSourceType;
 import com.cdkjframework.datasource.mybatis.holder.DataSourceContextHolder;
@@ -36,6 +37,33 @@ class DataSourceAspectTest {
   @Test
   void shouldSwitchToMasterWhenMethodHasNoSlaveAnnotation() throws NoSuchMethodException {
     JoinPoint joinPoint = buildJoinPoint(MasterMapperImpl.class, MasterMapper.class.getMethod("select"));
+
+    dataSourceAspect.beforeMethod(joinPoint);
+
+    assertEquals(DataSourceType.MASTER, DataSourceContextHolder.getDataSourceType());
+  }
+
+  @Test
+  void shouldSwitchToMasterWhenMethodHasMasterAnnotation() throws NoSuchMethodException {
+    JoinPoint joinPoint = buildJoinPoint(ForceMasterMapperImpl.class, ForceMasterMapper.class.getMethod("select"));
+
+    dataSourceAspect.beforeMethod(joinPoint);
+
+    assertEquals(DataSourceType.MASTER, DataSourceContextHolder.getDataSourceType());
+  }
+
+  @Test
+  void shouldSwitchToMasterWhenTargetClassHasMasterAnnotation() throws NoSuchMethodException {
+    JoinPoint joinPoint = buildJoinPoint(MasterSlaveMapperImpl.class, SlaveMapper.class.getMethod("select"));
+
+    dataSourceAspect.beforeMethod(joinPoint);
+
+    assertEquals(DataSourceType.MASTER, DataSourceContextHolder.getDataSourceType());
+  }
+
+  @Test
+  void shouldSwitchToMasterWhenMapperHasNoAnnotationEvenIfNameContainsSlave() throws NoSuchMethodException {
+    JoinPoint joinPoint = buildJoinPoint(NamedSlaveMapperImpl.class, MasterMapper.class.getMethod("select"));
 
     dataSourceAspect.beforeMethod(joinPoint);
 
@@ -82,6 +110,11 @@ class DataSourceAspectTest {
     void select();
   }
 
+  interface ForceMasterMapper {
+    @Master
+    void select();
+  }
+
   static class MasterMapperImpl implements MasterMapper {
     @Override
     public void select() {
@@ -89,6 +122,25 @@ class DataSourceAspectTest {
   }
 
   static class SlaveMapperImpl implements SlaveMapper {
+    @Override
+    public void select() {
+    }
+  }
+
+  static class ForceMasterMapperImpl implements ForceMasterMapper {
+    @Override
+    public void select() {
+    }
+  }
+
+  @Master
+  static class MasterSlaveMapperImpl implements SlaveMapper {
+    @Override
+    public void select() {
+    }
+  }
+
+  static class NamedSlaveMapperImpl implements MasterMapper {
     @Override
     public void select() {
     }

@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.web.reactive.function.client.WebClientAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
@@ -32,11 +33,29 @@ import org.springframework.context.annotation.Import;
 @Import({
     MybatisDruidDbConfiguration.class,
     MybatisConfiguration.class,
-    MapperPrimaryScannerConfiguration.class,
-    MapperScannerConfiguration.class,
     DataSourceAspect.class
 })
 @AutoConfigureAfter({WebClientAutoConfiguration.class})
 @ConditionalOnBean(MybatisMarkerConfiguration.Marker.class)
 public class MybatisAutoConfiguration {
+
+    /**
+     * 主库 Mapper 扫描配置
+     *
+     * @return 返回结果
+     */
+    @Bean
+    public static MapperPrimaryScannerConfiguration mapperPrimaryScannerConfiguration() {
+        return new MapperPrimaryScannerConfiguration();
+    }
+
+    /**
+     * 从库 Mapper 扫描配置
+     *
+     * @return 返回结果
+     */
+    @Bean
+    public static MapperScannerConfiguration mapperScannerConfiguration() {
+        return new MapperScannerConfiguration();
+    }
 }

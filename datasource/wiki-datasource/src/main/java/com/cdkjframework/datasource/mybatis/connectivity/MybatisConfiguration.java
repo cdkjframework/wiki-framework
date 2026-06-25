@@ -52,8 +52,9 @@ public class MybatisConfiguration {
   private final MybatisConfig mybatisConfig;
 
   /**
+   * 构造函数
    *
-   * @param mybatisConfig
+   * @param mybatisConfig Mybatis 配置
    */
   public MybatisConfiguration(MybatisConfig mybatisConfig) {
     this.mybatisConfig = mybatisConfig;
@@ -63,19 +64,16 @@ public class MybatisConfiguration {
    * 数据源
    */
   @Resource(name = "dynamicDataSource")
-  @Qualifier("dynamicDataSource")
   private DataSource dynamicDataSource;
 
   /**
-   * mapper路径
-   */
-  /**
-   * 创建 SQL 连接工厂
+   * 创建主库 SQL 连接工厂
    *
    * @return 返回结果
    * @throws Exception 异常信息
    */
   @Bean
+  @Primary
   public SqlSessionFactory primarySessionFactory() throws Exception {
     return buildSqlSessionFactory(getPrimaryMapperXmlLocations());
   }
@@ -118,6 +116,8 @@ public class MybatisConfiguration {
 
     } catch (Exception ex) {
       logUtil.error(ex.getMessage(), ex);
+      // 初始化失败时上抛异常，避免后续调用 getObject() 返回 null
+      throw ex;
     }
     return sqlSessionFactoryBean.getObject();
   }
@@ -191,7 +191,8 @@ public class MybatisConfiguration {
    * @throws Exception 异常信息
    */
   @Bean
-  public SqlSessionTemplate sqlSessionTemplate(SqlSessionFactory sqlSessionFactory) throws Exception {
+  public SqlSessionTemplate sqlSessionTemplate(
+      @Qualifier("primarySessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
     return new SqlSessionTemplate(sqlSessionFactory);
   }
 
