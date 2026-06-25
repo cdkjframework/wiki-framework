@@ -52,13 +52,6 @@
     </dependency>
   </dependencies>
 
-  <distributionManagement>
-    <repository>
-      <id>wiki</id>
-      <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
-
   <build>
     <resources>
       <resource>
@@ -88,12 +81,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
+        <version>3.3.1</version>
         <executions>
           <execution>
-            <phase>compile</phase>
+            <id>attach-sources</id>
             <goals>
               <goal>jar-no-fork</goal>
-              <!--<goal>test-jar</goal>-->
             </goals>
           </execution>
         </executions>
@@ -160,6 +153,15 @@
               <publishingServerId>wiki</publishingServerId>
               <autoPublish>true</autoPublish> <!-- 自动发布 -->
             </configuration>
+            <executions>
+              <execution>
+                <id>deploy-to-central</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>publish</goal>
+                </goals>
+              </execution>
+            </executions>
           </plugin>
         </plugins>
       </build>
